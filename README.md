@@ -15,3 +15,17 @@
 슬로건 : “오늘부터 1일, 당신의 뷰티 파트너”
 사이트 이름 : 원터치 (One Touch)
 조이름 : NewStream (서경원, 이시원, 고유빈, 하민지)
+
+### [환경]
+
+- 환경설정정보
+    - 이클립스 2024-06 (4.34)
+    - JAVA 17
+    - 스프링부트 3.5.7
+        - Type : Maven 17
+        - Packaging : jar
+        - Group : com.onetouch
+        - Package : com.onetouch
+        - Lombok 1.18.42
+        - MyBatis 3.0.5
+        - MySql 8.0.42
