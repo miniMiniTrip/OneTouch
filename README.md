@@ -31,3 +31,9 @@
         - Lombok 1.18.42
         - MyBatis 3.0.5
         - MySql 8.0.42
+
+[로고]
+
+- 이미지
+    
+    ![OT로고2.png](attachment:384ebb3c-5300-4eb3-b5ff-ceb937221f1a:OT로고2.png)
