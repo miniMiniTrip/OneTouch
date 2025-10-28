@@ -13,5 +13,16 @@ public class MainController {
 		System.out.println("	[oneTouchMain] return : index.jsp ");
 		return "index";
 	}
+	
+	@RequestMapping("/cart")
+	public String cart() {
+		System.out.println("	[oneTouchMain] cart() ");
+		
+		System.out.println("	[oneTouchMain] return : cart.jsp ");
+		return "cart";
+	}
+	
+	
+	
 
 }
