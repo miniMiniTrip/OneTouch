@@ -36,4 +36,5 @@
 
 - 이미지
     
-    ![OT로고2.png](attachment:384ebb3c-5300-4eb3-b5ff-ceb937221f1a:OT로고2.png)
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/9e0f0aaa-3a86-4830-9d6a-9efe5611fdb1" />
+
