@@ -1,7 +1,7 @@
 <파이널 프로젝트>
 
 [주제]<br>        
-  
+   <img width="527" height="683" alt="image" src="https://github.com/user-attachments/assets/d61c92d5-37a8-4f45-8a33-76e5d480d73d" />
     초기 기획
     <img width="527" height="683" alt="image" src="https://github.com/user-attachments/assets/d61c92d5-37a8-4f45-8a33-76e5d480d73d" />
     <img width="492" height="566" alt="image" src="https://github.com/user-attachments/assets/c20d38c8-a4f7-451f-b3f7-37db1795a72d" />
