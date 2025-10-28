@@ -14,12 +14,12 @@ public class MainController {
 		return "index";
 	}
 	
-	@RequestMapping("/cart")
+	@RequestMapping("/cart/cart.do")
 	public String cart() {
 		System.out.println("	[oneTouchMain] cart() ");
 		
 		System.out.println("	[oneTouchMain] return : cart.jsp ");
-		return "cart";
+		return "cart/cart";
 	}
 	
 	

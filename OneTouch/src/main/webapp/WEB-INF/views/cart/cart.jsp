@@ -62,7 +62,7 @@
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
-    <%-- <jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
     <!-- End Header Area -->
 
     <!-- Start Breadcrumbs -->
@@ -238,7 +238,7 @@
     <!--/ End Shopping Cart -->
 
     <!-- Start Footer Area -->
-   <%--  <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>
+   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     <!-- End Footer Area -->
 
     <!-- ========================= JS here ========================= -->
