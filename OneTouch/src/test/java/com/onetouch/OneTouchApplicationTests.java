@@ -1,0 +1,13 @@
+package com.onetouch;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class OneTouchApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
