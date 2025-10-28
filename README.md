@@ -1,7 +1,7 @@
 <파이널 프로젝트>
 
 [주제]
-        초기 기획
+<br>초기 기획
         ![image.png](attachment:bd51b58c-8b1b-444b-8ac7-75bbf049adf0:image.png)
         ![image.png](attachment:598a8d70-6621-417e-b75d-f380b17df759:image.png)
 
