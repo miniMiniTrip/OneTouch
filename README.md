@@ -2,6 +2,7 @@
 <hr>
 [주제]
 <br> 
+<br>
 초기 기획
 <br>
 <img width="527" height="683" alt="image" src="https://github.com/user-attachments/assets/d61c92d5-37a8-4f45-8a33-76e5d480d73d" /><br>
