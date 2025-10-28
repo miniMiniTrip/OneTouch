@@ -21,8 +21,4 @@ public class MainController {
 		System.out.println("	[oneTouchMain] return : cart.jsp ");
 		return "cart/cart";
 	}
-	
-	
-	
-
 }
