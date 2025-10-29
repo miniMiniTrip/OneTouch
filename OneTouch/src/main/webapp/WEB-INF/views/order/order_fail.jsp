@@ -18,7 +18,7 @@
 
 <body>
     <!-- Start Header Area -->
-    <c:import url="/WEB-INF/views/include/header.jsp" />
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
     <!-- End Header Area -->
 
     <!-- Start Fail Area -->
@@ -108,7 +108,7 @@
     <!-- End Fail Area -->
 
     <!-- Start Footer Area -->
-    <c:import url="/WEB-INF/views/include/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
     <!-- End Footer Area -->
 
     <!-- ========================= JS here ========================= -->

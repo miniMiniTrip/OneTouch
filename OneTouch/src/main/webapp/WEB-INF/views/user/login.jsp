@@ -30,7 +30,7 @@
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
-    <c:import url="/WEB-INF/views/include/header.jsp" />
+	<c:include page="/WEB-INF/views/common/header.jsp" />
     <!-- End Header Area -->
 
     <!-- Start Breadcrumbs -->
@@ -141,7 +141,7 @@
     <!-- End Account Login Area -->
 
     <!-- Start Footer Area -->
-    <c:import url="/WEB-INF/views/include/footer.jsp" />
+	<c:include page="/WEB-INF/views/common/footer.jsp" />
     <!-- End Footer Area -->
 
     <!-- ========================= scroll-top ========================= -->
