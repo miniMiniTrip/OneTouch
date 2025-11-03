@@ -1,3 +1,0 @@
-INDEX VERSION 1.134
-D:\Work\FINAL_PROJECT\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2580175934.index
-\OneTouch\src\main\java
