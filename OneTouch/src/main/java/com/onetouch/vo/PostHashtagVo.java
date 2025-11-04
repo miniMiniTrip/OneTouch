@@ -1,3 +1,4 @@
+
 package com.onetouch.vo;
 
 import java.sql.Date;

@@ -2,8 +2,8 @@
 -- ERDCloud Import용 SQL
 
 -- 데이터베이스 생성
-CREATE DATABASE IF NOT EXISTS onetouch DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE onetouch;
+CREATE DATABASE IF NOT EXISTS otdb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE otdb;
 
 -- ========================================
 -- 1. 회원 테이블
@@ -40,9 +40,9 @@ CREATE TABLE mem (
 
 CREATE TABLE category (
     category_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리번호',
-    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT '카테고리명',
+    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT '카테고리명'
     
---    CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
+--    ,CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
 ) COMMENT '카테고리';
 
 DROP TABLE category;
@@ -65,9 +65,9 @@ CREATE TABLE product (
     product_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
     FOREIGN KEY (category_idx) REFERENCES category(category_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE,
+        ON DELETE RESTRICT ON UPDATE CASCADE
     
---    CONSTRAINT chk_product_price CHECK (product_price >= 0),
+--    ,CONSTRAINT chk_product_price CHECK (product_price >= 0),
 --    CONSTRAINT chk_product_cnt CHECK (product_cnt >= 0),
 --    CONSTRAINT chk_product_wishlist CHECK (product_wishlist >= 0),
 --    CONSTRAINT chk_product_name_not_empty CHECK (CHAR_LENGTH(TRIM(product_name)) > 0)
@@ -89,15 +89,15 @@ CREATE TABLE product_image (
     product_image_level INT NOT NULL DEFAULT 1 COMMENT '순서(1=대표)',
     
     FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE CASCADE ON UPDATE CASCADE
     
---    CONSTRAINT chk_image_level CHECK (product_image_level > 0),
+--    ,CONSTRAINT chk_image_level CHECK (product_image_level > 0),
 --    CONSTRAINT chk_image_url_not_empty CHECK (CHAR_LENGTH(TRIM(product_image_url)) > 0),
     
-    UNIQUE KEY uk_product_image_level (product_idx, product_image_level)
+--    UNIQUE KEY uk_product_image_level (product_idx, product_image_level)
 ) COMMENT '상품이미지';
 
-CREATE INDEX idx_product_image_product ON product_image(product_idx);
+--CREATE INDEX idx_product_image_product ON product_image(product_idx);
 
 -- ========================================
 -- 5. 해시태그 테이블
@@ -210,9 +210,9 @@ CREATE TABLE `order` (
     order_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE,
+        ON DELETE RESTRICT ON UPDATE CASCADE
     
---    CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0)
+--    ,CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0)
 ) COMMENT '주문';
 
 -- CREATE INDEX idx_order_member ON `order`(mem_idx);
@@ -234,9 +234,9 @@ CREATE TABLE order_item (
     order_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문시간',
     
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE CASCADE ON UPDATE CASCADE
     
---    CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0),
+--    ,CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0),
 --    CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0),
 --    CONSTRAINT chk_order_item_total CHECK (total_amount >= 0)
 ) COMMENT '주문상세';
@@ -262,9 +262,9 @@ CREATE TABLE payment (
     order_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE CASCADE ON UPDATE CASCADE
     
---    CONSTRAINT chk_payment_amount CHECK (amount >= 0)
+--    ,CONSTRAINT chk_payment_amount CHECK (amount >= 0)
 ) COMMENT '결제';
 
 -- CREATE INDEX idx_payment_order ON payment(order_id);
@@ -284,16 +284,16 @@ CREATE TABLE post (
     order_id INT COMMENT '주문FK(리뷰)',
     post_review BOOLEAN NOT NULL DEFAULT FALSE COMMENT '리뷰여부',
     post_rating INT COMMENT '별점',
-    post_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', --0 정상, 1 유저 삭제, 2 관리자 삭제
+    post_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', -- 0 정상, 1 유저 삭제, 2 관리자 삭제
     post_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성시간',
     post_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
-        ON DELETE SET NULL ON UPDATE CASCADE,
+        ON DELETE SET NULL ON UPDATE CASCADE
     
---    CONSTRAINT chk_post_like CHECK (post_like >= 0),
+--    ,CONSTRAINT chk_post_like CHECK (post_like >= 0),
 --    CONSTRAINT chk_post_comment_count CHECK (post_comment_count >= 0),
 --    CONSTRAINT chk_post_rating CHECK (post_rating IS NULL OR (post_rating BETWEEN 1 AND 5))
 ) COMMENT '게시글';
@@ -348,7 +348,7 @@ CREATE TABLE reply (
     post_idx INT NOT NULL COMMENT '게시글FK',
     mem_idx INT NOT NULL COMMENT '회원FK',
     reply_content TEXT NOT NULL COMMENT '댓글내용',
-    reply_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', --0 정상, 1 유저 삭제, 2 관리자 삭제
+    reply_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', -- 0 정상, 1 유저 삭제, 2 관리자 삭제
     reply_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성시간',
     reply_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
@@ -391,19 +391,19 @@ CREATE TABLE qna (
     mem_idx INT NOT NULL COMMENT '회원FK',
     qna_title VARCHAR(100) NOT NULL COMMENT '제목',
     qna_content TEXT NOT NULL COMMENT '내용',
-    qna_category INT NOT NULL DEFAULT 0 COMMENT '카테고리(0~5)', --0: 상품, 1: 배송 2: 교환,환불 3: 기타문의 4 : FAQ 5 : 공지사항. 상위 노출
+    qna_category INT NOT NULL DEFAULT 0 COMMENT '카테고리(0~5)', -- 0: 상품, 1: 배송 2: 교환,환불 3: 기타문의 4 : FAQ 5 : 공지사항. 상위 노출
     qna_private BOOLEAN NOT NULL DEFAULT FALSE COMMENT '비밀글여부',
     qna_answered BOOLEAN NOT NULL DEFAULT FALSE COMMENT '답변여부',
     qna_answer_content TEXT COMMENT '답변내용',
-    qna_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', --0 정상, 1 유저 삭제, 2 관리자 삭제
+    qna_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', -- 0 정상, 1 유저 삭제, 2 관리자 삭제
     qna_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성시간',
     qna_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     qna_answer_time TIMESTAMP NULL COMMENT '답변시간',
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE,
+        ON DELETE RESTRICT ON UPDATE CASCADE
     
---    CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
+--    ,CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
 ) COMMENT '고객센터';
 
 -- CREATE INDEX idx_qna_member ON qna(mem_idx);
