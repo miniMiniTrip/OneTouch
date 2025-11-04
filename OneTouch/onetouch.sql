@@ -133,6 +133,7 @@ CREATE TABLE skin_profile (
     sp_trouble VARCHAR(20) COMMENT '피부트러블',
     sp_color_change VARCHAR(20) COMMENT '피부변색',
     sp_wrinkle VARCHAR(20) COMMENT '피부주름',
+    sp_skin_tone VARCHAR(20) COMMENT '피부톤',
     hashtag_ids JSON COMMENT '맞춤해시태그',
     sp_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '최초문진시간',
     sp_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '마지막문진시간',
