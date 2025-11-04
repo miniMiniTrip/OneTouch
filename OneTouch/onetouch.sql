@@ -31,8 +31,8 @@ CREATE TABLE mem (
 ) COMMENT '회원';
 
 
-CREATE INDEX idx_mem_email ON mem(mem_email);
-CREATE INDEX idx_mem_phone ON mem(mem_phone);
+-- CREATE INDEX idx_mem_email ON mem(mem_email);
+-- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
 -- ========================================
 -- 2. 카테고리 테이블
@@ -42,7 +42,7 @@ CREATE TABLE category (
     category_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리번호',
     category_name VARCHAR(50) NOT NULL UNIQUE COMMENT '카테고리명',
     
-    CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
+--    CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
 ) COMMENT '카테고리';
 
 -- ========================================
@@ -64,16 +64,16 @@ CREATE TABLE product (
     FOREIGN KEY (category_idx) REFERENCES category(category_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE,
     
-    CONSTRAINT chk_product_price CHECK (product_price >= 0),
-    CONSTRAINT chk_product_cnt CHECK (product_cnt >= 0),
-    CONSTRAINT chk_product_wishlist CHECK (product_wishlist >= 0),
-    CONSTRAINT chk_product_name_not_empty CHECK (CHAR_LENGTH(TRIM(product_name)) > 0)
+--    CONSTRAINT chk_product_price CHECK (product_price >= 0),
+--    CONSTRAINT chk_product_cnt CHECK (product_cnt >= 0),
+--    CONSTRAINT chk_product_wishlist CHECK (product_wishlist >= 0),
+--    CONSTRAINT chk_product_name_not_empty CHECK (CHAR_LENGTH(TRIM(product_name)) > 0)
 ) COMMENT '상품';
 
-CREATE INDEX idx_product_category ON product(category_idx);
-CREATE INDEX idx_product_price ON product(product_price);
-CREATE INDEX idx_product_wishlist ON product(product_wishlist);
-CREATE INDEX idx_product_time ON product(product_time DESC);
+-- CREATE INDEX idx_product_category ON product(category_idx);
+-- CREATE INDEX idx_product_price ON product(product_price);
+-- CREATE INDEX idx_product_wishlist ON product(product_wishlist);
+-- CREATE INDEX idx_product_time ON product(product_time DESC);
 
 -- ========================================
 -- 4. 상품 이미지 테이블
@@ -88,8 +88,8 @@ CREATE TABLE product_image (
     FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     
-    CONSTRAINT chk_image_level CHECK (product_image_level > 0),
-    CONSTRAINT chk_image_url_not_empty CHECK (CHAR_LENGTH(TRIM(product_image_url)) > 0),
+--    CONSTRAINT chk_image_level CHECK (product_image_level > 0),
+--    CONSTRAINT chk_image_url_not_empty CHECK (CHAR_LENGTH(TRIM(product_image_url)) > 0),
     
     UNIQUE KEY uk_product_image_level (product_idx, product_image_level)
 ) COMMENT '상품이미지';
@@ -159,12 +159,12 @@ CREATE TABLE cart (
     FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     
-    CONSTRAINT chk_cart_cnt CHECK (cart_cnt > 0),
+--    CONSTRAINT chk_cart_cnt CHECK (cart_cnt > 0),
     
     UNIQUE KEY uk_cart_member_product (mem_idx, product_idx)
 ) COMMENT '장바구니';
 
-CREATE INDEX idx_cart_member ON cart(mem_idx);
+-- CREATE INDEX idx_cart_member ON cart(mem_idx);
 
 -- ========================================
 -- 9. 찜 테이블
@@ -184,8 +184,8 @@ CREATE TABLE wishlist (
     UNIQUE KEY uk_wishlist_member_product (mem_idx, product_idx)
 ) COMMENT '찜';
 
-CREATE INDEX idx_wishlist_member ON wishlist(mem_idx);
-CREATE INDEX idx_wishlist_product ON wishlist(product_idx);
+-- CREATE INDEX idx_wishlist_member ON wishlist(mem_idx);
+-- CREATE INDEX idx_wishlist_product ON wishlist(product_idx);
 
 -- ========================================
 -- 10. 주문 테이블
@@ -209,12 +209,12 @@ CREATE TABLE `order` (
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE,
     
-    CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0)
+--    CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0)
 ) COMMENT '주문';
 
-CREATE INDEX idx_order_member ON `order`(mem_idx);
-CREATE INDEX idx_order_status ON `order`(order_status);
-CREATE INDEX idx_order_time ON `order`(order_time DESC);
+-- CREATE INDEX idx_order_member ON `order`(mem_idx);
+-- CREATE INDEX idx_order_status ON `order`(order_status);
+-- CREATE INDEX idx_order_time ON `order`(order_time DESC);
 
 -- ========================================
 -- 11. 주문 상세 테이블
@@ -233,12 +233,12 @@ CREATE TABLE order_item (
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     
-    CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0),
-    CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0),
-    CONSTRAINT chk_order_item_total CHECK (total_amount >= 0)
+--    CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0),
+--    CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0),
+--    CONSTRAINT chk_order_item_total CHECK (total_amount >= 0)
 ) COMMENT '주문상세';
 
-CREATE INDEX idx_order_item_order ON order_item(order_id);
+-- CREATE INDEX idx_order_item_order ON order_item(order_id);
 
 -- ========================================
 -- 12. 결제 테이블
@@ -261,11 +261,11 @@ CREATE TABLE payment (
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     
-    CONSTRAINT chk_payment_amount CHECK (amount >= 0)
+--    CONSTRAINT chk_payment_amount CHECK (amount >= 0)
 ) COMMENT '결제';
 
-CREATE INDEX idx_payment_order ON payment(order_id);
-CREATE INDEX idx_payment_status ON payment(status);
+-- CREATE INDEX idx_payment_order ON payment(order_id);
+-- CREATE INDEX idx_payment_status ON payment(status);
 
 -- ========================================
 -- 13. 게시글 테이블
@@ -290,16 +290,16 @@ CREATE TABLE post (
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
         ON DELETE SET NULL ON UPDATE CASCADE,
     
-    CONSTRAINT chk_post_like CHECK (post_like >= 0),
-    CONSTRAINT chk_post_comment_count CHECK (post_comment_count >= 0),
-    CONSTRAINT chk_post_rating CHECK (post_rating IS NULL OR (post_rating BETWEEN 1 AND 5))
+--    CONSTRAINT chk_post_like CHECK (post_like >= 0),
+--    CONSTRAINT chk_post_comment_count CHECK (post_comment_count >= 0),
+--    CONSTRAINT chk_post_rating CHECK (post_rating IS NULL OR (post_rating BETWEEN 1 AND 5))
 ) COMMENT '게시글';
 
 
 
-CREATE INDEX idx_post_member ON post(mem_idx);
-CREATE INDEX idx_post_time ON post(post_time DESC);
-CREATE INDEX idx_post_review ON post(post_review);
+-- CREATE INDEX idx_post_member ON post(mem_idx);
+-- CREATE INDEX idx_post_time ON post(post_time DESC);
+-- CREATE INDEX idx_post_review ON post(post_review);
 
 -- ========================================
 -- 14. 게시글-해시태그 매핑 테이블
@@ -333,8 +333,8 @@ CREATE TABLE post_product (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT '게시글-상품태그';
 
-CREATE INDEX idx_post_product_post ON post_product(post_idx);
-CREATE INDEX idx_post_product_product ON post_product(product_idx);
+-- CREATE INDEX idx_post_product_post ON post_product(post_idx);
+-- CREATE INDEX idx_post_product_product ON post_product(product_idx);
 
 -- ========================================
 -- 16. 댓글 테이블
@@ -355,8 +355,8 @@ CREATE TABLE reply (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT '댓글';
 
-CREATE INDEX idx_reply_post ON reply(post_idx);
-CREATE INDEX idx_reply_member ON reply(mem_idx);
+-- CREATE INDEX idx_reply_post ON reply(post_idx);
+-- CREATE INDEX idx_reply_member ON reply(mem_idx);
 
 -- ========================================
 -- 17. 좋아요 테이블
@@ -376,8 +376,8 @@ CREATE TABLE `like` (
     UNIQUE KEY uk_like_post_member (post_idx, mem_idx)
 ) COMMENT '좋아요';
 
-CREATE INDEX idx_like_post ON `like`(post_idx);
-CREATE INDEX idx_like_member ON `like`(mem_idx);
+-- CREATE INDEX idx_like_post ON `like`(post_idx);
+-- CREATE INDEX idx_like_member ON `like`(mem_idx);
 
 -- ========================================
 -- 18. 고객센터 테이블
@@ -400,12 +400,12 @@ CREATE TABLE qna (
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE,
     
-    CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
+--    CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
 ) COMMENT '고객센터';
 
-CREATE INDEX idx_qna_member ON qna(mem_idx);
-CREATE INDEX idx_qna_category ON qna(qna_category);
-CREATE INDEX idx_qna_answered ON qna(qna_answered);
+-- CREATE INDEX idx_qna_member ON qna(mem_idx);
+-- CREATE INDEX idx_qna_category ON qna(qna_category);
+-- CREATE INDEX idx_qna_answered ON qna(qna_answered);
 
 -- ========================================
 -- 19. 입고 테이블
@@ -424,8 +424,8 @@ CREATE TABLE product_in (
     CONSTRAINT chk_in_cnt CHECK (in_cnt > 0)
 ) COMMENT '입고이력';
 
-CREATE INDEX idx_product_in_product ON product_in(product_idx);
-CREATE INDEX idx_product_in_regdate ON product_in(in_regdate DESC);
+-- CREATE INDEX idx_product_in_product ON product_in(product_idx);
+-- CREATE INDEX idx_product_in_regdate ON product_in(in_regdate DESC);
 
 -- ========================================
 -- 20. 출고 테이블
@@ -444,8 +444,8 @@ CREATE TABLE product_out (
     CONSTRAINT chk_out_cnt CHECK (out_cnt > 0)
 ) COMMENT '출고이력';
 
-CREATE INDEX idx_product_out_product ON product_out(product_idx);
-CREATE INDEX idx_product_out_regdate ON product_out(out_regdate DESC);
+-- CREATE INDEX idx_product_out_product ON product_out(product_idx);
+-- CREATE INDEX idx_product_out_regdate ON product_out(out_regdate DESC);
 
 -- ========================================
 -- 21. 재고 스냅샷 테이블
@@ -464,8 +464,8 @@ CREATE TABLE product_remain (
     CONSTRAINT chk_remain_cnt CHECK (remain_cnt >= 0)
 ) COMMENT '재고스냅샷';
 
-CREATE INDEX idx_product_remain_product ON product_remain(product_idx);
-CREATE INDEX idx_product_remain_regdate ON product_remain(remain_regdate DESC);
+-- CREATE INDEX idx_product_remain_product ON product_remain(product_idx);
+-- CREATE INDEX idx_product_remain_regdate ON product_remain(remain_regdate DESC);
 
 -- ========================================
 -- 초기 데이터
