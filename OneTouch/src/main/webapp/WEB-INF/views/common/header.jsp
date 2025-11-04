@@ -42,8 +42,8 @@
 									<i class="lni lni-user"></i> 환영합니다
 								</div>
 								<ul class="user-login">
-									<li><a href="${pageContext.request.contextPath}/login">로그인</a></li>
-									<li><a href="${pageContext.request.contextPath}/register">회원가입</a></li>
+									<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
+									<li><a href="${pageContext.request.contextPath}/user/register">회원가입</a></li>
 								</ul>
 							</c:otherwise>
 						</c:choose>

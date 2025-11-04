@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html class="no-js" lang="ko">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -33,7 +34,7 @@
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
-    <c:import url="/WEB-INF/views/include/header.jsp" />
+    <c:import url="../common/header.jsp" />
     <!-- End Header Area -->
 
     <!-- Start Breadcrumbs -->
@@ -84,11 +85,14 @@
                                 <!-- 이메일 -->
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
+                                        <label for="id">아이디 <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" id="id" name="id" 
+                                               placeholder="아이디를 적어주세요" required>
                                         <label for="email">이메일 <span class="text-danger">*</span></label>
                                         <input class="form-control" type="email" id="email" name="email" 
                                                placeholder="example@email.com" required>
                                         <button type="button" class="btn btn-sm btn-outline-primary mt-2" 
-                                                id="checkEmailBtn">중복 확인</button>
+                                                id="       ">중복 확인</button>
                                         <small id="emailFeedback" class="form-text"></small>
                                     </div>
                                 </div>
@@ -249,7 +253,7 @@
     <!-- End Account Register Area -->
 
     <!-- Start Footer Area -->
-    <c:import url="/WEB-INF/views/include/footer.jsp" />
+    <c:import url="/WEB-INF/views/common/footer.jsp" />
     <!-- End Footer Area -->
 
     <!-- ========================= scroll-top ========================= -->
