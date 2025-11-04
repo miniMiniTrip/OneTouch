@@ -14,14 +14,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class HashtagController {
 	
-	@Autowired
-	HashtagDao hashtag_dao;
-	
-	@Autowired
-	HttpSession session;
-	
-	@Autowired
-	HttpServletRequest request;
 	
 	@RequestMapping("/hashtag/list.do")
 	public String list(Model model) {
