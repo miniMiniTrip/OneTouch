@@ -45,6 +45,9 @@ CREATE TABLE category (
 --    CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
 ) COMMENT '카테고리';
 
+DROP TABLE category;
+ALTER TABLE product
+DROP FOREIGN KEY product_ibfk_1;
 -- ========================================
 -- 3. 상품 테이블
 -- ========================================
@@ -480,3 +483,22 @@ INSERT INTO category (category_name) VALUES
 -- 관리자 계정 (비밀번호: 1234 - 실제로는 암호화 필요)
 INSERT INTO mem (mem_id, mem_pw, mem_name, mem_email, mem_roll, mem_phone) VALUES 
 ('admin', '1234', '관리자', 'admin@onetouch.com', 'admin', '010-1234-1123');
+
+
+
+
+
+--test========
+CREATE TABLE category (
+    category_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리 번호',
+    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT '카테고리명'
+) COMMENT '카테고리';
+
+
+INSERT INTO category (category_name) VALUES ('스킨'), ('로션'), ('파운데이션');
+
+
+ALTER TABLE product
+ADD CONSTRAINT product_fk_category
+FOREIGN KEY (category_idx)
+REFERENCES category (category_idx);
