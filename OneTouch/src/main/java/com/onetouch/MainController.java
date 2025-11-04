@@ -66,42 +66,7 @@ public class MainController {
 		return "product/product_list";
 	}
 	
-	//==========계정
-	
-	
-	@RequestMapping("/user/login")
-	public String login() {
-		System.out.println("	[oneTouchMain] user() ");
-		
-		System.out.println("	[oneTouchMain] return : login.jsp ");
-		return "user/login";
-	}
-	
-	@RequestMapping("/user/find_password")
-	public String findPassword() {
-		System.out.println("	[oneTouchMain] user()");
-		
-		System.out.println("	[oneTouchMain] return : find_password.jsp ");
-		return "user/find_password";
-		
-	}
 
-	@RequestMapping("/user/reset_password")
-	public String resetPassword() {
-		System.out.println("	[oneTouchMain] user() ");
-		
-		System.out.println("	[oneTouchMain] return : reset_password.jsp ");
-		return "user/reset_password";
-		
-	}
-	@RequestMapping("/user/register")
-	public String register() {
-		System.out.println("	[oneTouchMain] user() ");
-		
-		System.out.println("	[oneTouchMain] return : register.jsp ");
-		return "user/register";
-		
-	}
 	
 	
 }
