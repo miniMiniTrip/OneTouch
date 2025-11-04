@@ -19,6 +19,8 @@
     
     <!-- Daum 우편번호 API -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
+   
 </head>
 
 <body>
@@ -82,17 +84,27 @@
                                     <h6 class="mt-3 mb-3">기본 정보</h6>
                                 </div>
                                 
-                                <!-- 이메일 -->
+                                <!-- 아이디 -->
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
                                         <label for="id">아이디 <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" id="id" name="id" 
+                                        <input class="form-control" type="text" id="mem_id" name="mem_id" 
                                                placeholder="아이디를 적어주세요" required>
+                                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" 
+                                                id="idCheck">중복 확인</button>
+                                        <small class="form-text text-muted" id="idFeedBack">첫영문 숫자조합 8자 이상이고 특수문자 _ 만 사용가능</small>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <!-- 이메일 -->
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
                                         <label for="email">이메일 <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="email" id="email" name="email" 
+                                        <input class="form-control" type="email" id="mem_email" name="mem_email" 
                                                placeholder="example@email.com" required>
                                         <button type="button" class="btn btn-sm btn-outline-primary mt-2" 
-                                                id="       ">중복 확인</button>
+                                                id="checkEmailBtn">중복 확인</button>
                                         <small id="emailFeedback" class="form-text"></small>
                                     </div>
                                 </div>
@@ -101,7 +113,7 @@
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
                                         <label for="password">비밀번호 <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="password" id="password" name="password" 
+                                        <input class="form-control" type="password" id="mem_pw" name="mem_pw" 
                                                placeholder="8자 이상, 영문/숫자/특수문자 포함" required>
                                         <small class="form-text text-muted">8자 이상, 영문/숫자/특수문자 포함</small>
                                     </div>
@@ -111,7 +123,7 @@
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
                                         <label for="passwordConfirm">비밀번호 확인 <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="password" id="passwordConfirm" 
+                                        <input class="form-control" type="password" id="mem_pw_confirm" 
                                                placeholder="비밀번호를 다시 입력하세요" required>
                                         <small id="passwordFeedback" class="form-text"></small>
                                     </div>
@@ -121,7 +133,7 @@
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
                                         <label for="name">이름 <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" id="name" name="name" 
+                                        <input class="form-control" type="text" id="mem_name" name="mem_name" 
                                                placeholder="홍길동" required>
                                     </div>
                                 </div>
@@ -130,7 +142,7 @@
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
                                         <label for="phone">전화번호 <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="tel" id="phone" name="phone" 
+                                        <input class="form-control" type="tel" id="mem_phone" name="mem_phone" 
                                                placeholder="01012345678" pattern="[0-9]{10,11}" required>
                                         <small class="form-text text-muted">숫자만 입력 (010-1234-5678 → 01012345678)</small>
                                     </div>
@@ -140,7 +152,7 @@
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group">
                                         <label for="birthDate">생년월일</label>
-                                        <input class="form-control" type="date" id="birthDate" name="birthDate">
+                                        <input class="form-control" type="date" id="mem_birth" name="mem_birth">
                                     </div>
                                 </div>
 
@@ -153,7 +165,7 @@
                                     <div class="form-group">
                                         <label for="zipCode">우편번호</label>
                                         <div class="input-group">
-                                            <input class="form-control" type="text" id="zipCode" name="zipCode" 
+                                            <input class="form-control" type="text" id="mem_postal" name="mem_postal" 
                                                    placeholder="우편번호" readonly>
                                             <button type="button" class="btn btn-outline-primary" 
                                                     id="searchAddressBtn">검색</button>
@@ -165,7 +177,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="address">기본 주소</label>
-                                        <input class="form-control" type="text" id="address" name="address" 
+                                        <input class="form-control" type="text" id="mem_addr" name="mem_addr" 
                                                placeholder="기본 주소" readonly>
                                     </div>
                                 </div>
@@ -276,16 +288,49 @@
                 setTimeout(() => preloader.style.display = 'none', 500);
             }
         });
+        
+        //아이디 중복 확인
+        let mem_idChecked=false;
+        $("#idCheck").click(function(){
+        	const id = $("#mem_id").val().trim();
+        	const feedback= $("#idFeedBack");
+        	 console.log(id);
+        	
+        	 if (!id) {
+                 feedback.removeClass()
+                 		  .addClass('form-text text-danger')
+                 		  .text('아이디를 입력해주세요.');
+                 return;
+             }
+        	 console.log("안녕");
+        $.ajax({
+        	url:"/user/idCheck"
+        	,data:{"id":id}
+        	,dataTpye:"json"
+        	,tpye:"post"
+        	,success:function(d){
+        		if(d.idCheck){
+        			alert("아이디체크성공");
+        			feedback.removeClass()
+        			mem_idChecked=d.idCheck;
+        		}
+        	}
+        	,error:function(e){
+        		
+        	}
+        })	
+  
+        })
 
         // 이메일 중복 확인
         let emailChecked = false;
         document.getElementById('checkEmailBtn').addEventListener('click', function() {
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('mem_email').value;
             const feedback = document.getElementById('emailFeedback');
             
             if (!email) {
-                feedback.className = 'form-text text-danger';
-                feedback.textContent = '이메일을 입력해주세요.';
+                feedback.className="form-text text-danger";
+            	feedback.textContent="이메일을 입력해주세요.";
                 return;
             }
 
@@ -311,13 +356,13 @@
         });
 
         // 이메일 변경 시 중복확인 초기화
-        document.getElementById('email').addEventListener('input', function() {
+        document.getElementById('mem_email').addEventListener('input', function() {
             emailChecked = false;
             document.getElementById('emailFeedback').textContent = '';
         });
 
         // 비밀번호 일치 확인
-        document.getElementById('passwordConfirm').addEventListener('input', function() {
+        document.getElementById('mem_pw_confirm').addEventListener('input', function() {
             const password = document.getElementById('password').value;
             const passwordConfirm = this.value;
             const feedback = document.getElementById('passwordFeedback');
@@ -340,8 +385,8 @@
         document.getElementById('searchAddressBtn').addEventListener('click', function() {
             new daum.Postcode({
                 oncomplete: function(data) {
-                    document.getElementById('zipCode').value = data.zonecode;
-                    document.getElementById('address').value = data.address;
+                    document.getElementById('mem_postal').value = data.zonecode;
+                    document.getElementById('mem_addr').value = data.address;
                     document.getElementById('addressDetail').focus();
                 }
             }).open();
