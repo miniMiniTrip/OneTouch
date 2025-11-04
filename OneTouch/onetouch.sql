@@ -20,14 +20,15 @@ CREATE TABLE mem (
     mem_birth DATE COMMENT '생년월일',
     mem_phone VARCHAR(20) NOT NULL COMMENT '전화번호',
     mem_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '가입일',
-    mem_update_time TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일',
+    mem_update_time TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
     
-    
---	조건문 확인해보세요 --    
+--	 조건문 확인해보세요 --    
 --   CONSTRAINT chk_mem_email CHECK (mem_email LIKE '%@%'),
 --   CONSTRAINT chk_mem_phone CHECK (mem_phone REGEXP '^[0-9-]+$'),
 --   CONSTRAINT chk_mem_id_length CHECK (CHAR_LENGTH(mem_id) >= 4)
+
 ) COMMENT '회원';
+
 
 CREATE INDEX idx_mem_email ON mem(mem_email);
 CREATE INDEX idx_mem_phone ON mem(mem_phone);
@@ -291,6 +292,8 @@ CREATE TABLE post (
     CONSTRAINT chk_post_comment_count CHECK (post_comment_count >= 0),
     CONSTRAINT chk_post_rating CHECK (post_rating IS NULL OR (post_rating BETWEEN 1 AND 5))
 ) COMMENT '게시글';
+
+
 
 CREATE INDEX idx_post_member ON post(mem_idx);
 CREATE INDEX idx_post_time ON post(post_time DESC);
