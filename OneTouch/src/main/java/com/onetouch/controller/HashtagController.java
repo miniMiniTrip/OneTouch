@@ -3,10 +3,11 @@ package com.onetouch.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onetouch.dao.HashtagDao;
+import com.onetouch.vo.HashtagVo;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -23,33 +24,35 @@ public class HashtagController {
 	HttpServletRequest request;
 	
 	@RequestMapping("/hashtag/list.do")
-	public String list() {
-		return "";
+	public String list(Model model) {
+		//Map<String,Object> map = new HashMap<String, Object>();
+		//관리자한테 필요할까?
+		return "hashtag/hashtag_list";
 	};
 	
 	@RequestMapping("/hashtag/insert_form.do")
 	public String insert_form() {
-		return "";
+		return "hashtag/hashtag_insert_form";
 	};
 	
 	@RequestMapping("/hashtag/insert.do")
-	public String insert() {
-		return "";
+	public String insert(HashtagVo vo) {
+		return "hashtag/hashtag_insert";
 	};
 	
-	@RequestMapping("/hashtag/insert_form.do")
+	@RequestMapping("/hashtag/modify_form.do")
 	public String modify_form() {
-		return "";
+		return "hashtag/hashtag_modify_form";
 	};
 	
-	@RequestMapping("/hashtag/insert_form.do")
+	@RequestMapping("/hashtag/modify.do")
 	public String modify() {
-		return "";
+		return "hashtag/hashtag_modify";
 	};
 	
-	@RequestMapping("/hashtag/insert_form.do")
+	@RequestMapping("/hashtag/delete.do")
 	public String delete() {
-		return "";
+		return "hashtag/hashtag_delete";
 	};
 	
 	
