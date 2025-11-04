@@ -23,7 +23,7 @@ public class ProductVo {
     
     // 카테고리 정보
     private String category_name;
-    private String category_description;
+ // private String category_description;
     
     // 상품 이미지 정보
     private int product_image_idx;
