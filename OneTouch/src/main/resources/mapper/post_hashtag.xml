@@ -2,25 +2,20 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.db2.dao.HashtagDao">
+<mapper namespace="com.example.db2.dao.PostHashtagDao">
 
 	<!-- 해시태그 조회 -->
-	<select id="selectList" parameterType="Map" resultType="hashtag">
-	select * from hashtag
+	<select id="selectList" parameterType="Map" resultType="post_hashtag">
+	select * from post_hashtag
 	</select>
 	  	
   	<!-- 한 건만 조회 -->
-  	<select id="selectOne" parameterType="int" resultType="hashtag">
+  	<select id="selectOne" parameterType="int" resultType="post_hashtag">
   	select * from hashtag where hashtag_idx = #{ hashtag_idx }
-  	</select>
-  	
-  	<!-- 특정 post에서의 해시태그 조회 -->
-  	<select id="selectPost" parameterType="Map" resultType="hashtag">
-  	select * from hashtag where post_idx = #{ post_idx }
   	</select>
 
 	<!-- 해시태그 작성 -->
-  	<insert id="insert" parameterType="hashtag">
+  	<insert id="insert" parameterType="post_hashtag">
   	insert into hashtag values( null, #{ hashtag_name }, CURRENT_TIMESTAMP )
   	</insert>
 
@@ -30,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</delete>
 
   	<!-- 수정 -->
-  	<update id="update" parameterType="hashtag" >
+  	<update id="update" parameterType="post_hashtag" >
   	update hashtag set name= #{ hashtag_name } where hashtag_idx=#{ hashtag_idx }
   	</update>
 
