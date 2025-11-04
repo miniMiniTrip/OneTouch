@@ -15,6 +15,7 @@ CREATE TABLE mem (
     mem_pw VARCHAR(255) NOT NULL COMMENT '비밀번호(암호화)',
     mem_name VARCHAR(50) NOT NULL COMMENT '이름',
     mem_addr VARCHAR(255) COMMENT '주소',
+    mem_addr_more VARCHAR(255) COMMENT '상세주소',
     mem_email VARCHAR(100) NOT NULL UNIQUE COMMENT '이메일',
     mem_roll ENUM('user', 'admin') NOT NULL DEFAULT 'user' COMMENT '권한',
     mem_birth DATE COMMENT '생년월일',
