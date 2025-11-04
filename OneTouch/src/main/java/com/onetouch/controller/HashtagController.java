@@ -27,5 +27,31 @@ public class HashtagController {
 		return "";
 	};
 	
+	@RequestMapping("/hashtag/insert_form.do")
+	public String insert_form() {
+		return "";
+	};
+	
+	@RequestMapping("/hashtag/insert.do")
+	public String insert() {
+		return "";
+	};
+	
+	@RequestMapping("/hashtag/insert_form.do")
+	public String modify_form() {
+		return "";
+	};
+	
+	@RequestMapping("/hashtag/insert_form.do")
+	public String modify() {
+		return "";
+	};
+	
+	@RequestMapping("/hashtag/insert_form.do")
+	public String delete() {
+		return "";
+	};
+	
+	
 	
 }
