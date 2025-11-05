@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.Data;
 
 @Data
-@Alias("memVo")
+@Alias("MemVo")
 public class MemVo {
 	int    mem_idx;				//회원번호
 	String mem_id; 				//아이디

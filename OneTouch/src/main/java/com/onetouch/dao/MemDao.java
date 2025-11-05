@@ -6,6 +6,6 @@ import com.onetouch.vo.MemVo;
 
 @Mapper
 public interface MemDao {
-	public MemVo idCheck();
+	public MemVo selectMemOne(int mem_id);
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.dao.MemDao;
 import com.onetouch.service.MemService;
 import com.onetouch.vo.MemVo;
 
@@ -16,6 +17,8 @@ public class LoginController {
 	
 	@Autowired
 	MemService memService;
+	@Autowired
+	MemDao memDao;
 	
 	//==========계정
 	
@@ -62,9 +65,14 @@ public class LoginController {
 	@RequestMapping("/user/idCheck")
 	@ResponseBody
 	public Map<String,Object> idCheck(int id) {
+		System.out.println("	[LoginController] idCheck() ");
+		System.out.println("	[ResponseBody]");
+		int mem_id=id;
 		Map<String,Object> map = new HashMap<String, Object>();
-		//MemVo memVo=memService.idCheck();
+		MemVo memVo=memDao.selectMemOne(mem_id);
+		System.out.println(memVo);
 		map.put("idCheck", id==id );
+		System.out.println("	[LoginController] return : map ");
 		return map;
 	}
 		
