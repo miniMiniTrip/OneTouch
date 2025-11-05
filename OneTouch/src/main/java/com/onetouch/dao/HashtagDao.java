@@ -1,6 +1,7 @@
 package com.onetouch.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,16 +12,19 @@ public interface HashtagDao {
 	//전체조회
 	public List<HashtagVo> selectList();
 	
-	//1건 조회
-	public List<HashtagVo> selectOne(int hashtag_idx);
+	//게시글 해시태그 출력
+	public String selectHashNamesByPost(int post_idx);
 	
-	//추가
-	public int insert(HashtagVo vo);
+	//해시태그의 idx 조회
+	public int selectByIdx (int post_idx);
 	
-	//수정
-	public int update(HashtagVo vo);
+	//해시태그 클릭 시 상품 조회
+	public int selectProductByHashtag(int hashtag_idx);
 	
-	//삭제
-	public int delete(int hashtag_idx);
+	//해시태그 클릭 시 글 조회
+	public int selectPostByHashtag(int hashtag_idx);
+	
+	//문진 결과
+	public Map<String, Object> 
 	
 }

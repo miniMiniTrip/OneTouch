@@ -31,9 +31,10 @@ CREATE TABLE mem (
 
 ) COMMENT '회원';
 
-
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
+
+-- alter table mem add mem_postal varchar(10) NOT NULL COMMENT '우편번호'
 
 -- ========================================
 -- 2. 카테고리 테이블

@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</select>
 
   	<!-- 문진결과(상품) -->
-  	<select id="selectProductByHashtag" parameterType="map" resultType="int">
+  	<select id="selectProductsByHashtags" parameterType="Map" resultType="int">
   		select prh.product.idx count(distinct ph.hashtag_idx) as match
   		from product_hashtag prh
   		where prh.hashtag_idx in
@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</select>
 
   	<!-- 문진 결과(포스팅) -->
-  	<select id="selectPostByHashtag" parameterType="map" resultType="int">
+  	<select id="selectPostsByHashtags" parameterType="Map" resultType="int">
   		select ph.post.idx count(distinct ph.hashtag_idx) as match
   		from post_hashtag ph
   		where ph.hashtag_idx in
@@ -94,8 +94,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		</foreach>
   	</insert>
   	
-  	<!-- 글쓰기 시 일괄등록 -->
-  	<insert id="insertPostHashtag" parameterType="map">
+  	<!-- 3. 글쓰기 시 일괄등록 -->
+  	<insert id="insertPostHashtag" parameterType="Map">
   		insert into post_hashtag (post_idx, hashtag_idx) values
   		<foreach collection="hashtag_list" item="hashtag" separator=",">
   			( #{ post_idx }, #{ hashtag_idx } )
@@ -103,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</insert>
  
   	<!-- 직접적인 삭제 -->
+  	
   	<delete id="delete" parameterType="int">
   	delete from hashtag where hashtag_idx = #{ hashtag_idx }
   	</delete>
