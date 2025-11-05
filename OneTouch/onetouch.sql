@@ -14,6 +14,7 @@ CREATE TABLE mem (
     mem_id VARCHAR(50) NOT NULL UNIQUE COMMENT '아이디',
     mem_pw VARCHAR(255) NOT NULL COMMENT '비밀번호(암호화)',
     mem_name VARCHAR(50) NOT NULL COMMENT '이름',
+    mem_postal VARCHAR(10) NOT NULL COMMENT '우편번호',
     mem_addr VARCHAR(255) COMMENT '주소',
     mem_addr_more VARCHAR(255) COMMENT '상세주소',
     mem_email VARCHAR(100) NOT NULL UNIQUE COMMENT '이메일',
