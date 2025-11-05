@@ -6,6 +6,8 @@ import com.onetouch.vo.MemVo;
 
 @Mapper
 public interface MemDao {
-	public MemVo selectMemOne(int mem_id);
+	public MemVo selectMemIdOne(String mem_id);
+	public int insert(MemVo memVo);
+	public MemVo selectMemEmailOne(String mem_email);
 	
 }

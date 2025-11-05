@@ -13,6 +13,7 @@ public class MemVo {
 	String mem_name;			//이름
 	String mem_postal;			//우편번호
 	String mem_addr;			//주소
+	String mem_addr_more;		//상세주소
 	String mem_email;			//이메일
 	String mem_roll;			//권한
 	String mem_birth;			//생년월일
