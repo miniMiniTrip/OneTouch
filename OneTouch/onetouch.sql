@@ -1,5 +1,7 @@
--- OneTouch 프로젝트 데이터베이스 스키마
--- ERDCloud Import용 SQL
+-- ================= 주의사항 ===================
+-- 추가되는 조건, Column이 생기는 경우 각 테이블 아래에,
+-- 추가되는 더미데이터는 SQL문 제일 아래에 적어주세요.
+-- ============================================
 
 -- 데이터베이스 생성
 CREATE DATABASE IF NOT EXISTS otdb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -33,8 +35,6 @@ CREATE TABLE mem (
 
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
-
--- alter table mem add mem_postal varchar(10) NOT NULL COMMENT '우편번호'
 
 -- ========================================
 -- 2. 카테고리 테이블
@@ -482,3 +482,7 @@ INSERT INTO category (category_name) VALUES
 -- 관리자 계정 (비밀번호: 1234 - 실제로는 암호화 필요)
 INSERT INTO mem (mem_id, mem_pw, mem_name, mem_email, mem_roll, mem_phone) VALUES 
 ('admin', '1234', '관리자', 'admin@onetouch.com', 'admin', '010-1234-1123');
+
+-- 해시태그 초기데이터
+INSERT INTO hashtag (hashtag_name) VALUES
+('지성'),('복합성'),('건성'),('민감성'),('저항성'),('색소성'),('비색소성'),('주름성'),('탄력성'),('밝은톤'),('중간톤'),('어두운톤');
