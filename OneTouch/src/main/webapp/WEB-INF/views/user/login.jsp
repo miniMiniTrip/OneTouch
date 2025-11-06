@@ -501,7 +501,6 @@
     <script type="text/javascript">
 window.onload = function(){
 	 setTimeout(function(){
-		 alert("${mem_id_check},${mem_pw_check}");
 		if("${mem_id_check}"=="false"){
 			
 		alert("아이디가 틀렸습니다.");
