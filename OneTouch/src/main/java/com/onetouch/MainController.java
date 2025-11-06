@@ -8,7 +8,7 @@ public class MainController {
 	
 	@RequestMapping("/")
 	public String oneTouchIndex() {
-		System.out.println("	[oneTouchMain] ");
+		System.out.println("	[oneTouchMain] oneTouchIndex()");
 		
 		System.out.println("	[oneTouchMain] return : index.html ");
 		return "index";
@@ -16,7 +16,7 @@ public class MainController {
 	
 	@RequestMapping("main")
 	public String oneTouchMain() {
-		System.out.println("	[oneTouchMain] ");
+		System.out.println("	[oneTouchMain] oneTouchMain()");
 		
 		System.out.println("	[oneTouchMain] return : main.jsp ");
 		return "main";

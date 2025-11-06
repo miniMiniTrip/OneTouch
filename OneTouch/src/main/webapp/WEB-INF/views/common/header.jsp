@@ -39,7 +39,7 @@
 						<c:choose>
 							<c:when test="${not empty sessionScope.user}">
 								<div class="user">
-									<i class="lni lni-user"></i> ${sessionScope.user.name}님
+									<i class="lni lni-user"></i> ${sessionScope.user.mem_name}님
 								</div>
 								<ul class="user-login">
 									<li><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
