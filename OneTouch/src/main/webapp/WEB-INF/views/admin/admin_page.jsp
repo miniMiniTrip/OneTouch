@@ -1,0 +1,779 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 주문관리</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul, li {
+            list-style: none;
+        }
+        
+        /* 헤더 스타일 */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid #e8e9ec;
+            padding: 15px 0;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3f51b5;
+        }
+        
+        .admin-badge {
+            display: inline-block;
+            background-color: #e53935;
+            color: white;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu-item {
+            margin-left: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 메인 컨테이너 */
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            min-height: calc(100vh - 80px);
+            padding: 0 20px;
+        }
+        
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 220px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+        
+        .sidebar-title {
+            font-size: 15px;
+            color: #757575;
+            padding: 0 20px;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+        }
+        
+        .sidebar-menu-item {
+            padding: 10px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            color: #666;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-item.active {
+            color: #3f51b5;
+            background-color: #f0f2ff;
+            border-left-color: #3f51b5;
+        }
+        
+        .sidebar-menu-item:hover {
+            background-color: #f8f9ff;
+        }
+        
+        .sidebar-menu-item img,
+        .sidebar-menu-item span.emoji {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        /* 메인 컨텐츠 스타일 */
+        .content {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        
+        .content-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .content-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .content-title span.emoji {
+            margin-right: 10px;
+            color: #333;
+        }
+        
+        /* 검색 필터 스타일 */
+        .search-filter {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .search-select {
+            margin-left: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            min-width: 120px;
+        }
+        
+        .search-btn {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #1a237e;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* 주문 테이블 스타일 */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .order-table th {
+            padding: 12px 10px;
+            background-color: #f5f7fb;
+            color: #333;
+            font-weight: 500;
+            text-align: left;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        .order-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .order-table tr:hover {
+            background-color: #f8f9ff;
+        }
+        
+        .order-id {
+            color: #3f51b5;
+            font-weight: 500;
+        }
+        
+        .order-price {
+            text-align: right;
+            font-weight: 500;
+            color: #1a237e;
+        }
+        
+        .order-date {
+            color: #666;
+        }
+        
+        /* 배송 상태 셀렉트 박스 */
+        .delivery-select {
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            width: 100%;
+        }
+        
+        .customer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        /* 주문 상세 모달 스타일 */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal {
+            background-color: #fff;
+            border-radius: 8px;
+            width: 700px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .modal-close {
+            font-size: 22px;
+            color: #999;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .order-details {
+            margin-bottom: 30px;
+        }
+        
+        .detail-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .products-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .products-list th {
+            padding: 10px;
+            background-color: #f5f7fb;
+            color: #333;
+            font-weight: 500;
+            text-align: left;
+            font-size: 13px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .products-list td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .modal-btn-secondary {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        
+        .modal-btn-primary {
+            background-color: #3f51b5;
+            color: #fff;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .search-filter {
+                flex-wrap: wrap;
+            }
+            
+            .search-input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .search-select,
+            .search-btn {
+                margin-left: 0;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .order-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .modal {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<%@include file="/WEB-INF/views/common/header.jsp" %>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="#" class="logo-text">OneTouch</a>
+                <span class="admin-badge">관리자</span>
+            </div>
+            <div class="user-menu">
+                <a href="#" class="user-menu-item">관리자님</a>
+                <a href="#" class="user-menu-item">로그아웃</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">대시보드</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <span class="emoji">📊</span> 대시보드
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <span class="emoji">📈</span> 통계 대시보드
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">관리</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <span class="emoji">👥</span> 회원관리
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <span class="emoji">💰</span> 상품관리
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <span class="emoji">📦</span> 재고관리
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <span class="emoji">🚚</span> 주문관리
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">시스템</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <span class="emoji">🔧</span> 계시판 관리
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="content-header">
+                <h2 class="content-title">
+                    <span class="emoji">🚚</span> 주문관리
+                </h2>
+            </div>
+            
+            <div class="search-filter">
+                <input type="text" class="search-input" placeholder="주문번호, 주문자명으로 검색">
+                <select class="search-select">
+                    <option value="">전체 상태</option>
+                    <option value="pending">배송 준비중</option>
+                    <option value="shipping">배송중</option>
+                    <option value="completed">배송완료</option>
+                </select>
+                <button class="search-btn">검색</button>
+            </div>
+            
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>주문번호</th>
+                        <th>주문자</th>
+                        <th>상품명</th>
+                        <th>전화번호</th>
+                        <th>주소</th>
+                        <th>금액</th>
+                        <th>주문일</th>
+                        <th>배송상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="order-id">ORDER_001</td>
+                        <td>김철수</td>
+                        <td>히어로쿠션 세럼</td>
+                        <td>010-1234-5678</td>
+                        <td>서울시 강남구 테헤란로 123</td>
+                        <td class="order-price">63,000원</td>
+                        <td class="order-date">2025-01-15</td>
+                        <td>
+                            <select class="delivery-select">
+                                <option value="preparing" selected>배송 준비중</option>
+                                <option value="shipping">배송중</option>
+                                <option value="completed">배송완료</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="order-id">ORDER_002</td>
+                        <td>이영희</td>
+                        <td>비타민C 세럼</td>
+                        <td>010-9876-5432</td>
+                        <td>경기도 성남시 분당구 판교로 456</td>
+                        <td class="order-price">28,000원</td>
+                        <td class="order-date">2025-01-14</td>
+                        <td>
+                            <select class="delivery-select">
+                                <option value="preparing">배송 준비중</option>
+                                <option value="shipping" selected>배송중</option>
+                                <option value="completed">배송완료</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="order-id">ORDER_003</td>
+                        <td>박민수</td>
+                        <td>레티놀 크림</td>
+                        <td>010-2222-3333</td>
+                        <td>부산시 해운대구 해운대로 789</td>
+                        <td class="order-price">42,000원</td>
+                        <td class="order-date">2025-01-13</td>
+                        <td>
+                            <select class="delivery-select">
+                                <option value="preparing">배송 준비중</option>
+                                <option value="shipping">배송중</option>
+                                <option value="completed" selected>배송완료</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- 주문 상세 모달 -->
+    <div class="modal-backdrop" id="orderDetailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">주문 상세 정보</h3>
+                <button class="modal-close" onclick="closeOrderDetail()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details">
+                    <div class="detail-section">
+                        <h4 class="section-title">주문 정보</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">주문번호</span>
+                                <span class="info-value" id="modal-order-id">ORDER_001</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">주문일시</span>
+                                <span class="info-value" id="modal-order-date">2025-01-15 14:30:22</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">결제방법</span>
+                                <span class="info-value" id="modal-payment-method">카드결제</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">주문상태</span>
+                                <span class="info-value" id="modal-order-status">배송 준비중</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4 class="section-title">고객 정보</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">주문자</span>
+                                <span class="info-value" id="modal-customer-name">김철수</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">이메일</span>
+                                <span class="info-value" id="modal-customer-email">customer@example.com</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">전화번호</span>
+                                <span class="info-value" id="modal-customer-phone">010-1234-5678</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">회원 등급</span>
+                                <span class="info-value" id="modal-customer-level">일반회원</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4 class="section-title">배송 정보</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">받는 사람</span>
+                                <span class="info-value" id="modal-recipient">김철수</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">연락처</span>
+                                <span class="info-value" id="modal-recipient-phone">010-1234-5678</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">주소</span>
+                                <span class="info-value" id="modal-address">서울시 강남구 테헤란로 123</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">배송 메모</span>
+                                <span class="info-value" id="modal-delivery-memo">부재시 경비실에 맡겨주세요.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4 class="section-title">주문 상품</h4>
+                        <table class="products-list">
+                            <thead>
+                                <tr>
+                                    <th>상품명</th>
+                                    <th>옵션</th>
+                                    <th>수량</th>
+                                    <th>가격</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>히어로쿠션 세럼</td>
+                                    <td>기본</td>
+                                    <td>1개</td>
+                                    <td>63,000원</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4 class="section-title">결제 정보</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">상품 금액</span>
+                                <span class="info-value" id="modal-product-price">63,000원</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">배송비</span>
+                                <span class="info-value" id="modal-shipping-fee">0원</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">할인 금액</span>
+                                <span class="info-value" id="modal-discount">0원</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">총 결제 금액</span>
+                                <span class="info-value" id="modal-total-price">63,000원</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeOrderDetail()">닫기</button>
+                <button class="modal-btn modal-btn-primary">상태 변경</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 주문 상세 모달 열기
+        function openOrderDetail(orderId) {
+            // 실제 구현에서는 서버에서 해당 주문 정보를 가져와 모달에 표시
+            document.getElementById('orderDetailModal').style.display = 'flex';
+            
+            // 예시: 주문 ID에 따라 모달 내용 변경
+            document.getElementById('modal-order-id').textContent = orderId;
+        }
+        
+        // 주문 상세 모달 닫기
+        function closeOrderDetail() {
+            document.getElementById('orderDetailModal').style.display = 'none';
+        }
+        
+        // 주문 행 클릭 시 상세 모달 열기
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderRows = document.querySelectorAll('.order-table tbody tr');
+            
+            orderRows.forEach(function(row) {
+                row.addEventListener('click', function(event) {
+                    // 배송 상태 셀렉트 박스 클릭 시 이벤트 전파 중지
+                    if (event.target.tagName === 'SELECT' || event.target.tagName === 'OPTION') {
+                        event.stopPropagation();
+                        return;
+                    }
+                    
+                    const orderId = this.querySelector('.order-id').textContent;
+                    openOrderDetail(orderId);
+                });
+            });
+            
+            // 모달 외부 클릭 시 닫기
+            const modal = document.getElementById('orderDetailModal');
+            modal.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeOrderDetail();
+                }
+            });
+        });
+    </script>
+    
+    <!-- 좌측메뉴 클릭시 active여부 -->
+    <script>
+		document.addEventListener("DOMContentLoaded", () => {
+		  // 모든 메뉴 항목 선택
+		  const menuItems = document.querySelectorAll(".sidebar-menu-item");
+		
+		  menuItems.forEach(item => {
+		    item.addEventListener("click", () => {
+		      // 모든 항목에서 active 제거
+		      menuItems.forEach(i => i.classList.remove("active"));
+		      // 클릭한 항목에 active 추가
+		      item.classList.add("active");
+		    });
+		  });
+		});
+	</script>
+</body>
+</html>
