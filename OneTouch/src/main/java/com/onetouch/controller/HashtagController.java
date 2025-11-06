@@ -1,15 +1,14 @@
 package com.onetouch.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.onetouch.dao.HashtagDao;
 import com.onetouch.vo.HashtagVo;
 
 import ch.qos.logback.core.model.Model;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HashtagController {
@@ -17,8 +16,7 @@ public class HashtagController {
 	
 	@RequestMapping("/hashtag/list.do")
 	public String list(Model model) {
-		//Map<String,Object> map = new HashMap<String, Object>();
-		//관리자한테 필요할까?
+		Map<String,Object> map = new HashMap<String, Object>();
 		return "hashtag/hashtag_list";
 	};
 	
@@ -29,6 +27,7 @@ public class HashtagController {
 	
 	@RequestMapping("/hashtag/insert.do")
 	public String insert(HashtagVo vo) {
+		
 		return "hashtag/hashtag_insert";
 	};
 	
@@ -39,6 +38,8 @@ public class HashtagController {
 	
 	@RequestMapping("/hashtag/modify.do")
 	public String modify() {
+		
+		
 		return "hashtag/hashtag_modify";
 	};
 	
