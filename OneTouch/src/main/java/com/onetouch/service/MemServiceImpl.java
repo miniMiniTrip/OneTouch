@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.onetouch.dao.MemDao;
 import com.onetouch.vo.MemVo;
@@ -15,6 +16,8 @@ public class MemServiceImpl implements MemService {
 	MemDao memDao;
 	
 
+	//로그인시 아이디와 비밀번호 체크하는 기능
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Map<String,Object> loginCheck(Map<String, Object> map) {
 		String mem_id=(String) map.get("mem_id");
