@@ -33,6 +33,14 @@ CREATE TABLE mem (
 
 ) COMMENT '회원';
 
+-- !중요 mem에 mem_postal 컬럼 추가 하기
+ALTER TABLE mem
+ADD COLUMN mem_postal VARCHAR(10) NULL;
+-- !중요합니다 mem_postal 컬럼이 추가하고 컬럼 위치 변경하는 명령어 
+ALTER TABLE `otdb`.`mem` 
+CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
+
+
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
