@@ -17,6 +17,187 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
+    
+    <!-- 네이비 컬러 테마의 추가 CSS -->
+    <style>
+        :root {
+            --navy-color: #1e2b5c;
+            --navy-light: #2d3f79;
+            --navy-dark: #152042;
+            --accent-color: #F6911E;
+            --light-color: #f8f9fa;
+            --yellow-accent: #ffdd73;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+        }
+        
+        /* 페이지 헤더 스타일 - 네이비 색상 */
+        .page-header {
+            padding: 20px 0;
+            margin-bottom: 30px;
+            background-color: var(--navy-color);
+            position: relative;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+        
+        /* 상품 섹션 스타일 개선 */
+        .section {
+            padding: 40px 0;
+        }
+        
+        /* 사이드바 스타일 개선 */
+        .product-sidebar {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 25px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .single-widget h3 {
+            color: var(--navy-color);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .list li a:hover, .list li a.active {
+            color: var(--accent-color);
+        }
+        
+        /* 메인 컨텐츠 영역 스타일 개선 */
+        .product-grids-head {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .product-grid-topbar {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* 상품 카드 스타일 개선 */
+        .single-product {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+        
+        .single-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .product-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sale-tag {
+            background-color: #ff3a3a;
+        }
+        
+        .new-tag {
+            background-color: var(--accent-color);
+        }
+        
+        .product-info h4.title a {
+            color: var(--navy-color);
+        }
+        
+        .product-info h4.title a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 페이지네이션 */
+        .pagination-list li.active a, .pagination-list li a:hover {
+            background-color: var(--navy-color);
+        }
+        
+        /* 관리자 버튼 스타일 */
+        .admin-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            background-color: var(--navy-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid var(--yellow-accent);
+        }
+        
+        .admin-button:hover {
+            background-color: var(--navy-light);
+            color: white;
+        }
+        
+        .admin-button i {
+            font-size: 18px;
+            color: var(--yellow-accent);
+        }
+        
+        /* 배지 스타일 */
+        .badge.bg-primary {
+            background-color: var(--accent-color) !important;
+        }
+        
+        .badge.bg-light {
+            background-color: #f0f2f5 !important;
+            color: var(--navy-dark) !important;
+        }
+        
+        /* 버튼 스타일 */
+        .btn-primary {
+            background-color: var(--navy-color);
+            border-color: var(--navy-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--navy-light);
+            border-color: var(--navy-light);
+        }
+        
+        .button .btn {
+            background-color: var(--navy-color);
+        }
+        
+        .button .btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        /* 탭 네비게이션 */
+        .nav-tabs .nav-link.active {
+            color: var(--navy-color);
+            border-color: var(--navy-color);
+        }
+    </style>
 </head>
 
 <body>
@@ -35,34 +216,25 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <!-- End Header Area -->
 
-    <!-- Start Breadcrumbs -->
-    <div class="breadcrumbs">
+    <!-- 관리자 버튼 추가 -->
+    <c:if test="${sessionScope.user.mem_role eq 'ADMIN' or sessionScope.user.mem_role eq 'admin'}">
+        <a href="${pageContext.request.contextPath}/product/insert_form" class="admin-button">
+            <i class="lni lni-cog"></i> 상품 등록
+        </a>
+    </c:if>
+
+    <!-- 간단한 페이지 타이틀 (브레드크럼 대체) -->
+    <div class="page-header">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="breadcrumbs-content">
-                        <h1 class="page-title">
-                            <c:choose>
-                                <c:when test="${not empty categoryName}">${categoryName}</c:when>
-                                <c:when test="${not empty searchKeyword}">검색: ${searchKeyword}</c:when>
-                                <c:otherwise>전체 상품</c:otherwise>
-                            </c:choose>
-                        </h1>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-nav">
-                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
-                        <li>상품</li>
-                        <c:if test="${not empty categoryName}">
-                            <li>${categoryName}</li>
-                        </c:if>
-                    </ul>
-                </div>
-            </div>
+            <h1 class="page-title">
+                <c:choose>
+                    <c:when test="${not empty categoryName}">${categoryName}</c:when>
+                    <c:when test="${not empty searchKeyword}">검색: ${searchKeyword}</c:when>
+                    <c:otherwise>전체 상품</c:otherwise>
+                </c:choose>
+            </h1>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
 
     <!-- Start Product Grids -->
     <section class="product-grids section">
