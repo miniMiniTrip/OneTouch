@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onetouch.dao.QnaDao">
+
+  <!-- ✅ Q&A 목록 -->
+    <select id="selectQnaList" resultType="QnaVo">
+        SELECT 
+            qna_idx,
+            mem_idx,
+            qna_title,
+            qna_content,
+            qna_category,
+            qna_private,
+            qna_answered,
+            qna_answer_content,
+            qna_delete,
+            qna_time,
+            qna_update,
+            qna_answer_time
+        FROM qna
+        WHERE qna_delete = 0
+        ORDER BY qna_idx DESC
+    </select>
+
+    <!-- ✅ Q&A 상세보기 -->
+    <select id="selectQnaDetail" parameterType="int" resultType="QnaVo">
+        SELECT 
+            qna_idx,
+            mem_idx,
+            qna_title,
+            qna_content,
+            qna_category,
+            qna_private,
+            qna_answered,
+            qna_answer_content,
+            qna_delete,
+            qna_time,
+            qna_update,
+            qna_answer_time
+        FROM board
+        WHERE qna_idx = #{qna_idx}
+    </select>
+    
+    
+    <!-- 잘 모르겠음  -->
+    <insert id="insertQna" parameterType="QnaVo">
+    INSERT INTO board (
+        mem_idx, 
+        qna_title, 
+        qna_content, 
+        qna_category, 
+        qna_private
+    )
+    VALUES (
+        #{mem_idx}, 
+        #{qna_title}, 
+        #{qna_content}, 
+        #{qna_category}, 
+        #{qna_private}
+    )
+</insert>
+
+
+</mapper>
