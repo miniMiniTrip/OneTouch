@@ -410,13 +410,13 @@
                                 <input type="number" id="product_idx" name="product_idx" required placeholder="상품 번호를 입력하세요">
                             </div>
                             <div class="form-row required-field">
-                                <label for="category_idx">카테고리</label>
+                                <label for="category_idx">카테고리 분류번호</label>
                                 <input type="number" id="category_idx" name="category_idx" required placeholder="카테고리 번호를 입력하세요">
                             </div>
-                            <div class="form-row">
+                             <div class="form-row">
                                 <label for="product_wishlist">찜수</label>
                                 <input type="number" id="product_wishlist" name="product_wishlist" placeholder="찜 수를 입력하세요">
-                            </div>
+                            </div> 
                             <div class="form-row">
                                 <label for="product_price">가격</label>
                                 <input type="number" id="product_price" name="product_price" placeholder="상품 가격을 입력하세요">
@@ -491,9 +491,18 @@
                                 <th>찜수</th>
                                 <th>관리</th>
                             </tr>
+                               <!-- 데이터가 없는경우 -->
+						    <c:if test="${ empty product_list }">
+						      <tr>
+						         <td colspan="5" align="center">
+						            <font color="red">등록된 상품이 없습니다</font>
+						         </td>
+						      </tr>
+						    </c:if>
+						                            
                         </thead>
                         <tbody>
-                            <c:forEach var="item" items="${list}">
+                            <c:forEach var="item" items="${product_list}">
                                 <tr>
                                     <td class="checkbox-column"><input type="checkbox" class="item-checkbox" value="${item.product_idx}"></td>
                                     <td>
