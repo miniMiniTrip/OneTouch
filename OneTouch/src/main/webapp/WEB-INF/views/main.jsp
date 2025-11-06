@@ -241,7 +241,7 @@
                         <div class="single-banner" 
                              style="background-image:url('${pageContext.request.contextPath}/assets/images/banner/banner-1-bg.jpg')">
                             <div class="content">
-                                <h2>${user.name}님을 위한 추천</h2>
+                                <h2>${user.mem_name}님을 위한 추천</h2>
                                 <p>나의 피부 타입과 고민에 맞는 제품을 만나보세요</p>
                                 <div class="button">
                                     <a href="${pageContext.request.contextPath}/user/mypage/recommendations" 

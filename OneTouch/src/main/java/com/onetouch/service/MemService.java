@@ -1,7 +1,11 @@
 package com.onetouch.service;
 
+import java.util.Map;
+
 import com.onetouch.vo.MemVo;
 
 public interface MemService {
-	public MemVo idCheck();
+
+	Map<String,Object> loginCheck(Map<String, Object> map);
+	
 }
