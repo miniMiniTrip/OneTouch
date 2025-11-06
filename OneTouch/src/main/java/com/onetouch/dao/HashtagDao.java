@@ -31,6 +31,7 @@ public interface HashtagDao {
 	public List<Integer> selectPostsByHashtags(Map<String, Object> params);
 	
 	//해시태그 작성용
+	
 	//1. 중복검사용
 	public List<String> selectByNames(HashtagVo vo);
 	
