@@ -1,11 +1,12 @@
 package com.onetouch.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.onetouch.dao.HashtagDao;
 import com.onetouch.vo.HashtagVo;
 
 import ch.qos.logback.core.model.Model;
@@ -13,10 +14,12 @@ import ch.qos.logback.core.model.Model;
 @Controller
 public class HashtagController {
 	
+	@Autowired
+	HashtagDao hashtag_dao;
 	
 	@RequestMapping("/hashtag/list.do")
 	public String list(Model model) {
-		Map<String,Object> map = new HashMap<String, Object>();
+		List<HashtagVo> hashtag_list = hashtag_dao.selectList();
 		return "hashtag/hashtag_list";
 	};
 	
@@ -26,7 +29,7 @@ public class HashtagController {
 	};
 	
 	@RequestMapping("/hashtag/insert.do")
-	public String insert(HashtagVo vo) {
+	public String insertOne(HashtagVo vo) {
 		
 		return "hashtag/hashtag_insert";
 	};

@@ -22,7 +22,7 @@
                     <div class="breadcrumbs-content">
                         <h1 class="page-title">게시글 작성</h1>
                     </div>
-                </div>
+                </div>+
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> Home</a></li>
