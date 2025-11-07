@@ -104,7 +104,7 @@ CREATE TABLE product_image (
 --    UNIQUE KEY uk_product_image_level (product_idx, product_image_level)
 ) COMMENT '상품이미지';
 
---CREATE INDEX idx_product_image_product ON product_image(product_idx);
+-- CREATE INDEX idx_product_image_product ON product_image(product_idx);
 
 -- ========================================
 -- 5. 해시태그 테이블
@@ -117,6 +117,10 @@ CREATE TABLE hashtag (
     
     UNIQUE KEY uk_hashtag_name (hashtag_name)
 ) COMMENT '해시태그';
+
+-- !중요 hashtag에 use_count 컬럼 추가 하기
+ALTER TABLE hashtag
+ADD COLUMN use_count INT DEFAULT 0 COMMENT '사용횟수';
 
 -- ========================================
 -- 6. 상품-해시태그 매핑 테이블

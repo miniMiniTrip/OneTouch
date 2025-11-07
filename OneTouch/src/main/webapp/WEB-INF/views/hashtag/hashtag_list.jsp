@@ -241,23 +241,6 @@
             });
     }
     
-    // 인기 해시태그 로드
-    function loadPopularHashtags() {
-        fetch('${pageContext.request.contextPath}/api/hashtag/popular?limit=10')
-            .then(response => response.json())
-            .then(data => {
-                const popularBox = document.getElementById('popularHashtags');
-                popularBox.innerHTML = data.map(tag => 
-                    `<span class="popular-tag" onclick="hashtagComponent.addFromPopular('${tag.hashtag_name}')">
-                        #${tag.hashtag_name}
-                    </span>`
-                ).join('');
-            })
-            .catch(error => {
-                console.error('인기 해시태그 로드 실패:', error);
-            });
-    }
-    
     // 입력 이벤트
     input.addEventListener('input', function(e) {
         const value = e.target.value.replace(/^#/, ''); // # 제거
