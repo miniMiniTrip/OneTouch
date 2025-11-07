@@ -32,7 +32,8 @@
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+<%-- 	<jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
+	<%@include file="/WEB-INF/views/common/header.jsp" %>
     <!-- End Header Area -->
 
     <!-- Start Hero Area -->

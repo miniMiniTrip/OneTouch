@@ -36,7 +36,8 @@ public class LoginController {
 	public String loginForm(
 			@RequestParam(defaultValue = "1") String mem_id_check
 			,@RequestParam(defaultValue = "1") String mem_pw_check
-			,Model model) {
+			,Model model
+			) {
 		System.out.println("	[LoginController] loginForm() ");
 		System.out.println(mem_id_check);
 		model.addAttribute("mem_id_check",mem_id_check);
@@ -131,9 +132,9 @@ public class LoginController {
 	
 	//로그인처리
 	@PostMapping("/user/login")
-	public String login(@RequestParam String mem_id,@RequestParam String mem_pwd_check,RedirectAttributes ra) {
+	public String login(@RequestParam String mem_id,@RequestParam String mem_pwd_check,RedirectAttributes ra,String url) {
 		System.out.println("	[LoginController] login() ");
-		
+		url="";
 		//등록되어있는 아이디가 존재하는지 체크하기
 		
 		Map<String, Object>map=new HashMap<String, Object>();
@@ -141,7 +142,7 @@ public class LoginController {
 		map.put("mem_pwd_check", mem_pwd_check);
 		map =memService.loginCheck(map);
 		
-		
+		// 아이디가 틀린경우 , 비밀번호가 틀린경우
 		if(map.get("mem_id_check").equals(false)|| map.get("mem_pw_check").equals(false)) {
 			ra.addAttribute("mem_id_check",map.get("mem_id_check"));
 			ra.addAttribute("mem_pw_check",map.get("mem_pw_check"));
@@ -154,6 +155,11 @@ public class LoginController {
 //		}
 		System.out.println(map.get("memVo"));
 		session.setAttribute("user",map.get("memVo") );
+		
+		if(!url.isEmpty()) {
+			return "redircet:"+url;
+		}
+		
 		System.out.println("	[LoginController] return : redirect:/ ");
 		return"redirect:/";
 	}

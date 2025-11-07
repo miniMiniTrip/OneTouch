@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page isELIgnored="false" %>
  <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
 
     <!-- ========================= CSS here ========================= -->
@@ -225,8 +226,9 @@
 <script>
 function performSearch() {
     const keyword = document.getElementById('search-input').value.trim();
+	const contextPath = "{pageContext.request.contextPath}";
     if (keyword) {
-        location.href = '${pageContext.request.contextPath}/products?search=' + encodeURIComponent(keyword);
+        location.href = contextPath+"/products?search=" + encodeURIComponent(keyword);
     }
 }
 
@@ -237,7 +239,8 @@ document.getElementById('search-input')?.addEventListener('keypress', function(e
 });
 
 function updateHeaderCartCount() {
-    fetch('${pageContext.request.contextPath}/cart/count')
+	const contextPath = '{pageContext.request.contextPath}';
+    fetch(contextPath+"/cart/count")
         .then(response => response.json())
         .then(data => {
             document.getElementById('cart-count').textContent = data.count;
