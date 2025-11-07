@@ -9,9 +9,13 @@ import com.onetouch.vo.ProductVo;
 @Mapper
 public interface ProductDao{
 	
-	List<ProductVo> selectList();
+	//카테고리별 목록조회
+	List<ProductVo> selectList(int category_idx);
 	
-	void insert(ProductVo productvo);
+	ProductVo selectOne(int product_idx);
 	
-	ProductVo selectOne(int product_idx);//상세조회
+	int	insert(ProductVo vo);
+	int update(ProductVo vo);
+	int	delete(int product_idx);
+	
 }

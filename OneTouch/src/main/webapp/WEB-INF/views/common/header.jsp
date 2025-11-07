@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+ <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
  <!-- j쿼리 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- Start Header Area -->
@@ -31,10 +39,13 @@
 						<c:choose>
 							<c:when test="${not empty sessionScope.user}">
 								<div class="user">
-									<i class="lni lni-user"></i> ${sessionScope.user.name}님
+									<i class="lni lni-user"></i> ${sessionScope.user.mem_name}님
 								</div>
 								<ul class="user-login">
 									<li><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
+									<c:if test="${ user.mem_roll=='admin' }">
+									<li><a href="${pageContext.request.contextPath}/adminpage">관리자</a></li>
+									</c:if>
 									<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
 								</ul>
 							</c:when>
@@ -237,4 +248,21 @@ function updateHeaderCartCount() {
 document.addEventListener('DOMContentLoaded', function() {
     updateHeaderCartCount();
 });
+</script>
+
+    <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    
+    <script type="text/javascript">
+        // 프리로더 제거
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        });
 </script>
