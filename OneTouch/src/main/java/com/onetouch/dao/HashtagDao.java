@@ -55,14 +55,5 @@ public interface HashtagDao {
 	//문진 결과 추천글 조회
 	public List<Integer> selectPostsByHashtags(Map<String, Object> params);
 	
-<<<<<<< HEAD
-
-=======
-	//해시태그 작성용
-	
-	//1. 중복검사용
-	public List<String> selectByNames(HashtagVo vo);
->>>>>>> branch 'sw' of https://github.com/miniMiniTrip/OneTouch.git
-	
 
 }
