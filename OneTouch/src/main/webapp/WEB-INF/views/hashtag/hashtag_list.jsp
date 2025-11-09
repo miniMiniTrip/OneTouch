@@ -11,22 +11,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+function deleteHash(hashtag_idx){
+	if(confirm("정말 해시태그를 삭제하시겠습니까?")==false) return;
+	
+	location.href = "delete.do?hashtag_idx=" + hashtag_idx;
+}
+</script>
 </head>
 <body>
 		
 <c:forEach var="vo" items="${ hashtag_list }">
-<input type="hidden" value="${ vo.hashtag_idx } }">
-<button type="button" class="btn btn-primary btn-small" onclick="delete();">
+<button type="button" class="btn btn-primary btn-small" onclick="deleteHash(${ vo.hashtag_idx });">
 #${ vo.hashtag_name }
 </button>
 </c:forEach>
 		
 </body>
-<script type="text/javascript">
-function delete(){
-	if(confirm("정말 해시태그를 삭제하시겠습니까?")==false) return;
-	
-	action = "delete.do";
-}
-</script>
 </html>
