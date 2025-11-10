@@ -30,7 +30,7 @@ CREATE TABLE mem (
 
 
  --2.qna 테이블
- 
+ /*
 CREATE TABLE qna (
     qna_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '게시판번호',
     mem_idx INT NOT NULL COMMENT '회원FK',
@@ -50,6 +50,36 @@ CREATE TABLE qna (
     
 --    ,CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
 ) COMMENT '고객센터';
+
+
+INSERT INTO `otdb`.`qna` 
+(
+`mem_idx`
+, `qna_title`
+, `qna_content`
+, `qna_category`
+-- , `qna_private`
+, `qna_answered`
+, `qna_delete`
+, `qna_time`
+, `qna_update`
+) 
+VALUES 
+(
+'1'
+, '어떤상품문제'
+, '빨리해결해줘요'
+, '0'
+-- , false
+, false, '0', now(), now());
+
+ALTER TABLE qna
+drop COLUMN product_name VARCHAR(100) NOT NULL COMMENT '상품명'
+AFTER qna_idx;
+
+ALTER TABLE qna
+DROP COLUMN product_name;
+
 
 -- CREATE INDEX idx_qna_member ON qna(mem_idx);
 -- CREATE INDEX idx_qna_category ON qna(qna_category);
