@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.dao.MemDao">
+
+	<!-- 회원정보 아이디로 1개 정보 조회해오기 -->
+	<select id="selectMemIdOne" resultType="MemVo" parameterType="String">
+		select * from otdb.mem where mem_id=#{mem_id}
+	</select> 
+	
+	<!-- 회원정보 이메일로 1개 정보 조회해오기 -->
+	<select id="selectMemEmailOne" resultType="MemVo" parameterType="String">
+		select * from otdb.mem where mem_email=#{mem_email}
+	</select>
+	
+	<!-- 회원가입등록 -->
+	<insert id="insert" parameterType="MemVo">
+		insert into mem values( null
+								,#{mem_id}
+								,#{mem_pw}
+								,#{mem_name}
+								,#{mem_postal}
+								,#{mem_addr}
+								,#{mem_addr_more}
+								,#{mem_email}
+								,'user'
+								,#{mem_birth}
+								,#{mem_phone}
+								,now()
+								,now()
+		)
+	</insert>
+	
+</mapper>
