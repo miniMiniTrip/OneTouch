@@ -8,9 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OneTouch-상품리스트</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* 기존 CSS 스타일은 그대로 유지합니다. */
         :root {
             --primary-color: #0a3d62;
             --secondary-color: #3c6382;
@@ -178,7 +178,6 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">OneTouch</div>
         
@@ -219,9 +218,7 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
         <div class="header">
             <div></div>
             <div class="auth-buttons">
@@ -230,170 +227,122 @@
             </div>
         </div>
         
-        <!-- Page Title -->
         <div class="page-title">
-            <span class="indicator"></span> 상품등록
+            <span class="indicator"></span> 상품조회
         </div>
         
-        <!-- Action Buttons -->
         <div class="action-buttons mb-3">
-            <button class="btn btn-blue">상품등록</button>
-            <button class="btn btn-green">추가</button>
-            <button class="btn btn-red">삭제</button>
+            <button class="btn btn-blue" onclick="location.href='${pageContext.request.contextPath}/product/insert_form'">상품등록</button>
+            <button class="btn btn-green" onclick="location.href='${pageContext.request.contextPath}/product/insert_form'">추가</button>
+            <button class="btn btn-red" id="deleteSelectedBtn">삭제</button>
         </div>
         
-        <!-- Search Bar -->
         <div class="search-bar">
-            <select class="form-select" style="max-width: 150px;">
-                <option selected>전체 카테고리</option>
-                <option value="C100">C100</option>
-                <option value="C200">C200</option>
-                <option value="C300">C300</option>
-                <option value="C400">C400</option>
-            </select>
-            <input type="text" class="form-control" placeholder="상품명으로 검색">
-            <button class="btn btn-primary">검색</button>
+            <form action="${pageContext.request.contextPath}/admin/product/list" method="get" class="d-flex w-100 gap-2">
+                
+                <select class="form-select" style="max-width: 150px;" name="category_filter">
+                    <option value="0" ${current_category == 0 ? 'selected' : ''}>전체 카테고리</option>
+                    
+                    <option value="100" ${current_category == 100 ? 'selected' : ''}>C100</option>
+                    <option value="200" ${current_category == 200 ? 'selected' : ''}>C200</option>
+                    <option value="300" ${current_category == 300 ? 'selected' : ''}>C300</option>
+                    <option value="400" ${current_category == 400 ? 'selected' : ''}>C400</option>
+                </select>
+                
+                <input type="text" class="form-control" placeholder="상품명으로 검색" name="search_keyword" 
+                       value="${current_keyword}">
+                       
+                <button class="btn btn-primary" type="submit">검색</button>
+            </form>
         </div>
         
-        <!-- Product Table -->
         <div class="product-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="5%"><input type="checkbox"></th>
-                        <th width="10%">상품번호</th>
-                        <th width="10%">카테고리번호</th>
-                        <th width="25%">상품명</th>
-                        <th width="15%">브랜드</th>
-                        <th width="10%">가격</th>
-                        <th width="10%">재고</th>
-                        <th width="15%">관리</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="product" items="${productList}">
+            <form id="deleteForm" action="${pageContext.request.contextPath}/product/delete_batch" method="post">
+                <table>
+                    <thead>
                         <tr>
-                            <td><input type="checkbox"></td>
-                            <td>P${String.format("%03d", product.product_idx)}</td>
-                            <td>C${String.format("%d", product.category_idx)}</td>
-                            <td>${product.product_name}</td>
-                            <td>${product.product_brand}</td>
-                            <td><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</td>
-                            <td>${product.product_cnt}개</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary">수정</button>
-                                <button class="btn btn-sm btn-outline-danger">삭제</button>
-                            </td>
+                            <th width="5%"><input type="checkbox" id="checkAll"></th>
+                            <th width="10%">상품번호</th>
+                            <th width="10%">카테고리번호</th>
+                            <th width="25%">상품명</th>
+                            <th width="15%">브랜드</th>
+                            <th width="10%">가격</th>
+                            <th width="10%">재고</th>
+                            <th width="15%">관리</th>
                         </tr>
-                    </c:forEach>
-                    
-                    <!-- Sample data for preview -->
-                    <c:if test="${empty productList}">
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>P001</td>
-                            <td>C100</td>
-                            <td>히아루론산 수분 보충 세럼</td>
-                            <td>더마코스메틱</td>
-                            <td>31,500원</td>
-                            <td>150개</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary">수정</button>
-                                <button class="btn btn-sm btn-outline-danger">삭제</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>P002</td>
-                            <td>C100</td>
-                            <td>비타민C 브라이트닝 세럼</td>
-                            <td>클리어스킨</td>
-                            <td>28,000원</td>
-                            <td>80개</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary">수정</button>
-                                <button class="btn btn-sm btn-outline-danger">삭제</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>P003</td>
-                            <td>C200</td>
-                            <td>콜라겐 안티에이징 크림</td>
-                            <td>에이지케어</td>
-                            <td>42,000원</td>
-                            <td>30개</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary">수정</button>
-                                <button class="btn btn-sm btn-outline-danger">삭제</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>P004</td>
-                            <td>C300</td>
-                            <td>마일드 클렌징 폼</td>
-                            <td>퓨어스킨</td>
-                            <td>15,000원</td>
-                            <td>120개</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary">수정</button>
-                                <button class="btn btn-sm btn-outline-danger">삭제</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>P005</td>
-                            <td>C400</td>
-                            <td>선크림 SPF50+ PA++++</td>
-                            <td>선가드</td>
-                            <td>22,000원</td>
-                            <td>95개</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary">수정</button>
-                                <button class="btn btn-sm btn-outline-danger">삭제</button>
-                            </td>
-                        </tr>
-                    </c:if>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${not empty productList}">
+                                <c:forEach var="product" items="${productList}">
+                                    <tr>
+                                        <td><input type="checkbox" name="product_idx_list" value="${product.product_idx}"></td>
+                                        <td>P${String.format("%03d", product.product_idx)}</td>
+                                        <td>C${String.format("%d", product.category_idx)}</td>
+                                        <td>${product.product_name}</td>
+                                        <td>${product.product_brand}</td>
+                                        <td><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</td>
+                                        <td>${product.product_cnt}개</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                    onclick="location.href='${pageContext.request.contextPath}/product/update_form?product_idx=${product.product_idx}'">수정</button>
+                                            
+                                            <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                    onclick="deleteSingleProduct(${product.product_idx})">삭제</button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="8">검색 결과가 없거나 등록된 상품이 없습니다.</td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </form>
         </div>
     </div>
     
-    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- JavaScript for product listing functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Select all checkbox functionality
-            const mainCheckbox = document.querySelector('thead input[type="checkbox"]');
-            const itemCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-            
+            const mainCheckbox = document.getElementById('checkAll');
+            const itemCheckboxes = document.querySelectorAll('input[name="product_idx_list"]');
+            const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+            const deleteForm = document.getElementById('deleteForm');
+
+            // 1. 전체 선택 체크박스 기능
             mainCheckbox.addEventListener('change', function() {
                 itemCheckboxes.forEach(checkbox => {
                     checkbox.checked = mainCheckbox.checked;
                 });
             });
             
-            // "상품등록" 버튼 클릭 이벤트
-            document.querySelector('.btn-blue').addEventListener('click', function() {
-                window.location.href = '${pageContext.request.contextPath}/product/insert_form';
-            });
-            
-            // "삭제" 버튼 클릭 이벤트
-            document.querySelector('.btn-red').addEventListener('click', function() {
-                const checkedItems = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            // 2. 일괄 삭제 버튼 클릭 이벤트
+            deleteSelectedBtn.addEventListener('click', function() {
+                const checkedItems = document.querySelectorAll('input[name="product_idx_list"]:checked');
+                
                 if (checkedItems.length === 0) {
-                    alert('삭제할 상품을 선택하세요.');
+                    alert('삭제할 상품을 하나 이상 선택하세요.');
                     return;
                 }
                 
-                if (confirm('선택한 상품을 삭제하시겠습니까?')) {
-                    // 선택한 상품 삭제 로직 추가
-                    alert('선택한 상품이 삭제되었습니다.');
+                if (confirm(checkedItems.length + '개의 상품을 정말로 삭제하시겠습니까?')) {
+                    // 선택된 상품의 product_idx를 담은 폼을 서버로 제출 (POST 방식)
+                    deleteForm.submit();
                 }
             });
+
+            // 3. 개별 상품 삭제 함수 (버튼에서 호출)
+            window.deleteSingleProduct = function(product_idx) {
+                if (confirm('상품번호 ' + product_idx + '번 상품을 삭제하시겠습니까?')) {
+                    // GET 방식으로 단일 삭제 요청
+                    window.location.href = '${pageContext.request.contextPath}/product/delete?product_idx=' + product_idx;
+                }
+            };
         });
     </script>
 </body>
