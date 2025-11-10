@@ -40,28 +40,67 @@
             qna_time,
             qna_update,
             qna_answer_time
-        FROM board
+        FROM qna
         WHERE qna_idx = #{qna_idx}
     </select>
     
     
-    <!-- 잘 모르겠음  -->
-    <insert id="insertQna" parameterType="QnaVo">
-    INSERT INTO board (
+    <!--  Q&A 등록하기  -->
+  <!--    <insert id="insertQna" parameterType="QnaVo">
+    INSERT INTO qna (
+        qna_idx,
         mem_idx, 
-        qna_title, 
-        qna_content, 
+        qna_title,
+        qna_content,
         qna_category, 
-        qna_private
+        qna_private,
+		qna_answered,
+		qna_answer_content,
+        qna_delete,
+        qna_time,
+        qna_update,
+        qna_answer_time
+        
+    )
+    VALUES (
+        #{qna_idx},
+        #{mem_idx}, 
+        #{qna_title}, 
+        #{qna_content}, 
+        #{qna_category}, 
+        #{qna_private},
+        #{qna_answered},
+        #{qna_answer_content},
+        #{qna_delete},
+        #{qna_time},
+        #{qna_update},
+        #{qna_answer_time}
+    )
+</insert>  -->
+<!-- 등록하기 -->
+	<insert id="insertQna" parameterType="QnaVo" useGeneratedKeys="true" keyProperty="qna_idx">
+    INSERT INTO qna (
+        mem_idx, 
+        qna_title,
+        qna_content,
+        qna_category, 
+        qna_private,
+        qna_answered,
+        qna_answer_content,
+        qna_delete
     )
     VALUES (
         #{mem_idx}, 
         #{qna_title}, 
         #{qna_content}, 
         #{qna_category}, 
-        #{qna_private}
+        #{qna_private},
+        #{qna_answered},
+        #{qna_answer_content},
+        #{qna_delete}
     )
 </insert>
+
 
 
 </mapper>

@@ -15,8 +15,10 @@ public interface QnaDao {
     // 2️⃣ 특정 문의글 상세보기
     QnaVo selectQnaDetail(int qna_idx);
 //----------------------------------------------------------------------------------
+
+	
     
-    // 등록 후 몇 건이 처리됐는지 반환
+//    // 등록 후 몇 건이 처리됐는지 반환
      int insertQna(QnaVo vo);
     }
 

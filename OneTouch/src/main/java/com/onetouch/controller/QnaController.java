@@ -20,16 +20,29 @@ public class QnaController {
     
     
     // 1️ Q&A 목록 페이지
+//    @GetMapping("/qna/list")
+//    public String list(Model model) {
+//        List<QnaVo> qnaList = qnaDao.selectQnaList();
+//        
+//        System.out.println("QnA 목록 개수: " + qnaList.size());  // 디버깅용
+//        
+//        model.addAttribute("qna_list", qnaList);  // ✅ qna_list로 변경
+//        return "qna/qna_list";
+//    }
+//    
+    
+    
+    
     @GetMapping("/qna/list")
     public String list(Model model) {
-        List<QnaVo> qnaList = qnaDao.selectQnaList();
-        
-        System.out.println("qna/list");
-        
-        model.addAttribute("qnaList", qnaList);
-        return "qna/qna_list";  // /WEB-INF/views/qna/qna_list.jsp
+        List<QnaVo> qna_list = qnaDao.selectQnaList();
+        System.out.println("QnA 목록 개수: " + qna_list.size());
+        model.addAttribute("qna_list", qna_list); // ✅ 스네이크 표기
+        return "qna/qna_list";
     }
-
+    
+    
+    
     // 2️ Q&A 상세 페이지
     @GetMapping("/qna/detail")
     public String detail(int qna_idx, Model model) {
@@ -45,28 +58,20 @@ public class QnaController {
     //--------------------------------이게맞나----------------------------------
     // 3️ Q&A 작성 폼 이동
 
-//	@GetMapping("/qna/write")
-//	public String writeForm() {
-//		System.out.println("qna/write");
-//		return "qna/qna_write";
-//	}
-//
-//	
-//	
-//	@PostMapping("/qna/write")   // <-- 폼 action과 동일하게
-//	public String insertQna(QnaVo vo) {
-//	    qnaDao.insertQna(vo);
-//	    return "redirect:/qna/list";
-//	}
+	@GetMapping("/qna/write")
+	public String writeForm() {
+		System.out.println("qna/write");
+		return "qna/qna_write";
+	}
+	
+	
+	
+	@PostMapping("/qna/write")   // <-- 폼 action과 동일하게
+	public String insertQna(QnaVo vo) {
+	    qnaDao.insertQna(vo);
+	    return "redirect:/qna/list"; //목록으로 이동
+	}
     
-    @PostMapping("/qna/write")
-    public String insertQna(QnaVo vo) {
-        int result = qnaDao.insertQna(vo); // 등록 건수 반환
-        if(result > 0) {
-            return "redirect:/qna/list"; // 성공하면 리스트로 이동
-        } else {
-            return "qna/qna_write"; // 실패하면 작성 페이지 유지
-        }
-    }
+
 	
 }
