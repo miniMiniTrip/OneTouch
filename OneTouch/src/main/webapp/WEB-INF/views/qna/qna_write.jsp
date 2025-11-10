@@ -402,63 +402,55 @@
                         </div>
                     </div>
                     
-                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/qna/write" onsubmit="return validateForm()">
-                        <div class="form-group">
-                            <label class="form-label">상품 선택<span class="required">*</span></label>
-                            <div class="product-search">
-                                <input type="text" class="form-control" id="productSearch" placeholder="상품명을 입력하세요">
-                                <button type="button" class="btn-search" onclick="searchProduct()">상품 검색</button>
-                            </div>
-                            <input type="hidden" name="productId" id="productId">
-                            
-                            <div class="selected-product" id="selectedProduct">
-                                <div class="product-image"></div>
-                                <div class="product-info">
-                                    <div class="product-name" id="selectedProductName">상품명</div>
-                                    <div class="product-price" id="selectedProductPrice">₩ 0</div>
-                                </div>
-                                <button type="button" class="btn-remove" onclick="removeProduct()">삭제</button>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">문의 유형<span class="required">*</span></label>
-                            <select class="form-select" name="qnaType" required>
-                                <option value="">선택하세요</option>
-                                <option value="product">상품 문의</option>
-                                <option value="delivery">배송 문의</option>
-                                <option value="exchange">교환/반품</option>
-                                <option value="restock">재입고 문의</option>
-                                <option value="etc">기타</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">제목<span class="required">*</span></label>
-                            <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" required maxlength="100">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">문의 내용<span class="required">*</span></label>
-                            <textarea class="form-control textarea" name="content" placeholder="문의 내용을 상세히 작성해주세요" required maxlength="1000" oninput="updateCharCount(this)"></textarea>
-                            <div class="char-count">
-                                <span id="charCount">0</span> / 1000
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">공개 여부</label>
-                            <select class="form-select" name="isPublic">
-                                <option value="Y">공개</option>
-                                <option value="N" selected>비공개</option>
-                            </select>
-                        </div>
-                        
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-submit">등록하기</button>
-                            <button type="button" class="btn btn-cancel" onclick="location.href='${pageContext.request.contextPath}/qna/list'">취소</button>
-                        </div>
-                    </form>
+                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/qna/write">
+    <!-- 카테고리 -->
+    <div class="form-group">
+        <label class="form-label">문의 유형<span class="required">*</span></label>
+        <select class="form-select" name="qna_category" required>
+            <option value="">선택하세요</option>
+            <option value="0">상품 문의</option>
+            <option value="1">배송 문의</option>
+            <option value="2">교환/반품</option>
+            <option value="3">재입고 문의</option>
+            <option value="4">기타</option>
+        </select>
+    </div>
+
+    <!-- 제목 -->
+    <div class="form-group">
+        <label class="form-label">제목<span class="required">*</span></label>
+        <input type="text" class="form-control" name="qna_title" placeholder="제목을 입력하세요" required maxlength="100">
+    </div>
+
+    <!-- 내용 -->
+    <div class="form-group">
+        <label class="form-label">문의 내용<span class="required">*</span></label>
+        <textarea class="form-control textarea" name="qna_content"
+                  placeholder="문의 내용을 작성해주세요" required maxlength="1000"
+                  oninput="updateCharCount(this)"></textarea>
+        <div class="char-count">
+            <span id="charCount">0</span> / 1000
+        </div>
+    </div>
+
+    <!-- 공개 여부 -->
+    <div class="form-group">
+        <label class="form-label">공개 여부</label>
+        <select class="form-select" name="qna_private">
+            <option value="false">공개</option>
+            <option value="true" selected>비공개</option>
+        </select>
+    </div>
+
+    <!-- 임시 회원번호 -->
+    <input type="hidden" name="mem_idx" value="1">
+
+    <div class="btn-group">
+        <button type="submit" class="btn btn-submit">등록하기</button>
+        <button type="button" class="btn btn-cancel" onclick="location.href='${pageContext.request.contextPath}/qna/list'">취소</button>
+    </div>
+</form>
+
                 </div>
             </div>
         </div>

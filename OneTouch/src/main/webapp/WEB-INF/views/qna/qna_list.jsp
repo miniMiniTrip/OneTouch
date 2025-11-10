@@ -93,6 +93,7 @@
         .content-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 30px;
             padding-bottom: 15px;
             border-bottom: 2px solid #5c6bc0;
@@ -102,6 +103,7 @@
             font-size: 18px;
             color: #5c6bc0;
             font-weight: 600;
+            margin: 0;
         }
         
         .empty-state {
@@ -115,36 +117,97 @@
             font-size: 14px;
         }
         
- .btn-write {
-    background: #5c6bc0;
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background 0.3s;
-    width: 180px;          /* 버튼 너비 고정 */
-    height: 48px;          /* 버튼 높이 고정 */
-    box-sizing: border-box;
-    white-space: nowrap;   /* ✅ 두 줄로 안 나오게 설정 */
-}
+        .btn-write {
+            background: #5c6bc0;
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.3s;
+            white-space: nowrap;
+            height: 40px;
+        }
 
-.btn-write:hover {
-    background: #4a5aaf;
-    color: white;
-}
+        .btn-write:hover {
+            background: #4a5aaf;
+            color: white;
+        }
 
-.btn-write::before {
-    content: '✎';
-    font-size: 16px;
-}
+        .btn-write::before {
+            content: '✎';
+            font-size: 16px;
+        }
         
+        /* 게시판 테이블 스타일 */
+        .qna-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
         
+        .qna-table thead {
+            background: #f8f9fa;
+            border-top: 2px solid #5c6bc0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .qna-table th {
+            padding: 15px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+        
+        .qna-table tbody tr {
+            border-bottom: 1px solid #dee2e6;
+            transition: background 0.2s;
+        }
+        
+        .qna-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .qna-table td {
+            padding: 15px 10px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .qna-table td.title {
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .qna-table td.title:hover {
+            color: #5c6bc0;
+            text-decoration: underline;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-waiting {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .status-completed {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
     </style>
 </head>
 
@@ -217,34 +280,80 @@
                     </div>
                 </div>
                 
-                
-                
-              <%--   <!-- 데이터가 없는경우 -->
-		    <c:if test="${ empty qna_list }">
-		      <tr>
-		         <td colspan="5" align="center">
-		            <font color="red">등록된  QnA가 없습니다</font>
-		         </td>
-		      </tr>
-		    </c:if>
-		              --%>   
-                
                 <div class="content">
                     <div class="content-header">
                         <h2>💬 상품 Q&A</h2>
+                       
+                       
+                       
+                       
+                       
+                       
+                        <!-- 글이 있을 때만 버튼 표시 -->
+                        <c:if test="${not empty qna_list}">
+                            <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
+                                Q&A 쓰기
+                            </button>
+                        </c:if>
                     </div>
                     
-                    <div class="empty-state">
-                        <div class="empty-state-message">
-                            작성하신 상품 문의 내역을 확인하실 수 있습니다.
+                    <!-- 글이 있는 경우 -->
+                    <c:if test="${not empty qna_list}">
+                        <table class="qna-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">번호</th>
+                                    <th style="width: 120px;">상품명</th>
+                                    <th>제목</th>
+                                    <th style="width: 100px;">작성자</th>
+                                    <th style="width: 120px;">작성일</th>
+                                    <th style="width: 100px;">답변상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="qna" items="${qna_list}" varStatus="status">
+                                    <tr>
+                                        <td>${qna.qna_idx}</td>
+                                        <%-- 
+                                        <td>${qna.product_name}</td>
+                                        <td class="title" onclick="location.href='${pageContext.request.contextPath}/qna/view?qna_idx=${qna.qna_idx}'">
+                                            ${qna.qna_title}
+                                        </td>
+                                        <td>${qna.mem_id}</td>
+                                        <td>${qna.qna_regdate}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${qna.qna_status eq '답변완료'}">
+                                                    <span class="status-badge status-completed">답변완료</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="status-badge status-waiting">답변대기</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            
+                                        </td> 
+                                        --%>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    
+                    
+                    </c:if>
+                    
+                    <!-- 글이 없는 경우 -->
+                    <c:if test="${empty qna_list}">
+                        <div class="empty-state">
+                            <div class="empty-state-message">
+                                작성하신 상품 문의 내역을 확인하실 수 있습니다.
+                            </div>
+                            <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
+                                Q&A 쓰기
+                            </button>
+                            
                         </div>
-                        <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
-                             Q&A 쓰기
-                        </button>
-                       <%--  <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
-                            Q&A쓰기
-                        </button> --%>
-                    </div>
+                    </c:if>
+                    
                 </div>
             </div>
         </div>
@@ -256,14 +365,27 @@
         <i class="lni lni-chevron-up"></i>
     </a>
 
+
+
     <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 
-    <!-- Start Footer Area -->
-    <c:import url="../common/footer.jsp" />
-    <!-- End Footer Area -->
+  
+    <script type="text/javascript">
+    
+    // 프리로더 제거
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+    });
+    
+    </script>
+    
 </body>
 </html>
