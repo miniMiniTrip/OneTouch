@@ -6,4 +6,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectPostList" resultType="PostVo">
 		select *from post
 	</select>
+	
+	<select id="selectPostCategoryList" resultType="PostVo" parameterType="String">
+		select *from post where post_category = #{post_category}
+	</select>
+	
+	
 </mapper>

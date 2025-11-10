@@ -17,6 +17,27 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+  <style type="text/css">
+  
+  table {
+  border-collapse: collapse; /* 테두리 겹침 제거 */
+  width: 100%;
+  table-layout: fixed; /* 열 너비 고정, 균등 분배 */
+}
+
+th, td {
+  border: 1px solid #aaa; /* 테두리 선명하게 */
+  padding: 8px 12px; /* 셀 안 여백 추가 */
+  text-align: left; /* 왼쪽 정렬 */
+  word-wrap: break-word; /* 긴 텍스트 줄 바꿈 */
+}
+
+thead {
+  background-color: #f2f2f2; /* 헤더 배경색 */
+  font-weight: bold;
+}
+</style>  
+
 </head>
 
 <body>
@@ -116,7 +137,13 @@
 		  <a href="#">자유게시판</a>
 		</div>
 	        
-	    <table style="border: 1px solid black; border-collapse: collapse;">
+	    <table border="1" style="border-collapse: collapse;">
+	     		<tr>
+	     			<th>커뮤니티번호</th>
+	     			<th>회원번호</th>
+	     			<th>카테고리티번호</th>
+	     			<th>내용</th>
+	     		</tr>
 	     		<c:forEach var="postVo" items="${postVo_array }">
 	     	<tr>
 	     		<td>
@@ -125,7 +152,9 @@
 	     		<td>
 	     			${postVo.mem_idx }
 	     		</td>
-	     		
+	     		<td>
+	     			${postVo.post_category }
+	     		</td>
 	     		<td>
 	     			${postVo.post_content }
 	     		</td>
@@ -134,10 +163,10 @@
 	     			${postVo.post_image }
 	     		</td>
 	     		<td>
-	     			${postVo.like }
+	     			${postVo.post_like }
 	     		</td>
 	     		<td>
-	     			${postVo.like }
+	     			${postVo.post_comment_count }
 	     		</td>
 	     		
 	     	</tr>
