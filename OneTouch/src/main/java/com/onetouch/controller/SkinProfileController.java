@@ -77,22 +77,22 @@ public class SkinProfileController {
 			}
 		} 
 		
-        Map<String, Object> params = new HashMap<>();
-        params.put("hashtag_list", list);
-        params.put("min_match", 2);    // 최소 2개 이상 매칭
-        params.put("limit", 10);  
-        
-        List<Integer> product_idx_list = hashtag_dao.selectProductsByHashtags(params);
-        
-        List<ProductVo> product_list = new ArrayList<>();
-        if (product_idx_list != null && !product_idx_list.isEmpty()) {
-            product_list = product_dao.selectByIds(product_idx_list);
-        }
+		/*
+		 * Map<String, Object> params = new HashMap<>(); params.put("hashtag_list",
+		 * list); params.put("min_match", 2); // 최소 2개 이상 매칭 params.put("limit", 10);
+		 * 
+		 * List<Integer> product_idx_list =
+		 * hashtag_dao.selectProductsByHashtags(params);
+		 * 
+		 * List<ProductVo> product_list = new ArrayList<>(); if (product_idx_list !=
+		 * null && !product_idx_list.isEmpty()) { product_list =
+		 * product_dao.selectByIds(product_idx_list); }
+		 */
 
 		
 		model.addAttribute("list",list);
 		model.addAttribute("hashtag_list",hashtag_list);
-		model.addAttribute("product_list", product_list);
+		/* model.addAttribute("product_list", product_list); */
 		
 		return "skinprofile/view"; 
 	}
