@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 상품 상세</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: #ffffff;
+            color: #333;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            letter-spacing: -1px;
+            cursor: pointer;
+        }
+        
+        .logo span {
+            color: #3949ab;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+        }
+
+        .header-buttons a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .header-buttons a:hover {
+            color: #1a237e;
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        /* 상품 상세 영역 */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        /* 상품 이미지 */
+        .product-image-section {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .product-main-image {
+            width: 100%;
+            height: 500px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .product-main-image::before {
+            content: '상품 이미지';
+            color: #999;
+            font-size: 18px;
+        }
+
+        .product-thumbnail-list {
+            display: flex;
+            gap: 10px;
+        }
+
+        .product-thumbnail {
+            width: 80px;
+            height: 80px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .product-thumbnail:hover,
+        .product-thumbnail.active {
+            border-color: #1a237e;
+        }
+
+        /* 상품 정보 */
+        .product-info-section {
+            padding-top: 20px;
+        }
+
+        .product-category {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .rating-stars {
+            color: #ffa726;
+            font-size: 18px;
+        }
+
+        .rating-score {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review-count {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .product-price-section {
+            padding: 24px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .original-price {
+            color: #999;
+            font-size: 16px;
+            text-decoration: line-through;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .discount-rate {
+            color: #d32f2f;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .sale-price {
+            color: #1a237e;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .price-unit {
+            font-size: 20px;
+            color: #666;
+        }
+
+        /* 옵션 선택 */
+        .product-options {
+            padding: 24px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .option-group {
+            margin-bottom: 20px;
+        }
+
+        .option-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .option-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-select:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+
+        /* 수량 선택 */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .quantity-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .quantity-control {
+            display: flex;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: none;
+            color: #666;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background: #f5f7fa;
+            color: #1a237e;
+        }
+
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* 총 가격 */
+        .total-price-section {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .total-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 액션 버튼 */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1a237e;
+            border: 2px solid #1a237e;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f7fa;
+        }
+
+        .btn-icon {
+            width: 56px;
+            padding: 16px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-icon:hover {
+            border-color: #1a237e;
+            color: #1a237e;
+        }
+
+        .btn-icon.active {
+            border-color: #d32f2f;
+            color: #d32f2f;
+        }
+
+        /* 탭 네비게이션 */
+        .product-tabs {
+            border-bottom: 2px solid #e0e0e0;
+            margin-top: 80px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .tab-btn {
+            padding: 16px 0;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: #1a237e;
+        }
+
+        .tab-btn.active {
+            color: #1a237e;
+            border-bottom-color: #1a237e;
+            font-weight: 600;
+        }
+
+        /* 탭 컨텐츠 */
+        .tab-content {
+            display: none;
+            padding: 40px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 상품 상세 설명 */
+        .product-description {
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .product-description h3 {
+            color: #1a237e;
+            margin: 30px 0 16px;
+            font-size: 20px;
+        }
+
+        .product-description p {
+            margin-bottom: 16px;
+        }
+
+        /* 리뷰 섹션 */
+        .review-summary {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            padding: 30px;
+            background: #f5f7fa;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .review-score-box {
+            text-align: center;
+        }
+
+        .review-score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 8px;
+        }
+
+        .review-score-stars {
+            font-size: 24px;
+            color: #ffa726;
+            margin-bottom: 8px;
+        }
+
+        .review-score-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .review-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .review-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-label {
+            width: 60px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: #ffa726;
+        }
+
+        .stat-count {
+            width: 40px;
+            text-align: right;
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* 리뷰 리스트 */
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .review-item {
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review-stars {
+            color: #ffa726;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .review-content {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .review-helpful {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .helpful-btn {
+            background: none;
+            border: 1px solid #e0e0e0;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .helpful-btn:hover {
+            border-color: #1a237e;
+            color: #1a237e;
+        }
+
+        /* Q&A 섹션 */
+        .qna-write-btn {
+            margin-bottom: 24px;
+        }
+
+        .qna-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .qna-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .qna-question {
+            padding: 20px 24px;
+            background: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .qna-question:hover {
+            background: #f5f7fa;
+        }
+
+        .qna-q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .qna-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e0e0e0;
+            color: #666;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .qna-badge.answered {
+            background: #1a237e;
+            color: white;
+        }
+
+        .qna-q-title {
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+            margin: 0 16px;
+        }
+
+        .qna-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .qna-answer {
+            padding: 20px 24px;
+            background: #f5f7fa;
+            border-top: 1px solid #e0e0e0;
+            display: none;
+        }
+
+        .qna-answer.show {
+            display: block;
+        }
+
+        .qna-a-label {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #1a237e;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .qna-a-content {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .product-image-section {
+                position: static;
+            }
+
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                min-width: calc(50% - 6px);
+            }
+
+            .review-summary {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo" onclick="goToHome()">
+                One<span>Touch</span>
+            </div>
+            <div class="header-buttons" id="headerButtons">
+                <a href="#" onclick="handleLogin(); return false;">로그인</a>
+                <a href="#" onclick="handleSignup(); return false;">회원가입</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <!-- 상품 상세 영역 -->
+        <div class="product-detail">
+            <!-- 상품 이미지 -->
+            <div class="product-image-section">
+                <div class="product-main-image"></div>
+                <div class="product-thumbnail-list">
+                    <div class="product-thumbnail active"></div>
+                    <div class="product-thumbnail"></div>
+                    <div class="product-thumbnail"></div>
+                    <div class="product-thumbnail"></div>
+                </div>
+            </div>
+
+            <!-- 상품 정보 -->
+            <div class="product-info-section">
+                <div class="product-category">스킨케어 > 에센스/세럼</div>
+                <h1 class="product-title">히아루론산 수분 보습 세럼</h1>
+                
+                <div class="product-rating">
+                    <span class="rating-stars">★★★★★</span>
+                    <span class="rating-score">4.8</span>
+                    <span class="review-count">(2,345개 리뷰)</span>
+                </div>
+
+                <div class="product-price-section">
+                    <div class="original-price">45,000원</div>
+                    <div class="product-price">
+                        <span class="discount-rate">30%</span>
+                        <span class="sale-price">31,500</span>
+                        <span class="price-unit">원</span>
+                    </div>
+                </div>
+
+                <!-- 수량 선택 -->
+                <div class="quantity-selector">
+                    <span class="quantity-label">수량</span>
+                    <div class="quantity-control">
+                        <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" min="1" readonly>
+                        <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                    </div>
+                </div>
+
+                <!-- 총 가격 -->
+                <div class="total-price-section">
+                    <span class="total-label">총 상품금액</span>
+                    <span class="total-price" id="totalPrice">0원</span>
+                </div>
+
+                <!-- 액션 버튼 -->
+                <div class="action-buttons">
+                    <button class="btn-icon" id="wishlistBtn" onclick="toggleWishlist()" title="찜하기">
+                        ♡
+                    </button>
+                    <button class="btn btn-secondary" onclick="addToCart()">🛒 장바구니</button>
+                    <button class="btn btn-primary" onclick="buyNow()">구매하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상품 탭 -->
+        <div class="product-tabs">
+            <button class="tab-btn active" onclick="changeTab('detail')">상품상세</button>
+            <button class="tab-btn" onclick="changeTab('review')">리뷰 (2,345)</button>
+            <button class="tab-btn" onclick="changeTab('qna')">상품 Q&A (89)</button>
+        </div>
+
+        <!-- 상품 상세 탭 -->
+        <div class="tab-content active" id="detailTab">
+            <div class="product-description">
+                <h3>💧 깊은 보습, 히아루론산의 힘</h3>
+                <p>순수 히아루론산을 고농축으로 담아 피부 깊숙이 수분을 공급합니다. 건조하고 거친 피부를 촉촉하고 부드럽게 가꿔줍니다.</p>
+                
+                <h3>✨ 제품 특징</h3>
+                <p>• 3가지 분자 크기의 히아루론산 함유<br>
+                • 끈적임 없는 가벼운 텍스처<br>
+                • 피부 장벽 강화 및 수분 보유력 개선<br>
+                • 모든 피부 타입 사용 가능<br>
+                • 무향, 무알코올, 저자극 테스트 완료</p>
+
+                <h3>📝 사용 방법</h3>
+                <p>1. 세안 후 토너로 피부결을 정돈합니다.<br>
+                2. 적당량을 덜어 얼굴 전체에 부드럽게 펴 발라줍니다.<br>
+                3. 손바닥으로 가볍게 눌러 흡수시켜줍니다.<br>
+                4. 크림으로 마무리하여 수분을 잠가줍니다.</p>
+
+                <h3>⚠️ 주의사항</h3>
+                <p>• 사용 중 붉은 반점, 부어오름, 가려움증 등의 이상 증상이 나타날 경우 사용을 중단하세요.<br>
+                • 직사광선을 피해 서늘한 곳에 보관하세요.<br>
+                • 유통기한: 제조일로부터 3년 (개봉 후 12개월 이내 사용 권장)</p>
+            </div>
+        </div>
+
+        <!-- 리뷰 탭 -->
+        <div class="tab-content" id="reviewTab">
+            <div class="review-summary">
+                <div class="review-score-box">
+                    <div class="review-score-number">4.8</div>
+                    <div class="review-score-stars">★★★★★</div>
+                    <div class="review-score-text">2,345개 리뷰</div>
+                </div>
+                <div class="review-stats">
+                    <div class="review-stat-item">
+                        <span class="stat-label">5점</span>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 85%"></div></div>
+                        <span class="stat-count">1,993</span>
+                    </div>
+                    <div class="review-stat-item">
+                        <span class="stat-label">4점</span>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 10%"></div></div>
+                        <span class="stat-count">235</span>
+                    </div>
+                    <div class="review-stat-item">
+                        <span class="stat-label">3점</span>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 3%"></div></div>
+                        <span class="stat-count">70</span>
+                    </div>
+                    <div class="review-stat-item">
+                        <span class="stat-label">2점</span>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 1%"></div></div>
+                        <span class="stat-count">23</span>
+                    </div>
+                    <div class="review-stat-item">
+                        <span class="stat-label">1점</span>
+                        <div class="stat-bar"><div class="stat-fill" style="width: 1%"></div></div>
+                        <span class="stat-count">24</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-list" id="reviewList">
+                <!-- 리뷰가 동적으로 추가됩니다 -->
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-secondary" onclick="alert('커뮤니티 리뷰 페이지로 이동합니다.'); window.location.href='onetouch-community.html';">
+                    더 많은 리뷰 보기
+                </button>
+            </div>
+        </div>
+
+        <!-- Q&A 탭 -->
+        <div class="tab-content" id="qnaTab">
+            <div class="qna-write-btn">
+                <button class="btn btn-primary" onclick="openQnaModal()">문의하기</button>
+            </div>
+
+            <div class="qna-list" id="qnaList">
+                <!-- Q&A가 동적으로 추가됩니다 -->
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-secondary" onclick="alert('고객센터로 이동합니다.')">
+                    고객센터 바로가기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q&A 작성 모달 -->
+    <div class="modal" id="qnaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">상품 문의하기</h3>
+                <button class="modal-close" onclick="closeModal('qnaModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="submitQna(event)">
+                    <div class="form-group">
+                        <label class="form-label">제목</label>
+                        <input type="text" class="form-input" id="qnaTitle" placeholder="문의 제목을 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">문의 내용</label>
+                        <textarea class="form-textarea" id="qnaContent" placeholder="문의 내용을 상세히 입력해주세요" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('qnaModal')">취소</button>
+                        <button type="submit" class="btn btn-primary">등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        let currentUserId = localStorage.getItem('userId') || 'guest';
+        let basePrice = 31500;
+        let quantity = 1;
+        let isWishlisted = false;
+
+        // 샘플 리뷰 데이터
+        const reviews = [
+            {
+                author: 'user****',
+                rating: 5,
+                date: '2025-01-20',
+                content: '정말 좋아요! 피부가 촉촉해지고 흡수도 빠릅니다. 건조한 겨울에 딱 맞는 제품인 것 같아요. 재구매 의사 100%입니다!',
+                helpful: 45
+            },
+            {
+                author: 'beau****',
+                rating: 5,
+                date: '2025-01-18',
+                content: '민감성 피부인데도 자극 없이 잘 맞았어요. 가격 대비 용량도 많고 효과도 좋아서 만족합니다.',
+                helpful: 32
+            },
+            {
+                author: 'skin****',
+                rating: 4,
+                date: '2025-01-15',
+                content: '보습력은 좋은데 제 피부에는 약간 끈적임이 남는 느낌이에요. 그래도 아침에 사용하기엔 괜찮습니다.',
+                helpful: 18
+            }
+        ];
+
+        // 샘플 Q&A 데이터
+        const qnas = [
+            {
+                id: 1,
+                question: '민감성 피부도 사용 가능한가요?',
+                author: 'user01',
+                date: '2025-01-22',
+                answered: true,
+                answer: '네, 본 제품은 저자극 테스트를 완료하였으며 민감성 피부에도 사용 가능합니다. 다만 개인차가 있을 수 있으니 처음 사용하실 때는 소량으로 테스트해보시길 권장드립니다.'
+            },
+            {
+                id: 2,
+                question: '유통기한이 어떻게 되나요?',
+                author: 'user02',
+                date: '2025-01-20',
+                answered: true,
+                answer: '제조일로부터 3년이며, 개봉 후에는 12개월 이내 사용을 권장드립니다. 제품 뒷면에 제조일자가 표기되어 있습니다.'
+            },
+            {
+                id: 3,
+                question: '아침 저녁 모두 사용해도 되나요?',
+                author: 'user03',
+                date: '2025-01-18',
+                answered: false,
+                answer: ''
+            }
+        ];
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            updateHeaderButtons();
+            loadReviews();
+            loadQnas();
+            updatePrice();
+        });
+
+        // 헤더 버튼 업데이트
+        function updateHeaderButtons() {
+            const headerButtons = document.getElementById('headerButtons');
+            if (isLoggedIn) {
+                headerButtons.innerHTML = `
+                    <a href="#" onclick="alert('마이페이지'); return false;">마이페이지</a>
+                    <a href="#" onclick="handleLogout(); return false;">로그아웃</a>
+                `;
+            }
+        }
+
+        // 수량 증가
+        function increaseQuantity() {
+            quantity++;
+            document.getElementById('quantity').value = quantity;
+            updatePrice();
+        }
+
+        // 수량 감소
+        function decreaseQuantity() {
+            if (quantity > 1) {
+                quantity--;
+                document.getElementById('quantity').value = quantity;
+                updatePrice();
+            }
+        }
+
+        // 가격 업데이트
+        function updatePrice() {
+            const totalPrice = basePrice * quantity;
+            document.getElementById('totalPrice').textContent = totalPrice.toLocaleString() + '원';
+        }
+
+        // 찜하기 토글
+        function toggleWishlist() {
+            const btn = document.getElementById('wishlistBtn');
+            isWishlisted = !isWishlisted;
+            
+            if (isWishlisted) {
+                btn.textContent = '♥';
+                btn.classList.add('active');
+                alert('찜 목록에 추가되었습니다.');
+            } else {
+                btn.textContent = '♡';
+                btn.classList.remove('active');
+                alert('찜 목록에서 제거되었습니다.');
+            }
+        }
+
+        // 장바구니 담기
+        function addToCart() {
+            if (!isLoggedIn) {
+                alert('로그인이 필요합니다.');
+                handleLogin();
+                return;
+            }
+
+            const cartItem = {
+                productName: '히아루론산 수분 보습 세럼',
+                quantity: quantity,
+                price: document.getElementById('totalPrice').textContent
+            };
+
+            // 장바구니 저장 (localStorage)
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            if (confirm('장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?')) {
+                alert('장바구니 페이지로 이동합니다.');
+            }
+        }
+
+        // 바로 구매
+        function buyNow() {
+            if (!isLoggedIn) {
+                alert('로그인이 필요합니다.');
+                handleLogin();
+                return;
+            }
+
+            alert('구매 페이지로 이동합니다.');
+        }
+
+        // 찜하기 토글
+        function changeTab(tabName) {
+            // 탭 버튼 활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 탭 컨텐츠 표시
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tabName === 'detail') {
+                document.getElementById('detailTab').classList.add('active');
+            } else if (tabName === 'review') {
+                document.getElementById('reviewTab').classList.add('active');
+            } else if (tabName === 'qna') {
+                document.getElementById('qnaTab').classList.add('active');
+            }
+        }
+
+        // 리뷰 로드
+        function loadReviews() {
+            const reviewList = document.getElementById('reviewList');
+            
+            reviewList.innerHTML = reviews.map(review => `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="review-author">
+                            <span class="author-name">${review.author}</span>
+                            <span class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+                        </div>
+                        <span class="review-date">${review.date}</span>
+                    </div>
+                    <div class="review-content">${review.content}</div>
+                    <div class="review-helpful">
+                        <button class="helpful-btn" onclick="alert('도움이 되었습니다.')">👍 도움돼요 ${review.helpful}</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Q&A 로드
+        function loadQnas() {
+            const qnaList = document.getElementById('qnaList');
+            
+            qnaList.innerHTML = qnas.map(qna => `
+                <div class="qna-item">
+                    <div class="qna-question" onclick="toggleQnaAnswer(${qna.id})">
+                        <div class="qna-q-header">
+                            <span class="qna-badge ${qna.answered ? 'answered' : ''}">
+                                ${qna.answered ? '답변완료' : '답변대기'}
+                            </span>
+                            <span class="qna-q-title">${qna.question}</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="qna-meta">
+                            <span>${qna.author}</span>
+                            <span>${qna.date}</span>
+                        </div>
+                    </div>
+                    ${qna.answered ? `
+                        <div class="qna-answer" id="qna-answer-${qna.id}">
+                            <span class="qna-a-label">답변</span>
+                            <div class="qna-a-content">${qna.answer}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Q&A 답변 토글
+        function toggleQnaAnswer(qnaId) {
+            const answer = document.getElementById(`qna-answer-${qnaId}`);
+            if (answer) {
+                answer.classList.toggle('show');
+            }
+        }
+
+        // Q&A 모달 열기
+        function openQnaModal() {
+            if (!isLoggedIn) {
+                alert('로그인이 필요합니다.');
+                handleLogin();
+                return;
+            }
+            
+            document.getElementById('qnaModal').classList.add('active');
+        }
+
+        // 모달 닫기
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Q&A 등록
+        function submitQna(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('qnaTitle').value;
+            const content = document.getElementById('qnaContent').value;
+
+            // 실제로는 서버에 저장
+            console.log('Q&A 등록:', { title, content });
+
+            alert('문의가 등록되었습니다.\n답변은 1-2일 내에 등록됩니다.');
+            closeModal('qnaModal');
+            
+            // 폼 초기화
+            document.getElementById('qnaTitle').value = '';
+            document.getElementById('qnaContent').value = '';
+        }
+
+        // 로그인/로그아웃
+        function handleLogin() {
+            window.location.href = 'onetouch-login.html';
+        }
+
+        function handleSignup() {
+            window.location.href = 'onetouch-login.html';
+        }
+
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userId');
+                isLoggedIn = false;
+                updateHeaderButtons();
+                alert('로그아웃되었습니다.');
+            }
+        }
+
+        // 홈으로 이동
+        function goToHome() {
+            window.location.href = 'onetouch-main.html';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
