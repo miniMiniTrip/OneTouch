@@ -42,7 +42,7 @@ ADD COLUMN mem_postal VARCHAR(10) NULL;
 ALTER TABLE `otdb`.`mem` 
 CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
 
-
+-- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
@@ -57,8 +57,6 @@ CREATE TABLE category (
 --    ,CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
 ) COMMENT '카테고리';
 
-
--- 녹화용
 -- ========================================
 -- 3. 상품 테이블
 -- ========================================
