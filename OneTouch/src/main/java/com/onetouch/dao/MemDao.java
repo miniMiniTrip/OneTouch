@@ -9,6 +9,6 @@ public interface MemDao {
 	public MemVo selectMemIdOne(String mem_id);
 	public int insert(MemVo memVo);
 	public MemVo selectMemEmailOne(String mem_email);
-	public MemVo selectMemIdxOne(String mem_idx);
+	public MemVo selectMemIdxOne(int mem_idx);
 	
 }

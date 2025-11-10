@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from otdb.mem where mem_email=#{mem_email}
 	</select>
 	<!-- 회원정보 mem_idx로 1개 정보 조회해오기 -->
-	<select id="selectMemIdxOne" resultType="MemVo" parameterType="String">
+	<select id="selectMemIdxOne" resultType="MemVo" parameterType="int">
 		select * from otdb.mem where mem_idx=#{mem_idx}
 	</select>
 	
