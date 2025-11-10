@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 관리자페이지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            letter-spacing: -1px;
+            cursor: pointer;
+        }
+        
+        .logo span {
+            color: #3949ab;
+        }
+
+        .admin-badge {
+            background: #d32f2f;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .header-user {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .btn-logout {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            border-color: #1a237e;
+            color: #1a237e;
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 1600px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        /* 레이아웃 */
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 0;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-title {
+            padding: 0 24px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 14px 24px;
+            color: #666;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background: #f5f7fa;
+            color: #1a237e;
+        }
+
+        .sidebar-menu a.active {
+            background: #e8eaf6;
+            color: #1a237e;
+            font-weight: 600;
+            border-left-color: #1a237e;
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            min-height: 600px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #1a237e;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 대시보드 통계 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #1a237e;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 13px;
+            color: #4caf50;
+        }
+
+        .stat-change.negative {
+            color: #d32f2f;
+        }
+
+        /* 테이블 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background: #f5f7fa;
+        }
+
+        .data-table th {
+            padding: 16px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f5f7fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-inactive {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        /* 버튼 */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1a237e;
+            border: 2px solid #1a237e;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f7fa;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+            color: white;
+        }
+
+        /* 검색 */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+
+        .search-select {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 폼 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* 차트 영역 */
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* 바 차트 */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            padding: 20px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            gap: 20px;
+        }
+
+        .bar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .bar {
+            width: 100%;
+            max-width: 80px;
+            background: linear-gradient(180deg, #3949ab 0%, #1a237e 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(26, 35, 126, 0.2);
+        }
+
+        .bar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+        }
+
+        .bar::before {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a237e;
+            white-space: nowrap;
+        }
+
+        .bar-label {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* 매출 차트 테이블 */
+        .sales-chart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sales-chart-table thead {
+            background: #f5f7fa;
+        }
+
+        .sales-chart-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .sales-chart-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .sales-chart-table tbody tr:hover {
+            background: #f5f7fa;
+        }
+
+        .highlight-row {
+            background: #e8eaf6 !important;
+        }
+
+        .highlight-row:hover {
+            background: #e8eaf6 !important;
+        }
+
+        .graph-bar-container {
+            background: #f5f7fa;
+            height: 30px;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .graph-bar {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(26, 35, 126, 0.2);
+        }
+
+        .change-rate {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .change-rate.positive {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .change-rate.negative {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        /* 라인 차트 */
+        .line-chart {
+            position: relative;
+            height: 250px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .line-chart-grid {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .grid-line {
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .line-chart-svg {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* 상품 미리보기 */
+        .product-preview {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: #f5f7fa;
+            border-radius: 8px;
+        }
+
+        .preview-image {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .preview-info {
+            flex: 1;
+        }
+
+        .preview-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .preview-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 8px;
+        }
+
+        .preview-stock {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 반응형 */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .admin-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 드롭다운 */
+        .dropdown-select {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .dropdown-select:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+
+        /* 페이지네이션 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover {
+            border-color: #1a237e;
+            color: #1a237e;
+        }
+
+        .page-btn.active {
+            background: #1a237e;
+            color: white;
+            border-color: #1a237e;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div>
+            <span class="logo" onclick="goToHome()">One<span>Touch</span></span>
+            <span class="admin-badge">관리자</span>
+        </div>
+        <div class="header-right">
+            <span class="header-user">관리자님</span>
+            <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <div class="admin-layout">
+            <!-- 사이드바 -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">대시보드</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="active" onclick="showSection('dashboard'); return false;">📊 통계 대시보드</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">관리</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
+                        <li><a href="#" onclick="showSection('products'); return false;">📦 상품관리</a></li>
+                        <li><a href="#" onclick="showSection('inventory'); return false;">📋 재고관리</a></li>
+                        <li><a href="#" onclick="showSection('orders'); return false;">🚚 주문관리</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">시스템</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" onclick="showSection('board'); return false;">💬 게시판 관리</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- 메인 컨텐츠 -->
+            <main class="main-content">
+                <!-- 대시보드 -->
+                <section id="dashboardSection" class="content-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">총 매출</div>
+                            <div class="stat-value">1,250만원</div>
+                            <div class="stat-change">↑ 15.3% 전월 대비</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">신규 회원</div>
+                            <div class="stat-value">342명</div>
+                            <div class="stat-change">↑ 8.2% 전월 대비</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">주문 건수</div>
+                            <div class="stat-value">1,234건</div>
+                            <div class="stat-change">↑ 12.5% 전월 대비</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">평균 평점</div>
+                            <div class="stat-value">4.8점</div>
+                            <div class="stat-change">↑ 0.2 전월 대비</div>
+                        </div>
+                    </div>
+
+                    <!-- 매출 차트 -->
+                    <div class="chart-container">
+                        <h3 class="chart-title">📈 월별 매출 추이 (최근 6개월)</h3>
+                        <table class="sales-chart-table">
+                            <thead>
+                                <tr>
+                                    <th>월</th>
+                                    <th>매출</th>
+                                    <th style="width: 60%;">그래프</th>
+                                    <th>증감률</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>8월</strong></td>
+                                    <td>850만원</td>
+                                    <td>
+                                        <div class="graph-bar-container">
+                                            <div class="graph-bar" style="width: 60%; background: linear-gradient(90deg, #5c6bc0 0%, #3949ab 100%);"></div>
+                                        </div>
+                                    </td>
+                                    <td><span class="change-rate">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>9월</strong></td>
+                                    <td>980만원</td>
+                                    <td>
+                                        <div class="graph-bar-container">
+                                            <div class="graph-bar" style="width: 70%; background: linear-gradient(90deg, #5c6bc0 0%, #3949ab 100%);"></div>
+                                        </div>
+                                    </td>
+                                    <td><span class="change-rate positive">↑ 15.3%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10월</strong></td>
+                                    <td>1,050만원</td>
+                                    <td>
+                                        <div class="graph-bar-container">
+                                            <div class="graph-bar" style="width: 75%; background: linear-gradient(90deg, #5c6bc0 0%, #3949ab 100%);"></div>
+                                        </div>
+                                    </td>
+                                    <td><span class="change-rate positive">↑ 7.1%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>11월</strong></td>
+                                    <td>1,190만원</td>
+                                    <td>
+                                        <div class="graph-bar-container">
+                                            <div class="graph-bar" style="width: 85%; background: linear-gradient(90deg, #5c6bc0 0%, #3949ab 100%);"></div>
+                                        </div>
+                                    </td>
+                                    <td><span class="change-rate positive">↑ 13.3%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>12월</strong></td>
+                                    <td>1,260만원</td>
+                                    <td>
+                                        <div class="graph-bar-container">
+                                            <div class="graph-bar" style="width: 90%; background: linear-gradient(90deg, #5c6bc0 0%, #3949ab 100%);"></div>
+                                        </div>
+                                    </td>
+                                    <td><span class="change-rate positive">↑ 5.9%</span></td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>1월</strong></td>
+                                    <td><strong>1,400만원</strong></td>
+                                    <td>
+                                        <div class="graph-bar-container">
+                                            <div class="graph-bar" style="width: 100%; background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);"></div>
+                                        </div>
+                                    </td>
+                                    <td><span class="change-rate positive">↑ 11.1%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 상품별 판매량 -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">🏆 상품별 판매량 순위</h2>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>순위</th>
+                                    <th>상품명</th>
+                                    <th>판매량</th>
+                                    <th>매출</th>
+                                    <th>평점</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesRankingTable">
+                                <!-- 데이터가 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 신규 유입 수 -->
+                    <div class="chart-container">
+                        <h3 class="chart-title">📊 신규 유입 수 (최근 6개월)</h3>
+                        <div class="line-chart">
+                            <div class="line-chart-grid">
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                            </div>
+                            <svg class="line-chart-svg" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                                <polyline
+                                    points="50,120 150,100 250,80 350,90 450,60 550,50"
+                                    fill="none"
+                                    stroke="#1a237e"
+                                    stroke-width="3"
+                                />
+                                <circle cx="50" cy="120" r="5" fill="#1a237e"/>
+                                <circle cx="150" cy="100" r="5" fill="#1a237e"/>
+                                <circle cx="250" cy="80" r="5" fill="#1a237e"/>
+                                <circle cx="350" cy="90" r="5" fill="#1a237e"/>
+                                <circle cx="450" cy="60" r="5" fill="#1a237e"/>
+                                <circle cx="550" cy="50" r="5" fill="#1a237e"/>
+                                
+                                <text x="50" y="190" text-anchor="middle" font-size="12" fill="#666">8월</text>
+                                <text x="150" y="190" text-anchor="middle" font-size="12" fill="#666">9월</text>
+                                <text x="250" y="190" text-anchor="middle" font-size="12" fill="#666">10월</text>
+                                <text x="350" y="190" text-anchor="middle" font-size="12" fill="#666">11월</text>
+                                <text x="450" y="190" text-anchor="middle" font-size="12" fill="#666">12월</text>
+                                <text x="550" y="190" text-anchor="middle" font-size="12" fill="#666">1월</text>
+                                
+                                <text x="30" y="125" text-anchor="end" font-size="11" fill="#1a237e" font-weight="600">245</text>
+                                <text x="130" y="105" text-anchor="end" font-size="11" fill="#1a237e" font-weight="600">267</text>
+                                <text x="230" y="85" text-anchor="end" font-size="11" fill="#1a237e" font-weight="600">289</text>
+                                <text x="330" y="95" text-anchor="end" font-size="11" fill="#1a237e" font-weight="600">276</text>
+                                <text x="430" y="65" text-anchor="end" font-size="11" fill="#1a237e" font-weight="600">318</text>
+                                <text x="530" y="55" text-anchor="end" font-size="11" fill="#1a237e" font-weight="600">342</text>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 회원관리 -->
+                <section id="membersSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">👥 회원관리</h2>
+                        </div>
+
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="memberSearch" placeholder="이름, 아이디, 이메일로 검색">
+                            <select class="search-select" id="memberStatusFilter">
+                                <option value="all">전체</option>
+                                <option value="active">활성</option>
+                                <option value="inactive">탈퇴</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="searchMembers()">검색</button>
+                        </div>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>아이디</th>
+                                    <th>이름</th>
+                                    <th>이메일</th>
+                                    <th>가입일</th>
+                                    <th>상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTable">
+                                <!-- 데이터가 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 상품관리 -->
+                <section id="productsSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">📦 상품관리</h2>
+                            <button class="btn btn-primary" onclick="openProductModal('add')">상품 등록</button>
+                        </div>
+
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="productSearch" placeholder="상품명으로 검색">
+                            <select class="search-select" id="productCategoryFilter">
+                                <option value="all">전체 카테고리</option>
+                                <option value="skincare">스킨케어</option>
+                                <option value="makeup">메이크업</option>
+                                <option value="haircare">헤어케어</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="searchProducts()">검색</button>
+                        </div>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>상품코드</th>
+                                    <th>상품명</th>
+                                    <th>카테고리</th>
+                                    <th>가격</th>
+                                    <th>재고</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTable">
+                                <!-- 데이터가 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 재고관리 -->
+                <section id="inventorySection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">📋 재고관리</h2>
+                        </div>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>상품명</th>
+                                    <th>현재 재고</th>
+                                    <th>상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTable">
+                                <!-- 데이터가 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 주문관리 -->
+                <section id="ordersSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">🚚 주문관리</h2>
+                        </div>
+
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="orderSearch" placeholder="주문번호, 주문자명으로 검색">
+                            <select class="search-select" id="orderStatusFilter">
+                                <option value="all">전체 상태</option>
+                                <option value="pending">배송 준비중</option>
+                                <option value="shipping">배송중</option>
+                                <option value="completed">배송완료</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="searchOrders()">검색</button>
+                        </div>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>주문번호</th>
+                                    <th>주문자</th>
+                                    <th>상품명</th>
+                                    <th>금액</th>
+                                    <th>주문일</th>
+                                    <th>배송상태</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable">
+                                <!-- 데이터가 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 게시판 관리 -->
+                <section id="boardSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">💬 게시판 관리</h2>
+                            <button class="btn btn-primary" onclick="openBoardModal('add')">FAQ 추가</button>
+                        </div>
+
+                        <div class="search-bar">
+                            <select class="search-select" id="boardCategoryFilter">
+                                <option value="all">전체</option>
+                                <option value="faq">FAQ</option>
+                                <option value="qna">상품 Q&A</option>
+                                <option value="inquiry">문의</option>
+                            </select>
+                            <input type="text" class="search-input" id="boardSearch" placeholder="제목, 내용으로 검색">
+                            <button class="btn btn-primary" onclick="searchBoard()">검색</button>
+                        </div>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>카테고리</th>
+                                    <th>제목</th>
+                                    <th>작성자</th>
+                                    <th>작성일</th>
+                                    <th>답변상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="boardTable">
+                                <!-- 데이터가 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 회원 수정 모달 -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">회원정보 수정</h3>
+                <button class="modal-close" onclick="closeModal('memberModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">아이디</label>
+                    <input type="text" class="form-input" id="editMemberId" readonly>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">이름</label>
+                        <input type="text" class="form-input" id="editMemberName">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">이메일</label>
+                        <input type="email" class="form-input" id="editMemberEmail">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">휴대폰</label>
+                    <input type="tel" class="form-input" id="editMemberPhone">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상태</label>
+                    <select class="form-select" id="editMemberStatus">
+                        <option value="active">활성</option>
+                        <option value="inactive">탈퇴처리</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('memberModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveMember()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상품 등록/수정 모달 -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="productModalTitle">상품 등록</h3>
+                <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">상품명</label>
+                    <input type="text" class="form-input" id="productName">
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">카테고리</label>
+                        <select class="form-select" id="productCategory">
+                            <option value="skincare">스킨케어</option>
+                            <option value="makeup">메이크업</option>
+                            <option value="haircare">헤어케어</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">가격</label>
+                        <input type="number" class="form-input" id="productPrice">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">재고</label>
+                    <input type="number" class="form-input" id="productStock">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상품 설명</label>
+                    <textarea class="form-textarea" id="productDescription"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('productModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveProduct()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상품 미리보기 모달 -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">상품 미리보기</h3>
+                <button class="modal-close" onclick="closeModal('previewModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="product-preview">
+                    <div class="preview-image">상품 이미지</div>
+                    <div class="preview-info">
+                        <div class="preview-name" id="previewName"></div>
+                        <div class="preview-price" id="previewPrice"></div>
+                        <div class="preview-stock" id="previewStock"></div>
+                        <p style="margin-top: 16px; color: #666; line-height: 1.6;" id="previewDescription"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('previewModal')">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ/답변 모달 -->
+    <div class="modal" id="boardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="boardModalTitle">FAQ 추가</h3>
+                <button class="modal-close" onclick="closeModal('boardModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">카테고리</label>
+                    <select class="form-select" id="boardCategory">
+                        <option value="faq">FAQ</option>
+                        <option value="qna">상품 Q&A</option>
+                        <option value="inquiry">문의</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">제목</label>
+                    <input type="text" class="form-input" id="boardTitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">내용</label>
+                    <textarea class="form-textarea" id="boardContent"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">답변</label>
+                    <textarea class="form-textarea" id="boardAnswer"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('boardModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveBoard()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 샘플 데이터
+        let members = [
+            { id: 'user01', name: '김철수', email: 'user01@email.com', joinDate: '2024-01-15', status: 'active' },
+            { id: 'user02', name: '이영희', email: 'user02@email.com', joinDate: '2024-02-20', status: 'active' },
+            { id: 'user03', name: '박민수', email: 'user03@email.com', joinDate: '2024-03-10', status: 'inactive' },
+        ];
+
+        let products = [
+            { code: 'P001', name: '히아루론산 수분 보습 세럼', category: 'skincare', price: 31500, stock: 150 },
+            { code: 'P002', name: '비타민C 브라이트닝 세럼', category: 'skincare', price: 28000, stock: 80 },
+            { code: 'P003', name: '레티놀 안티에이징 크림', category: 'skincare', price: 42000, stock: 30 },
+        ];
+
+        let orders = [
+            { orderId: 'ORDER_001', customer: '김철수', product: '히아루론산 세럼', amount: 63000, date: '2025-01-15', status: 'pending' },
+            { orderId: 'ORDER_002', customer: '이영희', product: '비타민C 세럼', amount: 28000, date: '2025-01-14', status: 'shipping' },
+            { orderId: 'ORDER_003', customer: '박민수', product: '레티놀 크림', amount: 42000, date: '2025-01-13', status: 'completed' },
+        ];
+
+        let boardPosts = [
+            { id: 1, category: 'faq', title: '배송은 얼마나 걸리나요?', author: 'admin', date: '2025-01-10', answered: true },
+            { id: 2, category: 'qna', title: '민감성 피부도 사용 가능한가요?', author: 'user01', date: '2025-01-12', answered: true },
+            { id: 3, category: 'inquiry', title: '반품 문의드립니다', author: 'user02', date: '2025-01-14', answered: false },
+        ];
+
+        let salesRanking = [
+            { rank: 1, name: '히아루론산 수분 보습 세럼', sales: 1234, revenue: 38871000, rating: 4.8 },
+            { rank: 2, name: '비타민C 브라이트닝 세럼', sales: 987, revenue: 27636000, rating: 4.7 },
+            { rank: 3, name: '레티놀 안티에이징 크림', sales: 756, revenue: 31752000, rating: 4.9 },
+            { rank: 4, name: '나이아신아마이드 토너', sales: 654, revenue: 15696000, rating: 4.6 },
+            { rank: 5, name: '세라마이드 장벽 크림', sales: 543, revenue: 18961500, rating: 4.8 },
+        ];
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMembers();
+            renderProducts();
+            renderInventory();
+            renderOrders();
+            renderBoard();
+            renderSalesRanking();
+        });
+
+        // 섹션 표시
+        function showSection(sectionName) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const sections = {
+                'dashboard': 'dashboardSection',
+                'members': 'membersSection',
+                'products': 'productsSection',
+                'inventory': 'inventorySection',
+                'orders': 'ordersSection',
+                'board': 'boardSection'
+            };
+
+            document.getElementById(sections[sectionName]).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ===== 판매 순위 =====
+        function renderSalesRanking() {
+            const table = document.getElementById('salesRankingTable');
+            table.innerHTML = salesRanking.map(item => `
+                <tr>
+                    <td><strong>${item.rank}</strong></td>
+                    <td>${item.name}</td>
+                    <td>${item.sales.toLocaleString()}개</td>
+                    <td>${item.revenue.toLocaleString()}원</td>
+                    <td>⭐ ${item.rating}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== 회원관리 =====
+        function renderMembers() {
+            const table = document.getElementById('membersTable');
+            table.innerHTML = members.map(member => `
+                <tr>
+                    <td>${member.id}</td>
+                    <td>${member.name}</td>
+                    <td>${member.email}</td>
+                    <td>${member.joinDate}</td>
+                    <td><span class="status-badge ${member.status === 'active' ? 'status-active' : 'status-inactive'}">${member.status === 'active' ? '활성' : '탈퇴'}</span></td>
+                    <td>
+                        <button class="btn btn-secondary btn-small" onclick="editMember('${member.id}')">수정</button>
+                        ${member.status === 'active' ? `<button class="btn btn-danger btn-small" onclick="deleteMember('${member.id}')">탈퇴처리</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function editMember(userId) {
+            const member = members.find(m => m.id === userId);
+            document.getElementById('editMemberId').value = member.id;
+            document.getElementById('editMemberName').value = member.name;
+            document.getElementById('editMemberEmail').value = member.email;
+            document.getElementById('editMemberPhone').value = '010-1234-5678';
+            document.getElementById('editMemberStatus').value = member.status;
+            openModal('memberModal');
+        }
+
+        function saveMember() {
+            const userId = document.getElementById('editMemberId').value;
+            const member = members.find(m => m.id === userId);
+            
+            member.name = document.getElementById('editMemberName').value;
+            member.email = document.getElementById('editMemberEmail').value;
+            member.status = document.getElementById('editMemberStatus').value;
+            
+            renderMembers();
+            closeModal('memberModal');
+            alert('회원정보가 수정되었습니다.');
+        }
+
+        function deleteMember(userId) {
+            if (confirm('해당 회원을 탈퇴 처리하시겠습니까?\n(같은 아이디로 재가입 방지를 위해 데이터는 유지됩니다)')) {
+                const member = members.find(m => m.id === userId);
+                member.status = 'inactive';
+                renderMembers();
+                alert('탈퇴 처리되었습니다.');
+            }
+        }
+
+        function searchMembers() {
+            const searchText = document.getElementById('memberSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('memberStatusFilter').value;
+            
+            let filtered = members;
+            
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(m => m.status === statusFilter);
+            }
+            
+            if (searchText) {
+                filtered = filtered.filter(m => 
+                    m.id.toLowerCase().includes(searchText) ||
+                    m.name.toLowerCase().includes(searchText) ||
+                    m.email.toLowerCase().includes(searchText)
+                );
+            }
+            
+            const table = document.getElementById('membersTable');
+            table.innerHTML = filtered.map(member => `
+                <tr>
+                    <td>${member.id}</td>
+                    <td>${member.name}</td>
+                    <td>${member.email}</td>
+                    <td>${member.joinDate}</td>
+                    <td><span class="status-badge ${member.status === 'active' ? 'status-active' : 'status-inactive'}">${member.status === 'active' ? '활성' : '탈퇴'}</span></td>
+                    <td>
+                        <button class="btn btn-secondary btn-small" onclick="editMember('${member.id}')">수정</button>
+                        ${member.status === 'active' ? `<button class="btn btn-danger btn-small" onclick="deleteMember('${member.id}')">탈퇴처리</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== 상품관리 =====
+        function renderProducts() {
+            const table = document.getElementById('productsTable');
+            table.innerHTML = products.map(product => `
+                <tr>
+                    <td>${product.code}</td>
+                    <td>${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>${product.price.toLocaleString()}원</td>
+                    <td>${product.stock}개</td>
+                    <td>
+                        <button class="btn btn-secondary btn-small" onclick="editProduct('${product.code}')">수정</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteProduct('${product.code}')">삭제</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openProductModal(mode, productCode) {
+            if (mode === 'add') {
+                document.getElementById('productModalTitle').textContent = '상품 등록';
+                document.getElementById('productName').value = '';
+                document.getElementById('productCategory').value = 'skincare';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productStock').value = '';
+                document.getElementById('productDescription').value = '';
+            } else {
+                const product = products.find(p => p.code === productCode);
+                document.getElementById('productModalTitle').textContent = '상품 수정';
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productStock').value = product.stock;
+            }
+            openModal('productModal');
+        }
+
+        function editProduct(productCode) {
+            openProductModal('edit', productCode);
+        }
+
+        function saveProduct() {
+            const name = document.getElementById('productName').value;
+            const category = document.getElementById('productCategory').value;
+            const price = parseInt(document.getElementById('productPrice').value);
+            const stock = parseInt(document.getElementById('productStock').value);
+            
+            if (!name || !price || !stock) {
+                alert('모든 필수 항목을 입력해주세요.');
+                return;
+            }
+            
+            const newProduct = {
+                code: 'P' + String(products.length + 1).padStart(3, '0'),
+                name, category, price, stock
+            };
+            
+            products.push(newProduct);
+            renderProducts();
+            renderInventory();
+            closeModal('productModal');
+            alert('상품이 등록되었습니다.');
+        }
+
+        function deleteProduct(productCode) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                products = products.filter(p => p.code !== productCode);
+                renderProducts();
+                renderInventory();
+                alert('삭제되었습니다.');
+            }
+        }
+
+        function searchProducts() {
+            const searchText = document.getElementById('productSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('productCategoryFilter').value;
+            
+            let filtered = products;
+            
+            if (categoryFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === categoryFilter);
+            }
+            
+            if (searchText) {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(searchText));
+            }
+            
+            const table = document.getElementById('productsTable');
+            table.innerHTML = filtered.map(product => `
+                <tr>
+                    <td>${product.code}</td>
+                    <td>${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>${product.price.toLocaleString()}원</td>
+                    <td>${product.stock}개</td>
+                    <td>
+                        <button class="btn btn-secondary btn-small" onclick="editProduct('${product.code}')">수정</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteProduct('${product.code}')">삭제</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== 재고관리 =====
+        function renderInventory() {
+            const table = document.getElementById('inventoryTable');
+            table.innerHTML = products.map(product => {
+                let status = '정상';
+                let statusClass = 'status-active';
+                
+                if (product.stock === 0) {
+                    status = '품절';
+                    statusClass = 'status-inactive';
+                } else if (product.stock < 50) {
+                    status = '부족';
+                    statusClass = 'status-pending';
+                }
+                
+                return `
+                    <tr>
+                        <td>${product.name}</td>
+                        <td>${product.stock}개</td>
+                        <td><span class="status-badge ${statusClass}">${status}</span></td>
+                        <td>
+                            <button class="btn btn-secondary btn-small" onclick="showPreview('${product.code}')">미리보기</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function showPreview(productCode) {
+            const product = products.find(p => p.code === productCode);
+            document.getElementById('previewName').textContent = product.name;
+            document.getElementById('previewPrice').textContent = product.price.toLocaleString() + '원';
+            document.getElementById('previewStock').textContent = '재고: ' + product.stock + '개';
+            document.getElementById('previewDescription').textContent = '상품 설명이 여기에 표시됩니다.';
+            openModal('previewModal');
+        }
+
+        // ===== 주문관리 =====
+        function renderOrders() {
+            const table = document.getElementById('ordersTable');
+            table.innerHTML = orders.map(order => {
+                const statusNames = {
+                    'pending': '배송 준비중',
+                    'shipping': '배송중',
+                    'completed': '배송완료'
+                };
+                
+                return `
+                    <tr>
+                        <td>${order.orderId}</td>
+                        <td>${order.customer}</td>
+                        <td>${order.product}</td>
+                        <td>${order.amount.toLocaleString()}원</td>
+                        <td>${order.date}</td>
+                        <td>
+                            <select class="dropdown-select" onchange="updateOrderStatus('${order.orderId}', this.value)">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>배송 준비중</option>
+                                <option value="shipping" ${order.status === 'shipping' ? 'selected' : ''}>배송중</option>
+                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>배송완료</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const order = orders.find(o => o.orderId === orderId);
+            order.status = newStatus;
+            alert('배송 상태가 변경되었습니다.');
+        }
+
+        function searchOrders() {
+            const searchText = document.getElementById('orderSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('orderStatusFilter').value;
+            
+            let filtered = orders;
+            
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(o => o.status === statusFilter);
+            }
+            
+            if (searchText) {
+                filtered = filtered.filter(o => 
+                    o.orderId.toLowerCase().includes(searchText) ||
+                    o.customer.toLowerCase().includes(searchText)
+                );
+            }
+            
+            const table = document.getElementById('ordersTable');
+            table.innerHTML = filtered.map(order => `
+                <tr>
+                    <td>${order.orderId}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.product}</td>
+                    <td>${order.amount.toLocaleString()}원</td>
+                    <td>${order.date}</td>
+                    <td>
+                        <select class="dropdown-select" onchange="updateOrderStatus('${order.orderId}', this.value)">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>배송 준비중</option>
+                            <option value="shipping" ${order.status === 'shipping' ? 'selected' : ''}>배송중</option>
+                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>배송완료</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== 게시판 관리 =====
+        function renderBoard() {
+            const table = document.getElementById('boardTable');
+            table.innerHTML = boardPosts.map(post => {
+                const categoryNames = {
+                    'faq': 'FAQ',
+                    'qna': '상품 Q&A',
+                    'inquiry': '문의'
+                };
+                
+                return `
+                    <tr>
+                        <td>${post.id}</td>
+                        <td>${categoryNames[post.category]}</td>
+                        <td>${post.title}</td>
+                        <td>${post.author}</td>
+                        <td>${post.date}</td>
+                        <td><span class="status-badge ${post.answered ? 'status-active' : 'status-pending'}">${post.answered ? '답변완료' : '답변대기'}</span></td>
+                        <td>
+                            <button class="btn btn-secondary btn-small" onclick="editBoard(${post.id})">수정</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteBoard(${post.id})">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openBoardModal(mode, postId) {
+            if (mode === 'add') {
+                document.getElementById('boardModalTitle').textContent = 'FAQ 추가';
+                document.getElementById('boardCategory').value = 'faq';
+                document.getElementById('boardTitle').value = '';
+                document.getElementById('boardContent').value = '';
+                document.getElementById('boardAnswer').value = '';
+            } else {
+                const post = boardPosts.find(p => p.id === postId);
+                document.getElementById('boardModalTitle').textContent = '게시글 수정';
+                document.getElementById('boardCategory').value = post.category;
+                document.getElementById('boardTitle').value = post.title;
+            }
+            openModal('boardModal');
+        }
+
+        function editBoard(postId) {
+            openBoardModal('edit', postId);
+        }
+
+        function saveBoard() {
+            const category = document.getElementById('boardCategory').value;
+            const title = document.getElementById('boardTitle').value;
+            const content = document.getElementById('boardContent').value;
+            const answer = document.getElementById('boardAnswer').value;
+            
+            if (!title || !content) {
+                alert('제목과 내용을 입력해주세요.');
+                return;
+            }
+            
+            const newPost = {
+                id: boardPosts.length + 1,
+                category,
+                title,
+                author: 'admin',
+                date: new Date().toISOString().split('T')[0],
+                answered: answer ? true : false
+            };
+            
+            boardPosts.push(newPost);
+            renderBoard();
+            closeModal('boardModal');
+            alert('등록되었습니다.');
+        }
+
+        function deleteBoard(postId) {
+            if (confirm('삭제하시겠습니까?')) {
+                boardPosts = boardPosts.filter(p => p.id !== postId);
+                renderBoard();
+                alert('삭제되었습니다.');
+            }
+        }
+
+        function searchBoard() {
+            const searchText = document.getElementById('boardSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('boardCategoryFilter').value;
+            
+            let filtered = boardPosts;
+            
+            if (categoryFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === categoryFilter);
+            }
+            
+            if (searchText) {
+                filtered = filtered.filter(p => p.title.toLowerCase().includes(searchText));
+            }
+            
+            const categoryNames = {
+                'faq': 'FAQ',
+                'qna': '상품 Q&A',
+                'inquiry': '문의'
+            };
+            
+            const table = document.getElementById('boardTable');
+            table.innerHTML = filtered.map(post => `
+                <tr>
+                    <td>${post.id}</td>
+                    <td>${categoryNames[post.category]}</td>
+                    <td>${post.title}</td>
+                    <td>${post.author}</td>
+                    <td>${post.date}</td>
+                    <td><span class="status-badge ${post.answered ? 'status-active' : 'status-pending'}">${post.answered ? '답변완료' : '답변대기'}</span></td>
+                    <td>
+                        <button class="btn btn-secondary btn-small" onclick="editBoard(${post.id})">수정</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteBoard(${post.id})">삭제</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== 유틸리티 =====
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function goToHome() {
+            window.location.href = 'onetouch-main.html';
+        }
+
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                alert('로그아웃되었습니다.');
+                window.location.href = 'onetouch-main.html';
+            }
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

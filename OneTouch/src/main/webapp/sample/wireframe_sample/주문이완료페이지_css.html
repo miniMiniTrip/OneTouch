@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 주문완료</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            letter-spacing: -1px;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .logo span {
+            color: #3949ab;
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        /* 스텝 인디케이터 */
+        .steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .step.active .step-number,
+        .step.completed .step-number {
+            background: #1a237e;
+            color: white;
+        }
+
+        .step-label {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .step.active .step-label,
+        .step.completed .step-label {
+            color: #1a237e;
+            font-weight: 600;
+        }
+
+        .step-arrow {
+            margin: 0 20px;
+            color: #e0e0e0;
+            font-size: 18px;
+        }
+
+        /* 완료 메시지 */
+        .complete-section {
+            background: white;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .complete-icon {
+            width: 80px;
+            height: 80px;
+            background: #1a237e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            color: white;
+        }
+
+        .complete-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 12px;
+        }
+
+        .complete-message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .order-number {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .order-number strong {
+            color: #1a237e;
+            font-weight: 600;
+        }
+
+        /* 섹션 */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a237e;
+        }
+
+        /* 주문 정보 */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* 주문 상품 */
+        .product-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .product-quantity {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .product-price {
+            text-align: right;
+        }
+
+        .product-price-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 결제 정보 */
+        .payment-summary {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .payment-row.total {
+            padding-top: 16px;
+            margin-top: 12px;
+            border-top: 2px solid #1a237e;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .payment-row.total .payment-label,
+        .payment-row.total .payment-value {
+            color: #1a237e;
+        }
+
+        /* 배송 정보 */
+        .address-box {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .address-box strong {
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* 버튼 */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1a237e;
+            border: 2px solid #1a237e;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f7fa;
+        }
+
+        /* 안내 메시지 */
+        .notice-box {
+            background: #fff3e0;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .notice-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f57c00;
+            margin-bottom: 12px;
+        }
+
+        .notice-list {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.8;
+            padding-left: 16px;
+        }
+
+        .notice-list li {
+            margin-bottom: 6px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .complete-section {
+                padding: 40px 20px;
+            }
+
+            .complete-title {
+                font-size: 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .steps {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="logo" onclick="goToHome()">
+            One<span>Touch</span>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <!-- 스텝 인디케이터 -->
+        <div class="steps">
+            <div class="step completed">
+                <span class="step-number">✓</span>
+                <span class="step-label">장바구니</span>
+            </div>
+            <span class="step-arrow">→</span>
+            <div class="step completed">
+                <span class="step-number">✓</span>
+                <span class="step-label">주문/결제</span>
+            </div>
+            <span class="step-arrow">→</span>
+            <div class="step active">
+                <span class="step-number">3</span>
+                <span class="step-label">주문완료</span>
+            </div>
+        </div>
+
+        <!-- 완료 메시지 -->
+        <div class="complete-section">
+            <div class="complete-icon">✓</div>
+            <h1 class="complete-title">주문이 완료되었습니다!</h1>
+            <p class="complete-message">
+                주문해주셔서 감사합니다.<br>
+                주문 내역은 마이페이지에서 확인하실 수 있습니다.
+            </p>
+            <div class="order-number">
+                주문번호: <strong id="orderNumber"></strong>
+            </div>
+        </div>
+
+        <!-- 주문 상품 -->
+        <div class="section">
+            <h2 class="section-title">주문 상품</h2>
+            <div id="orderProducts">
+                <!-- 상품이 동적으로 추가됩니다 -->
+            </div>
+        </div>
+
+        <!-- 결제 정보 -->
+        <div class="section">
+            <h2 class="section-title">결제 정보</h2>
+            <div class="info-row">
+                <span class="info-label">결제 수단</span>
+                <span class="info-value" id="paymentMethod"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">결제 일시</span>
+                <span class="info-value" id="paymentDate"></span>
+            </div>
+            
+            <div class="payment-summary">
+                <div class="payment-row">
+                    <span class="payment-label">상품금액</span>
+                    <span class="payment-value" id="productTotal"></span>
+                </div>
+                <div class="payment-row">
+                    <span class="payment-label">배송비</span>
+                    <span class="payment-value" id="deliveryFee"></span>
+                </div>
+                <div class="payment-row total">
+                    <span class="payment-label">총 결제금액</span>
+                    <span class="payment-value" id="totalAmount"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주문자 정보 -->
+        <div class="section">
+            <h2 class="section-title">주문자 정보</h2>
+            <div class="info-row">
+                <span class="info-label">이름</span>
+                <span class="info-value" id="ordererName"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">이메일</span>
+                <span class="info-value" id="ordererEmail"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">휴대폰</span>
+                <span class="info-value" id="ordererPhone"></span>
+            </div>
+        </div>
+
+        <!-- 배송지 정보 -->
+        <div class="section">
+            <h2 class="section-title">배송지 정보</h2>
+            <div class="address-box">
+                <strong id="recipientInfo"></strong>
+                <div id="deliveryAddress"></div>
+                <div id="deliveryRequest"></div>
+            </div>
+        </div>
+
+        <!-- 버튼 그룹 -->
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="goToCart()">🛒 장바구니</button>
+            <button class="btn btn-primary" onclick="goToHome()">🏠 메인으로</button>
+        </div>
+
+        <!-- 안내 메시지 -->
+        <div class="notice-box">
+            <div class="notice-title">📌 배송 안내</div>
+            <ul class="notice-list">
+                <li>주문하신 상품은 영업일 기준 2-3일 내 배송됩니다.</li>
+                <li>배송 시작 시 SMS와 이메일로 안내해 드립니다.</li>
+                <li>배송 조회는 마이페이지 > 주문/배송 조회에서 가능합니다.</li>
+                <li>교환/반품은 상품 수령 후 7일 이내에 가능합니다.</li>
+                <li>배송 관련 문의는 고객센터(1234-5678)로 연락 주세요.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderInfo();
+        });
+
+        // 주문 정보 로드
+        function loadOrderInfo() {
+            // URL 파라미터에서 정보 가져오기 (실제 토스페이먼츠 콜백)
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            const paymentKey = urlParams.get('paymentKey');
+            const amount = urlParams.get('amount');
+
+            // localStorage에서 주문 정보 가져오기
+            const orderInfo = JSON.parse(localStorage.getItem('currentOrder'));
+
+            if (!orderInfo && !orderId) {
+                // 샘플 데이터로 표시
+                displaySampleOrder();
+                return;
+            }
+
+            if (orderInfo) {
+                displayOrderInfo(orderInfo);
+            }
+
+            // 실제로는 서버에 결제 승인 요청
+            if (paymentKey && orderId && amount) {
+                console.log('결제 승인 요청:', { paymentKey, orderId, amount });
+                // 여기서 서버에 결제 승인 API 호출
+            }
+        }
+
+        // 주문 정보 표시
+        function displayOrderInfo(orderInfo) {
+            // 주문번호
+            document.getElementById('orderNumber').textContent = orderInfo.orderId;
+
+            // 주문 상품
+            const productsHtml = orderInfo.products.map(product => {
+                const totalPrice = product.price * product.quantity;
+                return `
+                    <div class="product-item">
+                        <div class="product-image">상품</div>
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-quantity">수량: ${product.quantity}개</div>
+                        </div>
+                        <div class="product-price">
+                            <div class="product-price-value">${totalPrice.toLocaleString()}원</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('orderProducts').innerHTML = productsHtml;
+
+            // 결제 정보
+            const paymentMethodNames = {
+                'CARD': '토스페이먼츠 (카드)',
+                'TRANSFER': '토스페이먼츠 (계좌이체)',
+                'VIRTUAL_ACCOUNT': '토스페이먼츠 (가상계좌)',
+                'MOBILE_PHONE': '토스페이먼츠 (휴대폰)'
+            };
+            document.getElementById('paymentMethod').textContent = paymentMethodNames[orderInfo.payment.method] || '토스페이먼츠';
+            document.getElementById('paymentDate').textContent = formatDateTime(orderInfo.timestamp);
+
+            // 결제 금액
+            const productTotal = orderInfo.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+            const deliveryFee = productTotal >= 50000 ? 0 : 3000;
+            const totalAmount = productTotal + deliveryFee;
+
+            document.getElementById('productTotal').textContent = productTotal.toLocaleString() + '원';
+            document.getElementById('deliveryFee').textContent = deliveryFee === 0 ? '무료' : deliveryFee.toLocaleString() + '원';
+            document.getElementById('totalAmount').textContent = totalAmount.toLocaleString() + '원';
+
+            // 주문자 정보
+            document.getElementById('ordererName').textContent = orderInfo.customer.name;
+            document.getElementById('ordererEmail').textContent = orderInfo.customer.email;
+            document.getElementById('ordererPhone').textContent = orderInfo.customer.phone;
+
+            // 배송지 정보
+            document.getElementById('recipientInfo').textContent = 
+                `${orderInfo.recipient.name} | ${orderInfo.recipient.phone}`;
+            document.getElementById('deliveryAddress').innerHTML = 
+                `(${orderInfo.recipient.zipCode}) ${orderInfo.recipient.address}<br>${orderInfo.recipient.addressDetail}`;
+            
+            if (orderInfo.recipient.deliveryRequest) {
+                document.getElementById('deliveryRequest').innerHTML = 
+                    `<div style="margin-top: 8px; color: #1a237e;">배송 요청: ${orderInfo.recipient.deliveryRequest}</div>`;
+            }
+
+            // 주문 완료 후 장바구니 비우기
+            localStorage.removeItem('cart');
+        }
+
+        // 샘플 주문 표시
+        function displaySampleOrder() {
+            const sampleOrder = {
+                orderId: 'ORDER_' + Date.now(),
+                products: [
+                    {
+                        name: '히아루론산 수분 보습 세럼',
+                        quantity: 2,
+                        price: 31500
+                    }
+                ],
+                customer: {
+                    name: '홍길동',
+                    email: 'hong@email.com',
+                    phone: '010-1234-5678'
+                },
+                recipient: {
+                    name: '홍길동',
+                    phone: '010-1234-5678',
+                    zipCode: '06234',
+                    address: '서울특별시 강남구 테헤란로 123',
+                    addressDetail: '101동 1001호',
+                    deliveryRequest: '부재시 문앞에 놓아주세요'
+                },
+                payment: {
+                    method: 'CARD',
+                    amount: 63000
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            displayOrderInfo(sampleOrder);
+        }
+
+        // 날짜/시간 포맷
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${year}.${month}.${day} ${hours}:${minutes}`;
+        }
+
+        // 장바구니로 이동
+        function goToCart() {
+            alert('장바구니 페이지로 이동합니다.');
+            // window.location.href = 'onetouch-cart.html';
+        }
+
+        // 메인으로 이동
+        function goToHome() {
+            window.location.href = 'onetouch-main.html';
+        }
+    </script>
+</body>
+</html>

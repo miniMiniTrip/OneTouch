@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 남성 뷰티 쇼핑몰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: #ffffff;
+            color: #333;
+        }
+
+        /* 헤더 스타일 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .top-left {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .top-left a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .top-left a:hover {
+            color: #1a237e;
+        }
+
+        .top-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .top-right a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .top-right a:hover {
+            color: #1a237e;
+        }
+
+        .top-right .divider {
+            color: #ddd;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a237e;
+            letter-spacing: -1px;
+            cursor: pointer;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .logo span {
+            color: #3949ab;
+        }
+
+        /* 검색 영역 */
+        .search-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 2px solid #1a237e;
+            border-radius: 25px;
+            padding: 10px 20px;
+            width: 500px;
+            background: white;
+            position: relative;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 5px;
+        }
+
+        .search-bar button {
+            background: none;
+            border: none;
+            color: #1a237e;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* 최근 검색어 드롭다운 */
+        .recent-searches {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-top: 5px;
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15);
+            display: none;
+            z-index: 100;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .recent-searches.active {
+            display: block;
+        }
+
+        .recent-searches-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .clear-all-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .clear-all-btn:hover {
+            color: #1a237e;
+        }
+
+        .recent-searches-list {
+            padding: 8px 0;
+        }
+
+        .recent-search-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .recent-search-item:hover {
+            background: #f5f7fa;
+        }
+
+        .recent-search-text {
+            flex: 1;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .recent-search-delete {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .recent-search-item:hover .recent-search-delete {
+            opacity: 1;
+        }
+
+        .recent-search-delete:hover {
+            color: #1a237e;
+        }
+
+        .no-recent-searches {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .icon-btn:hover {
+            color: #1a237e;
+        }
+
+        /* 네비게이션 */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 15px 0;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 15px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: #1a237e;
+        }
+
+        .nav-logo {
+            font-weight: bold;
+            font-size: 18px;
+            color: #1a237e !important;
+            cursor: pointer;
+        }
+
+        .nav-logo:hover {
+            color: #3949ab !important;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            transition: 0.3s;
+        }
+
+        /* 이벤트 배너 섹션 */
+        .event-banner-section {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            background: #1a237e;
+        }
+
+        .event-banner-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .event-banner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .event-banner.active {
+            opacity: 1;
+        }
+
+        .event-banner#banner1 {
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+        }
+
+        .event-banner#banner2 {
+            background: linear-gradient(135deg, #283593 0%, #3f51b5 100%);
+        }
+
+        .event-banner#banner3 {
+            background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+        }
+
+        .banner-content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 40px;
+        }
+
+        .banner-content h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .banner-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .banner-btn {
+            background: white;
+            color: #1a237e;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .banner-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .banner-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .banner-arrow {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .banner-dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        /* 모바일 햄버거 메뉴 */
+        .mobile-menu {
+            position: fixed;
+            right: -350px;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(26, 35, 126, 0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px;
+            background: #1a237e;
+            color: white;
+        }
+
+        .mobile-menu-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .mobile-menu-content {
+            padding: 0;
+        }
+
+        .mobile-menu-item {
+            display: block;
+            padding: 18px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
+        }
+
+        .mobile-menu-item:hover {
+            background: #e8eaf6;
+            color: #1a237e;
+            padding-left: 25px;
+        }
+
+        .mobile-menu-item strong {
+            color: #1a237e;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* 인기 해시태그 섹션 */
+        .hashtag-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+            padding: 60px 0;
+            margin-bottom: 60px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .hashtag-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .hashtag-title {
+            font-size: 28px;
+            color: #1a237e;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .hashtag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hashtag-btn {
+            background: white;
+            border: 2px solid #1a237e;
+            color: #1a237e;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hashtag-btn:hover {
+            background: #1a237e;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* 섹션 스타일 */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1a237e;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .view-more {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-more:hover {
+            color: #1a237e;
+        }
+
+        /* 제품 그리드 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            position: relative;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 20px rgba(26, 35, 126, 0.15);
+            transform: translateY(-5px);
+            border-color: #1a237e;
+            background: #ffffff;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px dashed #ddd;
+        }
+
+        .product-image span {
+            color: #999;
+            font-size: 14px;
+            z-index: 1;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-description {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+            height: 36px;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 섹션 네비게이션 화살표 */
+        .section-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .section-nav:hover {
+            background: #1a237e;
+            color: white;
+            border-color: #1a237e;
+        }
+
+        .section-nav.left {
+            left: -20px;
+        }
+
+        .section-nav.right {
+            right: -20px;
+        }
+
+        /* 푸터 */
+        .footer {
+            background: #263238;
+            color: #b0bec5;
+            margin-top: 100px;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #37474f;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: #b0bec5;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #3949ab;
+        }
+
+        .footer-links .divider {
+            color: #546e7a;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        /* 로그인 상태 표시 */
+        .login-status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #1a237e;
+            color: white;
+            border-radius: 4px;
+            display: none;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15);
+        }
+
+        .login-status.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 햄버거형 카테고리 사이드바 */
+        .category-sidebar {
+            position: fixed;
+            left: -350px;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(26, 35, 126, 0.1);
+        }
+
+        .category-sidebar.active {
+            left: 0;
+        }
+
+        .category-sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px;
+            background: #1a237e;
+            color: white;
+        }
+
+        .category-sidebar-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            opacity: 0.8;
+        }
+
+        .category-sidebar-content {
+            padding: 0;
+        }
+
+        .category-section {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .category-main-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a237e;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .category-main-item:hover {
+            background: #e8eaf6;
+        }
+
+        .category-main-item .arrow {
+            transition: transform 0.3s;
+            font-size: 20px;
+        }
+
+        .category-main-item.active .arrow {
+            transform: rotate(90deg);
+        }
+
+        .category-sub-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #fafafa;
+        }
+
+        .category-sub-list.active {
+            max-height: 500px;
+        }
+
+        .category-sub-item {
+            display: block;
+            padding: 12px 20px 12px 40px;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .category-sub-item:hover {
+            background: white;
+            color: #1a237e;
+            padding-left: 45px;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .recent-searches {
+                left: 0;
+                right: 0;
+            }
+
+            /* 네비게이션 숨기고 햄버거 표시 */
+            .nav-menu {
+                display: none !important;
+            }
+
+            .hamburger {
+                display: flex !important;
+            }
+
+            .top-right {
+                display: none !important;
+            }
+
+            .event-banner-section {
+                height: 300px;
+            }
+
+            .banner-content h2 {
+                font-size: 24px;
+            }
+
+            .banner-content p {
+                font-size: 16px;
+            }
+
+            .banner-btn {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+
+            .banner-controls {
+                bottom: 20px;
+            }
+
+            .banner-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .main-visual {
+                height: auto;
+                padding: 40px 20px;
+            }
+
+            .hashtag-section {
+                padding: 40px 0;
+            }
+
+            .hashtag-container {
+                padding: 0 20px;
+            }
+
+            .hashtag-title {
+                font-size: 22px;
+            }
+
+            .hashtag-btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 로그인 상태 알림 -->
+    <div class="login-status" id="loginStatus"></div>
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-container">
+            <!-- 상단 메뉴 -->
+            <div class="header-top">
+                <div class="top-left">
+                    <!-- 빈 공간 -->
+                </div>
+                <div class="top-right" id="headerAuthButtons">
+                    <a href="#" onclick="handleLogin(); return false;">로그인</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleSignup(); return false;">회원가입</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleMyPage(); return false;">마이페이지</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleCart(); return false;">🛒 장바구니</a>
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- 로고 -->
+            <div class="logo" onclick="location.reload()">
+                One<span>Touch</span>
+            </div>
+
+            <!-- 검색 영역 -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="검색어를 입력하세요" 
+                           onfocus="showRecentSearches()" 
+                           onkeypress="handleSearchKeypress(event)">
+                    <button onclick="performSearch()">🔍</button>
+                    
+                    <!-- 최근 검색어 드롭다운 -->
+                    <div class="recent-searches" id="recentSearches">
+                        <div class="recent-searches-header">
+                            <span>최근 검색어</span>
+                            <button class="clear-all-btn" onclick="clearAllSearches()">전체 삭제</button>
+                        </div>
+                        <div class="recent-searches-list" id="recentSearchesList">
+                            <div class="no-recent-searches">최근 검색어가 없습니다</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 네비게이션 -->
+            <nav class="nav-menu" id="navMenu">
+                <div class="nav-item nav-hamburger" onclick="toggleCategoryMenu()" style="cursor: pointer; font-size: 16px;">☰ 카테고리</div>
+                <div class="nav-item" onclick="showCategory('skincare')">스킨케어</div>
+                <div class="nav-item" onclick="showCategory('makeup')">메이크업/선케어</div>
+                <div class="nav-item" onclick="showCategory('cleansing')">클렌징케어</div>
+                <div class="nav-item" onclick="showDiagnosisPage()">피부진단</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 모바일 햄버거 메뉴 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <h3>OneTouch</h3>
+            <button class="close-btn" onclick="toggleMobileMenu()">✕</button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="#" onclick="location.reload(); toggleMobileMenu(); return false;" class="mobile-menu-item">
+                <strong>OneTouch 홈</strong>
+            </a>
+            <div style="border-top: 1px solid #f0f0f0; margin: 10px 0;"></div>
+            <a href="#" onclick="showCategory('skincare'); toggleMobileMenu(); return false;" class="mobile-menu-item">스킨케어</a>
+            <a href="#" onclick="showCategory('makeup'); toggleMobileMenu(); return false;" class="mobile-menu-item">메이크업/선케어</a>
+            <a href="#" onclick="showCategory('cleansing'); toggleMobileMenu(); return false;" class="mobile-menu-item">클렌징케어</a>
+            <a href="#" onclick="showDiagnosisPage(); toggleMobileMenu(); return false;" class="mobile-menu-item">피부진단</a>
+            <div style="border-top: 2px solid #1a237e; margin: 10px 0;"></div>
+            <div id="mobileAuthButtons">
+                <a href="#" onclick="handleLogin(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">로그인</a>
+                <a href="#" onclick="handleSignup(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">회원가입</a>
+                <a href="#" onclick="handleMyPage(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">마이페이지</a>
+                <a href="#" onclick="handleCart(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">🛒 장바구니</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모바일 메뉴 오버레이 -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- 햄버거형 카테고리 메뉴 -->
+    <div class="category-sidebar" id="categorySidebar">
+        <div class="category-sidebar-header">
+            <h3>카테고리</h3>
+            <button class="close-btn" onclick="toggleCategoryMenu()">✕</button>
+        </div>
+        <div class="category-sidebar-content">
+            <!-- 홈 섹션 -->
+            <div class="category-section">
+                <div class="category-main-item" onclick="location.reload(); toggleCategoryMenu();" style="background: #1a237e; color: white; cursor: pointer;">
+                    <span style="font-size: 18px; font-weight: bold;">🏠 홈</span>
+                </div>
+            </div>
+
+            <!-- 스킨케어 -->
+            <div class="category-section">
+                <div class="category-main-item" onclick="toggleSubMenu(this)">
+                    <span>🧴 스킨케어</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="category-sub-list">
+                    <a href="#" class="category-sub-item">에센스/세럼/앰플</a>
+                    <a href="#" class="category-sub-item">크림</a>
+                    <a href="#" class="category-sub-item">로션</a>
+                    <a href="#" class="category-sub-item">미스트/오일</a>
+                    <a href="#" class="category-sub-item">스킨케어세트</a>
+                    <a href="#" class="category-sub-item">스킨케어 디바이스</a>
+                    <a href="#" class="category-sub-item">시트팩</a>
+                    <a href="#" class="category-sub-item">패드</a>
+                    <a href="#" class="category-sub-item">코팩</a>
+                </div>
+            </div>
+
+            <!-- 메이크업/선케어 -->
+            <div class="category-section">
+                <div class="category-main-item" onclick="toggleSubMenu(this)">
+                    <span>☀️ 메이크업/선케어</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="category-sub-list">
+                    <a href="#" class="category-sub-item">선크림</a>
+                    <a href="#" class="category-sub-item">선스틱</a>
+                    <a href="#" class="category-sub-item">선쿠션</a>
+                    <a href="#" class="category-sub-item">선스프레이/선패치</a>
+                </div>
+            </div>
+
+            <!-- 클렌징케어 -->
+            <div class="category-section">
+                <div class="category-main-item" onclick="toggleSubMenu(this)">
+                    <span>🧼 클렌징케어</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="category-sub-list">
+                    <a href="#" class="category-sub-item">클렌징폼/젤</a>
+                    <a href="#" class="category-sub-item">오일/밤</a>
+                </div>
+            </div>
+
+            <!-- 헤어케어 -->
+            <div class="category-section">
+                <div class="category-main-item" onclick="toggleSubMenu(this)">
+                    <span>💇 헤어케어</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="category-sub-list">
+                    <a href="#" class="category-sub-item">샴푸/린스</a>
+                    <a href="#" class="category-sub-item">오일/컬크림</a>
+                </div>
+            </div>
+
+            <!-- 피부진단 -->
+            <div class="category-section">
+                <div class="category-main-item" onclick="showDiagnosisPage(); toggleCategoryMenu();" style="border-top: 2px solid #1a237e;">
+                    <span>🔍 피부진단</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleCategoryMenu()"></div>
+
+    <!-- 이벤트 배너 섹션 -->
+    <section class="event-banner-section">
+        <div class="event-banner-container">
+            <div class="event-banner active" id="banner1">
+                <div class="banner-content">
+                    <h2>🎯 AI 피부진단 무료 체험</h2>
+                    <p>나에게 딱 맞는 스킨케어 루틴을 찾아보세요</p>
+                    <button class="banner-btn" onclick="showDiagnosisPage()">지금 진단하기</button>
+                </div>
+            </div>
+            <div class="event-banner" id="banner2">
+                <div class="banner-content">
+                    <h2>🎁 신규 회원 특별 혜택</h2>
+                    <p>첫 구매 시 15% 할인 쿠폰 증정</p>
+                    <button class="banner-btn" onclick="handleSignup()">회원가입하기</button>
+                </div>
+            </div>
+            <div class="event-banner" id="banner3">
+                <div class="banner-content">
+                    <h2>💰 여름 시즌 특가 세일</h2>
+                    <p>선케어 제품 최대 30% 할인</p>
+                    <button class="banner-btn" onclick="showCategory('makeup')">특가 보러가기</button>
+                </div>
+            </div>
+        </div>
+        <div class="banner-controls">
+            <button class="banner-arrow prev" onclick="changeBanner(-1)">‹</button>
+            <div class="banner-dots">
+                <span class="dot active" onclick="showBanner(0)"></span>
+                <span class="dot" onclick="showBanner(1)"></span>
+                <span class="dot" onclick="showBanner(2)"></span>
+            </div>
+            <button class="banner-arrow next" onclick="changeBanner(1)">›</button>
+        </div>
+    </section>
+
+    <!-- 인기 해시태그 섹션 -->
+    <section class="hashtag-section">
+        <div class="hashtag-container">
+            <h2 class="hashtag-title">🔥 인기 해시태그</h2>
+            <div class="hashtag-list">
+                <button class="hashtag-btn" onclick="searchHashtag('수분크림')">#수분크림</button>
+                <button class="hashtag-btn" onclick="searchHashtag('민감성피부')">#민감성피부</button>
+                <button class="hashtag-btn" onclick="searchHashtag('선크림추천')">#선크림추천</button>
+                <button class="hashtag-btn" onclick="searchHashtag('모공케어')">#모공케어</button>
+                <button class="hashtag-btn" onclick="searchHashtag('남성스킨케어')">#남성스킨케어</button>
+                <button class="hashtag-btn" onclick="searchHashtag('여드름케어')">#여드름케어</button>
+                <button class="hashtag-btn" onclick="searchHashtag('두피케어')">#두피케어</button>
+                <button class="hashtag-btn" onclick="searchHashtag('올인원')">#올인원</button>
+                <button class="hashtag-btn" onclick="searchHashtag('신상품')">#신상품</button>
+                <button class="hashtag-btn" onclick="searchHashtag('베스트셀러')">#베스트셀러</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <!-- 베스트상품 섹션 -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">베스트상품</h2>
+                <a href="#" class="view-more">더보기 ›</a>
+            </div>
+            <div class="product-grid" style="position: relative;">
+                <button class="section-nav left">‹</button>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>BEST 1</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">스킨케어</div>
+                        <div class="product-name">히아루론 수분 세럼</div>
+                        <div class="product-description">깊은 보습과 진정 효과</div>
+                        <div class="product-price">32,000원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>BEST 2</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">클렌징</div>
+                        <div class="product-name">약산성 폼 클렌저</div>
+                        <div class="product-description">피부 장벽 보호</div>
+                        <div class="product-price">18,000원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>BEST 3</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">선케어</div>
+                        <div class="product-name">올인원 선 에센스</div>
+                        <div class="product-description">끈적임 없는 텍스처</div>
+                        <div class="product-price">26,000원</div>
+                    </div>
+                </div>
+                <button class="section-nav right">›</button>
+            </div>
+        </section>
+
+        <!-- 신상품 섹션 -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">신상품</h2>
+                <a href="#" class="view-more">더보기 ›</a>
+            </div>
+            <div class="product-grid" style="position: relative;">
+                <button class="section-nav left">‹</button>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>New product</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">스킨케어</div>
+                        <div class="product-name">세라마이드 크림</div>
+                        <div class="product-description">피부 장벽 강화</div>
+                        <div class="product-price">35,000원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>1+1 offer</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">헤어케어</div>
+                        <div class="product-name">볼륨 샴푸</div>
+                        <div class="product-description">모근 강화 케어</div>
+                        <div class="product-price">22,000원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>Hot product</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">스킨케어</div>
+                        <div class="product-name">비타민 토너</div>
+                        <div class="product-description">피부 톤 개선</div>
+                        <div class="product-price">28,000원</div>
+                    </div>
+                </div>
+                <button class="section-nav right">›</button>
+            </div>
+        </section>
+
+        <!-- 커뮤니티 세트 섹션 -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">커뮤니티 세트</h2>
+                <a href="#" class="view-more">더보기 ›</a>
+            </div>
+            <div class="product-grid" style="position: relative;">
+                <button class="section-nav left">‹</button>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>Best Set</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">세트 상품</div>
+                        <div class="product-name">민감성 피부 케어 세트</div>
+                        <div class="product-description">토너 + 크림 + 세럼</div>
+                        <div class="product-price">89,000원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>Hot Set</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">세트 상품</div>
+                        <div class="product-name">올인원 남성 그루밍 세트</div>
+                        <div class="product-description">스킨 + 로션 + 선크림</div>
+                        <div class="product-price">79,000원</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>Premium Set</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">세트 상품</div>
+                        <div class="product-name">안티에이징 풀 케어 세트</div>
+                        <div class="product-description">에센스 + 아이크림 + 크림</div>
+                        <div class="product-price">125,000원</div>
+                    </div>
+                </div>
+                <button class="section-nav right">›</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-top">
+                <!-- 푸터 링크 -->
+                <div class="footer-links">
+                    <a href="#" onclick="openTerms('company'); return false;">회사소개</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="openTerms('terms'); return false;">이용약관</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="openTerms('privacy'); return false;">개인정보취급방침</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="openCustomerService(); return false;">고객센터 (FAQ 게시판)</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 OneTouch - All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let isLoggedIn = false;
+        let currentBanner = 0;
+        const totalBanners = 3;
+        const MAX_RECENT_SEARCHES = 10;
+
+        // 페이지 로드 시 최근 검색어 로드
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecentSearches();
+        });
+
+        // 최근 검색어 로드
+        function loadRecentSearches() {
+            const searches = getRecentSearches();
+            updateRecentSearchesDisplay(searches);
+        }
+
+        // 최근 검색어 가져오기
+        function getRecentSearches() {
+            const searches = localStorage.getItem('recentSearches');
+            return searches ? JSON.parse(searches) : [];
+        }
+
+        // 최근 검색어 저장
+        function saveRecentSearch(keyword) {
+            if (!keyword.trim()) return;
+            
+            let searches = getRecentSearches();
+            
+            // 중복 제거
+            searches = searches.filter(item => item !== keyword);
+            
+            // 맨 앞에 추가
+            searches.unshift(keyword);
+            
+            // 최대 10개까지만 유지
+            if (searches.length > MAX_RECENT_SEARCHES) {
+                searches = searches.slice(0, MAX_RECENT_SEARCHES);
+            }
+            
+            localStorage.setItem('recentSearches', JSON.stringify(searches));
+            updateRecentSearchesDisplay(searches);
+        }
+
+        // 최근 검색어 표시 업데이트
+        function updateRecentSearchesDisplay(searches) {
+            const listElement = document.getElementById('recentSearchesList');
+            
+            if (searches.length === 0) {
+                listElement.innerHTML = '<div class="no-recent-searches">최근 검색어가 없습니다</div>';
+                return;
+            }
+            
+            listElement.innerHTML = searches.map((keyword, index) => `
+                <div class="recent-search-item" onclick="selectRecentSearch('${keyword}')">
+                    <span class="recent-search-text">${keyword}</span>
+                    <button class="recent-search-delete" onclick="event.stopPropagation(); deleteRecentSearch(${index})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        // 최근 검색어 드롭다운 표시
+        function showRecentSearches() {
+            const dropdown = document.getElementById('recentSearches');
+            dropdown.classList.add('active');
+            loadRecentSearches();
+        }
+
+        // 최근 검색어 드롭다운 숨기기
+        function hideRecentSearches() {
+            setTimeout(() => {
+                const dropdown = document.getElementById('recentSearches');
+                dropdown.classList.remove('active');
+            }, 200);
+        }
+
+        // 최근 검색어 선택
+        function selectRecentSearch(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            performSearch();
+        }
+
+        // 특정 최근 검색어 삭제
+        function deleteRecentSearch(index) {
+            let searches = getRecentSearches();
+            searches.splice(index, 1);
+            localStorage.setItem('recentSearches', JSON.stringify(searches));
+            updateRecentSearchesDisplay(searches);
+        }
+
+        // 전체 최근 검색어 삭제
+        function clearAllSearches() {
+            if (confirm('최근 검색어를 모두 삭제하시겠습니까?')) {
+                localStorage.removeItem('recentSearches');
+                updateRecentSearchesDisplay([]);
+            }
+        }
+
+        // 검색 실행
+        function performSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            if (!keyword) {
+                alert('검색어를 입력해주세요.');
+                return;
+            }
+            
+            saveRecentSearch(keyword);
+            hideRecentSearches();
+            
+            alert(`"${keyword}" 검색 결과 페이지로 이동합니다.`);
+            // 실제로는 검색 결과 페이지로 라우팅
+            // window.location.href = `/search?q=${encodeURIComponent(keyword)}`;
+        }
+
+        // Enter 키로 검색
+        function handleSearchKeypress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        // 검색 입력창 외부 클릭 시 드롭다운 닫기
+        document.addEventListener('click', function(event) {
+            const searchBar = document.querySelector('.search-bar');
+            const recentSearches = document.getElementById('recentSearches');
+            
+            if (!searchBar.contains(event.target)) {
+                recentSearches.classList.remove('active');
+            }
+        });
+
+        // 배너 자동 슬라이드
+        setInterval(() => {
+            changeBanner(1);
+        }, 5000);
+
+        // 배너 변경
+        function changeBanner(direction) {
+            currentBanner = (currentBanner + direction + totalBanners) % totalBanners;
+            showBanner(currentBanner);
+        }
+
+        // 특정 배너 표시
+        function showBanner(index) {
+            currentBanner = index;
+            const banners = document.querySelectorAll('.event-banner');
+            const dots = document.querySelectorAll('.dot');
+            
+            banners.forEach((banner, i) => {
+                if (i === index) {
+                    banner.classList.add('active');
+                } else {
+                    banner.classList.remove('active');
+                }
+            });
+
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // 메뉴 토글 (모바일) - 햄버거 클릭시 모바일 메뉴 열기
+        function toggleMenu() {
+            toggleMobileMenu();
+        }
+
+        // 모바일 메뉴 토글
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            mobileMenu.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+        }
+
+        // 햄버거형 카테고리 메뉴 토글 (제거됨 - 더 이상 사용 안함)
+        function toggleCategoryMenu() {
+            const sidebar = document.getElementById('categorySidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // 서브메뉴 토글
+        function toggleSubMenu(element) {
+            const subList = element.nextElementSibling;
+            const allSubLists = document.querySelectorAll('.category-sub-list');
+            const allMainItems = document.querySelectorAll('.category-main-item');
+            
+            // 다른 서브메뉴 닫기
+            allSubLists.forEach(list => {
+                if (list !== subList) {
+                    list.classList.remove('active');
+                }
+            });
+            
+            allMainItems.forEach(item => {
+                if (item !== element) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // 현재 서브메뉴 토글
+            subList.classList.toggle('active');
+            element.classList.toggle('active');
+        }
+
+        // 다른 곳 클릭시 드롭다운 닫기 (제거됨)
+        document.addEventListener('click', function(e) {
+            // 카테고리 사이드바 외부 클릭시 닫기는 오버레이로 처리
+        });
+
+        // 회원가입
+        function handleSignup() {
+            alert('회원가입 페이지로 이동합니다.');
+        }
+
+        // 로그인
+        function handleLogin() {
+            isLoggedIn = true;
+            updateHeaderButtons();
+            showLoginStatus('로그인되었습니다!');
+        }
+
+        // 로그아웃
+        function handleLogout() {
+            isLoggedIn = false;
+            updateHeaderButtons();
+            showLoginStatus('로그아웃되었습니다.');
+        }
+
+        // 헤더 버튼 업데이트
+        function updateHeaderButtons() {
+            const headerAuthButtons = document.getElementById('headerAuthButtons');
+            const mobileAuthButtons = document.getElementById('mobileAuthButtons');
+            
+            if (isLoggedIn) {
+                // 데스크톱 헤더 - 로그인 상태
+                headerAuthButtons.innerHTML = `
+                    <a href="#" onclick="handleMyPage(); return false;">마이페이지</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleCart(); return false;">🛒 장바구니</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleLogout(); return false;">로그아웃</a>
+                `;
+                // 모바일 메뉴 - 로그인 상태
+                mobileAuthButtons.innerHTML = `
+                    <a href="#" onclick="handleMyPage(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">마이페이지</a>
+                    <a href="#" onclick="handleCart(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">🛒 장바구니</a>
+                    <a href="#" onclick="handleLogout(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">로그아웃</a>
+                `;
+            } else {
+                // 데스크톱 헤더 - 비로그인 상태
+                headerAuthButtons.innerHTML = `
+                    <a href="#" onclick="handleLogin(); return false;">로그인</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleSignup(); return false;">회원가입</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleMyPage(); return false;">마이페이지</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="handleCart(); return false;">🛒 장바구니</a>
+                `;
+                // 모바일 메뉴 - 비로그인 상태
+                mobileAuthButtons.innerHTML = `
+                    <a href="#" onclick="handleLogin(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">로그인</a>
+                    <a href="#" onclick="handleSignup(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">회원가입</a>
+                    <a href="#" onclick="handleMyPage(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">마이페이지</a>
+                    <a href="#" onclick="handleCart(); toggleMobileMenu(); return false;" class="mobile-menu-item" style="color: #1a237e;">🛒 장바구니</a>
+                `;
+            }
+        }
+
+        // 장바구니
+        function handleCart() {
+            if (!isLoggedIn) {
+                const proceed = confirm('로그인이 필요한 서비스입니다.\n로그인하시겠습니까?');
+                if (proceed) {
+                    handleLogin();
+                }
+                return;
+            }
+            alert('장바구니 페이지로 이동합니다.');
+        }
+
+        // 마이페이지
+        function handleMyPage() {
+            if (!isLoggedIn) {
+                const proceed = confirm('로그인이 필요한 서비스입니다.\n로그인하시겠습니까?');
+                if (proceed) {
+                    handleLogin();
+                }
+                return;
+            }
+            alert('마이페이지로 이동합니다.');
+        }
+
+        // 로그인 상태 표시
+        function showLoginStatus(message) {
+            const status = document.getElementById('loginStatus');
+            status.textContent = message;
+            status.classList.add('show');
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 2000);
+        }
+
+        // 카테고리 페이지 표시
+        function showCategory(category) {
+            const categoryNames = {
+                'skincare': '스킨케어',
+                'makeup': '메이크업/선케어',
+                'cleansing': '클렌징케어'
+            };
+            alert(`${categoryNames[category]} 카테고리 페이지로 이동합니다.`);
+            // 실제로는 해당 카테고리 페이지로 라우팅
+            // window.location.href = `/category/${category}`;
+        }
+
+        // 해시태그 검색
+        function searchHashtag(tag) {
+            alert(`#${tag} 검색 결과 페이지로 이동합니다.`);
+            // 실제로는 해시태그 검색 결과 페이지로 라우팅
+            // window.location.href = `/search?tag=${tag}`;
+        }
+
+        // 피부진단 서비스 페이지 표시
+        function showDiagnosisPage() {
+            if (!isLoggedIn) {
+                const proceed = confirm('피부 진단 서비스는 회원만 이용 가능합니다.\n\n회원가입 또는 로그인하시겠습니까?');
+                if (proceed) {
+                    // 회원가입/로그인 페이지로 이동
+                    const choice = confirm('회원가입을 하시겠습니까?\n\n확인: 회원가입\n취소: 로그인');
+                    if (choice) {
+                        alert('회원가입 페이지로 이동합니다.');
+                        // 실제로는 회원가입 페이지로 라우팅
+                    } else {
+                        handleLogin(); // 로그인 처리
+                    }
+                }
+                return;
+            }
+            
+            // 로그인 상태면 진단 페이지로 이동
+            alert('피부 진단 서비스 페이지로 이동합니다.\n\n로그인 상태이므로 바로 진단을 시작할 수 있습니다.');
+            // 실제로는 진단 페이지로 라우팅
+            // window.location.href = '/diagnosis';
+        }
+
+        // 고객센터 페이지 열기 (로그인/비로그인 상태 표시)
+        function openCustomerService() {
+            const loginMsg = isLoggedIn ? '로그인 상태' : '비로그인 상태';
+            alert(`고객센터 FAQ 게시판으로 이동합니다.\n\n현재 상태: ${loginMsg}\n※ 로그인 여부와 관계없이 모든 고객이 이용 가능합니다.`);
+        }
+
+        // FAQ 게시판 열기 (openFAQ 함수 제거, openCustomerService 사용)
+
+        // 약관 페이지 열기
+        function openTerms(type) {
+            const titles = {
+                'company': '회사소개',
+                'terms': '이용약관',
+                'privacy': '개인정보취급방침'
+            };
+            alert(`${titles[type]} 페이지로 이동합니다.`);
+        }
+    </script>
+</body>
+</html>

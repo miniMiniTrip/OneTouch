@@ -13,6 +13,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMemEmailOne" resultType="MemVo" parameterType="String">
 		select * from otdb.mem where mem_email=#{mem_email}
 	</select>
+	<!-- 회원정보 mem_idx로 1개 정보 조회해오기 -->
+	<select id="selectMemIdxOne" resultType="MemVo" parameterType="int">
+		select * from otdb.mem where mem_idx=#{mem_idx}
+	</select>
 	
 	<!-- 회원가입등록 -->
 	<insert id="insert" parameterType="MemVo">
@@ -31,5 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								,now()
 		)
 	</insert>
+	
+	
 	
 </mapper>
