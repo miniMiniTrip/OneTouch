@@ -1,5 +1,6 @@
 package com.onetouch.interceptor;
 
+import java.net.URLEncoder;
 import java.util.Enumeration;
 
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +24,6 @@ public class LoggerInterceptor implements HandlerInterceptor {
 		log.info("Request URI : "+request.getRequestURI());
 		
 		MemVo user=(MemVo)request.getSession().getAttribute("user");
-		
 		if(user==null) {
 			String url=request.getRequestURL().toString();
 			
@@ -41,9 +41,11 @@ public class LoggerInterceptor implements HandlerInterceptor {
 			}
 			
 			String full_url=sb.toString();
+			//full_url=URLEncoder.encode(full_url,"UTF-8");
+			System.out.println("full_url:"+full_url);
 			
-			//response.sendRedirect("../user/login?usersession=logout&url="+full_url);
-			return HandlerInterceptor.super.preHandle(request, response, handler);
+			response.sendRedirect(request.getContextPath()+"/user/login?usersession=logout&url="+full_url);
+			return false;
 		}
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
