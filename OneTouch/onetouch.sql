@@ -57,6 +57,7 @@ CREATE TABLE category (
 --    ,CONSTRAINT chk_category_name_not_empty CHECK (CHAR_LENGTH(TRIM(category_name)) > 0)
 ) COMMENT '카테고리';
 
+
 -- 녹화용
 -- ========================================
 -- 3. 상품 테이블
