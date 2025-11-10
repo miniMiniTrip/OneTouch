@@ -41,10 +41,34 @@ public class ProductController {
     	return "product/product_list_admin";
     }
     
+    //상품보기
+    @RequestMapping("/product/view.do")
+	public String view(int product_idx,Model model) {
+		
+			List<CategoryVo> category_list	= category_dao.selectList();
+			
+			ProductVo vo = product_dao.selectOne(product_idx);
+				
+			// request binding
+			model.addAttribute("vo", vo);
+			model.addAttribute("category_list", category_list);
+			System.out.println("	[ProductController] product/product_content.jsp ");	
+		
+		return "product/product_content";
+	}
     
-    ///view.do?product_idx=1  -> 현재 소개에서 상품등록 클릭시
-    
-    
+	//상품등록폼띄우기
+	@RequestMapping("/product/insert_form.do")
+	public String insert_form(Model model) {
+		
+		List<CategoryVo> category_list	= category_dao.selectList();
+		
+		model.addAttribute("category_list", category_list);
+		
+		return "product/product_insert_form";
+	}
+	
+	
     
     
     
