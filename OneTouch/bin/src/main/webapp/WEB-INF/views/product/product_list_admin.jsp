@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>상품_OneTouch</title>
+    <title>상품 목록 - OneTouch</title>
     <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
@@ -17,94 +17,314 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
     
-    <!-- 네이비 컬러 테마의 추가 CSS -->
+    <!-- 최적화된 CSS -->
     <style>
         :root {
-            --navy-color: #1e2b5c;
-            --navy-light: #2d3f79;
-            --navy-dark: #152042;
+            --navy-color: #38456e; /* 더 연한 네이비 색상 */
+            --navy-light: #4a5883;
+            --navy-pale: #eef0f6;
             --accent-color: #F6911E;
-            --light-color: #f8f9fa;
-            --yellow-accent: #ffdd73;
+            --light-gray: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-gray: #6c757d;
         }
         
         body {
-            background-color: #f5f7fa;
+            background-color: var(--light-gray);
+            font-family: 'Noto Sans KR', sans-serif;
         }
         
-        /* 페이지 헤더 스타일 - 네이비 색상 */
+        /* 페이지 헤더 스타일 - 연한 네이비 색상 */
         .page-header {
-            padding: 20px 0;
-            margin-bottom: 30px;
+            padding: 12px 0;
+            margin-bottom: 25px;
             background-color: var(--navy-color);
             position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .page-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 500;
             margin: 0;
             color: white;
             text-align: center;
+            letter-spacing: 0.5px;
         }
         
-        /* 상품 섹션 스타일 개선 */
+        /* 상품 제목 섹션 */
+        .product-title-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--navy-color);
+        }
+        
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-title-icon {
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--navy-pale);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .product-title-icon i {
+            color: var(--navy-color);
+            font-size: 16px;
+        }
+        
+        /* 섹션 스타일 */
         .section {
-            padding: 40px 0;
+            padding: 25px 0 40px;
         }
         
         /* 사이드바 스타일 개선 */
         .product-sidebar {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            padding: 25px;
-            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            padding: 18px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .single-widget {
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 18px;
+        }
+        
+        .single-widget:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
         }
         
         .single-widget h3 {
             color: var(--navy-color);
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 500;
             margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .single-widget h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 40px;
+            height: 1px;
+            background-color: var(--navy-color);
+        }
+        
+        .list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .list li:last-child {
+            border-bottom: none;
+        }
+        
+        .list li a {
+            color: var(--text-gray);
+            transition: all 0.2s ease;
+            font-size: 14px;
         }
         
         .list li a:hover, .list li a.active {
-            color: var(--accent-color);
+            color: var(--navy-color);
+            padding-left: 5px;
+        }
+        
+        /* 검색창 스타일 개선 */
+        .search form {
+            position: relative;
+            margin-top: 10px;
+        }
+        
+        .search input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        
+        .search input:focus {
+            border-color: var(--navy-light);
+            box-shadow: 0 0 0 3px rgba(56, 69, 110, 0.1);
+            outline: none;
+        }
+        
+        .search button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            border: none;
+            background-color: var(--navy-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search button:hover {
+            background-color: var(--navy-light);
+        }
+        
+        /* 해시태그 스타일 개선 */
+        .badge.bg-primary {
+            background-color: var(--navy-pale) !important;
+            color: var(--navy-color) !important;
+            transition: all 0.2s ease;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-weight: 400;
+        }
+        
+        .badge.bg-primary:hover {
+            background-color: var(--navy-light) !important;
+            color: white !important;
+        }
+        
+        .badge.bg-light {
+            background-color: var(--navy-pale) !important;
+            color: var(--navy-color) !important;
+            transition: all 0.2s ease;
+            border-radius: 15px;
+        }
+        
+        .badge.bg-light:hover {
+            background-color: var(--light-gray) !important;
+        }
+        
+        /* 가격 범위 슬라이더 개선 */
+        .range-inner {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .range-inner input[type="text"] {
+            text-align: right;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin: 0 10px;
+            width: 120px;
+            background-color: var(--light-gray);
+        }
+        
+        .form-range {
+            margin: 10px 0;
+        }
+        
+        .form-range::-webkit-slider-thumb {
+            background: var(--navy-color);
+        }
+        
+        /* 체크박스 스타일 개선 */
+        .form-check {
+            margin-bottom: 8px;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--navy-color);
+            border-color: var(--navy-color);
+        }
+        
+        .form-check-label {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+        
+        /* 필터 초기화 버튼 */
+        .btn-outline-secondary {
+            color: var(--navy-color);
+            border-color: var(--navy-color);
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--navy-color);
+            color: white;
         }
         
         /* 메인 컨텐츠 영역 스타일 개선 */
         .product-grids-head {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             padding: 20px;
-            border: 1px solid #eaeaea;
+            border: 1px solid var(--border-color);
         }
         
         .product-grid-topbar {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
             margin-bottom: 20px;
+        }
+        
+        /* 상품 개수 표시 - 더 작게 */
+        .product-sorting label {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .product-sorting select {
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            padding: 7px 15px;
+            font-size: 14px;
+        }
+        
+        .total-show-product {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-top: 8px;
+            opacity: 0.8;
         }
         
         /* 상품 카드 스타일 개선 */
         .single-product {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             transition: all 0.3s ease;
             margin-bottom: 25px;
             overflow: hidden;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
         }
         
         .single-product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
         
         .product-image {
@@ -112,25 +332,176 @@
             overflow: hidden;
         }
         
+        .product-image img {
+            transition: transform 0.5s ease;
+        }
+        
+        .single-product:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .sale-tag, .new-tag {
+            position: absolute;
+            top: 15px;
+            z-index: 2;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 400;
+            font-size: 12px;
+        }
+        
         .sale-tag {
-            background-color: #ff3a3a;
+            left: 15px;
+            background-color: #ff6b6b;
+            color: white;
         }
         
         .new-tag {
-            background-color: var(--accent-color);
+            right: 15px;
+            background-color: var(--navy-color);
+            color: white;
+        }
+        
+        .product-image .button {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .single-product:hover .button {
+            bottom: 15px;
+            opacity: 1;
+        }
+        
+        .product-image .button .btn {
+            background-color: var(--navy-color);
+            color: white;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        
+        .product-image .button .btn:hover {
+            background-color: var(--navy-light);
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .category {
+            display: inline-block;
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-bottom: 5px;
+        }
+        
+        .product-info h4.title {
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.3;
+            height: 42px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
         
         .product-info h4.title a {
-            color: var(--navy-color);
+            color: #333;
+            transition: all 0.2s ease;
         }
         
         .product-info h4.title a:hover {
-            color: var(--accent-color);
+            color: var(--navy-color);
         }
         
-        /* 페이지네이션 */
+        /* 별점 스타일 개선 */
+        .review {
+            margin-bottom: 10px;
+        }
+        
+        .review li {
+            display: inline-block;
+            margin-right: 2px;
+        }
+        
+        .review li i {
+            color: #ddd;
+            font-size: 14px;
+        }
+        
+        .review li i.lni-star-filled {
+            color: #FFCC00;
+        }
+        
+        .review li span {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-left: 5px;
+        }
+        
+        /* 가격 스타일 개선 */
+        .price {
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        
+        .price span {
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .discount-price {
+            text-decoration: line-through;
+            color: #888 !important;
+            font-size: 13px !important;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+        
+        /* 페이지네이션 스타일 개선 */
+        .pagination {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .pagination-list {
+            display: inline-flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pagination-list li {
+            margin: 0 3px;
+        }
+        
+        .pagination-list li a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            border-radius: 4px;
+            background-color: white;
+            color: var(--text-gray);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
         .pagination-list li.active a, .pagination-list li a:hover {
             background-color: var(--navy-color);
+            color: white;
+            border-color: var(--navy-color);
         }
         
         /* 관리자 버튼 스타일 */
@@ -139,63 +510,103 @@
             bottom: 30px;
             right: 30px;
             z-index: 999;
-            background-color: var(--navy-color);
-            color: white;
-            border: none;
+            background-color: white;
+            color: var(--navy-color);
+            border: 1px solid var(--navy-color);
             border-radius: 50px;
-            padding: 12px 25px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border: 2px solid var(--yellow-accent);
+            gap: 8px;
+            transition: all 0.3s ease;
         }
         
         .admin-button:hover {
-            background-color: var(--navy-light);
+            background-color: var(--navy-color);
             color: white;
         }
         
         .admin-button i {
-            font-size: 18px;
-            color: var(--yellow-accent);
-        }
-        
-        /* 배지 스타일 */
-        .badge.bg-primary {
-            background-color: var(--accent-color) !important;
-        }
-        
-        .badge.bg-light {
-            background-color: #f0f2f5 !important;
-            color: var(--navy-dark) !important;
-        }
-        
-        /* 버튼 스타일 */
-        .btn-primary {
-            background-color: var(--navy-color);
-            border-color: var(--navy-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--navy-light);
-            border-color: var(--navy-light);
-        }
-        
-        .button .btn {
-            background-color: var(--navy-color);
-        }
-        
-        .button .btn:hover {
-            background-color: var(--accent-color);
+            font-size: 16px;
         }
         
         /* 탭 네비게이션 */
+        .nav-tabs .nav-link {
+            border: none;
+            padding: 8px 15px;
+            color: var(--text-gray);
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        
         .nav-tabs .nav-link.active {
+            color: white;
+            background-color: var(--navy-color);
+        }
+        
+        /* 목록 뷰 스타일 */
+        #nav-list .single-product {
+            margin-bottom: 15px;
+        }
+        
+        #nav-list .product-image {
+            height: 180px;
+        }
+        
+        #nav-list .product-info {
+            padding: 15px;
+        }
+        
+        #nav-list .text-muted {
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* 검색 결과 없음 박스 크게 */
+        .no-products-alert {
+            padding: 40px 25px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .no-products-alert i {
+            font-size: 4rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+        
+        .no-products-alert h4 {
+            font-size: 22px;
+            margin-bottom: 15px;
             color: var(--navy-color);
-            border-color: var(--navy-color);
+        }
+        
+        .no-products-alert p {
+            font-size: 16px;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+        
+        .no-products-alert .btn {
+            padding: 10px 25px;
+            background-color: var(--navy-color);
+            border: none;
+        }
+        
+        .no-products-alert .btn:hover {
+            background-color: var(--navy-light);
         }
     </style>
 </head>
@@ -239,6 +650,16 @@
     <!-- Start Product Grids -->
     <section class="product-grids section">
         <div class="container">
+            <!-- 상품 제목 섹션 -->
+            <div class="product-title-section">
+                <div class="product-title">
+                    <div class="product-title-icon">
+                        <i class="lni lni-package"></i>
+                    </div>
+                    상품 목록
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col-lg-3 col-12">
                     <!-- Start Product Sidebar -->
@@ -277,8 +698,7 @@
                             <div class="hashtag-container">
                                 <c:forEach var="hashtag" items="${popularHashtags}">
                                     <a href="${pageContext.request.contextPath}/product/list?hashtagId=${hashtag.hashtagId}" 
-                                       class="badge bg-primary me-1 mb-2" 
-                                       style="font-size: 0.9rem; padding: 0.5rem 0.8rem;">
+                                       class="badge bg-primary me-1 mb-2">
                                         #${hashtag.name}
                                     </a>
                                 </c:forEach>
@@ -504,15 +924,15 @@
                                         </div>
                                     </c:forEach>
                                     
-                                    <!-- 상품이 없을 때 -->
+                                    <!-- 상품이 없을 때 - 더 크고 세련되게 -->
                                     <c:if test="${empty products}">
                                         <div class="col-12">
-                                            <div class="alert alert-info text-center" role="alert">
-                                                <i class="lni lni-sad" style="font-size: 3rem;"></i>
-                                                <h4 class="mt-3">검색 결과가 없습니다</h4>
+                                            <div class="no-products-alert">
+                                                <i class="lni lni-search"></i>
+                                                <h4>검색 결과가 없습니다</h4>
                                                 <p>다른 키워드나 필터로 다시 검색해보세요.</p>
                                                 <a href="${pageContext.request.contextPath}/product/list" 
-                                                   class="btn btn-primary mt-2">
+                                                   class="btn btn-primary">
                                                     전체 상품 보기
                                                 </a>
                                             </div>
@@ -723,7 +1143,7 @@
         
         priceFilters.forEach(cb => cb.addEventListener('change', applyFilters));
         skinFilters.forEach(cb => cb.addEventListener('change', applyFilters));
-        */
+        
     </script>
 </body>
 </html>

@@ -1,74 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html class="no-js" lang="ko">
+<html lang="ko">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 - OneTouch</title>
-    <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
-
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
-     <style>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-		/* 로그인 섹션 전체 중앙정렬 */
-		.account-login.section {
-		    min-height: 100vh; /* 화면 전체 높이 */
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		    background: #f8f9fa;
-		}
-		
-		/* Bootstrap container 여백 제거 */
-		.account-login .container {
-		    padding-left: 0 !important;
-		    padding-right: 0 !important;
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		}
-		
-		/* row도 중앙정렬 보정 */
-		.account-login .row {
-		    margin-left: 0 !important;
-		    margin-right: 0 !important;
-		    justify-content: center;
-		    width: 100%;
-		}
-		
-		
-		/* 열 내부를 완전 중앙으로 */
-		.account-login .col-lg-6,
-		.account-login .col-md-10,
-		.account-login .col-12 {
-		    display: flex;
-		    justify-content: center;
-		}
-		
-		
-		/* 로그인 박스 중앙 고정 */
-		.login-container {
-		    background: white;
-		    border-radius: 20px;
-		    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-		    width: 100%;
-		    max-width: 450px;
-		    padding: 50px 40px;
-		    margin: 0 auto; /* 가운데 정렬 핵심 */
-		}
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 50px 40px;
+        }
 
         .logo-section {
             text-align: center;
@@ -303,53 +265,8 @@
             }
         }
     </style>
-
 </head>
-
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="preloader-inner">
-            <div class="preloader-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-    <!-- /End Preloader -->
-
-    <!-- Start Header Area -->
-	<%@include file="../common/header.jsp" %>
-    <!-- End Header Area -->
-
-    <!-- Start Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="breadcrumbs-content">
-                        <h1 class="page-title">로그인</h1>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-nav">
-                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
-                        <li>로그인</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumbs -->
-
-    
-    
-    <!-- 로그인 form 시작부분 -->
-     <div class="account-login section">
-        <div class="container">
-          <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-10  col-12">
-                
     <div class="login-container">
         <div class="logo-section">
             <a href="index.jsp" class="logo">One<span>Touch</span></a>
@@ -375,13 +292,13 @@
             </div>
         </c:if>
 
-        <form action="${pageContext.request.contextPath}/user/login" method="post" id="loginForm">
+        <form action="loginProcess.do" method="post" id="loginForm">
             <!-- 아이디 -->
             <div class="form-group">
                 <label class="form-label">아이디</label>
                 <input type="text" 
-                       name="mem_id" 
-                       id="mem_id" 
+                       name="userId" 
+                       id="userId" 
                        class="form-input" 
                        placeholder="아이디를 입력하세요"
                        value="${cookie.savedUserId.value}"
@@ -392,8 +309,8 @@
             <div class="form-group">
                 <label class="form-label">비밀번호</label>
                 <input type="password" 
-                       name="mem_pwd_check" 
-                       id="mem_pwd_check" 
+                       name="password" 
+                       id="password" 
                        class="form-input" 
                        placeholder="비밀번호를 입력하세요"
                        required>
@@ -418,7 +335,7 @@
         </form>
 
         <!-- 소셜 로그인 -->
-<!--         <div class="divider">
+        <div class="divider">
             <span>또는</span>
         </div>
 
@@ -432,49 +349,13 @@
             <button class="social-btn google" onclick="loginGoogle()">
                 🔍 구글 로그인
             </button>
-        </div> -->
+        </div>
 
         <!-- 회원가입 링크 -->
         <div class="register-link">
             아직 회원이 아니신가요? <a href="register.jsp">회원가입</a>
         </div>
     </div>
-    
-    </div>
-    </div>
-    </div>
-    </div>
-    
-
-    <!-- Start Footer Area -->
-	<%@include file="../common/footer.jsp"%>
-    <!-- End Footer Area -->
-
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top">
-        <i class="lni lni-chevron-up"></i>
-    </a>
-
-    <!-- ========================= JS here ========================= -->
-    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-    
-    <script>
-        // 프리로더 제거
-        window.addEventListener('load', function() {
-            const preloader = document.querySelector('.preloader');
-            if (preloader) {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
-            }
-        });
-    </script>
-    
-    
 
     <script>
         // 카카오 로그인
@@ -498,19 +379,5 @@
             // location.href = 'oauth/google';
         }
     </script>
-    <script type="text/javascript">
-window.onload = function(){
-	 setTimeout(function(){
-		if("${mem_id_check}"=="false"){
-			
-		alert("아이디가 틀렸습니다.");
-		}
-		if("${mem_pw_check}"=="false"){
-			
-		alert("비밀번호가 틀렸습니다.");
-		}
-	},100);
-};
-</script>
 </body>
 </html>

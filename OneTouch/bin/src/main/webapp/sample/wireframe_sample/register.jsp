@@ -1,26 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html class="no-js" lang="ko">
+<html lang="ko">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 - OneTouch</title>
-    <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
-
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
-    
-    <!-- Daum 우편번호 API -->
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
         .register-container {
             background: white;
             border-radius: 20px;
@@ -273,61 +275,9 @@
             }
         }
     </style>
-   
 </head>
-
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="preloader-inner">
-            <div class="preloader-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-    <!-- /End Preloader -->
-
-    <!-- Start Header Area -->
-    <c:import url="../common/header.jsp" />
-    <!-- End Header Area -->
-
-    <!-- Start Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="breadcrumbs-content">
-                        <h1 class="page-title">회원가입</h1>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-nav">
-                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
-                        <li>회원가입</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumbs -->
-
-    <!-- Start Account Register Area -->
-    <div class="account-login section">
-        <div class="container">
-            <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
-                <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-12">
-        <form action="${pageContext.request.contextPath}/user/insert" method="post" id="registerForm" onsubmit="return validateForm()">
-
-                            <!-- 에러 메시지 -->
-                            <c:if test="${not empty errorMessage}">
-                                <div class="alert alert-danger" role="alert">
-                                    ${errorMessage}
-                                </div>
-                            </c:if>
-
-
-								 <div class="register-container">
+    <div class="register-container">
         <div class="logo-section">
             <a href="index.jsp" class="logo">One<span>Touch</span></a>
         </div>
@@ -335,18 +285,19 @@
         <h2 class="register-title">회원가입</h2>
         <p class="register-subtitle">OneTouch와 함께 시작하세요</p>
 
+        <form action="registerProcess.do" method="post" id="registerForm" onsubmit="return validateForm()">
             <!-- 아이디 -->
             <div class="form-group">
                 <label class="form-label">아이디 <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <input type="text" 
-                           name="mem_id" 
-                           id="mem_id" 
+                           name="userId" 
+                           id="userId" 
                            class="form-input" 
                            placeholder="영문, 숫자 조합 4-20자"
                            maxlength="20"
                            required>
-                    <button type="button" class="check-btn" onclick="checkUserId();">중복확인</button>
+                    <button type="button" class="check-btn" onclick="checkUserId()">중복확인</button>
                 </div>
                 <div class="error-message" id="userIdError"></div>
                 <div class="success-message" id="userIdSuccess"></div>
@@ -356,8 +307,8 @@
             <div class="form-group">
                 <label class="form-label">비밀번호 <span class="required">*</span></label>
                 <input type="password" 
-                       name="mem_pw" 
-                       id="mem_pw" 
+                       name="password" 
+                       id="password" 
                        class="form-input" 
                        placeholder="영문, 숫자, 특수문자 조합 8-20자"
                        maxlength="20"
@@ -391,8 +342,8 @@
             <div class="form-group">
                 <label class="form-label">이름 <span class="required">*</span></label>
                 <input type="text" 
-                       name="mem_name" 
-                       id="mem_name" 
+                       name="userName" 
+                       id="userName" 
                        class="form-input" 
                        placeholder="실명을 입력하세요"
                        maxlength="20"
@@ -403,25 +354,21 @@
             <!-- 이메일 -->
             <div class="form-group">
                 <label class="form-label">이메일 <span class="required">*</span></label>
-              	<div class="input-wrapper">
                 <input type="email" 
-                       name="mem_email" 
-                       id="mem_email" 
+                       name="email" 
+                       id="email" 
                        class="form-input" 
                        placeholder="example@email.com"
                        required>
-                <button type="button" class="check-btn" onclick="checkUserEmail();">중복확인</button>
-               	</div>
-	           	<div class="error-message" id="userEmailError"></div>
-                  <div class="success-message" id="userEmailSuccess"></div>
+                <div class="error-message" id="emailError"></div>
             </div>
 
             <!-- 휴대폰 -->
             <div class="form-group">
                 <label class="form-label">휴대폰 번호 <span class="required">*</span></label>
                 <input type="tel" 
-                       name="mem_phone" 
-                       id="mem_phone" 
+                       name="phone" 
+                       id="phone" 
                        class="form-input" 
                        placeholder="010-1234-5678"
                        maxlength="13"
@@ -429,48 +376,6 @@
                        required>
                 <div class="error-message" id="phoneError"></div>
             </div>
-            
-			<!-- 생년월일 -->
-            <div class="form-group">
-                <label class="form-label">생년월일<span class="required">*</span></label>
-                <input class="form-control" type="date" id="mem_birth" name="mem_birth" required>
-            </div>
-            
-            <!-- 주소정보 -->
-            <div class="form-group">
-	            <label class="form-label">기본 배송지<span class="required" >*</span></label>
-            </div>
-
-             <!-- 우편번호 -->
-             <div class="col-lg-4 col-12">
-                 <div class="form-group">
-                     <label for="zipCode">우편번호</label>
-                     <div class="input-group">
-                         <input class="form-control" type="text" id="mem_postal" name="mem_postal" 
-                                placeholder="우편번호" readonly required>
-                         <button type="button" class="btn btn-outline-primary" 
-                                 id="searchAddressBtn" onclick="addrSearch();">검색</button>
-                     </div>
-                 </div>
-             </div>
-
-             <!-- 기본 주소 -->
-             <div class="col-12">
-                 <div class="form-group">
-                     <label for="address">기본 주소</label>
-                     <input class="form-control" type="text" id="mem_addr" name="mem_addr" 
-                            placeholder="기본 주소" readonly required>
-                 </div>
-             </div>
-
-             <!-- 상세 주소 -->
-             <div class="col-12">
-                 <div class="form-group">
-                     <label for="addressDetail">상세 주소</label>
-                     <input class="form-control" type="text" id="mem_addr_more" name="mem_addr_more" 
-                            placeholder="상세 주소 (예: 101동 1001호)" required>
-                 </div>
-             </div>
 
             <!-- 약관 동의 -->
             <div class="checkbox-group">
@@ -508,38 +413,15 @@
             <div class="login-link">
                 이미 계정이 있으신가요? <a href="login.jsp">로그인</a>
             </div>
+        </form>
     </div>
-								
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Account Register Area -->
-
-
-
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top">
-        <i class="lni lni-chevron-up"></i>
-    </a>
-
-    <!-- ========================= JS here ========================= -->
-    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-    
-  
-    
-   <!--  -->
 
     <script>
         let userIdChecked = false;
-		let userEmailChecked= false;
+
         // 아이디 중복 확인
         function checkUserId() {
-            const userId = document.getElementById('mem_id').value;
+            const userId = document.getElementById('userId').value;
             const errorMsg = document.getElementById('userIdError');
             const successMsg = document.getElementById('userIdSuccess');
 
@@ -560,15 +442,10 @@
             }
 
             // AJAX로 서버에 중복 확인
-            fetch('/user/idCheck',
-            		{
-            			method:'post'
-            			,headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-            			,body:'mem_id='+encodeURIComponent(userId)
-            		})
+            fetch('checkUserId.do?userId=' + userId)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.idCheck) {
+                    if (data.available) {
                         successMsg.textContent = '사용 가능한 아이디입니다.';
                         successMsg.classList.add('show');
                         errorMsg.classList.remove('show');
@@ -586,58 +463,10 @@
                     errorMsg.classList.add('show');
                 });
         }
-        
-        // 이메일 중복 확인
-        function checkUserEmail(){
-        	const userEmail=document.getElementById('mem_email').value;
-        	const errorMsg = document.getElementById('userEmailError');
-        	const successMsg = document.getElementById('userEmailSuccess');
-        	
-        	if(!userEmail){
-    	       errorMsg.textContent = '이메일을 입력하세요.';
-               errorMsg.classList.add('show');
-               successMsg.classList.remove('show');
-               return;
-        	}
-        	// 이메일 유효성 검사
-        	const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        	if (!emailPattern.test(userEmail)) {
-        	    errorMsg.textContent = '유효한 이메일 주소를 입력하세요.';
-        	    errorMsg.classList.add('show');
-        	    successMsg.classList.remove('show');
-        	    return;
-        	}
-       	    // AJAX로 서버에 중복 확인
-            fetch('/user/emailCheck',
-            		{
-            			method:'post'
-            			,headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-            			,body:'mem_email='+encodeURIComponent(userEmail)
-            		})
-                .then(response => response.json())
-                .then(data => {
-                    if (data.emailCheck) {
-                        successMsg.textContent = '사용 가능한 이메일입니다.';
-                        successMsg.classList.add('show');
-                        errorMsg.classList.remove('show');
-                        userIdChecked = true;
-                    } else {
-                        errorMsg.textContent = '이미 사용중인 이메일입니다.';
-                        errorMsg.classList.add('show');
-                        successMsg.classList.remove('show');
-                        userIdChecked = false;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    errorMsg.textContent = '중복 확인 중 오류가 발생했습니다.';
-                    errorMsg.classList.add('show');
-                });
-        }
 
         // 비밀번호 강도 체크
         function checkPasswordStrength() {
-            const password = document.getElementById('mem_pw').value;
+            const password = document.getElementById('password').value;
             const strengthDiv = document.getElementById('passwordStrength');
             const fill = document.getElementById('strengthFill');
             const text = document.getElementById('strengthText');
@@ -671,7 +500,7 @@
 
         // 비밀번호 확인 체크
         function checkPasswordMatch() {
-            const password = document.getElementById('mem_pw').value;
+            const password = document.getElementById('password').value;
             const passwordConfirm = document.getElementById('passwordConfirm').value;
             const errorMsg = document.getElementById('passwordConfirmError');
             const successMsg = document.getElementById('passwordConfirmSuccess');
@@ -703,20 +532,7 @@
             }
             input.value = value;
         }
-		
-        // 주소 검색
-        function addrSearch(){
-      //  document.getElementById('searchAddressBtn').addEventListener('click', function() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    document.getElementById('mem_postal').value = data.zonecode;
-                    document.getElementById('mem_addr').value = data.address;
-                    document.getElementById('mem_addr_more').focus();
-                }
-            }).open();
-      //  });
-        }
-        
+
         // 전체 동의 토글
         function toggleAllAgreements() {
             const agreeAll = document.getElementById('agreeAll').checked;
@@ -734,7 +550,7 @@
             }
 
             // 비밀번호 유효성 검사
-            const password = document.getElementById('mem_pw').value;
+            const password = document.getElementById('password').value;
             const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
             if (!passwordPattern.test(password)) {
                 alert('비밀번호는 영문, 숫자, 특수문자를 포함한 8-20자로 입력하세요.');
@@ -747,26 +563,6 @@
                 alert('비밀번호가 일치하지 않습니다.');
                 return false;
             }
-            
-            // 이름 공백체크
-            let memName= $("#mem_name").val();
-            if (!memName) {
-            	$("#mem_name").focus();
-                return false;
-            }
-            // 이메일 공백체크
-            let memEmail= $("#mem_email").val();
-            if (!memEmail) {
-            	$("#mem_email").focus();
-                return false;
-            }
-            // 전화 공백체크
-            let memPhone= $("#mem_phone").val();
-            if (!memPmail) {
-            	$("#mem_phone").focus();
-                return false;
-            }
-            
 
             // 필수 약관 동의 체크
             if (!document.getElementById('agreeTerms').checked || 
@@ -778,9 +574,5 @@
             return true;
         }
     </script>
-    
-        <!-- Start Footer Area -->
-    <c:import url="/WEB-INF/views/common/footer.jsp" />
-    <!-- End Footer Area -->
 </body>
 </html>
