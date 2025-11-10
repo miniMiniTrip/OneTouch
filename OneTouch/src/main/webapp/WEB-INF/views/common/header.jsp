@@ -180,7 +180,7 @@
 								<li class="nav-item"><a
 									href="${pageContext.request.contextPath}/product/product_list">전체 상품</a></li>
 								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/community">커뮤니티</a></li>
+									href="${pageContext.request.contextPath}/post/list">커뮤니티</a></li>
 								<li class="nav-item"><a
 									href="${pageContext.request.contextPath}/skintest">피부 진단</a></li>
 								<li class="nav-item"><a class="dd-menu collapsed"
@@ -226,7 +226,7 @@
 <script>
 function performSearch() {
     const keyword = document.getElementById('search-input').value.trim();
-	const contextPath = "{pageContext.request.contextPath}";
+	const contextPath = "${pageContext.request.contextPath}";
     if (keyword) {
         location.href = contextPath+"/products?search=" + encodeURIComponent(keyword);
     }
@@ -239,7 +239,7 @@ document.getElementById('search-input')?.addEventListener('keypress', function(e
 });
 
 function updateHeaderCartCount() {
-	const contextPath = '{pageContext.request.contextPath}';
+	const contextPath = '${pageContext.request.contextPath}';
     fetch(contextPath+"/cart/count")
         .then(response => response.json())
         .then(data => {
