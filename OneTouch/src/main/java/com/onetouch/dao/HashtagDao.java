@@ -58,4 +58,5 @@ public interface HashtagDao {
 	//문진 결과 추천글 조회
 	public List<Integer> selectPostsByHashtags(Map<String, Object> params);
 	
+
 }

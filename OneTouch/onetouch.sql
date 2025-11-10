@@ -292,6 +292,7 @@ CREATE TABLE payment (
 CREATE TABLE post (
     post_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '게시글번호',
     mem_idx INT NOT NULL COMMENT '회원FK',
+    post_category VARCHAR(100) NOT NULL COMMENT '카테고리',
     post_content TEXT NOT NULL COMMENT '내용',
     post_image VARCHAR(200) COMMENT '이미지',
     post_like INT NOT NULL DEFAULT 0 COMMENT '좋아요수',
@@ -314,6 +315,11 @@ CREATE TABLE post (
 ) COMMENT '게시글';
 
 
+-- post 카테고리 컬럼 1개 추가되었습니다
+ALTER TABLE post ADD COLUMN post_category VARCHAR(100) NOT NULL;
+-- post_category컬럼 위치 변경하는 sql
+ALTER TABLE post 
+CHANGE COLUMN `post_category` `post_category` VARCHAR(100) NOT NULL AFTER `mem_idx`;
 
 -- CREATE INDEX idx_post_member ON post(mem_idx);
 -- CREATE INDEX idx_post_time ON post(post_time DESC);

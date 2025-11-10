@@ -415,6 +415,7 @@
 
             <!-- 로그인 버튼 -->
             <button type="submit" class="login-btn">로그인</button>
+            <input type="hidden" name="url" value="${url }">
         </form>
 
         <!-- 소셜 로그인 -->
@@ -509,6 +510,11 @@ window.onload = function(){
 			
 		alert("비밀번호가 틀렸습니다.");
 		}
+		if("${usersession}"=="logout"){
+		alert("세션만료 다시 로그인 해주세요");
+			
+		}
+		
 	},100);
 };
 </script>
