@@ -17,6 +17,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{ hashtag_name }, now())
 	</insert>
 	
+	<!-- 단건 조회 -->
+	<select id="selectOne" parameterType="int" resultType="hashtag">
+	    select * from hashtag where hashtag_idx = #{ hashtag_idx }
+	</select>
+	
+	
   	<!-- 직접적인 삭제 -->
   	<delete id="delete" parameterType="int">
   		delete from hashtag where hashtag_idx = #{ hashtag_idx }
@@ -120,6 +126,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		</if>
   	</select>
  
-  
 
 </mapper>

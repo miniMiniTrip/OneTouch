@@ -41,7 +41,7 @@ function send(f){
 </script>
 <body>
 <div>
-	<form method="post">
+	<form method="get">
 		<div>
 			<h5>얼굴에 기름이 많다고 느껴지거나, 세안을 한 뒤 1시간 정도 지나면 기름이 나오시나요?</h5>
 			<select name="skin1">

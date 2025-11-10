@@ -17,7 +17,6 @@ import com.onetouch.dao.HashtagDao;
 import com.onetouch.vo.HashtagVo;
 
 
-
 @Controller
 public class HashtagController {
 	
@@ -55,30 +54,16 @@ public class HashtagController {
 		int res = hashtag_dao.delete(hashtag_idx);
 		return "redirect:list.do";
 	};
-	
-	@GetMapping("/api/list")
-	@ResponseBody
-	public List<HashtagVo> getHashtagList() {
-		return hashtagService.selectList();
-	}
-	
-
-	@GetMapping("/api/post/{post_idx}")
-	@ResponseBody
-	public List<String> getHashtagsByPost(@PathVariable("post_idx") int post_idx) {
-		return hashtagService.getHashtagNamesByPost(post_idx);
-	}
-
 
      //단일 해시태그로 상품 검색 (클릭)
     public List<Integer> searchProductsByHashtag(int hashtag_idx) {
-        return hashtag_dao.selectProductsByHashtag(hashtag_idx);
+    	return hashtag_dao.selectProductByHashtag(hashtag_idx);
     }
     
 
     // 단일 해시태그로 게시글 검색 (클릭)
     public List<Integer> searchPostsByHashtag(int hashtag_idx) {
-        return hashtag_dao.selectPostsByHashtag(hashtag_idx);
+        return hashtag_dao.selectPostByHashtag(hashtag_idx);
     }
     
 

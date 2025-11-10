@@ -17,7 +17,10 @@ public interface HashtagDao {
 	//2. 단건작성 - 중복처리는 Controller 혹은 service에서
 	public int insertOne(HashtagVo vo);
 	
-	//3. 직접 삭제
+	//3. 단건조회
+	public HashtagVo selectOne(int hashtag_idx);
+	
+	//4. 직접 삭제
 	public int delete(int hashtag_idx);
 	
 	//게시글용
