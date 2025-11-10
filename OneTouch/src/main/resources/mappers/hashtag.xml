@@ -96,15 +96,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
   	<!-- 문진결과(상품) -->
   	<select id="selectProductsByHashtags" parameterType="Map" resultType="int">
-  		select prh.product.idx count(distinct ph.hashtag_idx) as match
+  		select prh.product_idx, count(distinct prh.hashtag_idx) as match_count
   		from product_hashtag prh
   		where prh.hashtag_idx in
   		<foreach collection="hashtag_list" item="idx" open="(" separator="," close=")">
   		 	#{idx}
   		</foreach>
   		group by prh.product_idx
-  		having match >= #{min_match}
-  		order by match desc
+  		having match_count >= #{min_match}
+  		order by match_count desc
   		<if test="limit!=null">
   			limit #{limit}
   		</if>
@@ -112,15 +112,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
   	<!-- 문진 결과(포스팅) -->
   	<select id="selectPostsByHashtags" parameterType="Map" resultType="int">
-  		select ph.post.idx count(distinct ph.hashtag_idx) as match
+		select ph.post_idx, count(distinct ph.hashtag_idx) as match_count
   		from post_hashtag ph
   		where ph.hashtag_idx in
   		<foreach collection="hashtag_list" item="idx" open="(" separator="," close=")">
   		 	#{idx}
   		</foreach>
   		group by ph.post_idx
-  		having match >= #{min_match}
-  		order by match desc
+  		having match_count >= #{min_match}
+  		order by match_count desc
   		<if test="limit!=null">
   			limit #{limit}
   		</if>
