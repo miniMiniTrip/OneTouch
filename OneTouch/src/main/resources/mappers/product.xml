@@ -32,7 +32,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                	now(),
                                 )
   </insert>
- 
+     <!-- 여러 idx로 상품 조회 -->
+    <select id="selectByIds" parameterType="list" resultType="product">
+        SELECT 
+            product_idx,
+            category_idx,
+            product_wishlist,
+            product_price,
+            product_name,
+            product_brand,
+            product_comment,
+            product_cnt,
+            product_time,
+            product_update
+        FROM product
+        WHERE product_idx IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        ORDER BY product_cnt DESC
+    </select>
 
 </mapper>
 
