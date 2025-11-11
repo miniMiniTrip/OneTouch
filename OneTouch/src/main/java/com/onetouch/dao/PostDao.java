@@ -9,4 +9,8 @@ import com.onetouch.vo.PostVo;
 @Mapper
 public interface PostDao {
 	List<PostVo> selectPostList();
+
+	List<PostVo> selectTipList();
+	List<PostVo> selectReviewList();
+	List<PostVo> selectFreeBoard();
 }
