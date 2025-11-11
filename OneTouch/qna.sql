@@ -84,3 +84,45 @@ DROP COLUMN product_name;
 -- CREATE INDEX idx_qna_member ON qna(mem_idx);
 -- CREATE INDEX idx_qna_category ON qna(qna_category);
 -- CREATE INDEX idx_qna_answered ON qna(qna_answered);
+
+
+
+    SELECT 
+    qna.qna_idx,
+    qna.mem_idx,
+    mem.mem_name,          -- 회원 이름
+    qna.qna_title,
+    qna.qna_content,
+    qna.qna_category,
+    qna.qna_private,
+    qna.qna_answered,
+    qna.qna_answer_content,
+    qna.qna_delete,
+    qna.qna_time,
+    qna.qna_update,
+    qna.qna_answer_time
+	FROM qna
+	JOIN mem ON qna.mem_idx = mem.mem_idx   -- 회원번호 기준으로 연결
+	WHERE qna.qna_delete = 0                -- 삭제 안 된 글만
+	ORDER BY qna.qna_idx DESC;              -- 최신 글이 위로
+
+
+
+ SELECT 
+        qna_idx,
+        mem_idx,
+        mem_name,          
+        qna_title,
+        qna_content,
+        qna_category,
+        qna_private,
+        qna_answered,
+        qna_answer_content,
+        qna_delete,
+        qna_time,
+        qna_update,
+        qna_answer_time
+    FROM qna
+    JOIN mem ON qna.mem_idx = mem.mem_idx   
+    WHERE qna_delete = 0
+    ORDER BY qna_idx DESC
