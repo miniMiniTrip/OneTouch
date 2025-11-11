@@ -32,9 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 주문서 작성 -->
 	<select id="selectPaymentList" parameterType="Map" resultType="cart">
-		select * from cart where cart_idx in
-		<foreach item="cart_idx" collection="cart_idx_array" open="(" separator="," close=")"> 
-			#{ cart_idx }
+		select * from cart where cart_id in
+		<foreach item="cart_id" collection="cart_id_array" open="(" separator="," close=")"> 
+			#{ cart_id }
 		</foreach>
 	</select>
 	
@@ -43,9 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select ifnull(sum(c.cart_cnt * p.product_price),0)
 		from cart c
 		inner join product p on c.product_idx = p.product_idx
-		where cart_idx in
-		<foreach item="cart_idx" collection="cart_idx_array" open="(" separator="," close=")"> 
-			#{ cart_idx }
+		where cart_id in
+		<foreach item="cart_id" collection="cart_id_array" open="(" separator="," close=")"> 
+			#{ cart_id }
 		</foreach>
 	</select>
 	
@@ -63,18 +63,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 수정 -->
 	<update id="update" parameterType="cart">
 		update cart set cart_cnt=#{c_cnt}
-		where cart_idx=#{cart_idx}
+		where cart_id=#{cart_id}
 	</update>
 		
 	<!-- 삭제 -->	
 	<delete id="delete" parameterType="int">
-		delete from cart where cart_idx=#{cart_idx}
+		delete from cart where cart_id=#{cart_id}
 	</delete>
 
 	<delete id="deletePaymentComplete" parameterType="Map">
 		delete from cart where
-		<foreach item="c_idx" collection="c_idx_array" separator="or">
-		cart_idx = #{cart_idx}
+		<foreach item="cart_id" collection="c_idx_array" separator="or">
+		cart_id = #{cart_id}
 		</foreach>
 	</delete>
 	
