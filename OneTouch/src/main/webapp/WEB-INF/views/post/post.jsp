@@ -11,15 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
 
-    <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts - Noto Sans KR -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -33,69 +30,49 @@
             --onetouch-border: #e0e0e0;
         }
         
-        /* 커뮤니티 메인 스타일 */
-        .onetouch-community-section {
-            padding: 40px 0 60px;
+        body {
             background-color: #f9f9f9;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--onetouch-text);
         }
         
-        .onetouch-community-container {
-            max-width: 1200px;
+        /* 커뮤니티 메인 스타일 */
+        .community-content {
+            max-width: 620px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding-bottom: 50px;
         }
         
-        .onetouch-community-header {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .onetouch-community-header h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--onetouch-navy);
-            margin-bottom: 10px;
-        }
-        
-        .onetouch-community-header p {
-            color: #666;
-            font-size: 16px;
-        }
-        
-        /* 탭 스타일 */
-        .onetouch-community-tabs-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        
-        .onetouch-community-tabs {
+        /* 상단 탭 내비게이션 */
+        .community-tabs {
             display: flex;
-            border-bottom: 1px solid var(--onetouch-border);
+            justify-content: space-around;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
             background-color: #fff;
             padding: 0;
+            position: sticky; /* 스티키 헤더처럼 상단 고정 */
+            top: 0;
+            z-index: 100;
         }
         
-        .onetouch-community-tab {
+        .community-tab-item {
             flex: 1;
             text-align: center;
-            padding: 15px 10px;
-            color: #666;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
+            padding: 15px 5px;
             font-size: 15px;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
         }
         
-        .onetouch-community-tab.active {
+        .community-tab-item.active {
             color: var(--onetouch-navy);
-            font-weight: 600;
+            font-weight: 500;
         }
         
-        .onetouch-community-tab.active::after {
+        .community-tab-item.active::after {
             content: '';
             position: absolute;
             bottom: -1px;
@@ -105,472 +82,281 @@
             background-color: var(--onetouch-navy);
         }
         
-        /* 글쓰기 버튼 */
-        .onetouch-write-button {
-            text-align: right;
-            margin: 0 0 20px;
-        }
-        
-        .onetouch-btn-write {
-            background-color: var(--onetouch-navy);
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .onetouch-btn-write i {
-            margin-right: 6px;
-        }
-        
-        .onetouch-btn-write:hover {
-            background-color: var(--onetouch-light-blue);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-        
-        /* 게시글 카드 */
-        .onetouch-community-post {
+        /* 게시물 스타일 */
+        .community-post {
             background-color: #fff;
-            border-radius: 10px;
+            border-radius: 0;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            transition: all 0.3s;
-        }
-        
-        .onetouch-community-post:hover {
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transform: translateY(-3px);
-        }
-        
-        .onetouch-post-header {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #f1f1f1;
-        }
-        
-        .onetouch-post-profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #f1f1f1;
-            margin-right: 10px;
-        }
-        
-        .onetouch-post-username {
-            font-weight: 600;
-            color: var(--onetouch-navy);
-            font-size: 15px;
-            margin: 0;
-        }
-        
-        .onetouch-post-time {
-            color: #999;
-            font-size: 12px;
-            margin: 0;
-        }
-        
-        .onetouch-post-actions {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-        
-        .onetouch-post-category {
-            display: inline-block;
-            font-size: 12px;
-            padding: 3px 10px;
-            border-radius: 50px;
-            margin-right: 10px;
-            font-weight: 500;
-        }
-        
-        .onetouch-category-free {
-            background-color: #e6f0ff;
-            color: var(--onetouch-light-blue);
-        }
-        
-        .onetouch-category-review {
-            background-color: #ffe6f0;
-            color: var(--onetouch-accent);
-        }
-        
-        .onetouch-category-question {
-            background-color: #e6e6ff;
-            color: #6666cc;
-        }
-        
-        /* 게시글 이미지 캐러셀 */
-        .onetouch-post-carousel {
-            position: relative;
-        }
-        
-        .onetouch-carousel-container {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .onetouch-post-image {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-            object-fit: contain;
-        }
-        
-        .onetouch-carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            background-color: rgba(255,255,255,0.8);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .onetouch-carousel-arrow.prev {
-            left: 10px;
-        }
-        
-        .onetouch-carousel-arrow.next {
-            right: 10px;
-        }
-        
-        /* 게시글 콘텐츠 */
-        .onetouch-post-content {
-            padding: 15px;
-        }
-        
-        .onetouch-post-text {
-            margin-bottom: 15px;
-            color: #333;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        
-        .onetouch-post-tags {
-            margin-bottom: 15px;
-        }
-        
-        .onetouch-post-tag {
-            color: var(--onetouch-light-blue);
-            font-size: 14px;
-        }
-        
-        /* 게시글 인터랙션 */
-        .onetouch-post-interactions {
-            display: flex;
-            padding: 0 15px 15px;
-            border-top: 1px solid #f1f1f1;
-            padding-top: 15px;
-        }
-        
-        .onetouch-interaction-btn {
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 16px;
-            margin-right: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            padding: 0;
-        }
-        
-        .onetouch-interaction-btn:hover {
-            color: var(--onetouch-accent);
-        }
-        
-        .onetouch-interaction-btn i {
-            margin-right: 5px;
-        }
-        
-        .onetouch-likes-count {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-            margin: 0 15px 15px;
-        }
-        
-        /* 상품 캐러셀 */
-        .onetouch-product-section {
-            padding: 0 15px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .onetouch-product-section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .onetouch-product-carousel-container {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .onetouch-product-carousel {
-            display: flex;
-            transition: transform 0.3s ease;
-        }
-        
-        .onetouch-product-card {
-            min-width: 120px;
-            margin-right: 10px;
-            text-align: center;
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-        }
-        
-        .onetouch-product-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateY(-3px);
-        }
-        
-        .onetouch-product-img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 6px;
             margin-bottom: 10px;
         }
         
-        .onetouch-product-discount {
-            color: var(--onetouch-accent);
-            font-size: 12px;
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+        }
+        
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .username {
             font-weight: 600;
-            margin: 0 0 5px;
-        }
-        
-        .onetouch-product-price {
             font-size: 14px;
-            font-weight: 700;
-            color: #333;
             margin: 0;
+            color: #333;
         }
         
-        .onetouch-product-carousel-arrow {
+        .post-actions {
+            margin-left: auto;
+        }
+        
+        .follow-btn {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        /* 이미지 캐러셀 */
+        .image-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+            width: 100%;
+            /* 캐러셀 이미지가 세로로 길 때 영역을 유지하도록 설정 */
+            aspect-ratio: 1 / 1.3333; /* 3:4 비율, 예시 */
+        }
+        
+        .carousel-item {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%; /* 부모 높이에 맞춤 */
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover; /* 이미지가 잘리더라도 영역을 꽉 채움 */
+        }
+        
+        .carousel-control {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: rgba(255,255,255,0.9);
+            width: 32px; /* 버튼 크기 축소 */
+            height: 32px;
+            background-color: rgba(0, 0, 0, 0.4); /* 배경색 어둡게 */
+            color: #fff; /* 아이콘 색상 흰색 */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            font-size: 14px;
         }
         
-        .onetouch-product-carousel-arrow.prev {
-            left: 5px;
+        .carousel-control:hover {
+            opacity: 1;
         }
         
-        .onetouch-product-carousel-arrow.next {
-            right: 5px;
+        .carousel-control.prev {
+            left: 10px;
         }
         
-        /* 댓글 영역 */
-        .onetouch-comment-section {
-            padding: 15px;
-            border-top: 1px solid #f1f1f1;
+        .carousel-control.next {
+            right: 10px;
         }
         
-        .onetouch-comment-input {
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
             display: flex;
+            justify-content: center;
+            gap: 5px;
+            padding: 0;
+            margin: 0;
         }
         
-        .onetouch-comment-input input {
-            flex: 1;
-            border: 1px solid #e0e0e0;
-            border-radius: 50px;
-            padding: 10px 15px;
-            font-size: 14px;
+        .indicator {
+            width: 7px; /* 인디케이터 크기 축소 */
+            height: 7px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
         
-        .onetouch-comment-input input:focus {
-            outline: none;
-            border-color: var(--onetouch-light-blue);
+        .indicator.active {
+            background-color: var(--onetouch-light-blue); /* 활성 인디케이터 색상 변경 */
         }
         
-        /* 사이드바 */
-        .onetouch-sidebar {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-        
-        .onetouch-sidebar-header {
-            background-color: var(--onetouch-navy);
-            color: #fff;
+        /* 제품 정보 섹션 */
+        .product-section {
             padding: 15px;
-            font-weight: 600;
-            font-size: 16px;
+            border-top: 1px solid #f5f5f5;
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
         }
         
-        .onetouch-sidebar-content {
-            padding: 15px;
+        .product-card {
+            flex: 0 0 auto;
+            width: 85px;
+            text-align: center;
         }
         
-        .onetouch-popular-posts li {
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f1f1;
+        .product-img {
+            width: 100%;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 3px;
+            margin-bottom: 5px;
         }
         
-        .onetouch-popular-posts li:last-child {
-            border-bottom: none;
-        }
-        
-        .onetouch-popular-posts a {
-            color: #333;
-            font-size: 14px;
-            display: block;
+        .product-discount {
+            color: var(--onetouch-accent);
+            font-size: 11px;
             font-weight: 500;
-            line-height: 1.4;
-            transition: all 0.3s;
+            margin: 0;
         }
         
-        .onetouch-popular-posts a:hover {
+        .product-price {
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0;
+            color: #333;
+        }
+        
+        /* 게시물 콘텐츠 */
+        .post-content {
+            padding: 15px;
+        }
+        
+        .post-likes {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .post-text {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .post-tags {
             color: var(--onetouch-light-blue);
+            font-size: 13px;
+            margin-bottom: 10px;
         }
         
-        .onetouch-post-meta-info {
+        .post-time {
+            color: #999;
+            font-size: 12px;
+            margin: 0;
+        }
+        
+        /* 인터랙션 영역 */
+        .post-interactions {
+            display: flex;
+            padding: 10px 15px;
+            gap: 20px;
+        }
+        
+        .interaction-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        
+        .interaction-btn.active {
+            color: var(--onetouch-accent);
+        }
+        
+        /* 댓글 입력 */
+        .comment-input {
+            padding: 10px 15px 15px;
             display: flex;
             align-items: center;
-            margin-top: 5px;
-            font-size: 12px;
+            border-top: 1px solid #f5f5f5;
+        }
+        
+        .comment-input input {
+            flex: 1;
+            border: none;
+            font-size: 14px;
+            outline: none;
+            padding: 8px 0;
+        }
+        
+        .comment-input input::placeholder {
             color: #999;
         }
         
-        .onetouch-post-meta-info span {
-            margin-right: 10px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .onetouch-post-meta-info span i {
-            margin-right: 3px;
-        }
-        
-        .onetouch-tag-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
-        .onetouch-tag {
-            background-color: var(--onetouch-light-gray);
-            color: #666;
-            padding: 5px 10px;
-            border-radius: 50px;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-        
-        .onetouch-tag:hover {
-            background-color: var(--onetouch-light-blue);
-            color: #fff;
+        .comment-submit {
+            background: none;
+            border: none;
+            color: var(--onetouch-light-blue);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
         }
         
         /* 페이지네이션 */
-        .onetouch-pagination {
+        .community-pagination {
             display: flex;
             justify-content: center;
-            margin: 30px 0 0;
+            align-items: center;
+            margin-top: 20px;
+            gap: 5px;
         }
         
-        .onetouch-pagination-item {
-            width: 36px;
-            height: 36px;
+        .pagination-link {
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 3px;
-            border-radius: 5px;
+            border: 1px solid #ddd;
             color: #666;
-            background-color: #fff;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 13px;
         }
         
-        .onetouch-pagination-item.active {
+        .pagination-link.active {
             background-color: var(--onetouch-navy);
             color: #fff;
-        }
-        
-        .onetouch-pagination-item:hover:not(.active) {
-            background-color: var(--onetouch-light-gray);
+            border-color: var(--onetouch-navy);
         }
         
         /* 반응형 설정 */
-        @media (max-width: 991px) {
-            .onetouch-sidebar {
-                margin-top: 30px;
-            }
-        }
-        
         @media (max-width: 767px) {
-            .onetouch-community-tabs {
-                overflow-x: auto;
-                flex-wrap: nowrap;
+            .community-content {
+                padding: 0;
             }
-            
-            .onetouch-community-tab {
-                white-space: nowrap;
-                min-width: 100px;
-            }
-            
-            .onetouch-post-header {
-                flex-wrap: wrap;
-            }
-            
-            .onetouch-post-actions {
-                margin-left: 0;
-                margin-top: 10px;
-                width: 100%;
-            }
-            
-            .onetouch-post-interactions {
-                justify-content: space-between;
-            }
-            
-            .onetouch-interaction-btn {
-                margin-right: 0;
-            }
-        }
-        
-        /* 호환성 스타일 */
-        .onetouch-post-content p {
-            margin-bottom: 0;
         }
     </style>
 </head>
 
 <body>
-    <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
@@ -579,13 +365,7 @@
             </div>
         </div>
     </div>
-    <!-- /End Preloader -->
-
-    <!-- Start Header Area -->
     <%@include file="/WEB-INF/views/common/header.jsp" %>
-    <!-- End Header Area -->
-
-    <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
@@ -603,374 +383,201 @@
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
-
-    <!-- Start Community Section -->
-    <section class="onetouch-community-section">
-        <div class="onetouch-community-container">
-            <!-- 커뮤니티 헤더 -->
-            <div class="onetouch-community-header">
-                <h2>OneTouch 커뮤니티</h2>
-                <p>다양한 사용자들과 함께 정보와 경험을 공유해보세요!</p>
-            </div>
-            
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- 커뮤니티 탭 -->
-                    <div class="onetouch-community-tabs-container">
-                        <div class="onetouch-community-tabs">
-                            <div class="onetouch-community-tab active" data-tab="all">전체</div>
-                            <div class="onetouch-community-tab" data-tab="skincare">스킨케어팁</div>
-                            <div class="onetouch-community-tab" data-tab="review">리뷰 (구매후기)</div>
-                            <div class="onetouch-community-tab" data-tab="free">자유게시판</div>
+    <section class="section">
+        <div class="container">
+            <div class="community-content">
+                <div class="community-tabs">
+                    <div class="community-tab-item active" data-tab="all">전체</div>
+                    <div class="community-tab-item" data-tab="skineditor">스킨에디터</div>
+                    <div class="community-tab-item" data-tab="review">리뷰</div>
+                    <div class="community-tab-item" data-tab="free">자유게시판</div>
+                </div>
+                
+                <div class="community-post">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                        <p class="username">진유</p>
+                        <div class="post-actions">
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
                         </div>
                     </div>
                     
-                    <!-- 글쓰기 버튼 -->
-                    <div class="onetouch-write-button">
-                        <a href="#" class="onetouch-btn-write">
-                            <i class="fas fa-pencil-alt"></i> 글쓰기
-                        </a>
-                    </div>
-                    
-                    <!-- 게시글 목록 -->
-                    <div class="onetouch-community-posts">
-                        <c:if test="${not empty postVo_array}">
-                            <c:forEach var="postVo" items="${postVo_array}">
-                                <!-- 게시글 아이템 -->
-                                <div class="onetouch-community-post">
-                                    <div class="onetouch-post-header">
-                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="프로필 이미지" class="onetouch-post-profile-img">
-                                        <div>
-                                            <p class="onetouch-post-username">회원 ${postVo.mem_idx}</p>
-                                            <p class="onetouch-post-time">2시간 전</p>
-                                        </div>
-                                        <div class="onetouch-post-actions">
-                                            <span class="onetouch-post-category onetouch-category-free">자유</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- 게시글 이미지 -->
-                                    <c:if test="${not empty postVo.post_image}">
-                                        <div class="onetouch-post-carousel">
-                                            <div class="onetouch-carousel-container">
-                                                <img src="${postVo.post_image}" alt="게시글 이미지" class="onetouch-post-image">
-                                            </div>
-                                        </div>
-                                    </c:if>
-                                    
-                                    <!-- 게시글 콘텐츠 -->
-                                    <div class="onetouch-post-content">
-                                        <p class="onetouch-post-text">${postVo.post_content}</p>
-                                        
-                                        <div class="onetouch-post-tags">
-                                            <span class="onetouch-post-tag">#남자화장품 #스킨케어 #뷰티</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- 게시글 인터랙션 -->
-                                    <div class="onetouch-post-interactions">
-                                        <button class="onetouch-interaction-btn">
-                                            <i class="far fa-heart"></i> 좋아요 (${postVo.like})
-                                        </button>
-                                        <button class="onetouch-interaction-btn">
-                                            <i class="far fa-comment"></i> 댓글 (5)
-                                        </button>
-                                        <button class="onetouch-interaction-btn">
-                                            <i class="far fa-bookmark"></i> 저장
-                                        </button>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:if>
+                    <div class="image-carousel" id="carousel-1">
+                        <div class="carousel-inner">
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+1" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+2" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+3" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+4" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+5" alt="게시물 이미지" class="post-image">
+                            </div>
+                        </div>
                         
-                        <c:if test="${empty postVo_array}">
-                            <!-- 샘플 게시글 -->
-                            <!-- 게시글 1 -->
-                            <div class="onetouch-community-post">
-                                <div class="onetouch-post-header">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="프로필 이미지" class="onetouch-post-profile-img">
-                                    <div>
-                                        <p class="onetouch-post-username">SkinCare01</p>
-                                        <p class="onetouch-post-time">2시간 전</p>
-                                    </div>
-                                    <div class="onetouch-post-actions">
-                                        <span class="onetouch-post-category onetouch-category-review">리뷰</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 이미지 -->
-                                <div class="onetouch-post-carousel">
-                                    <div class="onetouch-carousel-container">
-                                        <img src="https://via.placeholder.com/600x400?text=제품+사진" alt="게시글 이미지" class="onetouch-post-image">
-                                        <div class="onetouch-carousel-arrow prev">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </div>
-                                        <div class="onetouch-carousel-arrow next">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- 상품 추천 캐러셀 -->
-                                <div class="onetouch-product-section">
-                                    <h3 class="onetouch-product-section-title">이 게시글에 포함된 제품</h3>
-                                    <div class="onetouch-product-carousel-container">
-                                        <div class="onetouch-product-carousel">
-                                            <div class="onetouch-product-card">
-                                                <img src="https://via.placeholder.com/100?text=제품1" alt="상품 이미지" class="onetouch-product-img">
-                                                <p class="onetouch-product-discount">15% 할인</p>
-                                                <p class="onetouch-product-price">32,000원</p>
-                                            </div>
-                                            <div class="onetouch-product-card">
-                                                <img src="https://via.placeholder.com/100?text=제품2" alt="상품 이미지" class="onetouch-product-img">
-                                                <p class="onetouch-product-discount">10% 할인</p>
-                                                <p class="onetouch-product-price">28,500원</p>
-                                            </div>
-                                            <div class="onetouch-product-card">
-                                                <img src="https://via.placeholder.com/100?text=제품3" alt="상품 이미지" class="onetouch-product-img">
-                                                <p class="onetouch-product-discount">20% 할인</p>
-                                                <p class="onetouch-product-price">42,000원</p>
-                                            </div>
-                                            <div class="onetouch-product-card">
-                                                <img src="https://via.placeholder.com/100?text=제품4" alt="상품 이미지" class="onetouch-product-img">
-                                                <p class="onetouch-product-price">35,000원</p>
-                                            </div>
-                                        </div>
-                                        <div class="onetouch-product-carousel-arrow prev">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </div>
-                                        <div class="onetouch-product-carousel-arrow next">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 콘텐츠 -->
-                                <div class="onetouch-post-content">
-                                    <p class="onetouch-post-text">겨울철 건조한 피부를 위한 제품을 찾다가 OneTouch 수분크림을 사용해봤어요. 가볍게 발리면서도 보습력이 좋아서 하루종일 당김 없이 촉촉하게 유지돼요. 특히 향이 은은해서 부담스럽지 않고 민감한 피부에도 자극 없이 잘 사용하고 있습니다.</p>
-                                    
-                                    <div class="onetouch-post-tags">
-                                        <span class="onetouch-post-tag">#원터치 #수분크림 #겨울철피부관리 #건성피부 #데일리</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 인터랙션 -->
-                                <div class="onetouch-post-interactions">
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-heart"></i> 좋아요 (42)
-                                    </button>
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-comment"></i> 댓글 (12)
-                                    </button>
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-bookmark"></i> 저장
-                                    </button>
-                                </div>
-                                
-                                <!-- 댓글 입력 -->
-                                <div class="onetouch-comment-section">
-                                    <div class="onetouch-comment-input">
-                                        <input type="text" placeholder="댓글을 작성해보세요...">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- 게시글 2 -->
-                            <div class="onetouch-community-post">
-                                <div class="onetouch-post-header">
-                                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="프로필 이미지" class="onetouch-post-profile-img">
-                                    <div>
-                                        <p class="onetouch-post-username">beaumale</p>
-                                        <p class="onetouch-post-time">1일 전</p>
-                                    </div>
-                                    <div class="onetouch-post-actions">
-                                        <span class="onetouch-post-category onetouch-category-question">질문</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 콘텐츠 -->
-                                <div class="onetouch-post-content">
-                                    <p class="onetouch-post-text">30대 남성입니다. 스스로가 귀차니즘이 심한데 스킨케어 꾸준히 하긴 해야할 것 같네요. 지금 쓰는 거 다 떨어져서 새로 사려고 하는데, 시간 절약할 수 있는 좋은 올인원 제품 추천해주실 분 계신가요? 지성 피부에 좋은 제품이면 더 좋겠습니다.</p>
-                                    
-                                    <div class="onetouch-post-tags">
-                                        <span class="onetouch-post-tag">#올인원 #남자화장품 #지성피부 #제품추천</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 인터랙션 -->
-                                <div class="onetouch-post-interactions">
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-heart"></i> 좋아요 (15)
-                                    </button>
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-comment"></i> 댓글 (8)
-                                    </button>
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-bookmark"></i> 저장
-                                    </button>
-                                </div>
-                                
-                                <!-- 댓글 입력 -->
-                                <div class="onetouch-comment-section">
-                                    <div class="onetouch-comment-input">
-                                        <input type="text" placeholder="댓글을 작성해보세요...">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- 게시글 3 -->
-                            <div class="onetouch-community-post">
-                                <div class="onetouch-post-header">
-                                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="프로필 이미지" class="onetouch-post-profile-img">
-                                    <div>
-                                        <p class="onetouch-post-username">smooth10</p>
-                                        <p class="onetouch-post-time">3일 전</p>
-                                    </div>
-                                    <div class="onetouch-post-actions">
-                                        <span class="onetouch-post-category onetouch-category-free">자유</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 이미지 -->
-                                <div class="onetouch-post-carousel">
-                                    <div class="onetouch-carousel-container">
-                                        <img src="https://via.placeholder.com/600x400?text=면도+후+관리" alt="게시글 이미지" class="onetouch-post-image">
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 콘텐츠 -->
-                                <div class="onetouch-post-content">
-                                    <p class="onetouch-post-text">2주간 서울역에서 진행하는 남성 피부과 이벤트가 있어서 방문해 봤는데 정말 만족스러웠네요. 특히 면도후 자극과 관련된 피부 트러블 상담을 받았는데, 전문의 선생님께서 알려주신 꿀팁을 공유드립니다. 면도 후에는 즉시 차가운 물로 세안하고 알코올 성분이 없는 수분 진정 제품을 바르는 것이 좋다고 하네요. 또한 면도는 가능한 샤워 후에 하는 것이 모공이 열려 있어 더 부드럽게 할 수 있다고 합니다.</p>
-                                    
-                                    <div class="onetouch-post-tags">
-                                        <span class="onetouch-post-tag">#면도팁 #피부트러블 #면도자극 #남자피부관리</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- 게시글 인터랙션 -->
-                                <div class="onetouch-post-interactions">
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-heart"></i> 좋아요 (24)
-                                    </button>
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-comment"></i> 댓글 (5)
-                                    </button>
-                                    <button class="onetouch-interaction-btn">
-                                        <i class="far fa-bookmark"></i> 저장
-                                    </button>
-                                </div>
-                                
-                                <!-- 댓글 입력 -->
-                                <div class="onetouch-comment-section">
-                                    <div class="onetouch-comment-input">
-                                        <input type="text" placeholder="댓글을 작성해보세요...">
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
+                        <div class="carousel-control prev" data-carousel="carousel-1">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-1">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-1">
+                            <div class="indicator active" data-slide="0" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="1" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="2" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="3" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="4" data-carousel="carousel-1"></div>
+                        </div>
                     </div>
                     
-                    <!-- 페이지네이션 -->
-                    <div class="onetouch-pagination">
-                        <a href="#" class="onetouch-pagination-item"><i class="fas fa-angle-left"></i></a>
-                        <a href="#" class="onetouch-pagination-item active">1</a>
-                        <a href="#" class="onetouch-pagination-item">2</a>
-                        <a href="#" class="onetouch-pagination-item">3</a>
-                        <a href="#" class="onetouch-pagination-item">4</a>
-                        <a href="#" class="onetouch-pagination-item">5</a>
-                        <a href="#" class="onetouch-pagination-item"><i class="fas fa-angle-right"></i></a>
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">19% 할인</p>
+                            <p class="product-price">55,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">10% 할인</p>
+                            <p class="product-price">25,800원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-price">33,000원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">15% 할인</p>
+                            <p class="product-price">42,500원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                        <p class="post-time">2일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">게시</button>
                     </div>
                 </div>
                 
-                <div class="col-lg-4">
-                    <!-- 사이드바 - 인기 게시물 -->
-                    <div class="onetouch-sidebar">
-                        <div class="onetouch-sidebar-header">
-                            <i class="fas fa-fire"></i> 인기 게시물
-                        </div>
-                        <div class="onetouch-sidebar-content">
-                            <ul class="onetouch-popular-posts list-unstyled">
-                                <li>
-                                    <a href="#">겨울철 피부 관리 꿀팁</a>
-                                    <div class="onetouch-post-meta-info">
-                                        <span><i class="far fa-user"></i> SkinCare01</span>
-                                        <span><i class="far fa-heart"></i> 42</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#">면도 후 피부 진정 방법</a>
-                                    <div class="onetouch-post-meta-info">
-                                        <span><i class="far fa-user"></i> smooth10</span>
-                                        <span><i class="far fa-heart"></i> 36</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#">건성 피부 보습제 추천</a>
-                                    <div class="onetouch-post-meta-info">
-                                        <span><i class="far fa-user"></i> hydra_king</span>
-                                        <span><i class="far fa-heart"></i> 29</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#">남자 피부 관리 루틴 공유</a>
-                                    <div class="onetouch-post-meta-info">
-                                        <span><i class="far fa-user"></i> man_beauty</span>
-                                        <span><i class="far fa-heart"></i> 24</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#">여드름 관리 방법 질문</a>
-                                    <div class="onetouch-post-meta-info">
-                                        <span><i class="far fa-user"></i> clear_skin</span>
-                                        <span><i class="far fa-heart"></i> 18</span>
-                                    </div>
-                                </li>
-                            </ul>
+                <div class="community-post">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="프로필" class="profile-img">
+                        <p class="username">준우</p>
+                        <div class="post-actions">
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
                         </div>
                     </div>
                     
-                    <!-- 사이드바 - 태그 -->
-                    <div class="onetouch-sidebar">
-                        <div class="onetouch-sidebar-header">
-                            <i class="fas fa-tags"></i> 인기 태그
-                        </div>
-                        <div class="onetouch-sidebar-content">
-                            <div class="onetouch-tag-cloud">
-                                <a href="#" class="onetouch-tag">#스킨케어</a>
-                                <a href="#" class="onetouch-tag">#올인원</a>
-                                <a href="#" class="onetouch-tag">#면도</a>
-                                <a href="#" class="onetouch-tag">#보습</a>
-                                <a href="#" class="onetouch-tag">#클렌징</a>
-                                <a href="#" class="onetouch-tag">#수분크림</a>
-                                <a href="#" class="onetouch-tag">#선크림</a>
-                                <a href="#" class="onetouch-tag">#건성피부</a>
-                                <a href="#" class="onetouch-tag">#지성피부</a>
-                                <a href="#" class="onetouch-tag">#피부타입</a>
-                                <a href="#" class="onetouch-tag">#남자화장품</a>
-                                <a href="#" class="onetouch-tag">#데일리</a>
-                                <a href="#" class="onetouch-tag">#뷰티그램</a>
-                                <a href="#" class="onetouch-tag">#원터치</a>
-                                <a href="#" class="onetouch-tag">#꿀팁</a>
+                    <div class="image-carousel" id="carousel-2">
+                        <div class="carousel-inner">
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=제품+리뷰" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=사용법" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=효과" alt="게시물 이미지" class="post-image">
                             </div>
                         </div>
+                        
+                        <div class="carousel-control prev" data-carousel="carousel-2">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-2">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-2">
+                            <div class="indicator active" data-slide="0" data-carousel="carousel-2"></div>
+                            <div class="indicator" data-slide="1" data-carousel="carousel-2"></div>
+                            <div class="indicator" data-slide="2" data-carousel="carousel-2"></div>
+                        </div>
                     </div>
+                    
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=올인원" alt="제품" class="product-img">
+                            <p class="product-discount">25% 할인</p>
+                            <p class="product-price">28,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=로션" alt="제품" class="product-img">
+                            <p class="product-price">19,900원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn active">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 127개</p>
+                        <p class="post-text">올인원 제품 2주 사용 후기 공유합니다. 지성 피부인데 기름기 컨트롤도 잘되고 향도 은은해서 좋아요. 특히 사용감이 가볍고 흡수도 빨라서 아침에 바쁠 때 딱이에요!</p>
+                        <p class="post-tags">#올인원 #남자스킨케어 #지성피부 #원터치</p>
+                        <p class="post-time">5일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">게시</button>
+                    </div>
+                </div>
+                
+                <div class="community-pagination">
+                    <a href="#" class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
+                    <a href="#" class="pagination-link active">1</a>
+                    <a href="#" class="pagination-link">2</a>
+                    <a href="#" class="pagination-link">3</a>
+                    <a href="#" class="pagination-link">4</a>
+                    <a href="#" class="pagination-link">5</a>
+                    <a href="#" class="pagination-link"><i class="fas fa-angle-double-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
-    <!-- End Community Section -->
-
-    <!-- Start Footer Area -->
     <%@include file="/WEB-INF/views/common/footer.jsp" %>
-    <!-- End Footer Area -->
-
-    <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
 
-    <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
@@ -986,48 +593,137 @@
             }
         });
 
-        // 탭 기능
+        // =========================
+        // 1. 이미지 캐러셀 기능 (슬라이드 구현)-이미지!
+        // =========================
         document.addEventListener('DOMContentLoaded', function() {
-            const tabItems = document.querySelectorAll('.onetouch-community-tab');
+            // 캐러셀 상태 관리 및 초기화
+            const carousels = {};
             
-            tabItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    tabItems.forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.image-carousel').forEach(carousel => {
+                const carouselId = carousel.id;
+                const carouselInner = carousel.querySelector('.carousel-inner');
+                const slides = carouselInner.querySelectorAll('.carousel-item');
+                
+                carousels[carouselId] = {
+                    element: carouselInner,
+                    slides: slides,
+                    currentIndex: 0,
+                    totalSlides: slides.length
+                };
+            });
+            
+            // 캐러셀 이동 함수
+            function moveCarousel(carouselId, direction) {
+                const carousel = carousels[carouselId];
+                if (!carousel) return;
+                
+                let newIndex = carousel.currentIndex + direction;
+                
+                // 범위 체크: 첫 번째/마지막 슬라이드에서 멈춤
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex >= carousel.totalSlides) newIndex = carousel.totalSlides - 1;
+                
+                if (newIndex !== carousel.currentIndex) {
+                    carousel.currentIndex = newIndex;
+                    // translateX를 사용하여 슬라이드 이동
+                    const translateX = -newIndex * 100 + '%';
+                    carousel.element.style.transform = `translateX(${translateX})`;
+                    
+                    // 인디케이터 업데이트
+                    updateIndicators(carouselId);
+                }
+            }
+            
+            // 특정 슬라이드로 이동
+            function goToSlide(carouselId, slideIndex) {
+                const carousel = carousels[carouselId];
+                if (!carousel) return;
+                
+                if (slideIndex >= 0 && slideIndex < carousel.totalSlides) {
+                    carousel.currentIndex = slideIndex;
+                    const translateX = -slideIndex * 100 + '%';
+                    carousel.element.style.transform = `translateX(${translateX})`;
+                    
+                    // 인디케이터 업데이트
+                    updateIndicators(carouselId);
+                }
+            }
+            
+            // 인디케이터 업데이트
+            function updateIndicators(carouselId) {
+                // 캐러셀 ID를 기반으로 인디케이터 그룹을 찾습니다. (예: indicators-1)
+                const indicators = document.querySelectorAll(`#indicators-${carouselId.split('-')[1]} .indicator`);
+                const currentIndex = carousels[carouselId].currentIndex;
+                
+                indicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 이전/다음 버튼 이벤트 리스너
+            document.querySelectorAll('.carousel-control').forEach(button => {
+                button.addEventListener('click', function() {
+                    const carouselId = this.dataset.carousel;
+                    const direction = this.classList.contains('prev') ? -1 : 1;
+                    moveCarousel(carouselId, direction);
+                });
+            });
+            
+            // 인디케이터 클릭 이벤트 리스너
+            document.querySelectorAll('.indicator').forEach(indicator => {
+                indicator.addEventListener('click', function() {
+                    const slideIndex = parseInt(this.dataset.slide);
+                    const carouselId = this.dataset.carousel;
+                    goToSlide(carouselId, slideIndex);
+                });
+            });
+
+
+    
+            // =========================
+            document.querySelectorAll('.interaction-btn').forEach(button => {
+                // 좋아요 버튼에만 이벤트 리스너 추가
+                if (button.querySelector('.fa-heart')) {
+                    button.addEventListener('click', function() {
+                        const icon = this.querySelector('i');
+                        const isLiked = this.classList.toggle('active'); // active 클래스 토글
+
+                        if (isLiked) {
+                            icon.classList.remove('far'); // 빈 하트
+                            icon.classList.add('fas'); // 채워진 하트
+                        } else {
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                    });
+                }
+            });
+
+
+          
+            // =========================
+            document.querySelectorAll('.community-tab-item').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 모든 탭의 active 클래스 제거
+                    document.querySelectorAll('.community-tab-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // 클릭한 탭에 active 클래스 추가 (시각적 효과)
                     this.classList.add('active');
                     
-                    // 실제 탭 기능을 구현하려면 여기에 탭 컨텐츠 전환 로직 추가
-                    // const tabId = this.getAttribute('data-tab');
-                    // 해당 탭에 맞는 컨텐츠만 표시하도록 처리
-                });
-            });
-            
-            // 이미지 캐러셀 화살표 기능
-            const carouselArrows = document.querySelectorAll('.onetouch-carousel-arrow');
-            carouselArrows.forEach(arrow => {
-                arrow.addEventListener('click', function() {
-                    const direction = this.classList.contains('prev') ? -1 : 1;
-                    const carousel = this.closest('.onetouch-post-carousel').querySelector('.onetouch-carousel-container');
-                    // 여기에 이미지 슬라이드 기능 구현
-                    // 실제로는 여러 이미지가 있을 경우 해당 방향으로 이동하는 로직이 필요함
-                });
-            });
-            
-            // 상품 캐러셀 화살표 기능
-            const productArrows = document.querySelectorAll('.onetouch-product-carousel-arrow');
-            productArrows.forEach(arrow => {
-                arrow.addEventListener('click', function() {
-                    const direction = this.classList.contains('prev') ? -1 : 1;
-                    const carousel = this.closest('.onetouch-product-section').querySelector('.onetouch-product-carousel');
-                    // 여기에 상품 슬라이드 기능 구현
-                });
-            });
-            
-            // 인터랙션 버튼 (좋아요, 댓글, 저장) 기능
-            const interactionBtns = document.querySelectorAll('.onetouch-interaction-btn');
-            interactionBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // 좋아요, 댓글, 저장 버튼 액션 구현
-                    // 좋아요 버튼이면 아이콘과 카운트 변경 등의 처리
+                    const tabName = this.textContent.trim();
+                    const tabData = this.dataset.tab;
+                    
+                    // 실제 탭 이동 로직 (Alert로 대체)
+                    // 실제 구현 시, 이 부분에 AJAX를 이용한 게시물 로딩이나 페이지 리다이렉션을 구현해야 합니다.
+                    console.log(`탭 전환 요청: ${tabData} (${tabName})`);
+                    alert(`"${tabName}" 탭이 선택되었습니다. 실제 게시물 로딩 기능을 추가해야 합니다.`);
                 });
             });
         });
