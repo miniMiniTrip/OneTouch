@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onetouch.dao.QnaDao;
 import com.onetouch.vo.QnaVo;
@@ -44,16 +45,48 @@ public class QnaController {
     
     
     // 2️ Q&A 상세 페이지
-    @GetMapping("/qna/detail")
-    public String detail(int qna_idx, Model model) {
+//    @GetMapping("/qna/detail")
+//    public String detail(int qna_idx, Model model) {
+//        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+//        
+//        
+//        
+//        model.addAttribute("qna", qna);
+//        return "qna/qna_detail";
+//    }
+    
+//    @GetMapping("/qna/view")
+//    public String detail(@RequestParam int qna_idx, Model model) {
+//        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+//        model.addAttribute("qna", qna);
+//        return "qna/qna_detail"; // JSP 이름
+//    }
+    
+    
+
+    // 상세보기
+    @GetMapping("/qna/detail")  // ✅ detail로 통일
+    public String detail(@RequestParam int qna_idx, Model model) {
         QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
         
-        
+        System.out.println("=== QnA 상세 조회 ===");
+        System.out.println("번호: " + qna_idx);
+        System.out.println("데이터: " + qna);
         
         model.addAttribute("qna", qna);
         return "qna/qna_detail";
     }
+    
 
+//    @GetMapping("/qna/view")  // "/qna/view"로 변경
+//    public String detail(int qna_idx, Model model) {
+//        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+//        model.addAttribute("qna", qna);
+//        return "qna/qna_detail";
+//    }
+//    
+    
+    
     
     //--------------------------------이게맞나----------------------------------
     // 3️ Q&A 작성 폼 이동
@@ -61,7 +94,9 @@ public class QnaController {
 	@GetMapping("/qna/write")
 	public String writeForm() {
 		System.out.println("qna/write");
+		
 		return "qna/qna_write";
+		
 	}
 	
 	
