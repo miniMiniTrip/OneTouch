@@ -263,39 +263,21 @@
             background: #c82333;
         }
         
-        .product-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .product-image {
-            width: 80px;
-            height: 80px;
-            background: #ddd;
+        .category-badge {
+            display: inline-block;
+            padding: 4px 10px;
             border-radius: 4px;
-            object-fit: cover;
-        }
-        
-        .product-details {
-            flex: 1;
-        }
-        
-        .product-name {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
+            margin-right: 8px;
         }
         
-        .product-price {
-            font-size: 13px;
-            color: #666;
-        }
+        .category-0 { background: #e3f2fd; color: #1976d2; }
+        .category-1 { background: #fff3e0; color: #f57c00; }
+        .category-2 { background: #fce4ec; color: #c2185b; }
+        .category-3 { background: #f3e5f5; color: #7b1fa2; }
+        .category-4 { background: #e8f5e9; color: #388e3c; }
+        .category-5 { background: #ffebee; color: #d32f2f; }
     </style>
 </head>
 
@@ -374,20 +356,34 @@
                         <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/list'">목록으로</button>
                     </div>
                     
-                    <!-- 상품 정보 -->
-                    <div class="product-info">
-                        <img src="https://via.placeholder.com/80" alt="상품 이미지" class="product-image">
-                        <div class="product-details">
-                            <div class="product-name">${qna.productName}</div>
-                            <div class="product-price">₩ ${qna.productPrice}</div>
-                        </div>
-                    </div>
-                    
                     <!-- Q&A 상세 -->
                     <div class="qna-detail">
                         <div class="qna-header">
+                            <!-- 카테고리 표시 -->
                             <c:choose>
-                                <c:when test="${qna.answerStatus eq 'Y'}">
+                                <c:when test="${qna.qna_category == 0}">
+                                    <span class="category-badge category-0">상품문의</span>
+                                </c:when>
+                                <c:when test="${qna.qna_category == 1}">
+                                    <span class="category-badge category-1">배송문의</span>
+                                </c:when>
+                                <c:when test="${qna.qna_category == 2}">
+                                    <span class="category-badge category-2">교환/환불</span>
+                                </c:when>
+                                <c:when test="${qna.qna_category == 3}">
+                                    <span class="category-badge category-3">기타문의</span>
+                                </c:when>
+                                <c:when test="${qna.qna_category == 4}">
+                                    <span class="category-badge category-4">FAQ</span>
+                                </c:when>
+                                <c:when test="${qna.qna_category == 5}">
+                                    <span class="category-badge category-5">공지사항</span>
+                                </c:when>
+                            </c:choose>
+                            
+                            <!-- 답변 상태 -->
+                            <c:choose>
+                                <c:when test="${qna.qna_answered}">
                                     <span class="qna-status answered">답변완료</span>
                                 </c:when>
                                 <c:otherwise>
@@ -395,39 +391,48 @@
                                 </c:otherwise>
                             </c:choose>
                             
-                            <div class="qna-title">${qna.title}</div>
+                            <!-- 비밀글 표시 -->
+                            <c:if test="${qna.qna_private}">
+                                <span class="qna-status waiting">🔒 비밀글</span>
+                            </c:if>
+                            
+                            <div class="qna-title">${qna.qna_title}</div>
                             
                             <div class="qna-meta">
                                 <div class="qna-meta-item">
                                     <span>👤</span>
-                                    <span>${qna.writer}</span>
+                                    <span>${qna.mem_name}</span>
                                 </div>
                                 <div class="qna-meta-item">
                                     <span>📅</span>
-                                    <span><fmt:formatDate value="${qna.createDate}" pattern="yyyy-MM-dd HH:mm" /></span>
+                                    <span><fmt:formatDate value="${qna.qna_time}" pattern="yyyy-MM-dd HH:mm" /></span>
                                 </div>
-                                <div class="qna-meta-item">
-                                    <span>👁</span>
-                                    <span>${qna.viewCount}</span>
-                                </div>
+                                <c:if test="${qna.qna_update != null}">
+                                    <div class="qna-meta-item">
+                                        <span>✏️</span>
+                                        <span>수정: <fmt:formatDate value="${qna.qna_update}" pattern="yyyy-MM-dd HH:mm" /></span>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                         
                         <div class="qna-content">
-                            <div class="qna-content-text">${qna.content}</div>
+                            <div class="qna-content-text">${qna.qna_content}</div>
                         </div>
                         
                         <!-- 답변 영역 -->
                         <div class="qna-answer">
                             <c:choose>
-                                <c:when test="${not empty qna.answer}">
+                                <c:when test="${qna.qna_answered && not empty qna.qna_answer_content}">
                                     <div class="answer-header">
-                                        <span class="answer-badge">답변</span>
-                                        <span class="answer-date">
-                                            <fmt:formatDate value="${qna.answerDate}" pattern="yyyy-MM-dd HH:mm" />
-                                        </span>
+                                        <span class="answer-badge">관리자 답변</span>
+                                        <c:if test="${qna.qna_answer_time != null}">
+                                            <span class="answer-date">
+                                                <fmt:formatDate value="${qna.qna_answer_time}" pattern="yyyy-MM-dd HH:mm" />
+                                            </span>
+                                        </c:if>
                                     </div>
-                                    <div class="answer-content">${qna.answer}</div>
+                                    <div class="answer-content">${qna.qna_answer_content}</div>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="no-answer">
@@ -441,7 +446,7 @@
                     
                     <!-- 버튼 그룹 -->
                     <div class="btn-group">
-                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/edit/${qna.id}'">수정</button>
+                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/edit?qna_idx=${qna.qna_idx}'">수정</button>
                         <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
                     </div>
                 </div>
@@ -464,9 +469,18 @@
     <script>
         function confirmDelete() {
             if(confirm('정말 삭제하시겠습니까?')) {
-                location.href = '${pageContext.request.contextPath}/qna/delete/${qna.id}';
+                location.href = '${pageContext.request.contextPath}/qna/delete?qna_idx=${qna.qna_idx}';
             }
         }
+        
+        // 프리로더 제거
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        });
     </script>
 
     <!-- Start Footer Area -->
