@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page isELIgnored="false" %>
+ <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
 
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+ <!-- j쿼리 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- Start Header Area -->
 <header class="header navbar-area">
 	<!-- Start Topbar -->
@@ -30,10 +40,13 @@
 						<c:choose>
 							<c:when test="${not empty sessionScope.user}">
 								<div class="user">
-									<i class="lni lni-user"></i> ${sessionScope.user.name}님
+									<i class="lni lni-user"></i> ${sessionScope.user.mem_name}님
 								</div>
 								<ul class="user-login">
 									<li><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
+									<c:if test="${ user.mem_roll=='admin' }">
+									<li><a href="${pageContext.request.contextPath}/adminpage">관리자</a></li>
+									</c:if>
 									<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
 								</ul>
 							</c:when>
@@ -42,8 +55,8 @@
 									<i class="lni lni-user"></i> 환영합니다
 								</div>
 								<ul class="user-login">
-									<li><a href="${pageContext.request.contextPath}/login">로그인</a></li>
-									<li><a href="${pageContext.request.contextPath}/register">회원가입</a></li>
+									<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
+									<li><a href="${pageContext.request.contextPath}/user/register">회원가입</a></li>
 								</ul>
 							</c:otherwise>
 						</c:choose>
@@ -167,7 +180,7 @@
 								<li class="nav-item"><a
 									href="${pageContext.request.contextPath}/product/product_list">전체 상품</a></li>
 								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/community">커뮤니티</a></li>
+									href="${pageContext.request.contextPath}/post/list">커뮤니티</a></li>
 								<li class="nav-item"><a
 									href="${pageContext.request.contextPath}/skintest">피부 진단</a></li>
 								<li class="nav-item"><a class="dd-menu collapsed"
@@ -213,8 +226,9 @@
 <script>
 function performSearch() {
     const keyword = document.getElementById('search-input').value.trim();
+	const contextPath = "${pageContext.request.contextPath}";
     if (keyword) {
-        location.href = '${pageContext.request.contextPath}/products?search=' + encodeURIComponent(keyword);
+        location.href = contextPath+"/products?search=" + encodeURIComponent(keyword);
     }
 }
 
@@ -225,7 +239,8 @@ document.getElementById('search-input')?.addEventListener('keypress', function(e
 });
 
 function updateHeaderCartCount() {
-    fetch('${pageContext.request.contextPath}/cart/count')
+	const contextPath = '${pageContext.request.contextPath}';
+    fetch(contextPath+"/cart/count")
         .then(response => response.json())
         .then(data => {
             document.getElementById('cart-count').textContent = data.count;
@@ -236,4 +251,21 @@ function updateHeaderCartCount() {
 document.addEventListener('DOMContentLoaded', function() {
     updateHeaderCartCount();
 });
+</script>
+
+    <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    
+    <script type="text/javascript">
+        // 프리로더 제거
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        });
 </script>
