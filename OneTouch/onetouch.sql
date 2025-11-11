@@ -42,7 +42,7 @@ ADD COLUMN mem_postal VARCHAR(10) NULL;
 ALTER TABLE `otdb`.`mem` 
 CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
 
-
+-- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 

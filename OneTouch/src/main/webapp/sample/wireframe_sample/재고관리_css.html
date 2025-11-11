@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 상품관리</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul, li {
+            list-style: none;
+        }
+        
+        /* 헤더 스타일 */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid #e8e9ec;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3f51b5;
+        }
+        
+        .admin-badge {
+            display: inline-block;
+            background-color: #e53935;
+            color: white;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu-item {
+            margin-left: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 메인 컨테이너 */
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 80px auto 0;
+            min-height: calc(100vh - 80px);
+            padding: 20px;
+        }
+        
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 240px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+        
+        .sidebar-title {
+            font-size: 15px;
+            color: #757575;
+            padding: 0 20px;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+        }
+        
+        .sidebar-menu-item {
+            padding: 10px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            color: #666;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-item.active {
+            color: #3f51b5;
+            background-color: #f0f2ff;
+            border-left-color: #3f51b5;
+        }
+        
+        .sidebar-menu-item:hover {
+            background-color: #f8f9ff;
+        }
+        
+        .sidebar-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        /* 메인 컨텐츠 스타일 */
+        .content {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        
+        .content-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .content-title i {
+            margin-right: 10px;
+            color: #3f51b5;
+        }
+        
+        /* 상품 관리 스타일 */
+        .product-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            margin-right: 10px;
+            color: #555;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        
+        .search-btn {
+            padding: 8px 16px;
+            background-color: #3f51b5;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .product-table th {
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-table td {
+            padding: 12px 15px;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+        
+        .product-table tr:hover {
+            background-color: #f9f9fd;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .status-in-stock {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .status-low-stock {
+            background-color: #fff8e1;
+            color: #ffa000;
+        }
+        
+        .status-out-stock {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .action-button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .action-button.edit {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .action-button.delete {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .action-button.in {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .action-button.out {
+            background-color: #fff8e1;
+            color: #ffa000;
+        }
+        
+        /* 페이지네이션 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .pagination-item {
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .pagination-item.active {
+            background-color: #3f51b5;
+            color: #fff;
+            border-color: #3f51b5;
+        }
+        
+        /* 모달 스타일 */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: #fff;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 95%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .modal-close {
+            font-size: 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .modal-btn-cancel {
+            background-color: #f5f5f5;
+            color: #555;
+        }
+        
+        .modal-btn-primary {
+            background-color: #3f51b5;
+            color: #fff;
+        }
+        
+        /* 아이콘 대체 */
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            vertical-align: middle;
+        }
+        
+        /* 입/출고 이력 스타일 */
+        .stock-history-box {
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .stock-history-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+        }
+        
+        .stock-history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stock-history-date {
+            font-weight: 500;
+            color: #555;
+            margin-right: 15px;
+            min-width: 90px;
+        }
+        
+        .stock-history-amount {
+            color: #1976d2;
+            margin-right: 15px;
+        }
+        
+        .stock-history-amount:contains("-") {
+            color: #e53935;
+        }
+        
+        .stock-history-reason {
+            color: #777;
+            font-style: italic;
+            margin-left: auto;
+        }
+        
+        /* 입/출고 날짜 칼럼 스타일 */
+        .product-table td:nth-child(6),
+        .product-table td:nth-child(7) {
+            color: #1976d2;
+            font-size: 13px;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .product-filter {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filter-item {
+                margin-bottom: 10px;
+            }
+            
+            .add-product-btn {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .header-container {
+                padding: 0 15px;
+            }
+            
+            .user-menu-item span {
+                display: none;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .action-button {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="#" class="logo-text">OneTouch</a>
+                <span class="admin-badge">관리자</span>
+            </div>
+            <div class="user-menu">
+                <a href="#" class="user-menu-item">
+                    <span>관리자님</span>
+                </a>
+                <a href="#" class="user-menu-item">
+                    <span>로그아웃</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">대시보드</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <span>📊</span> 통계 대시보드
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">관리</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <span>👥</span> 회원관리
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <span>💰</span> 상품관리
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <span>📦</span> 재고관리
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <span>🚚</span> 주문관리
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">시스템</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <span>🔧</span> 계시판 관리
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="content-header">
+                <h2 class="content-title">
+                    <span>📦</span> 재고관리
+                </h2>
+            </div>
+            
+            <div class="product-filter">
+                <div class="filter-item">
+                    <label class="filter-label">상품명</label>
+                    <input type="text" class="filter-select" placeholder="상품명 검색">
+                </div>
+                <div class="filter-item">
+                    <label class="filter-label">상태</label>
+                    <select class="filter-select">
+                        <option value="">전체</option>
+                        <option value="in-stock">정상</option>
+                        <option value="low-stock">부족</option>
+                        <option value="out-stock">품절</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label class="filter-label">입고일자</label>
+                    <input type="date" class="filter-select" placeholder="입고일자">
+                </div>
+                <div class="filter-item">
+                    <label class="filter-label">출고일자</label>
+                    <input type="date" class="filter-select" placeholder="출고일자">
+                </div>
+                <div class="filter-item">
+                    <button class="search-btn">검색</button>
+                </div>
+            </div>
+            
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>상품코드</th>
+                        <th>상품명</th>
+                        <th>카테고리</th>
+                        <th>현재 재고</th>
+                        <th>상태</th>
+                        <th>최근 입고일</th>
+                        <th>최근 출고일</th>
+                        <th>재고 관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>P001</td>
+                        <td>히어로쿠션 수분 보습 세럼</td>
+                        <td>화장품</td>
+                        <td>150개</td>
+                        <td><span class="status-badge status-in-stock">정상</span></td>
+                        <td>2025-11-01</td>
+                        <td>2025-10-15</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button in" onclick="openStockInModal('P001')">입고</button>
+                                <button class="action-button out" onclick="openStockOutModal('P001')">출고</button>
+                                <button class="action-button edit" onclick="openEditProductModal('P001')">수정</button>
+                                <button class="action-button delete" onclick="deleteProduct('P001')">삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>P002</td>
+                        <td>비타민C 브라이트닝 세럼</td>
+                        <td>화장품</td>
+                        <td>80개</td>
+                        <td><span class="status-badge status-in-stock">정상</span></td>
+                        <td>2025-11-02</td>
+                        <td>2025-10-29</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button in" onclick="openStockInModal('P002')">입고</button>
+                                <button class="action-button out" onclick="openStockOutModal('P002')">출고</button>
+                                <button class="action-button edit" onclick="openEditProductModal('P002')">수정</button>
+                                <button class="action-button delete" onclick="deleteProduct('P002')">삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>P003</td>
+                        <td>레티놀 안티에이징 크림</td>
+                        <td>화장품</td>
+                        <td>30개</td>
+                        <td><span class="status-badge status-low-stock">부족</span></td>
+                        <td>2025-09-15</td>
+                        <td>2025-10-30</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button in" onclick="openStockInModal('P003')">입고</button>
+                                <button class="action-button out" onclick="openStockOutModal('P003')">출고</button>
+                                <button class="action-button edit" onclick="openEditProductModal('P003')">수정</button>
+                                <button class="action-button delete" onclick="deleteProduct('P003')">삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>P004</td>
+                        <td>콜라겐 펩타이드 앰플</td>
+                        <td>화장품</td>
+                        <td>0개</td>
+                        <td><span class="status-badge status-out-stock">품절</span></td>
+                        <td>2025-08-05</td>
+                        <td>2025-10-10</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button in" onclick="openStockInModal('P004')">입고</button>
+                                <button class="action-button out" onclick="openStockOutModal('P004')">출고</button>
+                                <button class="action-button edit" onclick="openEditProductModal('P004')">수정</button>
+                                <button class="action-button delete" onclick="deleteProduct('P004')">삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pagination">
+                <div class="pagination-item">◀</div>
+                <div class="pagination-item active">1</div>
+                <div class="pagination-item">2</div>
+                <div class="pagination-item">3</div>
+                <div class="pagination-item">▶</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 상품 추가 모달 -->
+    <div class="modal-backdrop" id="addProductModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">상품 추가</h3>
+                <button class="modal-close" onclick="closeModal('addProductModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">상품코드</label>
+                    <input type="text" class="form-control" placeholder="상품코드 입력">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상품명</label>
+                    <input type="text" class="form-control" placeholder="상품명 입력">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">카테고리</label>
+                    <select class="form-control">
+                        <option value="">카테고리 선택</option>
+                        <option value="cosmetics">화장품</option>
+                        <option value="food">식품</option>
+                        <option value="electronics">전자제품</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">초기 재고량</label>
+                    <input type="number" class="form-control" placeholder="초기 재고량 입력">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('addProductModal')">취소</button>
+                <button class="modal-btn modal-btn-primary">추가</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 상품 수정 모달 -->
+    <div class="modal-backdrop" id="editProductModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">상품 수정</h3>
+                <button class="modal-close" onclick="closeModal('editProductModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">상품코드</label>
+                    <input type="text" class="form-control" id="editProductCode" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상품명</label>
+                    <input type="text" class="form-control" id="editProductName">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">카테고리</label>
+                    <select class="form-control" id="editProductCategory">
+                        <option value="cosmetics">화장품</option>
+                        <option value="food">식품</option>
+                        <option value="electronics">전자제품</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">현재 재고량</label>
+                    <input type="number" class="form-control" id="editProductStock" readonly>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('editProductModal')">취소</button>
+                <button class="modal-btn modal-btn-primary">저장</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 입고 모달 -->
+    <div class="modal-backdrop" id="stockInModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">상품 입고</h3>
+                <button class="modal-close" onclick="closeModal('stockInModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">상품코드</label>
+                    <input type="text" class="form-control" id="stockInProductCode" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상품명</label>
+                    <input type="text" class="form-control" id="stockInProductName" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">현재 재고량</label>
+                    <input type="number" class="form-control" id="stockInCurrentStock" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">최근 입고 정보</label>
+                    <div class="stock-history-box">
+                        <div class="stock-history-item">
+                            <span class="stock-history-date">2025-11-01</span>
+                            <span class="stock-history-amount">+50개</span>
+                        </div>
+                        <div class="stock-history-item">
+                            <span class="stock-history-date">2025-10-15</span>
+                            <span class="stock-history-amount">+100개</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">입고 수량</label>
+                    <input type="number" class="form-control" id="stockInAmount" placeholder="입고할 수량 입력">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">입고 날짜</label>
+                    <input type="date" class="form-control" id="stockInDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">비고</label>
+                    <textarea class="form-control" id="stockInNote" placeholder="비고 입력"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('stockInModal')">취소</button>
+                <button class="modal-btn modal-btn-primary">입고 처리</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 출고 모달 -->
+    <div class="modal-backdrop" id="stockOutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">상품 출고</h3>
+                <button class="modal-close" onclick="closeModal('stockOutModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">상품코드</label>
+                    <input type="text" class="form-control" id="stockOutProductCode" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상품명</label>
+                    <input type="text" class="form-control" id="stockOutProductName" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">현재 재고량</label>
+                    <input type="number" class="form-control" id="stockOutCurrentStock" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">최근 출고 정보</label>
+                    <div class="stock-history-box">
+                        <div class="stock-history-item">
+                            <span class="stock-history-date">2025-10-30</span>
+                            <span class="stock-history-amount">-15개</span>
+                            <span class="stock-history-reason">판매</span>
+                        </div>
+                        <div class="stock-history-item">
+                            <span class="stock-history-date">2025-10-15</span>
+                            <span class="stock-history-amount">-20개</span>
+                            <span class="stock-history-reason">판매</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">출고 수량</label>
+                    <input type="number" class="form-control" id="stockOutAmount" placeholder="출고할 수량 입력">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">출고 날짜</label>
+                    <input type="date" class="form-control" id="stockOutDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">출고 사유</label>
+                    <select class="form-control" id="stockOutReason">
+                        <option value="">출고 사유 선택</option>
+                        <option value="sale">판매</option>
+                        <option value="return">반품</option>
+                        <option value="damage">파손</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">비고</label>
+                    <textarea class="form-control" id="stockOutNote" placeholder="비고 입력"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('stockOutModal')">취소</button>
+                <button class="modal-btn modal-btn-primary">출고 처리</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 모달 관련 함수
+        function openAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'flex';
+        }
+        
+        function openEditProductModal(productCode) {
+            // 실제 구현에서는 서버에서 해당 상품 정보를 가져와 폼에 채우는 로직이 필요합니다.
+            // 여기서는 간단한 예시로 구현
+            document.getElementById('editProductCode').value = productCode;
+            
+            // 예시 데이터
+            if (productCode === 'P001') {
+                document.getElementById('editProductName').value = '히어로쿠션 수분 보습 세럼';
+                document.getElementById('editProductCategory').value = 'cosmetics';
+                document.getElementById('editProductStock').value = '150';
+            } else if (productCode === 'P002') {
+                document.getElementById('editProductName').value = '비타민C 브라이트닝 세럼';
+                document.getElementById('editProductCategory').value = 'cosmetics';
+                document.getElementById('editProductStock').value = '80';
+            } else if (productCode === 'P003') {
+                document.getElementById('editProductName').value = '레티놀 안티에이징 크림';
+                document.getElementById('editProductCategory').value = 'cosmetics';
+                document.getElementById('editProductStock').value = '30';
+            } else if (productCode === 'P004') {
+                document.getElementById('editProductName').value = '콜라겐 펩타이드 앰플';
+                document.getElementById('editProductCategory').value = 'cosmetics';
+                document.getElementById('editProductStock').value = '0';
+            }
+            
+            document.getElementById('editProductModal').style.display = 'flex';
+        }
+        
+        function openStockInModal(productCode) {
+            // 실제 구현에서는 서버에서 해당 상품 정보를 가져와 폼에 채우는 로직이 필요합니다.
+            document.getElementById('stockInProductCode').value = productCode;
+            
+            // 예시 데이터
+            if (productCode === 'P001') {
+                document.getElementById('stockInProductName').value = '히어로쿠션 수분 보습 세럼';
+                document.getElementById('stockInCurrentStock').value = '150';
+            } else if (productCode === 'P002') {
+                document.getElementById('stockInProductName').value = '비타민C 브라이트닝 세럼';
+                document.getElementById('stockInCurrentStock').value = '80';
+            } else if (productCode === 'P003') {
+                document.getElementById('stockInProductName').value = '레티놀 안티에이징 크림';
+                document.getElementById('stockInCurrentStock').value = '30';
+            } else if (productCode === 'P004') {
+                document.getElementById('stockInProductName').value = '콜라겐 펩타이드 앰플';
+                document.getElementById('stockInCurrentStock').value = '0';
+            }
+            
+            // 현재 날짜 설정
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('stockInDate').value = today;
+            
+            document.getElementById('stockInModal').style.display = 'flex';
+        }
+        
+        function openStockOutModal(productCode) {
+            // 실제 구현에서는 서버에서 해당 상품 정보를 가져와 폼에 채우는 로직이 필요합니다.
+            document.getElementById('stockOutProductCode').value = productCode;
+            
+            // 예시 데이터
+            if (productCode === 'P001') {
+                document.getElementById('stockOutProductName').value = '히어로쿠션 수분 보습 세럼';
+                document.getElementById('stockOutCurrentStock').value = '150';
+            } else if (productCode === 'P002') {
+                document.getElementById('stockOutProductName').value = '비타민C 브라이트닝 세럼';
+                document.getElementById('stockOutCurrentStock').value = '80';
+            } else if (productCode === 'P003') {
+                document.getElementById('stockOutProductName').value = '레티놀 안티에이징 크림';
+                document.getElementById('stockOutCurrentStock').value = '30';
+            } else if (productCode === 'P004') {
+                document.getElementById('stockOutProductName').value = '콜라겐 펩타이드 앰플';
+                document.getElementById('stockOutCurrentStock').value = '0';
+            }
+            
+            // 현재 날짜 설정
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('stockOutDate').value = today;
+            
+            document.getElementById('stockOutModal').style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function deleteProduct(productCode) {
+            // 실제 구현에서는 확인 후 서버에 삭제 요청을 보내는 로직이 필요합니다.
+            if (confirm('정말로 이 상품을 삭제하시겠습니까? 상품코드: ' + productCode)) {
+                alert('상품이 삭제되었습니다. (예시 메시지)');
+                // 실제로는 여기서 서버에 삭제 요청을 보냅니다.
+            }
+        }
+        
+        // 이벤트 리스너 등록
+        document.addEventListener('DOMContentLoaded', function() {
+            // 모달 외부 클릭 시 닫기
+            const modals = document.querySelectorAll('.modal-backdrop');
+            modals.forEach(function(modal) {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+            
+            // 현재 날짜 기본값 설정
+            const today = new Date().toISOString().split('T')[0];
+            const datePickers = document.querySelectorAll('input[type="date"]');
+            datePickers.forEach(function(picker) {
+                picker.value = today;
+            });
+        });
+    </script>
+</body>
+</html>

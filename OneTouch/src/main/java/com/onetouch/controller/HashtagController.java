@@ -38,14 +38,12 @@ public class HashtagController {
 	
 	@RequestMapping("/hashtag/insert.do")
 	public String insertOne(HashtagVo vo) {
-		System.out.println("작동은 했니?");
 		String hashtag_name = vo.getHashtag_name().trim();
 		vo.setHashtag_name(hashtag_name);
 		
 		System.out.println(hashtag_name);
 		int res = hashtag_dao.insertOne(vo);
-		
-		System.out.println("잘 됐을걸");
+
 		return "redirect:list.do";
 	};
 	
@@ -55,19 +53,19 @@ public class HashtagController {
 		return "redirect:list.do";
 	};
 
-     //단일 해시태그로 상품 검색 (클릭)
+     //단일 해시태그로 상품 검색 (클릭) not yet
     public List<Integer> searchProductsByHashtag(int hashtag_idx) {
     	return hashtag_dao.selectProductByHashtag(hashtag_idx);
     }
     
 
-    // 단일 해시태그로 게시글 검색 (클릭)
+    // 단일 해시태그로 게시글 검색 (클릭) not yet
     public List<Integer> searchPostsByHashtag(int hashtag_idx) {
         return hashtag_dao.selectPostByHashtag(hashtag_idx);
     }
     
 
-    // 여러 해시태그로 상품 추천 (문진)
+    // 여러 해시태그로 상품 추천 (문진) //test OK
 
     public List<Integer> recommendProductsByHashtags(
             List<Integer> hashtagIds, int minMatch, Integer limit) {
@@ -85,7 +83,7 @@ public class HashtagController {
     }
     
 
-    //여러 해시태그로 게시글 추천 (문진)
+    //여러 해시태그로 게시글 추천 (문진) not yet
 
     public List<Integer> recommendPostsByHashtags(
             List<Integer> hashtagIds, int minMatch, Integer limit) {

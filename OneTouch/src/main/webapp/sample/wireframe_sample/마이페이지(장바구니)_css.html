@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTouch - 마이페이지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            letter-spacing: -1px;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .logo span {
+            color: #3949ab;
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* 레이아웃 */
+        .mypage-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 0;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-title {
+            padding: 0 24px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 14px 24px;
+            color: #666;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background: #f5f7fa;
+            color: #1a237e;
+        }
+
+        .sidebar-menu a.active {
+            background: #e8eaf6;
+            color: #1a237e;
+            font-weight: 600;
+            border-left-color: #1a237e;
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            min-height: 600px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #1a237e;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 장바구니 */
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .cart-checkbox {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .cart-image {
+            width: 120px;
+            height: 120px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #999;
+            flex-shrink: 0;
+        }
+
+        .cart-info {
+            flex: 1;
+        }
+
+        .cart-product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .cart-option {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .cart-quantity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .quantity-control {
+            display: flex;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background: #f5f7fa;
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            font-weight: 600;
+        }
+
+        .cart-price {
+            text-align: right;
+        }
+
+        .cart-price-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 12px;
+        }
+
+        .cart-delete {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .cart-delete:hover {
+            border-color: #d32f2f;
+            color: #d32f2f;
+        }
+
+        /* 장바구니 요약 */
+        .cart-summary {
+            background: #f5f7fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 16px;
+        }
+
+        .summary-row.total {
+            padding-top: 20px;
+            margin-top: 16px;
+            border-top: 2px solid #1a237e;
+            font-size: 22px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 찜 목록 */
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .wishlist-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .wishlist-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+        }
+
+        .wishlist-image {
+            width: 100%;
+            height: 200px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .wishlist-info {
+            padding: 20px;
+        }
+
+        .wishlist-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .wishlist-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 12px;
+        }
+
+        .wishlist-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* 버튼 */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1a237e;
+            border: 2px solid #1a237e;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f7fa;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+            color: white;
+        }
+
+        /* 주문 목록 */
+        .order-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-number {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .order-number strong {
+            color: #1a237e;
+            font-weight: 600;
+        }
+
+        .order-date {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e8eaf6;
+            color: #1a237e;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .order-product {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .order-product-image {
+            width: 80px;
+            height: 80px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .order-product-info {
+            flex: 1;
+        }
+
+        .order-product-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .order-product-quantity {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .order-product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 폼 스타일 */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-text {
+            font-size: 18px;
+            margin-bottom: 24px;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* 정보 박스 */
+        .info-box {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .mypage-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .cart-item {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Q&A 링크 버튼 */
+        .qna-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #1a237e;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .qna-link-btn:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="logo" onclick="goToHome()">
+            One<span>Touch</span>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <h1 class="page-title">마이페이지</h1>
+        <p class="page-subtitle"><strong id="userName"></strong>님, 환영합니다!</p>
+
+        <div class="mypage-layout">
+            <!-- 사이드바 -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">쇼핑</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="active" onclick="showSection('cart'); return false;">🛒 장바구니</a></li>
+                        <li><a href="#" onclick="showSection('wishlist'); return false;">♥ 찜</a></li>
+                        <li><a href="#" onclick="showSection('orders'); return false;">📦 주문/배송 조회</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">나의 활동</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" onclick="showSection('qna'); return false;">💬 상품 Q&A</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">회원 정보</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" onclick="showSection('profile'); return false;">👤 회원정보 수정</a></li>
+                        <li><a href="#" onclick="showSection('address'); return false;">🏠 배송지 관리</a></li>
+                        <li><a href="#" onclick="showSection('account'); return false;">💳 환불계좌 관리</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <ul class="sidebar-menu">
+                        <li><a href="#" onclick="handleLogout(); return false;">🚪 로그아웃</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- 메인 컨텐츠 -->
+            <main class="main-content">
+                <!-- 장바구니 -->
+                <section id="cartSection" class="content-section active">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">🛒 장바구니</h2>
+                            <div>
+                                <button class="btn btn-secondary btn-small" onclick="selectAllCart()">전체 선택</button>
+                                <button class="btn btn-danger btn-small" onclick="deleteSelectedCart()">선택 삭제</button>
+                            </div>
+                        </div>
+
+                        <div id="cartList">
+                            <!-- 장바구니 아이템이 동적으로 추가됩니다 -->
+                        </div>
+
+                        <div class="cart-summary">
+                            <div class="summary-row">
+                                <span>상품금액</span>
+                                <span id="cartProductTotal">0원</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>배송비</span>
+                                <span id="cartDeliveryFee">3,000원</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>총 결제금액</span>
+                                <span id="cartTotalAmount">0원</span>
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 20px; padding: 16px;" onclick="goToCheckout()">
+                                선택 상품 주문하기
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 찜 -->
+                <section id="wishlistSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">♥ 찜 목록</h2>
+                        </div>
+
+                        <div class="wishlist-grid" id="wishlistGrid">
+                            <!-- 찜 아이템이 동적으로 추가됩니다 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 주문/배송 조회 -->
+                <section id="ordersSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">📦 주문/배송 조회</h2>
+                        </div>
+
+                        <div id="ordersList">
+                            <!-- 주문 내역이 동적으로 추가됩니다 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 상품 Q&A -->
+                <section id="qnaSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">💬 상품 Q&A</h2>
+                        </div>
+
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <p style="font-size: 16px; color: #666; margin-bottom: 24px;">
+                                작성하신 상품 문의 내역을 확인하실 수 있습니다.
+                            </p>
+                            <a href="onetouch-product-detail.html?tab=qna&author=myqna" class="qna-link-btn">
+                                📝 나의 Q&A 보러가기
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 회원정보 수정 -->
+                <section id="profileSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">👤 회원정보 수정</h2>
+                        </div>
+
+                        <div id="passwordCheckForm">
+                            <p style="text-align: center; color: #666; margin-bottom: 24px;">
+                                회원정보 보호를 위해 비밀번호를 다시 한번 입력해주세요.
+                            </p>
+                            <div class="form-group">
+                                <label class="form-label">비밀번호</label>
+                                <input type="password" class="form-input" id="passwordCheck" placeholder="비밀번호를 입력하세요">
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="checkPassword()">확인</button>
+                        </div>
+
+                        <div id="profileEditForm" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">아이디</label>
+                                <input type="text" class="form-input" id="profileId" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">이름</label>
+                                <input type="text" class="form-input" id="profileName">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">이메일</label>
+                                    <input type="email" class="form-input" id="profileEmail">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">휴대폰</label>
+                                    <input type="tel" class="form-input" id="profilePhone">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">새 비밀번호 (변경 시에만 입력)</label>
+                                <input type="password" class="form-input" id="newPassword" placeholder="8자 이상">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">새 비밀번호 확인</label>
+                                <input type="password" class="form-input" id="newPasswordConfirm" placeholder="비밀번호 재입력">
+                            </div>
+
+                            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                                <button class="btn btn-secondary" style="flex: 1;" onclick="cancelEdit()">취소</button>
+                                <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">저장</button>
+                            </div>
+
+                            <hr style="margin: 40px 0; border: none; border-top: 1px solid #f0f0f0;">
+
+                            <div style="text-align: center;">
+                                <button class="btn btn-danger" onclick="withdrawAccount()">회원탈퇴</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 배송지 관리 -->
+                <section id="addressSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">🏠 배송지 관리</h2>
+                            <button class="btn btn-primary btn-small" onclick="addAddress()">배송지 추가</button>
+                        </div>
+
+                        <div id="addressList">
+                            <!-- 배송지 목록이 동적으로 추가됩니다 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 환불계좌 관리 -->
+                <section id="accountSection" class="content-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">💳 환불계좌 관리</h2>
+                        </div>
+
+                        <div class="info-box" id="refundAccountInfo">
+                            <!-- 환불계좌 정보가 표시됩니다 -->
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">은행</label>
+                            <select class="form-input" id="bankName">
+                                <option value="">선택하세요</option>
+                                <option value="KB국민은행">KB국민은행</option>
+                                <option value="신한은행">신한은행</option>
+                                <option value="우리은행">우리은행</option>
+                                <option value="하나은행">하나은행</option>
+                                <option value="NH농협">NH농협</option>
+                                <option value="IBK기업은행">IBK기업은행</option>
+                                <option value="카카오뱅크">카카오뱅크</option>
+                                <option value="토스뱅크">토스뱅크</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">계좌번호</label>
+                            <input type="text" class="form-input" id="accountNumber" placeholder="'-' 없이 입력">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">예금주</label>
+                            <input type="text" class="form-input" id="accountHolder">
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="saveRefundAccount()">저장</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 배송지 추가/수정 모달 -->
+    <div class="modal" id="addressModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="addressModalTitle">배송지 추가</h3>
+                <button class="modal-close" onclick="closeModal('addressModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">배송지명</label>
+                    <input type="text" class="form-input" id="addressName" placeholder="예: 집, 회사">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">수령인</label>
+                    <input type="text" class="form-input" id="addressRecipient">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">연락처</label>
+                    <input type="tel" class="form-input" id="addressPhone" placeholder="010-1234-5678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">우편번호</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" class="form-input" id="addressZipCode" readonly style="flex: 1;">
+                        <button class="btn btn-secondary btn-small" onclick="searchAddressForModal()">주소 검색</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">주소</label>
+                    <input type="text" class="form-input" id="addressStreet" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">상세주소</label>
+                    <input type="text" class="form-input" id="addressDetail">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addressModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveAddress()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수
+        let currentUserId = localStorage.getItem('userId') || 'user01';
+        let cartItems = [];
+        let wishlistItems = [];
+        let orders = [];
+        let addresses = [];
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('userName').textContent = currentUserId;
+            loadCartItems();
+            loadWishlistItems();
+            loadOrders();
+            loadAddresses();
+            loadRefundAccount();
+        });
+
+        // 섹션 표시
+        function showSection(sectionName) {
+            // 모든 섹션 숨기기
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // 모든 메뉴 비활성화
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // 선택된 섹션 표시
+            const sections = {
+                'cart': 'cartSection',
+                'wishlist': 'wishlistSection',
+                'orders': 'ordersSection',
+                'qna': 'qnaSection',
+                'profile': 'profileSection',
+                'address': 'addressSection',
+                'account': 'accountSection'
+            };
+
+            document.getElementById(sections[sectionName]).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ===== 장바구니 =====
+        function loadCartItems() {
+            cartItems = JSON.parse(localStorage.getItem('cart')) || [
+                { id: 1, name: '히아루론산 수분 보습 세럼', price: 31500, quantity: 2, selected: true }
+            ];
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            const cartList = document.getElementById('cartList');
+            
+            if (cartItems.length === 0) {
+                cartList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🛒</div>
+                        <div class="empty-text">장바구니가 비어있습니다</div>
+                        <button class="btn btn-primary" onclick="goToHome()">쇼핑 계속하기</button>
+                    </div>
+                `;
+                updateCartSummary();
+                return;
+            }
+
+            cartList.innerHTML = cartItems.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-checkbox">
+                        <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleCartItem(${index})">
+                    </div>
+                    <div class="cart-image">상품</div>
+                    <div class="cart-info">
+                        <div class="cart-product-name">${item.name}</div>
+                        <div class="cart-quantity">
+                            <span style="font-size: 14px; color: #666;">수량:</span>
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateCartQuantity(${index}, -1)">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                                <button class="quantity-btn" onclick="updateCartQuantity(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-price">
+                        <div class="cart-price-value">${(item.price * item.quantity).toLocaleString()}원</div>
+                        <button class="cart-delete" onclick="deleteCartItem(${index})">삭제</button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateCartSummary();
+        }
+
+        function toggleCartItem(index) {
+            cartItems[index].selected = !cartItems[index].selected;
+            updateCartSummary();
+        }
+
+        function updateCartQuantity(index, change) {
+            cartItems[index].quantity += change;
+            if (cartItems[index].quantity < 1) {
+                cartItems[index].quantity = 1;
+            }
+            renderCartItems();
+        }
+
+        function deleteCartItem(index) {
+            if (confirm('장바구니에서 삭제하시겠습니까?')) {
+                cartItems.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                renderCartItems();
+            }
+        }
+
+        function selectAllCart() {
+            const allSelected = cartItems.every(item => item.selected);
+            cartItems.forEach(item => item.selected = !allSelected);
+            renderCartItems();
+        }
+
+        function deleteSelectedCart() {
+            const selectedCount = cartItems.filter(item => item.selected).length;
+            if (selectedCount === 0) {
+                alert('삭제할 상품을 선택해주세요.');
+                return;
+            }
+            
+            if (confirm(`선택한 ${selectedCount}개 상품을 삭제하시겠습니까?`)) {
+                cartItems = cartItems.filter(item => !item.selected);
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                renderCartItems();
+            }
+        }
+
+        function updateCartSummary() {
+            const selectedItems = cartItems.filter(item => item.selected);
+            const productTotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = productTotal >= 50000 ? 0 : 3000;
+            const totalAmount = productTotal + deliveryFee;
+
+            document.getElementById('cartProductTotal').textContent = productTotal.toLocaleString() + '원';
+            document.getElementById('cartDeliveryFee').textContent = deliveryFee === 0 ? '무료' : deliveryFee.toLocaleString() + '원';
+            document.getElementById('cartTotalAmount').textContent = totalAmount.toLocaleString() + '원';
+        }
+
+        function goToCheckout() {
+            const selectedItems = cartItems.filter(item => item.selected);
+            if (selectedItems.length === 0) {
+                alert('주문할 상품을 선택해주세요.');
+                return;
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(selectedItems));
+            window.location.href = 'onetouch-purchase.html';
+        }
+
+        // ===== 찜 =====
+        function loadWishlistItems() {
+            wishlistItems = JSON.parse(localStorage.getItem('wishlist')) || [
+                { id: 1, name: '히아루론산 수분 보습 세럼', price: 31500 },
+                { id: 2, name: '비타민C 세럼', price: 28000 }
+            ];
+            renderWishlistItems();
+        }
+
+        function renderWishlistItems() {
+            const wishlistGrid = document.getElementById('wishlistGrid');
+            
+            if (wishlistItems.length === 0) {
+                wishlistGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">♥</div>
+                        <div class="empty-text">찜한 상품이 없습니다</div>
+                        <button class="btn btn-primary" onclick="goToHome()">쇼핑 계속하기</button>
+                    </div>
+                `;
+                return;
+            }
+
+            wishlistGrid.innerHTML = wishlistItems.map((item, index) => `
+                <div class="wishlist-item" onclick="goToProduct(${item.id})">
+                    <div class="wishlist-image">상품 이미지</div>
+                    <div class="wishlist-info">
+                        <div class="wishlist-name">${item.name}</div>
+                        <div class="wishlist-price">${item.price.toLocaleString()}원</div>
+                        <div class="wishlist-actions">
+                            <button class="btn btn-primary btn-small" style="flex: 1;" onclick="event.stopPropagation(); addWishlistToCart(${index})">장바구니</button>
+                            <button class="btn btn-danger btn-small" onclick="event.stopPropagation(); deleteWishlistItem(${index})">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteWishlistItem(index) {
+            if (confirm('찜 목록에서 삭제하시겠습니까?')) {
+                wishlistItems.splice(index, 1);
+                localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
+                renderWishlistItems();
+            }
+        }
+
+        function addWishlistToCart(index) {
+            const item = wishlistItems[index];
+            cartItems.push({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: 1,
+                selected: true
+            });
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            alert('장바구니에 담았습니다.');
+        }
+
+        // ===== 주문/배송 조회 =====
+        function loadOrders() {
+            const savedOrder = localStorage.getItem('currentOrder');
+            
+            // 기본 샘플 주문 데이터
+            orders = [
+                {
+                    orderId: 'ORDER_1735812000000',
+                    products: [
+                        { name: '히아루론산 수분 보습 세럼', price: 31500, quantity: 2 }
+                    ],
+                    timestamp: '2025-01-02T14:30:00',
+                    status: '배송완료'
+                },
+                {
+                    orderId: 'ORDER_1733133600000',
+                    products: [
+                        { name: '비타민C 브라이트닝 세럼', price: 28000, quantity: 1 },
+                        { name: '나이아신아마이드 토너', price: 24000, quantity: 1 }
+                    ],
+                    timestamp: '2024-12-02T10:15:00',
+                    status: '배송완료'
+                },
+                {
+                    orderId: 'ORDER_1730455200000',
+                    products: [
+                        { name: '레티놀 안티에이징 크림', price: 42000, quantity: 1 }
+                    ],
+                    timestamp: '2024-11-01T16:20:00',
+                    status: '배송완료'
+                }
+            ];
+            
+            if (savedOrder) {
+                const currentOrder = JSON.parse(savedOrder);
+                currentOrder.status = '배송 준비중';
+                orders.unshift(currentOrder);
+            }
+            
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const ordersList = document.getElementById('ordersList');
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📦</div>
+                        <div class="empty-text">주문 내역이 없습니다</div>
+                    </div>
+                `;
+                return;
+            }
+
+            ordersList.innerHTML = orders.map(order => {
+                const totalAmount = order.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+                const deliveryFee = totalAmount >= 50000 ? 0 : 3000;
+                const finalAmount = totalAmount + deliveryFee;
+                
+                // 상태별 색상
+                const statusColors = {
+                    '배송 준비중': '#1a237e',
+                    '배송중': '#3949ab',
+                    '배송완료': '#4caf50'
+                };
+                const statusColor = statusColors[order.status] || '#1a237e';
+                
+                return `
+                    <div class="order-item">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">주문번호: <strong>${order.orderId}</strong></div>
+                                <div class="order-date">${formatDate(order.timestamp)}</div>
+                            </div>
+                            <div class="order-status" style="background: ${statusColor}15; color: ${statusColor};">${order.status}</div>
+                        </div>
+                        ${order.products.map(product => `
+                            <div class="order-product">
+                                <div class="order-product-image">상품</div>
+                                <div class="order-product-info">
+                                    <div class="order-product-name">${product.name}</div>
+                                    <div class="order-product-quantity">수량: ${product.quantity}개</div>
+                                </div>
+                                <div class="order-product-price">${(product.price * product.quantity).toLocaleString()}원</div>
+                            </div>
+                        `).join('')}
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f0f0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-size: 14px; color: #666;">상품금액</span>
+                                <span style="font-size: 14px; color: #333;">${totalAmount.toLocaleString()}원</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-size: 14px; color: #666;">배송비</span>
+                                <span style="font-size: 14px; color: #333;">${deliveryFee === 0 ? '무료' : deliveryFee.toLocaleString() + '원'}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding-top: 12px; border-top: 2px solid #1a237e;">
+                                <span style="font-size: 16px; color: #666; font-weight: 600;">총 결제금액</span>
+                                <strong style="font-size: 20px; color: #1a237e;">${finalAmount.toLocaleString()}원</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+        }
+
+        // ===== 회원정보 수정 =====
+        function checkPassword() {
+            const password = document.getElementById('passwordCheck').value;
+            
+            if (!password) {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
+            // 실제로는 서버에서 비밀번호 확인
+            // 여기서는 간단히 시뮬레이션
+            if (password.length < 4) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            // 회원정보 로드
+            document.getElementById('profileId').value = currentUserId;
+            document.getElementById('profileName').value = currentUserId;
+            document.getElementById('profileEmail').value = currentUserId + '@email.com';
+            document.getElementById('profilePhone').value = '010-1234-5678';
+
+            document.getElementById('passwordCheckForm').style.display = 'none';
+            document.getElementById('profileEditForm').style.display = 'block';
+        }
+
+        function cancelEdit() {
+            document.getElementById('passwordCheckForm').style.display = 'block';
+            document.getElementById('profileEditForm').style.display = 'none';
+            document.getElementById('passwordCheck').value = '';
+        }
+
+        function saveProfile() {
+            const newPassword = document.getElementById('newPassword').value;
+            const newPasswordConfirm = document.getElementById('newPasswordConfirm').value;
+
+            if (newPassword && newPassword !== newPasswordConfirm) {
+                alert('새 비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            if (newPassword && newPassword.length < 8) {
+                alert('비밀번호는 8자 이상이어야 합니다.');
+                return;
+            }
+
+            // 실제로는 서버에 저장
+            alert('회원정보가 수정되었습니다.');
+            cancelEdit();
+        }
+
+        function withdrawAccount() {
+            if (confirm('정말 탈퇴하시겠습니까?\n탈퇴 시 모든 정보가 삭제되며 복구할 수 없습니다.')) {
+                if (confirm('마지막으로 한번 더 확인합니다.\n정말 탈퇴하시겠습니까?')) {
+                    // 실제로는 서버에 탈퇴 요청
+                    localStorage.clear();
+                    alert('회원 탈퇴가 완료되었습니다.');
+                    window.location.href = 'onetouch-main.html';
+                }
+            }
+        }
+
+        // ===== 배송지 관리 =====
+        function loadAddresses() {
+            addresses = JSON.parse(localStorage.getItem('addresses')) || [
+                {
+                    id: 1,
+                    name: '집',
+                    recipient: currentUserId,
+                    phone: '010-1234-5678',
+                    zipCode: '06234',
+                    street: '서울특별시 강남구 테헤란로 123',
+                    detail: '101동 1001호',
+                    isDefault: true
+                }
+            ];
+            renderAddresses();
+        }
+
+        function renderAddresses() {
+            const addressList = document.getElementById('addressList');
+            
+            addressList.innerHTML = addresses.map((addr, index) => `
+                <div class="info-box" style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <strong style="font-size: 16px; color: #1a237e;">${addr.name}</strong>
+                            ${addr.isDefault ? '<span style="margin-left: 8px; padding: 4px 8px; background: #1a237e; color: white; border-radius: 4px; font-size: 12px;">기본</span>' : ''}
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary btn-small" onclick="editAddress(${index})">수정</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteAddress(${index})">삭제</button>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">수령인</span>
+                        <span class="info-value">${addr.recipient}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">연락처</span>
+                        <span class="info-value">${addr.phone}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">주소</span>
+                        <span class="info-value">(${addr.zipCode}) ${addr.street} ${addr.detail}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addAddress() {
+            document.getElementById('addressModalTitle').textContent = '배송지 추가';
+            document.getElementById('addressName').value = '';
+            document.getElementById('addressRecipient').value = '';
+            document.getElementById('addressPhone').value = '';
+            document.getElementById('addressZipCode').value = '';
+            document.getElementById('addressStreet').value = '';
+            document.getElementById('addressDetail').value = '';
+            openModal('addressModal');
+        }
+
+        function editAddress(index) {
+            const addr = addresses[index];
+            document.getElementById('addressModalTitle').textContent = '배송지 수정';
+            document.getElementById('addressName').value = addr.name;
+            document.getElementById('addressRecipient').value = addr.recipient;
+            document.getElementById('addressPhone').value = addr.phone;
+            document.getElementById('addressZipCode').value = addr.zipCode;
+            document.getElementById('addressStreet').value = addr.street;
+            document.getElementById('addressDetail').value = addr.detail;
+            openModal('addressModal');
+        }
+
+        function saveAddress() {
+            const newAddress = {
+                id: Date.now(),
+                name: document.getElementById('addressName').value,
+                recipient: document.getElementById('addressRecipient').value,
+                phone: document.getElementById('addressPhone').value,
+                zipCode: document.getElementById('addressZipCode').value,
+                street: document.getElementById('addressStreet').value,
+                detail: document.getElementById('addressDetail').value,
+                isDefault: false
+            };
+
+            if (!newAddress.name || !newAddress.recipient || !newAddress.phone || !newAddress.zipCode) {
+                alert('모든 필수 항목을 입력해주세요.');
+                return;
+            }
+
+            addresses.push(newAddress);
+            localStorage.setItem('addresses', JSON.stringify(addresses));
+            renderAddresses();
+            closeModal('addressModal');
+        }
+
+        function deleteAddress(index) {
+            if (confirm('배송지를 삭제하시겠습니까?')) {
+                addresses.splice(index, 1);
+                localStorage.setItem('addresses', JSON.stringify(addresses));
+                renderAddresses();
+            }
+        }
+
+        function searchAddressForModal() {
+            alert('주소 검색 API 연동 필요\n\n테스트용 샘플 주소를 입력합니다.');
+            document.getElementById('addressZipCode').value = '06234';
+            document.getElementById('addressStreet').value = '서울특별시 강남구 테헤란로 123';
+        }
+
+        // ===== 환불계좌 관리 =====
+        function loadRefundAccount() {
+            const account = JSON.parse(localStorage.getItem('refundAccount'));
+            if (account) {
+                document.getElementById('refundAccountInfo').innerHTML = `
+                    <div class="info-row">
+                        <span class="info-label">은행</span>
+                        <span class="info-value">${account.bank}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">계좌번호</span>
+                        <span class="info-value">${account.number}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">예금주</span>
+                        <span class="info-value">${account.holder}</span>
+                    </div>
+                `;
+                
+                document.getElementById('bankName').value = account.bank;
+                document.getElementById('accountNumber').value = account.number;
+                document.getElementById('accountHolder').value = account.holder;
+            } else {
+                document.getElementById('refundAccountInfo').innerHTML = `
+                    <div style="text-align: center; color: #999;">등록된 환불계좌가 없습니다</div>
+                `;
+            }
+        }
+
+        function saveRefundAccount() {
+            const bank = document.getElementById('bankName').value;
+            const number = document.getElementById('accountNumber').value;
+            const holder = document.getElementById('accountHolder').value;
+
+            if (!bank || !number || !holder) {
+                alert('모든 항목을 입력해주세요.');
+                return;
+            }
+
+            const account = { bank, number, holder };
+            localStorage.setItem('refundAccount', JSON.stringify(account));
+            
+            alert('환불계좌가 저장되었습니다.');
+            loadRefundAccount();
+        }
+
+        // ===== 유틸리티 =====
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function goToHome() {
+            window.location.href = 'onetouch-main.html';
+        }
+
+        function goToProduct(id) {
+            window.location.href = 'onetouch-product-detail.html';
+        }
+
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userId');
+                alert('로그아웃되었습니다.');
+                window.location.href = 'onetouch-main.html';
+            }
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

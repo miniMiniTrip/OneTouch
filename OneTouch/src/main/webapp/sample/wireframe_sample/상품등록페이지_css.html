@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>상품등록 와이어프레임</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .button {
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button-secondary {
+            background-color: #f44336;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f5f5f5;
+            font-weight: normal;
+            color: #666;
+        }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .actions button {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .search-bar input {
+            flex: 1;
+        }
+        .search-bar select {
+            width: 150px;
+        }
+        .search-bar button {
+            width: 80px;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            width: 500px;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>상품등록</h1>
+            <div>
+                <button class="button" id="showRegistrationModal">상품등록</button>
+            </div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="상품명으로 검색">
+            <select>
+                <option>전체 카테고리</option>
+                <option>스킨케어</option>
+                <option>메이크업</option>
+                <option>헤어케어</option>
+            </select>
+            <button class="button">검색</button>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>이미지</th>
+                    <th>상품번호</th>
+                    <th>카테고리</th>
+                    <th>상품명</th>
+                    <th>브랜드</th>
+                    <th>가격</th>
+                    <th>재고</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td><div style="width:50px;height:50px;background:#eee;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;">이미지</div></td>
+                    <td>P001</td>
+                    <td>C100</td>
+                    <td>히아루론산 수분 보충 세럼</td>
+                    <td>더마코스메틱</td>
+                    <td>31,500원</td>
+                    <td>150개</td>
+                    <td class="actions">
+                        <button class="button">수정</button>
+                        <button class="button button-secondary">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td><div style="width:50px;height:50px;background:#eee;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;">이미지</div></td>
+                    <td>P002</td>
+                    <td>C100</td>
+                    <td>비타민C 브라이트닝 세럼</td>
+                    <td>클리어스킨</td>
+                    <td>28,000원</td>
+                    <td>80개</td>
+                    <td class="actions">
+                        <button class="button">수정</button>
+                        <button class="button button-secondary">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td><div style="width:50px;height:50px;background:#eee;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;">이미지</div></td>
+                    <td>P003</td>
+                    <td>C200</td>
+                    <td>콜라겐 안티에이징 크림</td>
+                    <td>에이지케어</td>
+                    <td>42,000원</td>
+                    <td>30개</td>
+                    <td class="actions">
+                        <button class="button">수정</button>
+                        <button class="button button-secondary">삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- 상품등록 모달 -->
+    <div class="modal" id="registrationModal" style="display: flex;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>상품 등록</h2>
+                <button class="close" onclick="document.getElementById('registrationModal').style.display='none';">&times;</button>
+            </div>
+            
+            <form>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>상품번호</label>
+                        <input type="number" placeholder="상품번호 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>카테고리번호</label>
+                        <input type="number" placeholder="카테고리번호 입력">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>상품명</label>
+                    <input type="text" placeholder="상품명 입력">
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>브랜드</label>
+                        <input type="text" placeholder="브랜드명 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>가격</label>
+                        <input type="number" placeholder="가격 입력">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>상품설명</label>
+                    <input type="text" placeholder="상품설명 입력">
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>재고수량</label>
+                        <input type="number" placeholder="재고수량 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>찜수</label>
+                        <input type="number" placeholder="찜수 입력">
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>등록시간</label>
+                        <input type="time">
+                    </div>
+                    <div class="form-group">
+                        <label>수정시간</label>
+                        <input type="time">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>이미지 번호</label>
+                    <input type="number" placeholder="이미지 번호 입력">
+                </div>
+                
+                <div class="form-group">
+                    <label>이미지 첨부</label>
+                    <input type="file">
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="button" class="button button-secondary" onclick="document.getElementById('registrationModal').style.display='none';">취소</button>
+                    <button type="submit" class="button">등록하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 상품등록 모달 표시/숨김
+        const modal = document.getElementById('registrationModal');
+        const showModalBtn = document.getElementById('showRegistrationModal');
+        
+        // 초기에는 모달 숨기기
+        modal.style.display = 'none';
+        
+        // 버튼 클릭시 모달 표시
+        showModalBtn.addEventListener('click', function() {
+            modal.style.display = 'flex';
+        });
+        
+        // 모달 외부 클릭시 닫기
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
