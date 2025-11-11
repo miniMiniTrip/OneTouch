@@ -11,45 +11,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
 
-    <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
-    
-    <script type="text/javascript">
-    	/* 전체 목록 화면 출력 */
-    	function postAllList(){
-    		$.ajax(){
-    			url:""
-    			,
-    		}
-    	}
-    	/* 스킨케어팁 목록 화면 출력 */
-    	function postTipList(){
-    		
-    	}
-    	/* 리뷰(구매후기) 목록 화면 출력*/
-    	function postReviewList(){
-    		
-    	}
-    	/* 자유게시판 목록 화면 출력 */
-    	function postFreeBoard(){
-    		
-    	}
-    	
-    </script>
-
-
-   <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts - Noto Sans KR -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
- <style>
-      :root {
+    
+    <style>
+        /* OneTouch 커뮤니티 스타일 */
+        :root {
             --onetouch-navy: #000033;
             --onetouch-light-blue: #3366cc;
             --onetouch-accent: #ff3366;
@@ -59,387 +31,332 @@
         }
         
         body {
-            font-family: 'Noto Sans KR', sans-serif;
             background-color: #f9f9f9;
+            font-family: 'Noto Sans KR', sans-serif;
             color: var(--onetouch-text);
-            line-height: 1.6;
         }
         
-        /* Community Page Specific Styles */
-        .onetouch-community-wrapper {
-            max-width: 600px;
+        /* 커뮤니티 메인 스타일 */
+        .community-content {
+            max-width: 620px;
             margin: 0 auto;
-            padding: 0;
-            background-color: #fff;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            border-radius: 10px;
-            overflow: hidden;
+            padding-bottom: 50px;
         }
         
+        /* 상단 탭 내비게이션 */
         .community-tabs {
-            border: none;
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
             background-color: #fff;
-            padding: 15px 15px 0;
-            margin-bottom: 0;
+            padding: 0;
+            position: sticky; /* 스티키 헤더처럼 상단 고정 */
+            top: 0;
+            z-index: 100;
         }
         
-        .community-tabs .nav-item .nav-link {
-            color: #888;
-            border: none;
-            padding: 10px 15px;
-            font-weight: 500;
+        .community-tab-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 5px;
             font-size: 15px;
-            border-radius: 0;
+            color: #666;
+            cursor: pointer;
+            position: relative;
             transition: all 0.3s ease;
         }
         
-        .community-tabs .nav-item .nav-link.active {
+        .community-tab-item.active {
             color: var(--onetouch-navy);
-            border-bottom: 2px solid var(--onetouch-navy);
-            background-color: transparent;
-            font-weight: 600;
+            font-weight: 500;
         }
         
-        .community-tab-content {
-            padding: 15px;
+        .community-tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--onetouch-navy);
+        }
+        
+        /* 게시물 스타일 */
+        .community-post {
             background-color: #fff;
-        }
-        
-        .community-post-item {
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--onetouch-border);
-            padding-bottom: 25px;
-            background-color: #fff;
-            border-radius: 10px;
-        }
-        
-        .community-post-header {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
+            border-radius: 0;
+            overflow: hidden;
             margin-bottom: 10px;
         }
         
-        .community-profile-img {
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+        }
+        
+        .profile-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 10px;
-            object-fit: cover;
-            border: 2px solid #f1f1f1;
         }
         
-        .community-username {
+        .username {
             font-weight: 600;
+            font-size: 14px;
             margin: 0;
-            color: var(--onetouch-navy);
+            color: #333;
         }
         
-        .community-post-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .post-actions {
             margin-left: auto;
         }
         
-        .community-follow-btn {
-            background-color: transparent;
-            border: 1px solid var(--onetouch-navy);
-            color: var(--onetouch-navy);
-            font-size: 13px;
-            font-weight: 500;
+        .follow-btn {
+            background: none;
+            border: none;
+            color: #999;
             cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 50px;
-            transition: all 0.3s;
-            margin-right: 10px;
+            font-size: 20px;
         }
         
-        .community-follow-btn:hover {
-            background-color: var(--onetouch-navy);
-            color: white;
-        }
-        
-        /* Post Carousel Styles */
-        .community-carousel-container {
+        /* 이미지 캐러셀 */
+        .image-carousel {
             position: relative;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .community-post-carousel {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .community-carousel-inner {
-            display: flex;
-            transition: transform 0.3s ease;
-        }
-        
-        .community-post-image {
             width: 100%;
-            flex-shrink: 0;
-            object-fit: cover;
-            height: 500px; /* Fixed height for consistency */
+            overflow: hidden;
         }
         
-        .community-carousel-arrow {
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+            width: 100%;
+            /* 캐러셀 이미지가 세로로 길 때 영역을 유지하도록 설정 */
+            aspect-ratio: 1 / 1.3333; /* 3:4 비율, 예시 */
+        }
+        
+        .carousel-item {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%; /* 부모 높이에 맞춤 */
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover; /* 이미지가 잘리더라도 영역을 꽉 채움 */
+        }
+        
+        .carousel-control {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            background-color: rgba(255, 255, 255, 0.9);
+            width: 32px; /* 버튼 크기 축소 */
+            height: 32px;
+            background-color: rgba(0, 0, 0, 0.4); /* 배경색 어둡게 */
+            color: #fff; /* 아이콘 색상 흰색 */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            font-size: 14px;
         }
         
-        .community-carousel-arrow:hover {
-            background-color: var(--onetouch-navy);
-            color: white;
+        .carousel-control:hover {
+            opacity: 1;
         }
         
-        .community-carousel-arrow.prev {
-            left: 15px;
+        .carousel-control.prev {
+            left: 10px;
         }
         
-        .community-carousel-arrow.next {
-            right: 15px;
+        .carousel-control.next {
+            right: 10px;
         }
         
-        .community-carousel-indicator {
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: center;
-            position: absolute;
-            bottom: 15px;
-            width: 100%;
-            z-index: 5;
-        }
-        
-        .community-indicator-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.6);
-            margin: 0 4px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .community-indicator-dot.active {
-            background-color: var(--onetouch-navy);
-            transform: scale(1.2);
-        }
-        
-        /* Product Carousel Styles - Updated with navigation arrows */
-        .community-product-section {
-            position: relative;
-            margin: 20px 0;
-        }
-        
-        .community-product-carousel-container {
-            position: relative;
-            overflow: hidden;
-            padding: 0 10px;
-        }
-        
-        .community-post-products {
-            display: flex;
-            gap: 15px;
-            transition: transform 0.3s ease;
-            padding: 5px 0;
-        }
-        
-        .community-product-card {
-            min-width: 110px;
-            max-width: 110px;
-            text-align: center;
-            border-radius: 8px;
-            padding: 5px;
-            background-color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-        
-        .community-product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .community-product-img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-bottom: 8px;
-        }
-        
-        .community-product-discount {
-            color: var(--onetouch-accent);
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-        
-        .community-product-price {
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--onetouch-navy);
+            gap: 5px;
+            padding: 0;
             margin: 0;
         }
         
-        .community-product-carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
+        .indicator {
+            width: 7px; /* 인디케이터 크기 축소 */
+            height: 7px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            z-index: 5;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--onetouch-border);
-            color: var(--onetouch-navy);
+            transition: background-color 0.3s;
         }
         
-        .community-product-carousel-arrow.prev {
-            left: -5px;
+        .indicator.active {
+            background-color: var(--onetouch-light-blue); /* 활성 인디케이터 색상 변경 */
         }
         
-        .community-product-carousel-arrow.next {
-            right: -5px;
-        }
-        
-        .community-product-carousel-arrow:hover {
-            background-color: var(--onetouch-navy);
-            color: white;
-        }
-        
-        /* Post Content Styles */
-        .community-post-interactions {
+        /* 제품 정보 섹션 */
+        .product-section {
+            padding: 15px;
+            border-top: 1px solid #f5f5f5;
             display: flex;
-            gap: 20px;
-            margin: 15px 0;
+            overflow-x: auto;
+            gap: 10px;
         }
         
-        .community-interaction-btn {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            color: #666;
-            font-size: 22px;
-            transition: all 0.2s;
+        .product-card {
+            flex: 0 0 auto;
+            width: 85px;
+            text-align: center;
         }
         
-        .community-interaction-btn:hover {
-            color: var(--onetouch-navy);
-            transform: scale(1.1);
+        .product-img {
+            width: 100%;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 3px;
+            margin-bottom: 5px;
         }
         
-        .community-likes-count {
-            font-weight: 600;
-            color: var(--onetouch-navy);
-            margin: 10px 0;
-        }
-        
-        .community-post-tags {
-            margin: 12px 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        
-        .community-post-tag {
-            color: var(--onetouch-light-blue);
-            font-size: 14px;
+        .product-discount {
+            color: var(--onetouch-accent);
+            font-size: 11px;
             font-weight: 500;
+            margin: 0;
         }
         
-        .community-post-content {
-            margin: 15px 0;
-            font-size: 15px;
-            line-height: 1.6;
+        .product-price {
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0;
             color: #333;
         }
         
-        .community-post-content p {
+        /* 게시물 콘텐츠 */
+        .post-content {
+            padding: 15px;
+        }
+        
+        .post-likes {
+            font-weight: 600;
+            font-size: 14px;
             margin-bottom: 8px;
         }
         
-        .community-comment-input {
-            display: flex;
-            margin: 15px 0;
-            border-top: 1px solid var(--onetouch-border);
-            padding-top: 15px;
-            position: relative;
-        }
-        
-        .community-comment-input input {
-            width: 100%;
-            border: none;
-            background-color: var(--onetouch-light-gray);
-            border-radius: 20px;
-            padding: 10px 15px;
+        .post-text {
             font-size: 14px;
+            margin-bottom: 8px;
         }
         
-        .community-comment-input input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0,0,51,0.2);
+        .post-tags {
+            color: var(--onetouch-light-blue);
+            font-size: 13px;
+            margin-bottom: 10px;
         }
         
-        .community-post-meta {
-            font-size: 12px;
+        .post-time {
             color: #999;
-            margin-top: 10px;
+            font-size: 12px;
+            margin: 0;
         }
         
-        /* Pagination Styles */
-        .community-pagination-container {
+        /* 인터랙션 영역 */
+        .post-interactions {
+            display: flex;
+            padding: 10px 15px;
+            gap: 20px;
+        }
+        
+        .interaction-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        
+        .interaction-btn.active {
+            color: var(--onetouch-accent);
+        }
+        
+        /* 댓글 입력 */
+        .comment-input {
+            padding: 10px 15px 15px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #f5f5f5;
+        }
+        
+        .comment-input input {
+            flex: 1;
+            border: none;
+            font-size: 14px;
+            outline: none;
+            padding: 8px 0;
+        }
+        
+        .comment-input input::placeholder {
+            color: #999;
+        }
+        
+        .comment-submit {
+            background: none;
+            border: none;
+            color: var(--onetouch-light-blue);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* 페이지네이션 */
+        .community-pagination {
             display: flex;
             justify-content: center;
-            margin: 30px 0 20px;
+            align-items: center;
+            margin-top: 20px;
+            gap: 5px;
         }
         
-        .community-pagination .page-link {
-            color: var(--onetouch-navy);
-            border-color: var(--onetouch-border);
-            margin: 0 3px;
-            border-radius: 4px;
-            font-weight: 500;
+        .pagination-link {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
         }
         
-        .community-pagination .page-item.active .page-link {
+        .pagination-link.active {
             background-color: var(--onetouch-navy);
+            color: #fff;
             border-color: var(--onetouch-navy);
         }
         
-        .community-pagination .page-item:not(.active) .page-link:hover {
-            background-color: rgba(0,0,51,0.05);
+        /* 반응형 설정 */
+        @media (max-width: 767px) {
+            .community-content {
+                padding: 0;
+            }
         }
-</style>
-
-
+    </style>
 </head>
 
 <body>
-    <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
@@ -448,441 +365,219 @@
             </div>
         </div>
     </div>
-    <!-- /End Preloader -->
-
-    <!-- Start Header Area -->
-<%-- 	<jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
-	<%@include file="/WEB-INF/views/common/header.jsp" %>
-    <!-- End Header Area -->
-
-<!-- 커뮤니티 등록버튼 -->
-<input type="button" value="등록" onclick="location.href='/post/insert'">
-<!-- /커뮤니티 등록버튼 -->
-
-<!-- =======================================커뮤니티============================================ -->
-
-
-  <div class="onetouch-community-wrapper">
-        <!-- Community Navigation Tabs -->
-        <ul class="nav community-tabs" id="communityTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">전체</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="recommend-tab" data-bs-toggle="tab" data-bs-target="#recommend" type="button" role="tab">스크랩되다</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="follow-tab" data-bs-toggle="tab" data-bs-target="#follow" type="button" role="tab">리뷰 (구매자 전용)</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="questions-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab">자유게시판</button>
-            </li>
-        </ul>
-        
-        <div class="tab-content community-tab-content" id="communityTabsContent">
-            <div class="tab-pane fade show active" id="all" role="tabpanel">
-                <!-- Post Item 1 -->
-                <div class="community-post-item">
-                    <div class="community-post-header">
-                        <img src="https://via.placeholder.com/40" alt="Profile" class="community-profile-img">
-                        <p class="community-username">산유</p>
-                        <div class="community-post-actions">
-                            <button class="community-follow-btn">+ 팔로우</button>
-                            <button class="btn btn-sm"><i class="fas fa-ellipsis-h"></i></button>
-                        </div>
+    <%@include file="/WEB-INF/views/common/header.jsp" %>
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">커뮤니티</h1>
                     </div>
-                    
-                    <!-- Post Carousel -->
-                    <div class="community-carousel-container">
-                        <div class="community-post-carousel">
-                            <div class="community-carousel-inner" id="carousel-1">
-                                <img src="https://via.placeholder.com/600x800/000033/ffffff?text=OneTouch+1" alt="Post Image" class="community-post-image">
-                                <img src="https://via.placeholder.com/600x800/003366/ffffff?text=OneTouch+2" alt="Post Image" class="community-post-image">
-                                <img src="https://via.placeholder.com/600x800/006699/ffffff?text=OneTouch+3" alt="Post Image" class="community-post-image">
-                                <img src="https://via.placeholder.com/600x800/0099cc/ffffff?text=OneTouch+4" alt="Post Image" class="community-post-image">
-                                <img src="https://via.placeholder.com/600x800/00ccff/ffffff?text=OneTouch+5" alt="Post Image" class="community-post-image">
-                            </div>
-                            <div class="community-carousel-arrow prev" onclick="moveCarousel(1, -1)">
-                                <i class="fas fa-chevron-left"></i>
-                            </div>
-                            <div class="community-carousel-arrow next" onclick="moveCarousel(1, 1)">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="community-carousel-indicator" id="indicators-1">
-                                <div class="community-indicator-dot active" onclick="setCarouselPosition(1, 0)"></div>
-                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 1)"></div>
-                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 2)"></div>
-                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 3)"></div>
-                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 4)"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product Carousel with navigation arrows -->
-                    <div class="community-product-section">
-                        <div class="community-product-carousel-container">
-                            <div class="community-post-products" id="product-carousel-1">
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="community-product-carousel-arrow prev" onclick="moveProductCarousel(1, -1)">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="community-product-carousel-arrow next" onclick="moveProductCarousel(1, 1)">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Post Interactions -->
-                    <div class="community-post-interactions">
-                        <button class="community-interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="community-interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="community-interaction-btn">
-                            <i class="fas fa-share"></i>
-                        </button>
-                    </div>
-                    
-                    <p class="community-likes-count">좋아요 503개</p>
-                    
-                    <!-- Post Tags -->
-                    <div class="community-post-tags">
-                        <span class="community-post-tag">#원터치 #부드러운 #언밸런스핏 #여리여리룩 #마이스타그램 #옷스타그램 #데일리룩</span>
-                    </div>
-                    
-                    <div class="community-post-content">
-                        <p>2월 핵존 데일리!</p>
-                        <p>날씨좋아지고 꾸준히좋아요오 굿</p>
-                    </div>
-                    
-                    <div class="community-comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                    </div>
-                    
-                    <p class="community-post-meta">1일 전</p>
                 </div>
-
-                <!-- Post Item 2 -->
-                <div class="community-post-item">
-                    <div class="community-post-header">
-                        <img src="https://via.placeholder.com/40" alt="Profile" class="community-profile-img">
-                        <p class="community-username">민하</p>
-                        <div class="community-post-actions">
-                            <button class="community-follow-btn">+ 팔로우</button>
-                            <button class="btn btn-sm"><i class="fas fa-ellipsis-h"></i></button>
-                        </div>
-                    </div>
-                    
-                    <!-- Post Carousel -->
-                    <div class="community-carousel-container">
-                        <div class="community-post-carousel">
-                            <div class="community-carousel-inner" id="carousel-2">
-                                <img src="https://via.placeholder.com/600x800/006699/ffffff?text=OneTouch+1" alt="Post Image" class="community-post-image">
-                                <img src="https://via.placeholder.com/600x800/0099cc/ffffff?text=OneTouch+2" alt="Post Image" class="community-post-image">
-                                <img src="https://via.placeholder.com/600x800/00ccff/ffffff?text=OneTouch+3" alt="Post Image" class="community-post-image">
-                            </div>
-                            <div class="community-carousel-arrow prev" onclick="moveCarousel(2, -1)">
-                                <i class="fas fa-chevron-left"></i>
-                            </div>
-                            <div class="community-carousel-arrow next" onclick="moveCarousel(2, 1)">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="community-carousel-indicator" id="indicators-2">
-                                <div class="community-indicator-dot active" onclick="setCarouselPosition(2, 0)"></div>
-                                <div class="community-indicator-dot" onclick="setCarouselPosition(2, 1)"></div>
-                                <div class="community-indicator-dot" onclick="setCarouselPosition(2, 2)"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product Carousel with navigation arrows -->
-                    <div class="community-product-section">
-                        <div class="community-product-carousel-container">
-                            <div class="community-post-products" id="product-carousel-2">
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                                <div class="community-product-card">
-                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
-                                    <p class="community-product-discount">19% 할인</p>
-                                    <p class="community-product-price">55,900원</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="community-product-carousel-arrow prev" onclick="moveProductCarousel(2, -1)">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="community-product-carousel-arrow next" onclick="moveProductCarousel(2, 1)">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Post Interactions -->
-                    <div class="community-post-interactions">
-                        <button class="community-interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="community-interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="community-interaction-btn">
-                            <i class="fas fa-share"></i>
-                        </button>
-                    </div>
-                    
-                    <p class="community-likes-count">좋아요 378개</p>
-                    
-                    <!-- Post Tags -->
-                    <div class="community-post-tags">
-                        <span class="community-post-tag">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</span>
-                    </div>
-                    
-                    <div class="community-post-content">
-                        <p>최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
-                    </div>
-                    
-                    <div class="community-comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                    </div>
-                    
-                    <p class="community-post-meta">2일 전</p>
-                </div>
-
-                <!-- Pagination -->
-                <nav aria-label="Page navigation" class="community-pagination-container">
-                    <ul class="pagination community-pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
+                        <li>커뮤니티</li>
                     </ul>
-                </nav>
-            </div>
-            
-            <!-- Other tabs would have similar structure but are empty for this demo -->
-            <div class="tab-pane fade" id="recommend" role="tabpanel">
-                <!-- Recommended Content -->
-                <div class="d-flex justify-content-center align-items-center py-5">
-                    <p class="text-muted">스크랩된 게시물이 없습니다.</p>
-                </div>
-            </div>
-            
-            <div class="tab-pane fade" id="follow" role="tabpanel">
-                <!-- Follow Content -->
-                <div class="d-flex justify-content-center align-items-center py-5">
-                    <p class="text-muted">팔로우한 사용자의 리뷰가 없습니다.</p>
-                </div>
-            </div>
-            
-            <div class="tab-pane fade" id="questions" role="tabpanel">
-                <!-- Questions Content -->
-                <div class="d-flex justify-content-center align-items-center py-5">
-                    <p class="text-muted">자유게시판 게시물이 없습니다.</p>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JavaScript -->
-    <script>
-        // Carousel functionality
-        const carousels = {};
-        const productCarousels = {};
-        
-        // Initialize all carousels
-        function initCarousels() {
-            // Image carousels
-            for (let i = 1; i <= 10; i++) {
-                const carousel = document.getElementById(`carousel-${i}`);
-                if (carousel) {
-                    carousels[i] = {
-                        element: carousel,
-                        currentIndex: 0,
-                        totalSlides: carousel.children.length
-                    };
-                    
-                    // Set initial width for proper sizing
-                    const containerWidth = carousel.parentElement.offsetWidth;
-                    Array.from(carousel.children).forEach(slide => {
-                        slide.style.width = `${containerWidth}px`;
-                    });
-                    
-                    carousel.style.width = `${containerWidth * carousel.children.length}px`;
-                }
-            }
-            
-            // Product carousels
-            for (let i = 1; i <= 10; i++) {
-                const productCarousel = document.getElementById(`product-carousel-${i}`);
-                if (productCarousel) {
-                    const productCards = productCarousel.querySelectorAll('.community-product-card');
-                    
-                    productCarousels[i] = {
-                        element: productCarousel,
-                        currentIndex: 0,
-                        cardWidth: 125, // Card width + gap
-                        visibleCards: Math.floor(productCarousel.parentElement.offsetWidth / 125),
-                        totalCards: productCards.length
-                    };
-                }
-            }
-        }
-        
-        // Move image carousel by direction
-        function moveCarousel(id, direction) {
-            const carousel = carousels[id];
-            if (!carousel) return;
-            
-            const containerWidth = carousel.element.parentElement.offsetWidth;
-            const newIndex = Math.max(0, Math.min(carousel.currentIndex + direction, carousel.totalSlides - 1));
-            
-            if (newIndex !== carousel.currentIndex) {
-                carousel.currentIndex = newIndex;
-                carousel.element.style.transform = `translateX(-${newIndex * containerWidth}px)`;
+    <section class="section">
+        <div class="container">
+            <div class="community-content">
+                <div class="community-tabs">
+                    <div class="community-tab-item active" data-tab="all">전체</div>
+                    <div class="community-tab-item" data-tab="skineditor">스킨에디터</div>
+                    <div class="community-tab-item" data-tab="review">리뷰</div>
+                    <div class="community-tab-item" data-tab="free">자유게시판</div>
+                </div>
                 
-                // Update indicators
-                updateIndicators(id);
-            }
-        }
-        
-        // Set carousel position directly
-        function setCarouselPosition(id, position) {
-            const carousel = carousels[id];
-            if (!carousel) return;
-            
-            const containerWidth = carousel.element.parentElement.offsetWidth;
-            const newIndex = Math.max(0, Math.min(position, carousel.totalSlides - 1));
-            
-            carousel.currentIndex = newIndex;
-            carousel.element.style.transform = `translateX(-${newIndex * containerWidth}px)`;
-            
-            // Update indicators
-            updateIndicators(id);
-        }
-        
-        // Update carousel indicators
-        function updateIndicators(id) {
-            const indicators = document.getElementById(`indicators-${id}`).children;
-            const currentIndex = carousels[id].currentIndex;
-            
-            for (let i = 0; i < indicators.length; i++) {
-                if (i === currentIndex) {
-                    indicators[i].classList.add('active');
-                } else {
-                    indicators[i].classList.remove('active');
-                }
-            }
-        }
-        
-        // Move product carousel by direction
-        function moveProductCarousel(id, direction) {
-            const carousel = productCarousels[id];
-            if (!carousel) return;
-            
-            const maxScroll = Math.max(0, carousel.totalCards - carousel.visibleCards);
-            const newIndex = Math.max(0, Math.min(carousel.currentIndex + direction, maxScroll));
-            
-            if (newIndex !== carousel.currentIndex) {
-                carousel.currentIndex = newIndex;
-                carousel.element.style.transform = `translateX(-${newIndex * carousel.cardWidth}px)`;
-            }
-        }
-        
-        // Initialize on page load
-        window.addEventListener('load', initCarousels);
-        
-        // Reinitialize on window resize
-        window.addEventListener('resize', initCarousels);
-    </script>
-
-
-
-<!-- =======================================/커뮤니티============================================ -->
-
-
-
-
-	
-
-
-    <!-- Start Footer Area -->
-	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-    <!-- End Footer Area -->
-
-    <!-- ========================= scroll-top ========================= -->
+                <div class="community-post">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                        <p class="username">진유</p>
+                        <div class="post-actions">
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-carousel" id="carousel-1">
+                        <div class="carousel-inner">
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+1" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+2" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+3" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+4" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=Image+5" alt="게시물 이미지" class="post-image">
+                            </div>
+                        </div>
+                        
+                        <div class="carousel-control prev" data-carousel="carousel-1">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-1">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-1">
+                            <div class="indicator active" data-slide="0" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="1" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="2" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="3" data-carousel="carousel-1"></div>
+                            <div class="indicator" data-slide="4" data-carousel="carousel-1"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">19% 할인</p>
+                            <p class="product-price">55,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">10% 할인</p>
+                            <p class="product-price">25,800원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-price">33,000원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">15% 할인</p>
+                            <p class="product-price">42,500원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                        <p class="post-time">2일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">게시</button>
+                    </div>
+                </div>
+                
+                <div class="community-post">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="프로필" class="profile-img">
+                        <p class="username">준우</p>
+                        <div class="post-actions">
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-carousel" id="carousel-2">
+                        <div class="carousel-inner">
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=제품+리뷰" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=사용법" alt="게시물 이미지" class="post-image">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/600x800?text=효과" alt="게시물 이미지" class="post-image">
+                            </div>
+                        </div>
+                        
+                        <div class="carousel-control prev" data-carousel="carousel-2">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-2">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-2">
+                            <div class="indicator active" data-slide="0" data-carousel="carousel-2"></div>
+                            <div class="indicator" data-slide="1" data-carousel="carousel-2"></div>
+                            <div class="indicator" data-slide="2" data-carousel="carousel-2"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=올인원" alt="제품" class="product-img">
+                            <p class="product-discount">25% 할인</p>
+                            <p class="product-price">28,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=로션" alt="제품" class="product-img">
+                            <p class="product-price">19,900원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn active">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 127개</p>
+                        <p class="post-text">올인원 제품 2주 사용 후기 공유합니다. 지성 피부인데 기름기 컨트롤도 잘되고 향도 은은해서 좋아요. 특히 사용감이 가볍고 흡수도 빨라서 아침에 바쁠 때 딱이에요!</p>
+                        <p class="post-tags">#올인원 #남자스킨케어 #지성피부 #원터치</p>
+                        <p class="post-time">5일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">게시</button>
+                    </div>
+                </div>
+                
+                <div class="community-pagination">
+                    <a href="#" class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
+                    <a href="#" class="pagination-link active">1</a>
+                    <a href="#" class="pagination-link">2</a>
+                    <a href="#" class="pagination-link">3</a>
+                    <a href="#" class="pagination-link">4</a>
+                    <a href="#" class="pagination-link">5</a>
+                    <a href="#" class="pagination-link"><i class="fas fa-angle-double-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
 
-    <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
@@ -898,44 +593,139 @@
             }
         });
 
-        //========= Hero Slider 
-        tns({
-            container: '.hero-slider',
-            slideBy: 'page',
-            autoplay: true,
-            autoplayButtonOutput: false,
-            mouseDrag: true,
-            gutter: 0,
-            items: 1,
-            nav: false,
-            controls: true,
-            controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
-        });
-
-        //======== Tiny Slider For Product Carousel
-        tns({
-            container: '.product-carousel',
-            slideBy: 'page',
-            autoplay: false,
-            autoplayButtonOutput: false,
-            mouseDrag: true,
-            gutter: 15,
-            nav: true,
-            controls: false,
-            responsive: {
-                0: {
-                    items: 1,
-                },
-                540: {
-                    items: 2,
-                },
-                768: {
-                    items: 3,
-                },
-                992: {
-                    items: 4,
+        // =========================
+        // 1. 이미지 캐러셀 기능 (슬라이드 구현)-이미지!
+        // =========================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 캐러셀 상태 관리 및 초기화
+            const carousels = {};
+            
+            document.querySelectorAll('.image-carousel').forEach(carousel => {
+                const carouselId = carousel.id;
+                const carouselInner = carousel.querySelector('.carousel-inner');
+                const slides = carouselInner.querySelectorAll('.carousel-item');
+                
+                carousels[carouselId] = {
+                    element: carouselInner,
+                    slides: slides,
+                    currentIndex: 0,
+                    totalSlides: slides.length
+                };
+            });
+            
+            // 캐러셀 이동 함수
+            function moveCarousel(carouselId, direction) {
+                const carousel = carousels[carouselId];
+                if (!carousel) return;
+                
+                let newIndex = carousel.currentIndex + direction;
+                
+                // 범위 체크: 첫 번째/마지막 슬라이드에서 멈춤
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex >= carousel.totalSlides) newIndex = carousel.totalSlides - 1;
+                
+                if (newIndex !== carousel.currentIndex) {
+                    carousel.currentIndex = newIndex;
+                    // translateX를 사용하여 슬라이드 이동
+                    const translateX = -newIndex * 100 + '%';
+                    carousel.element.style.transform = `translateX(${translateX})`;
+                    
+                    // 인디케이터 업데이트
+                    updateIndicators(carouselId);
                 }
             }
+            
+            // 특정 슬라이드로 이동
+            function goToSlide(carouselId, slideIndex) {
+                const carousel = carousels[carouselId];
+                if (!carousel) return;
+                
+                if (slideIndex >= 0 && slideIndex < carousel.totalSlides) {
+                    carousel.currentIndex = slideIndex;
+                    const translateX = -slideIndex * 100 + '%';
+                    carousel.element.style.transform = `translateX(${translateX})`;
+                    
+                    // 인디케이터 업데이트
+                    updateIndicators(carouselId);
+                }
+            }
+            
+            // 인디케이터 업데이트
+            function updateIndicators(carouselId) {
+                // 캐러셀 ID를 기반으로 인디케이터 그룹을 찾습니다. (예: indicators-1)
+                const indicators = document.querySelectorAll(`#indicators-${carouselId.split('-')[1]} .indicator`);
+                const currentIndex = carousels[carouselId].currentIndex;
+                
+                indicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 이전/다음 버튼 이벤트 리스너
+            document.querySelectorAll('.carousel-control').forEach(button => {
+                button.addEventListener('click', function() {
+                    const carouselId = this.dataset.carousel;
+                    const direction = this.classList.contains('prev') ? -1 : 1;
+                    moveCarousel(carouselId, direction);
+                });
+            });
+            
+            // 인디케이터 클릭 이벤트 리스너
+            document.querySelectorAll('.indicator').forEach(indicator => {
+                indicator.addEventListener('click', function() {
+                    const slideIndex = parseInt(this.dataset.slide);
+                    const carouselId = this.dataset.carousel;
+                    goToSlide(carouselId, slideIndex);
+                });
+            });
+
+
+    
+            // =========================
+            document.querySelectorAll('.interaction-btn').forEach(button => {
+                // 좋아요 버튼에만 이벤트 리스너 추가
+                if (button.querySelector('.fa-heart')) {
+                    button.addEventListener('click', function() {
+                        const icon = this.querySelector('i');
+                        const isLiked = this.classList.toggle('active'); // active 클래스 토글
+
+                        if (isLiked) {
+                            icon.classList.remove('far'); // 빈 하트
+                            icon.classList.add('fas'); // 채워진 하트
+                        } else {
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                    });
+                }
+            });
+
+
+          
+            // =========================
+            document.querySelectorAll('.community-tab-item').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 모든 탭의 active 클래스 제거
+                    document.querySelectorAll('.community-tab-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // 클릭한 탭에 active 클래스 추가 (시각적 효과)
+                    this.classList.add('active');
+                    
+                    const tabName = this.textContent.trim();
+                    const tabData = this.dataset.tab;
+                    
+                    // 실제 탭 이동 로직 (Alert로 대체)
+                    // 실제 구현 시, 이 부분에 AJAX를 이용한 게시물 로딩이나 페이지 리다이렉션을 구현해야 합니다.
+                    console.log(`탭 전환 요청: ${tabData} (${tabName})`);
+                    alert(`"${tabName}" 탭이 선택되었습니다. 실제 게시물 로딩 기능을 추가해야 합니다.`);
+                });
+            });
         });
     </script>
 </body>
