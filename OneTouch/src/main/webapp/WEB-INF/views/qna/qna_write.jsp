@@ -423,6 +423,8 @@
     </div>
 
     <!-- 내용 -->
+   
+    
     <div class="form-group">
         <label class="form-label">문의 내용<span class="required">*</span></label>
         <textarea class="form-control textarea" name="qna_content"
@@ -443,7 +445,7 @@
     </div>
 
     <!-- 임시 회원번호 -->
-    <input type="hidden" name="mem_idx" value="1">
+    <input type="hidden" name="mem_idx" value="${user.mem_idx }">
 
     <div class="btn-group">
         <button type="submit" class="btn btn-submit">등록하기</button>

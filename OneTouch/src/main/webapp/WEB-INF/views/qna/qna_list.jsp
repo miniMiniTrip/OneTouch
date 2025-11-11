@@ -218,6 +218,8 @@
 </head>
 
 <body>
+
+
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
@@ -264,7 +266,7 @@
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
-                        <div class="menu-item">👤 정보/구니</div>
+                        <div class="menu-item">👤 장바구니</div>
                         <div class="menu-item">💝 팀</div>
                         <div class="menu-item">🎯 주문/배송 조회</div>
                     </div>
@@ -290,8 +292,13 @@
                     <div class="content-header">
                         <h2>💬 상품 Q&A</h2>
                        
-                       
-                       
+                        <!-- 로그인한 사용자만 Q&A 쓰기 버튼 표시 -->
+  <%--   <c:if test="${sessionScope.loginUserId != null}">
+        <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
+            Q&A 쓰기
+        </button>
+    </c:if>
+            --%>            
                        
                        
                        

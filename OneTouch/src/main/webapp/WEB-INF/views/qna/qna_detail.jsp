@@ -446,7 +446,7 @@
                     
                     <!-- 버튼 그룹 -->
                     <div class="btn-group">
-                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/edit?qna_idx=${qna.qna_idx}'">수정</button>
+                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">수정</button>
                         <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
                     </div>
                 </div>

@@ -25,7 +25,7 @@
         ORDER BY qna_idx DESC
     </select> -->
     
-<select id="selectQnaList" resultType="com.onetouch.vo.QnaVo">
+<select id="selectQnaList" resultType="com.onetouch.vo.QnaVo" parameterType="int">
       SELECT 
     qna.qna_idx,
     qna.mem_idx,
@@ -42,7 +42,7 @@
     qna.qna_answer_time
 	FROM qna
 	JOIN mem ON qna.mem_idx = mem.mem_idx   
-	WHERE qna.qna_delete = 0                
+	WHERE qna.qna_delete = 0   and qna.mem_idx=#{mem_idx}             
 	ORDER BY qna.qna_idx DESC;   
 </select>
 
@@ -142,6 +142,26 @@
         #{qna_delete}
     )
 </insert>
+
+<!-- Q&A 수정 -->
+<update id="updateQna" parameterType="com.onetouch.vo.QnaVo">
+    UPDATE qna
+    SET
+        qna_title = #{qna_title},
+        qna_content = #{qna_content},
+        qna_category = #{qna_category},
+        qna_private = #{qna_private},
+        qna_update = NOW()
+    WHERE qna_idx = #{qna_idx}
+</update>
+
+<!-- Q&A 삭제 (하드 삭제) -->
+
+<delete id="deleteQna" parameterType="int">
+    DELETE FROM qna WHERE qna_idx = #{qna_idx}
+</delete>
+
+
 
 
 

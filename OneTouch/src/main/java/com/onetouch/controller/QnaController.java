@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onetouch.dao.QnaDao;
+import com.onetouch.vo.MemVo;
 import com.onetouch.vo.QnaVo;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class QnaController {
@@ -18,7 +21,8 @@ public class QnaController {
     @Autowired
     private QnaDao qnaDao;
 
-    
+    @Autowired
+    private HttpSession session;
     
     // 1️ Q&A 목록 페이지
 //    @GetMapping("/qna/list")
@@ -36,7 +40,9 @@ public class QnaController {
     
     @GetMapping("/qna/list")
     public String list(Model model) {
-        List<QnaVo> qna_list = qnaDao.selectQnaList();
+    	MemVo user=(MemVo)session.getAttribute("user");
+    	int mem_idx=user.getMem_idx();
+        List<QnaVo> qna_list = qnaDao.selectQnaList(mem_idx);
         System.out.println("QnA 목록 개수: " + qna_list.size());
         model.addAttribute("qna_list", qna_list); // ✅ 스네이크 표기
         return "qna/qna_list";
@@ -103,10 +109,40 @@ public class QnaController {
 	
 	@PostMapping("/qna/write")   // <-- 폼 action과 동일하게
 	public String insertQna(QnaVo vo) {
+		System.out.printf("qna추가 vo:%s\n",vo);
 	    qnaDao.insertQna(vo);
 	    return "redirect:/qna/list"; //목록으로 이동
 	}
     
-
 	
+	//4. 수정 폼 보기
+	@GetMapping("/qna/modify")
+	public String modifyForm(@RequestParam int qna_idx, Model model) {
+	    QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+	    
+	    // 답변이 완료된 경우 수정 불가 (선택사항)
+	    if (qna.isQna_answered()) {
+	        return "redirect:/qna/detail?qna_idx=" + qna_idx;
+	    }
+	    
+	    model.addAttribute("qna", qna);
+	    return "qna/qna_modify";  // ✅ qna_modify.jsp
+	}
+
+	// 수정 처리
+	@PostMapping("/qna/modify")
+	public String modify(QnaVo vo) {
+	    qnaDao.updateQna(vo);
+	    return "redirect:/qna/detail?qna_idx=" + vo.getQna_idx();
+	}
+	
+	// 삭제 처리
+	@GetMapping("/qna/delete")
+	public String delete(@RequestParam int qna_idx) {
+	    System.out.println("=== QnA 삭제 ===");
+	    System.out.println("삭제할 번호: " + qna_idx);
+	    
+	    qnaDao.deleteQna(qna_idx);
+	    return "redirect:/qna/list";
+	}
 }

@@ -22,7 +22,7 @@
 					<div class="top-left">
 						<ul class="menu-top-link">
 							<li><a href="${pageContext.request.contextPath}/about">소개</a></li>
-							<li><a href="${pageContext.request.contextPath}/contact">문의</a></li>
+							<li><a href="${pageContext.request.contextPath}/qna/list">문의</a></li>
 						</ul>
 					</div>
 				</div>
