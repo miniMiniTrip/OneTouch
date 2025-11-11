@@ -20,4 +20,5 @@ public class QnaVo {
     private Timestamp qna_time;         // 작성 시간
     private Timestamp qna_update;       // 수정 시간
     private Timestamp qna_answer_time;  // 답변 시간
+    private String mem_name; 			// 회원이름
 }
