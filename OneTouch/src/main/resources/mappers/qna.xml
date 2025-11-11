@@ -6,7 +6,7 @@
 <mapper namespace="com.onetouch.dao.QnaDao">
 
   <!-- ✅ Q&A 목록 -->
-    <select id="selectQnaList" resultType="QnaVo">
+    <!-- <select id="selectQnaList" resultType="QnaVo">
         SELECT 
             qna_idx,
             mem_idx,
@@ -23,10 +23,31 @@
         FROM qna
         WHERE qna_delete = 0
         ORDER BY qna_idx DESC
-    </select>
+    </select> -->
+    
+<select id="selectQnaList" resultType="com.onetouch.vo.QnaVo">
+      SELECT 
+    qna.qna_idx,
+    qna.mem_idx,
+    mem.mem_name,          
+    qna.qna_title,
+    qna.qna_content,
+    qna.qna_category,
+    qna.qna_private,
+    qna.qna_answered,
+    qna.qna_answer_content,
+    qna.qna_delete,
+    qna.qna_time,
+    qna.qna_update,
+    qna.qna_answer_time
+	FROM qna
+	JOIN mem ON qna.mem_idx = mem.mem_idx   
+	WHERE qna.qna_delete = 0                
+	ORDER BY qna.qna_idx DESC;   
+</select>
 
     <!-- ✅ Q&A 상세보기 -->
-    <select id="selectQnaDetail" parameterType="int" resultType="QnaVo">
+    <!-- <select id="selectQnaDetail" parameterType="int" resultType="QnaVo">
         SELECT 
             qna_idx,
             mem_idx,
@@ -42,7 +63,28 @@
             qna_answer_time
         FROM qna
         WHERE qna_idx = #{qna_idx}
+    </select> -->
+    
+    <select id="selectQnaDetail" parameterType="int" resultType="com.onetouch.vo.QnaVo">
+        SELECT 
+            qna.qna_idx,
+            qna.mem_idx,
+            mem.mem_name,
+            qna.qna_title,
+            qna.qna_content,
+            qna.qna_category,
+            qna.qna_private,
+            qna.qna_answered,
+            qna.qna_answer_content,
+            qna.qna_delete,
+            qna.qna_time,
+            qna.qna_update,
+            qna.qna_answer_time
+        FROM qna
+        JOIN mem ON qna.mem_idx = mem.mem_idx
+        WHERE qna_idx = #{qna_idx}
     </select>
+
     
     
     <!--  Q&A 등록하기  -->
