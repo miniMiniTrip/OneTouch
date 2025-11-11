@@ -208,6 +208,12 @@
             background: #e8f5e9;
             color: #388e3c;
         }
+        
+      	.qna-table td.title {
+	    text-align: center; /* 중앙 정렬 */
+	    vertical-align: middle; /* 세로 중앙 정렬 */
+	}
+      
     </style>
 </head>
 
@@ -303,7 +309,6 @@
                             <thead>
                                 <tr>
                                     <th style="width: 80px;">번호</th>
-                                    <th style="width: 120px;">상품명</th>
                                     <th>제목</th>
                                     <th style="width: 100px;">작성자</th>
                                     <th style="width: 120px;">작성일</th>
@@ -314,25 +319,38 @@
                                 <c:forEach var="qna" items="${qna_list}" varStatus="status">
                                     <tr>
                                         <td>${qna.qna_idx}</td>
-                                        <%-- 
-                                        <td>${qna.product_name}</td>
-                                        <td class="title" onclick="location.href='${pageContext.request.contextPath}/qna/view?qna_idx=${qna.qna_idx}'">
-                                            ${qna.qna_title}
-                                        </td>
-                                        <td>${qna.mem_id}</td>
-                                        <td>${qna.qna_regdate}</td>
+                                        
+                                        
+                                        <!-- 상세보기로 가는 버튼 -->
+                                        <td class="title">
+										    <a href="${pageContext.request.contextPath}/qna/detail?qna_idx=${qna.qna_idx}">
+										        ${qna.qna_title}
+										    </a>
+										</td>
+                                        
+                                        <!-- 멤버id -->
+                                        <td>${qna.mem_name}</td>
+                                        
+                                        <!-- 답변시간 -->
+                                        <td>${qna.qna_time}</td>
+                                       
+                                        
+                                        <!-- 답변완료 / 대기상태 -->                                        
+                                         <%-- <td>${qna.qna_answered}</td> --%>
+      <!-- ------------------------------------------------------------------------ --------------> 
                                         <td>
-                                            <c:choose>
-                                                <c:when test="${qna.qna_status eq '답변완료'}">
-                                                    <span class="status-badge status-completed">답변완료</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="status-badge status-waiting">답변대기</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            
-                                        </td> 
-                                        --%>
+									    <c:choose>
+									        <c:when test="${qna.qna_answered}">
+									            <span class="status-badge status-completed">답변완료</span>
+									        </c:when>
+									        
+									        <c:otherwise>
+									            <span class="status-badge status-waiting">답변대기</span>
+									        </c:otherwise>
+									    </c:choose>
+										</td>
+		<!-- ------------------------------------------------------------------------ -------------->                                             
+                                        
                                     </tr>
                                 </c:forEach>
                             </tbody>
