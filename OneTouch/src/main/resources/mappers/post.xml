@@ -4,6 +4,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.PostDao">
 	<select id="selectPostList" resultType="PostVo">
-		select *from post
+		select p.*, m.mem_id
+		from post as p 
+		join mem as m 
+		ON p.mem_idx=m.mem_idx
 	</select>
+	
+	<select id="selectTipList" resultType="PostVo">
+		SELECT p.*,m.mem_id 
+		FROM otdb.post as p
+		join mem as m
+		WHERE post_category='스킨에디터'	
+	</select>
+	
+	<select id="selectReviewList" resultType="PostVo">
+		SELECT p.*,m.mem_id 
+		FROM otdb.post as p
+		join mem as m
+		WHERE post_category='리뷰'	
+	</select>
+	<select id="selectFreeBoard" resultType="PostVo">
+		SELECT p.*,m.mem_id 
+		FROM otdb.post as p
+		join mem as m
+		WHERE post_category='자유게시판'	
+	</select>
+	
 </mapper>

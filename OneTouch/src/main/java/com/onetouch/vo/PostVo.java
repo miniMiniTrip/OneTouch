@@ -14,6 +14,12 @@ public class PostVo {
 	/** 회원번호 */
 	int mem_idx;
 	
+	/** 회원 아이디 */
+	String mem_id;
+	
+	/** 카테고리*/
+	String post_category;
+	
 	/** 글내용*/
 	String post_content;
 	
