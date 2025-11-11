@@ -17,26 +17,424 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
-  <style type="text/css">
-  
-  table {
-  border-collapse: collapse; /* 테두리 겹침 제거 */
-  width: 100%;
-  table-layout: fixed; /* 열 너비 고정, 균등 분배 */
-}
+    
+    <script type="text/javascript">
+    	/* 전체 목록 화면 출력 */
+    	function postAllList(){
+    		$.ajax(){
+    			url:""
+    			,
+    		}
+    	}
+    	/* 스킨케어팁 목록 화면 출력 */
+    	function postTipList(){
+    		
+    	}
+    	/* 리뷰(구매후기) 목록 화면 출력*/
+    	function postReviewList(){
+    		
+    	}
+    	/* 자유게시판 목록 화면 출력 */
+    	function postFreeBoard(){
+    		
+    	}
+    	
+    </script>
 
-th, td {
-  border: 1px solid #aaa; /* 테두리 선명하게 */
-  padding: 8px 12px; /* 셀 안 여백 추가 */
-  text-align: left; /* 왼쪽 정렬 */
-  word-wrap: break-word; /* 긴 텍스트 줄 바꿈 */
-}
 
-thead {
-  background-color: #f2f2f2; /* 헤더 배경색 */
-  font-weight: bold;
-}
-</style>  
+   <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+ <style>
+      :root {
+            --onetouch-navy: #000033;
+            --onetouch-light-blue: #3366cc;
+            --onetouch-accent: #ff3366;
+            --onetouch-text: #333333;
+            --onetouch-light-gray: #f4f5f7;
+            --onetouch-border: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f9f9f9;
+            color: var(--onetouch-text);
+            line-height: 1.6;
+        }
+        
+        /* Community Page Specific Styles */
+        .onetouch-community-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .community-tabs {
+            border: none;
+            background-color: #fff;
+            padding: 15px 15px 0;
+            margin-bottom: 0;
+        }
+        
+        .community-tabs .nav-item .nav-link {
+            color: #888;
+            border: none;
+            padding: 10px 15px;
+            font-weight: 500;
+            font-size: 15px;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .community-tabs .nav-item .nav-link.active {
+            color: var(--onetouch-navy);
+            border-bottom: 2px solid var(--onetouch-navy);
+            background-color: transparent;
+            font-weight: 600;
+        }
+        
+        .community-tab-content {
+            padding: 15px;
+            background-color: #fff;
+        }
+        
+        .community-post-item {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--onetouch-border);
+            padding-bottom: 25px;
+            background-color: #fff;
+            border-radius: 10px;
+        }
+        
+        .community-post-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        
+        .community-profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+            border: 2px solid #f1f1f1;
+        }
+        
+        .community-username {
+            font-weight: 600;
+            margin: 0;
+            color: var(--onetouch-navy);
+        }
+        
+        .community-post-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: auto;
+        }
+        
+        .community-follow-btn {
+            background-color: transparent;
+            border: 1px solid var(--onetouch-navy);
+            color: var(--onetouch-navy);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        
+        .community-follow-btn:hover {
+            background-color: var(--onetouch-navy);
+            color: white;
+        }
+        
+        /* Post Carousel Styles */
+        .community-carousel-container {
+            position: relative;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .community-post-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .community-carousel-inner {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        
+        .community-post-image {
+            width: 100%;
+            flex-shrink: 0;
+            object-fit: cover;
+            height: 500px; /* Fixed height for consistency */
+        }
+        
+        .community-carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+        
+        .community-carousel-arrow:hover {
+            background-color: var(--onetouch-navy);
+            color: white;
+        }
+        
+        .community-carousel-arrow.prev {
+            left: 15px;
+        }
+        
+        .community-carousel-arrow.next {
+            right: 15px;
+        }
+        
+        .community-carousel-indicator {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            z-index: 5;
+        }
+        
+        .community-indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.6);
+            margin: 0 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .community-indicator-dot.active {
+            background-color: var(--onetouch-navy);
+            transform: scale(1.2);
+        }
+        
+        /* Product Carousel Styles - Updated with navigation arrows */
+        .community-product-section {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .community-product-carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 0 10px;
+        }
+        
+        .community-post-products {
+            display: flex;
+            gap: 15px;
+            transition: transform 0.3s ease;
+            padding: 5px 0;
+        }
+        
+        .community-product-card {
+            min-width: 110px;
+            max-width: 110px;
+            text-align: center;
+            border-radius: 8px;
+            padding: 5px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        
+        .community-product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .community-product-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .community-product-discount {
+            color: var(--onetouch-accent);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .community-product-price {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--onetouch-navy);
+            margin: 0;
+        }
+        
+        .community-product-carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--onetouch-border);
+            color: var(--onetouch-navy);
+        }
+        
+        .community-product-carousel-arrow.prev {
+            left: -5px;
+        }
+        
+        .community-product-carousel-arrow.next {
+            right: -5px;
+        }
+        
+        .community-product-carousel-arrow:hover {
+            background-color: var(--onetouch-navy);
+            color: white;
+        }
+        
+        /* Post Content Styles */
+        .community-post-interactions {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .community-interaction-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 22px;
+            transition: all 0.2s;
+        }
+        
+        .community-interaction-btn:hover {
+            color: var(--onetouch-navy);
+            transform: scale(1.1);
+        }
+        
+        .community-likes-count {
+            font-weight: 600;
+            color: var(--onetouch-navy);
+            margin: 10px 0;
+        }
+        
+        .community-post-tags {
+            margin: 12px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .community-post-tag {
+            color: var(--onetouch-light-blue);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .community-post-content {
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .community-post-content p {
+            margin-bottom: 8px;
+        }
+        
+        .community-comment-input {
+            display: flex;
+            margin: 15px 0;
+            border-top: 1px solid var(--onetouch-border);
+            padding-top: 15px;
+            position: relative;
+        }
+        
+        .community-comment-input input {
+            width: 100%;
+            border: none;
+            background-color: var(--onetouch-light-gray);
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+        
+        .community-comment-input input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0,0,51,0.2);
+        }
+        
+        .community-post-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+        
+        /* Pagination Styles */
+        .community-pagination-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0 20px;
+        }
+        
+        .community-pagination .page-link {
+            color: var(--onetouch-navy);
+            border-color: var(--onetouch-border);
+            margin: 0 3px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .community-pagination .page-item.active .page-link {
+            background-color: var(--onetouch-navy);
+            border-color: var(--onetouch-navy);
+        }
+        
+        .community-pagination .page-item:not(.active) .page-link:hover {
+            background-color: rgba(0,0,51,0.05);
+        }
+</style>
+
 
 </head>
 
@@ -57,132 +455,419 @@ thead {
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
     <!-- End Header Area -->
 
-    <!-- Start Hero Area -->
-    <section class="hero-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-12 custom-padding-right">
-                    <div class="slider-head">
-                        <!-- Start Hero Slider -->
-                        <div class="hero-slider">
-                            <c:forEach var="banner" items="${mainBanners}">
-                                <!-- Start Single Slider -->
-                                <div class="single-slider" 
-                                     style="background-image: url('${pageContext.request.contextPath}${banner.imageUrl}');">
-                                    <div class="content">
-                                        <h2>
-                                            <c:if test="${not empty banner.subtitle}">
-                                                <span>${banner.subtitle}</span>
-                                            </c:if>
-                                            ${banner.title}
-                                        </h2>
-                                        <p>${banner.description}</p>
-                                        <c:if test="${not empty banner.salePrice}">
-                                            <h3>
-                                                <span>특가</span> 
-                                                <fmt:formatNumber value="${banner.salePrice}" pattern="#,###"/>원
-                                            </h3>
-                                        </c:if>
-                                        <div class="button">
-                                            <a href="${banner.linkUrl}" class="btn">지금 구매하기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Single Slider -->
-                            </c:forEach>
+<!-- 커뮤니티 등록버튼 -->
+<input type="button" value="등록" onclick="location.href='/post/insert'">
+<!-- /커뮤니티 등록버튼 -->
+
+<!-- =======================================커뮤니티============================================ -->
+
+
+  <div class="onetouch-community-wrapper">
+        <!-- Community Navigation Tabs -->
+        <ul class="nav community-tabs" id="communityTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">전체</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="recommend-tab" data-bs-toggle="tab" data-bs-target="#recommend" type="button" role="tab">스크랩되다</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="follow-tab" data-bs-toggle="tab" data-bs-target="#follow" type="button" role="tab">리뷰 (구매자 전용)</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="questions-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab">자유게시판</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content community-tab-content" id="communityTabsContent">
+            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                <!-- Post Item 1 -->
+                <div class="community-post-item">
+                    <div class="community-post-header">
+                        <img src="https://via.placeholder.com/40" alt="Profile" class="community-profile-img">
+                        <p class="community-username">산유</p>
+                        <div class="community-post-actions">
+                            <button class="community-follow-btn">+ 팔로우</button>
+                            <button class="btn btn-sm"><i class="fas fa-ellipsis-h"></i></button>
                         </div>
-                        <!-- End Hero Slider -->
                     </div>
-                </div>
-                <div class="col-lg-4 col-12">
-                    <div class="row">
-                        <c:forEach var="smallBanner" items="${smallBanners}">
-                            <div class="col-lg-12 col-md-6 col-12 md-custom-padding">
-                                <!-- Start Small Banner -->
-                                <div class="hero-small-banner" 
-                                     style="background-image: url('${pageContext.request.contextPath}${smallBanner.imageUrl}');">
-                                    <div class="content">
-                                        <h2>
-                                            <c:if test="${not empty smallBanner.subtitle}">
-                                                <span>${smallBanner.subtitle}</span>
-                                            </c:if>
-                                            ${smallBanner.title}
-                                        </h2>
-                                        <c:if test="${not empty smallBanner.salePrice}">
-                                            <h3>
-                                                <fmt:formatNumber value="${smallBanner.salePrice}" pattern="#,###"/>원
-                                            </h3>
-                                        </c:if>
-                                    </div>
-                                </div>
-                                <!-- End Small Banner -->
+                    
+                    <!-- Post Carousel -->
+                    <div class="community-carousel-container">
+                        <div class="community-post-carousel">
+                            <div class="community-carousel-inner" id="carousel-1">
+                                <img src="https://via.placeholder.com/600x800/000033/ffffff?text=OneTouch+1" alt="Post Image" class="community-post-image">
+                                <img src="https://via.placeholder.com/600x800/003366/ffffff?text=OneTouch+2" alt="Post Image" class="community-post-image">
+                                <img src="https://via.placeholder.com/600x800/006699/ffffff?text=OneTouch+3" alt="Post Image" class="community-post-image">
+                                <img src="https://via.placeholder.com/600x800/0099cc/ffffff?text=OneTouch+4" alt="Post Image" class="community-post-image">
+                                <img src="https://via.placeholder.com/600x800/00ccff/ffffff?text=OneTouch+5" alt="Post Image" class="community-post-image">
                             </div>
-                        </c:forEach>
+                            <div class="community-carousel-arrow prev" onclick="moveCarousel(1, -1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="community-carousel-arrow next" onclick="moveCarousel(1, 1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="community-carousel-indicator" id="indicators-1">
+                                <div class="community-indicator-dot active" onclick="setCarouselPosition(1, 0)"></div>
+                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 1)"></div>
+                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 2)"></div>
+                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 3)"></div>
+                                <div class="community-indicator-dot" onclick="setCarouselPosition(1, 4)"></div>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- Product Carousel with navigation arrows -->
+                    <div class="community-product-section">
+                        <div class="community-product-carousel-container">
+                            <div class="community-post-products" id="product-carousel-1">
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="community-product-carousel-arrow prev" onclick="moveProductCarousel(1, -1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="community-product-carousel-arrow next" onclick="moveProductCarousel(1, 1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Post Interactions -->
+                    <div class="community-post-interactions">
+                        <button class="community-interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="community-interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="community-interaction-btn">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                    
+                    <p class="community-likes-count">좋아요 503개</p>
+                    
+                    <!-- Post Tags -->
+                    <div class="community-post-tags">
+                        <span class="community-post-tag">#원터치 #부드러운 #언밸런스핏 #여리여리룩 #마이스타그램 #옷스타그램 #데일리룩</span>
+                    </div>
+                    
+                    <div class="community-post-content">
+                        <p>2월 핵존 데일리!</p>
+                        <p>날씨좋아지고 꾸준히좋아요오 굿</p>
+                    </div>
+                    
+                    <div class="community-comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                    </div>
+                    
+                    <p class="community-post-meta">1일 전</p>
+                </div>
+
+                <!-- Post Item 2 -->
+                <div class="community-post-item">
+                    <div class="community-post-header">
+                        <img src="https://via.placeholder.com/40" alt="Profile" class="community-profile-img">
+                        <p class="community-username">민하</p>
+                        <div class="community-post-actions">
+                            <button class="community-follow-btn">+ 팔로우</button>
+                            <button class="btn btn-sm"><i class="fas fa-ellipsis-h"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Post Carousel -->
+                    <div class="community-carousel-container">
+                        <div class="community-post-carousel">
+                            <div class="community-carousel-inner" id="carousel-2">
+                                <img src="https://via.placeholder.com/600x800/006699/ffffff?text=OneTouch+1" alt="Post Image" class="community-post-image">
+                                <img src="https://via.placeholder.com/600x800/0099cc/ffffff?text=OneTouch+2" alt="Post Image" class="community-post-image">
+                                <img src="https://via.placeholder.com/600x800/00ccff/ffffff?text=OneTouch+3" alt="Post Image" class="community-post-image">
+                            </div>
+                            <div class="community-carousel-arrow prev" onclick="moveCarousel(2, -1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="community-carousel-arrow next" onclick="moveCarousel(2, 1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="community-carousel-indicator" id="indicators-2">
+                                <div class="community-indicator-dot active" onclick="setCarouselPosition(2, 0)"></div>
+                                <div class="community-indicator-dot" onclick="setCarouselPosition(2, 1)"></div>
+                                <div class="community-indicator-dot" onclick="setCarouselPosition(2, 2)"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Carousel with navigation arrows -->
+                    <div class="community-product-section">
+                        <div class="community-product-carousel-container">
+                            <div class="community-post-products" id="product-carousel-2">
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                                <div class="community-product-card">
+                                    <img src="https://via.placeholder.com/100/eeeeee/999999?text=상품" alt="Product" class="community-product-img">
+                                    <p class="community-product-discount">19% 할인</p>
+                                    <p class="community-product-price">55,900원</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="community-product-carousel-arrow prev" onclick="moveProductCarousel(2, -1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="community-product-carousel-arrow next" onclick="moveProductCarousel(2, 1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Post Interactions -->
+                    <div class="community-post-interactions">
+                        <button class="community-interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="community-interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="community-interaction-btn">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                    
+                    <p class="community-likes-count">좋아요 378개</p>
+                    
+                    <!-- Post Tags -->
+                    <div class="community-post-tags">
+                        <span class="community-post-tag">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</span>
+                    </div>
+                    
+                    <div class="community-post-content">
+                        <p>최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                    </div>
+                    
+                    <div class="community-comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                    </div>
+                    
+                    <p class="community-post-meta">2일 전</p>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="community-pagination-container">
+                    <ul class="pagination community-pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Other tabs would have similar structure but are empty for this demo -->
+            <div class="tab-pane fade" id="recommend" role="tabpanel">
+                <!-- Recommended Content -->
+                <div class="d-flex justify-content-center align-items-center py-5">
+                    <p class="text-muted">스크랩된 게시물이 없습니다.</p>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="follow" role="tabpanel">
+                <!-- Follow Content -->
+                <div class="d-flex justify-content-center align-items-center py-5">
+                    <p class="text-muted">팔로우한 사용자의 리뷰가 없습니다.</p>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="questions" role="tabpanel">
+                <!-- Questions Content -->
+                <div class="d-flex justify-content-center align-items-center py-5">
+                    <p class="text-muted">자유게시판 게시물이 없습니다.</p>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- End Hero Area -->
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Carousel functionality
+        const carousels = {};
+        const productCarousels = {};
+        
+        // Initialize all carousels
+        function initCarousels() {
+            // Image carousels
+            for (let i = 1; i <= 10; i++) {
+                const carousel = document.getElementById(`carousel-${i}`);
+                if (carousel) {
+                    carousels[i] = {
+                        element: carousel,
+                        currentIndex: 0,
+                        totalSlides: carousel.children.length
+                    };
+                    
+                    // Set initial width for proper sizing
+                    const containerWidth = carousel.parentElement.offsetWidth;
+                    Array.from(carousel.children).forEach(slide => {
+                        slide.style.width = `${containerWidth}px`;
+                    });
+                    
+                    carousel.style.width = `${containerWidth * carousel.children.length}px`;
+                }
+            }
+            
+            // Product carousels
+            for (let i = 1; i <= 10; i++) {
+                const productCarousel = document.getElementById(`product-carousel-${i}`);
+                if (productCarousel) {
+                    const productCards = productCarousel.querySelectorAll('.community-product-card');
+                    
+                    productCarousels[i] = {
+                        element: productCarousel,
+                        currentIndex: 0,
+                        cardWidth: 125, // Card width + gap
+                        visibleCards: Math.floor(productCarousel.parentElement.offsetWidth / 125),
+                        totalCards: productCards.length
+                    };
+                }
+            }
+        }
+        
+        // Move image carousel by direction
+        function moveCarousel(id, direction) {
+            const carousel = carousels[id];
+            if (!carousel) return;
+            
+            const containerWidth = carousel.element.parentElement.offsetWidth;
+            const newIndex = Math.max(0, Math.min(carousel.currentIndex + direction, carousel.totalSlides - 1));
+            
+            if (newIndex !== carousel.currentIndex) {
+                carousel.currentIndex = newIndex;
+                carousel.element.style.transform = `translateX(-${newIndex * containerWidth}px)`;
+                
+                // Update indicators
+                updateIndicators(id);
+            }
+        }
+        
+        // Set carousel position directly
+        function setCarouselPosition(id, position) {
+            const carousel = carousels[id];
+            if (!carousel) return;
+            
+            const containerWidth = carousel.element.parentElement.offsetWidth;
+            const newIndex = Math.max(0, Math.min(position, carousel.totalSlides - 1));
+            
+            carousel.currentIndex = newIndex;
+            carousel.element.style.transform = `translateX(-${newIndex * containerWidth}px)`;
+            
+            // Update indicators
+            updateIndicators(id);
+        }
+        
+        // Update carousel indicators
+        function updateIndicators(id) {
+            const indicators = document.getElementById(`indicators-${id}`).children;
+            const currentIndex = carousels[id].currentIndex;
+            
+            for (let i = 0; i < indicators.length; i++) {
+                if (i === currentIndex) {
+                    indicators[i].classList.add('active');
+                } else {
+                    indicators[i].classList.remove('active');
+                }
+            }
+        }
+        
+        // Move product carousel by direction
+        function moveProductCarousel(id, direction) {
+            const carousel = productCarousels[id];
+            if (!carousel) return;
+            
+            const maxScroll = Math.max(0, carousel.totalCards - carousel.visibleCards);
+            const newIndex = Math.max(0, Math.min(carousel.currentIndex + direction, maxScroll));
+            
+            if (newIndex !== carousel.currentIndex) {
+                carousel.currentIndex = newIndex;
+                carousel.element.style.transform = `translateX(-${newIndex * carousel.cardWidth}px)`;
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', initCarousels);
+        
+        // Reinitialize on window resize
+        window.addEventListener('resize', initCarousels);
+    </script>
 
-    <!-- Start 커뮤니티  -->
-    <section class="featured-categories section">
-        <div class="container">
-        
-        <div>커뮤니티</div>
-		<div style="display: flex; gap: 10px;">
-		  <a href="#">전체</a>
-		  <a href="#">스킨에디터</a>
-		  <a href="#">리뷰(구매자 전용)</a>
-		  <a href="#">자유게시판</a>
-		</div>
-	        
-	    <table border="1" style="border-collapse: collapse;">
-	     		<tr>
-	     			<th>커뮤니티번호</th>
-	     			<th>회원번호</th>
-	     			<th>카테고리티번호</th>
-	     			<th>내용</th>
-	     		</tr>
-	     		<c:forEach var="postVo" items="${postVo_array }">
-	     	<tr>
-	     		<td>
-	     			${postVo.post_idx }
-	     		</td>
-	     		<td>
-	     			${postVo.mem_idx }
-	     		</td>
-	     		<td>
-	     			${postVo.post_category }
-	     		</td>
-	     		<td>
-	     			${postVo.post_content }
-	     		</td>
-	     		
-	     		<td>
-	     			${postVo.post_image }
-	     		</td>
-	     		<td>
-	     			${postVo.post_like }
-	     		</td>
-	     		<td>
-	     			${postVo.post_comment_count }
-	     		</td>
-	     		
-	     	</tr>
-	     	<tr>
-	     	<td>
-	     	
-	     	</td>
-	     	</tr>
-	     		</c:forEach>
-	     </table>
-        
-        
-        
-        </div>
-    </section>
-    <!-- End 커뮤니티  -->
+
+
+<!-- =======================================/커뮤니티============================================ -->
+
+
 
 
 	
