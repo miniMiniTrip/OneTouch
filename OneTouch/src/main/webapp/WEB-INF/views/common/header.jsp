@@ -238,7 +238,7 @@ document.getElementById('search-input')?.addEventListener('keypress', function(e
     }
 });
 
-function updateHeaderCartCount() {
+/* function updateHeaderCartCount() {
 	const contextPath = '${pageContext.request.contextPath}';
     fetch(contextPath+"/cart/count")
         .then(response => response.json())
@@ -246,11 +246,11 @@ function updateHeaderCartCount() {
             document.getElementById('cart-count').textContent = data.count;
         })
         .catch(error => console.error('Error:', error));
-}
+} */
 
-document.addEventListener('DOMContentLoaded', function() {
-    updateHeaderCartCount();
-});
+/* document.addEventListener('DOMContentLoaded', function() {
+    updateHeaderCartCount(); 
+});*/
 </script>
 
     <!-- ========================= JS here ========================= -->
