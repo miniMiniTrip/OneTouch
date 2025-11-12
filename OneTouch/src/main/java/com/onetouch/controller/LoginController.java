@@ -1,5 +1,8 @@
 package com.onetouch.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -114,7 +117,7 @@ public class LoginController {
 		System.out.println("	[LoginController] return : map ");
 		return map;
 	}
-	
+	//로그인시 이메일 체크
 	@RequestMapping("/user/emailCheck")
 	@ResponseBody
 	public Map<String,Object> emailCheck(String mem_email){
@@ -163,8 +166,15 @@ public class LoginController {
 		System.out.println(map.get("memVo"));
 		session.setAttribute("user",map.get("memVo") );
 		
-		if(!url.isEmpty()) {
-			return "redirect:"+url;
+		if(url != null && !url.isEmpty()) {
+				//String decoded_url = URLDecoder.decode(url,StandardCharsets.UTF_8);
+			try {
+				URI redirectUri = new URI(url);
+				return "redirect:"+redirectUri.toASCIIString();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		System.out.println("	[LoginController] return : redirect:/ ");
