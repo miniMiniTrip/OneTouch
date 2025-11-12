@@ -14,7 +14,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		System.out.println("	[Interceptors()]");
 		
 		registry.addInterceptor(new LoggerInterceptor())
-				.addPathPatterns("/adminpage/**")  //로그인 여부 체크하는경우
+				.addPathPatterns("/adminpage/**","/post/insert","/qna/write","/qna/modify")  //로그인 여부 체크하는경우
 		        .excludePathPatterns("/cart/count","/error","/sample/**","/assets/**","/css/**", "/image/**", "/js/**"); //체크하지않는경우  
 	}
 }

@@ -383,6 +383,7 @@
             </div>
         </div>
     </div>
+    <input type="button" value="등록" onclick="location.href='/post/insert'">
     <section class="section">
         <div class="container">
             <div class="community-content">

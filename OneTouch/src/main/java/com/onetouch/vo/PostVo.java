@@ -19,6 +19,9 @@ public class PostVo {
 	
 	/** 카테고리*/
 	String post_category;
+
+	/** 제목 */
+	String post_title;
 	
 	/** 글내용*/
 	String post_content;

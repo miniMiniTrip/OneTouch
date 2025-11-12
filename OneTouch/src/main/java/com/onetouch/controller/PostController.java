@@ -10,14 +10,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.dao.PostDao;
 import com.onetouch.service.PostService;
+import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostVo;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PostController {
 
 	@Autowired
 	PostService postService;
+	
+	@Autowired
+	HttpSession httpsesion;
+	
+	@Autowired
+	PostDao postDao;
 	
 	//커뮤니티 전체목록 열기
 	@RequestMapping("/post/list")
@@ -43,6 +53,7 @@ public class PostController {
 		model.addAttribute("postTip_array",postFreeBoard_array);
 		
 		System.out.println("	[PostController] return : /post/post.jsp ");
+		System.out.println("");
 		return "/post/post";
 	}
 	
@@ -51,15 +62,22 @@ public class PostController {
 	public String postInsertForm() {
 		System.out.println("	[PostController] postInsertForm() ");
 		
-		System.out.println("	[PostController] /post/post_insert ");
+		System.out.println("	[PostController] /post/post_insert.jsp ");
+		System.out.println("");
 		return "/post/post_insert";
 	}
 	
+	//post 등록하기
 	@PostMapping("/post/insert")
-	public String postInsert(PostVo postvo) {
+	public String postInsert(PostVo postVo) {
 		System.out.println("	[PostController] postInsert() ");
 		
+		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
+		postVo.setMem_idx(memVo.getMem_idx());
+		System.out.println("		"+postVo);
+		int res =postDao.postInsert(postVo);
 		System.out.println("	[PostController] redirect:/post/list");
+		System.out.println("");
 		return"redirect:/post/list";
 	}
 	
