@@ -7,4 +7,10 @@ import com.onetouch.vo.PostVo;
 public interface PostService {
 
 	List<PostVo> selectPostList();
+
+	List<PostVo> selectTipList();
+
+	List<PostVo> selectReviewList();
+
+	List<PostVo> selectFreeBoard();
 }

@@ -1,5 +1,7 @@
 package com.onetouch.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.CategoryDao;
 import com.onetouch.dao.ProductDao;
@@ -18,7 +22,7 @@ import jakarta.servlet.ServletContext;
 @Controller
 public class ProductController {
 
-  
+	
   @Autowired
   ProductDao product_dao;
   
@@ -27,9 +31,10 @@ public class ProductController {
   
   @Autowired
   ServletContext application;
+  
+  
 
-    // 회원등록리스트
-  @RequestMapping("/about")
+ // @RequestMapping("/products") // 상품목록 조회
   public String list_admin( //관리자가 보는 리스트
 	        @RequestParam(name="category_idx", defaultValue = "0") int category_idx,
 	        //상품명 검색어를 받기 위해 추가
@@ -48,8 +53,8 @@ public class ProductController {
 	        // JSP의 검색 폼에 현재 검색 조건을 그대로 유지하기 위해 추가
 	        model.addAttribute("current_category", category_idx);
 	        model.addAttribute("current_keyword", keyword);
-	        
-	        System.out.println("    [ProductController] product/product_list_admin.jsp - Category: " + category_idx + ", Keyword: " + keyword);
+	        // -> 얘 카테고리 값 0 으로 넘어오는데 이거 맞나?
+	        System.out.println("[ProductController] product/product_list_admin.jsp - Category: " + category_idx + ", Keyword: " + keyword);
 	        
 	        return "product/product_list_admin";
 	    }
@@ -72,7 +77,7 @@ public class ProductController {
 	}
     
 	//상품등록폼띄우기
-	@RequestMapping("/product/insert_form.do")
+	@RequestMapping("/product/insert_form")
 	public String insert_form(Model model) {
 		
 		List<CategoryVo> category_list	= category_dao.selectList();
@@ -83,12 +88,50 @@ public class ProductController {
 	}
 	
 	
-    
-    
-    
-    
-    
-    
- }//end:Productcontroller
+	@RequestMapping("/product/insert.do")
+	public String insert(ProductVo vo,
+	                     @RequestParam(name="photo") MultipartFile photo,
+	                     RedirectAttributes ra) throws Exception, IOException {
+	    //화일저장위치 구한다
+	    String saveDir = application.getRealPath("/images/");
 
+	    String product_image_url = "no_file";
+
+	    //업로드화일이 있으면
+	    if(photo != null && !photo.isEmpty()) {
+	        String filename = photo.getOriginalFilename();
+	        File f = new File(saveDir, filename);
+	        //동일파일명이 존재하는지?
+	        if(f.exists()) {
+	            long tm = System.currentTimeMillis();
+	            filename = String.format("%d_%s", tm, filename);
+	            f = new File(saveDir, filename);
+	            
+	            System.out.println("파일이름"+filename);
+	        }
+	        //임시파일 f 경로로 복사해온다
+	        photo.transferTo(f);
+	        
+	        product_image_url = filename;
+	    }
+
+	    //처리결과를 vo에 담는다
+	    vo.setProduct_image_url(product_image_url);
+
+	    //product_comment : \n -> <br>
+	    String product_comment = vo.getProduct_comment().replaceAll("\n", "<br>");
+	    vo.setProduct_comment(product_comment);
+
+
+	    //DB insert
+	    int res = product_dao.insert(vo);
+
+	    ra.addAttribute("category_idx", vo.getCategory_idx());
+	    return "redirect:list.do";
+	}
+		
+    
+    
+    
+}//end:Productcontroller
 

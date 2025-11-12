@@ -20,4 +20,22 @@ public class PostServiceImpl implements PostService {
 		return postVo_array;
 	}
 
+	@Override
+	public List<PostVo> selectTipList() {
+		List<PostVo> postTip_array=postDao.selectTipList();
+		return postTip_array;
+	}
+
+	@Override
+	public List<PostVo> selectReviewList() {
+		List<PostVo> postReview_array=postDao.selectReviewList();
+		return postReview_array;
+	}
+
+	@Override
+	public List<PostVo> selectFreeBoard() {
+		List<PostVo> postFreeBoard_array=postDao.selectFreeBoard();
+		return postFreeBoard_array;
+	}
+
 }
