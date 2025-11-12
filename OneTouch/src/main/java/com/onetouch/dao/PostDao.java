@@ -13,4 +13,6 @@ public interface PostDao {
 	List<PostVo> selectTipList();
 	List<PostVo> selectReviewList();
 	List<PostVo> selectFreeBoard();
+
+	int postInsert(PostVo postVo);
 }

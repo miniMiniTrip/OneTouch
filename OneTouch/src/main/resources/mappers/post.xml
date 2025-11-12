@@ -30,4 +30,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE post_category='자유게시판'	
 	</select>
 	
+	<insert id="postInsert" parameterType="PostVo">
+		INSERT INTO post (post_idx,mem_idx,post_category,post_title,post_content,post_time,post_update)
+					VALUES(null,#{mem_idx},#{post_category},#{post_title},#{post_content},now(),now())
+	</insert>
+	
 </mapper>
