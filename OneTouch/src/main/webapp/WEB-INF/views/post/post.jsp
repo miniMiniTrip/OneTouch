@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
 <head>
@@ -394,10 +395,13 @@
                     <div class="community-tab-item" data-tab="free">자유게시판</div>
                 </div>
                 
+                <!-- 커뮤니티 1개 ============================================================= -->
+                <c:forEach var="postVo" items="${postVo_array }">
+                
                 <div class="community-post">
                     <div class="post-header">
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
-                        <p class="username">진유</p>
+                        <p class="username">${postVo.mem_id }</p>
                         <div class="post-actions">
                             <button class="follow-btn">
                                 <i class="fas fa-ellipsis-h"></i>
@@ -407,21 +411,14 @@
                     
                     <div class="image-carousel" id="carousel-1">
                         <div class="carousel-inner">
+                        <c:set var="images" value="${fn:split(postVo.post_image,'\\\\*')}"/>
+                        <c:forEach var="img" items="${images }">
+                        ${img }
                             <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=Image+1" alt="게시물 이미지" class="post-image">
+                                <img src="${pageContext.request.contextPath }/images/${img}" alt="게시물 이미지" class="post-image">
                             </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=Image+2" alt="게시물 이미지" class="post-image">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=Image+3" alt="게시물 이미지" class="post-image">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=Image+4" alt="게시물 이미지" class="post-image">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=Image+5" alt="게시물 이미지" class="post-image">
-                            </div>
+                        </c:forEach>
+                        
                         </div>
                         
                         <div class="carousel-control prev" data-carousel="carousel-1">
@@ -486,6 +483,8 @@
                         <button class="comment-submit">게시</button>
                     </div>
                 </div>
+                </c:forEach>
+                <!-- /커뮤니티 1개 ============================================================= -->
                 
                 <div class="community-post">
                     <div class="post-header">
