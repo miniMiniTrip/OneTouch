@@ -47,8 +47,19 @@ public class CartController {
 	@ResponseBody
 	public Map <String,String> insert(CartVo vo){
 		
-		CartVo orderMap = cart_dao.selectPaymentList(vo);
+		CartVo orderMap = cart_dao.selectCartIdByProduct(vo);
 		Map<String, String> map = new HashMap<String, String>();
+		
+		if(orderMap != null) {
+			map.put("result","exist");
+			return map;
+			}
+		
+		int res = cart_dao.insert(vo);
+		if(res==1)
+			map.put("result", "success");
+		else
+			map.put("result", "fail");
 		
 		return map;
 	}

@@ -30,6 +30,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c.mem_idx = #{mem_idx}
 	</select>
 	
+	<!-- 중복검사 -->
+	<select id="selectCartIdByProduct" resultType="cart">
+		select * from cart
+		where product_idx = #{product_idx} and mem_idx = #{mem_idx}
+	</select>
+	
 	<!-- 주문서 작성 -->
 	<select id="selectPaymentList" parameterType="Map" resultType="cart">
 		select * from cart where cart_id in
