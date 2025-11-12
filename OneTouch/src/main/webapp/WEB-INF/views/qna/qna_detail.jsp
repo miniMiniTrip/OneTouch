@@ -278,6 +278,77 @@
         .category-3 { background: #f3e5f5; color: #7b1fa2; }
         .category-4 { background: #e8f5e9; color: #388e3c; }
         .category-5 { background: #ffebee; color: #d32f2f; }
+    
+    
+    
+   /* 관리자의 답변 부분. css */
+    
+    .answer-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: vertical;
+    margin-bottom: 15px;
+    font-family: inherit;
+}
+
+.answer-textarea:focus {
+    outline: none;
+    border-color: #5c6bc0;
+}
+
+.file-upload-area {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border: 1px dashed #e0e0e0;
+    border-radius: 6px;
+}
+
+.file-upload-area label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.file-upload-area input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+}
+
+.file-upload-area small {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+    font-size: 12px;
+}
+
+.answer-btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-submit {
+    background: #5c6bc0;
+    color: white;
+    padding: 10px 30px;
+}
+
+.btn-submit:hover {
+    background: #4a5aaf;
+}
+ 
+ 
+/* end 관리자 답변 css */   
+    
     </style>
 </head>
 
@@ -324,7 +395,7 @@
             <div class="qna-container">
                 <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">user01님 환영합니다</div>
+                    <div class="sidebar-subtitle">${qna.mem_name }님 환영합니다</div>
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
@@ -454,6 +525,69 @@
         </div>
     </section>
     <!-- End Q&A Section -->
+   
+   
+   
+   
+    
+    <!-- 답변 영역 -->
+<div class="qna-answer">
+    <c:choose>
+        <c:when test="${qna.qna_answered && not empty qna.qna_answer_content}">
+            <!-- 기존 답변 표시 -->
+            <div class="answer-header">
+                <span class="answer-badge">관리자 답변</span>
+                <c:if test="${qna.qna_answer_time != null}">
+                    <span class="answer-date">
+                        <fmt:formatDate value="${qna.qna_answer_time}" pattern="yyyy-MM-dd HH:mm" />
+                    </span>
+                </c:if>
+            </div>
+            <div class="answer-content">${qna.qna_answer_content}</div>
+        </c:when>
+        <c:otherwise>
+            <!-- 답변 없을 때 -->
+            <c:choose>
+                <%-- 관리자인 경우에만 답변 작성 폼 표시 --%>
+                <c:when test="${sessionScope.loginMember.mem_role == 'ADMIN'}">
+                    <div class="answer-header">
+                        <span class="answer-badge">답변 작성</span>
+                    </div>
+                    <form action="${pageContext.request.contextPath}/qna/answer" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
+                        
+                        <textarea name="qna_answer_content" 
+                                  class="answer-textarea" 
+                                  placeholder="답변 내용을 입력하세요..."
+                                  required></textarea>
+                        
+                        <div class="file-upload-area">
+                            <label for="answerFile">📎 파일 첨부 (선택)</label>
+                            <input type="file" id="answerFile" name="answerFile" multiple>
+                            <small>최대 5개, 각 10MB 이하</small>
+                        </div>
+                        
+                        <div class="answer-btn-group">
+                            <button type="submit" class="btn btn-submit">답변 등록</button>
+                        </div>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <%-- 일반 사용자는 대기 메시지만 표시 --%>
+                    <div class="no-answer">
+                        아직 답변이 등록되지 않았습니다.<br>
+                        빠른 시일 내에 답변 드리겠습니다.
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:otherwise>
+    </c:choose>
+</div>
+
+
+
+
+
 
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
