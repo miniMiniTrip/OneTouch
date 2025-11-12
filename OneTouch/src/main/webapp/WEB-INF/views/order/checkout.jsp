@@ -38,7 +38,7 @@
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<%@include file="/WEB-INF/views/common/header.jsp" %>
     <!-- End Header Area -->
 
     <!-- Start Breadcrumbs -->
@@ -336,7 +336,7 @@
     <!-- End Checkout Form -->
 
     <!-- Start Footer Area -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<%@include file="/WEB-INF/views/common/footer.jsp" %>
     <!-- End Footer Area -->
 
     <!-- ========================= scroll-top ========================= -->

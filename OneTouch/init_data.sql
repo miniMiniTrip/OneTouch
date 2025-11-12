@@ -9,8 +9,8 @@ INSERT INTO category (category_name) VALUES
 ('클렌징케어');
 
 -- 관리자 계정 (비밀번호: 1234 - 실제로는 암호화 필요)
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_email, mem_roll, mem_phone) VALUES 
-('admin', '1234', '관리자', 'admin@onetouch.com', 'admin', '010-1234-1123');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone) VALUES 
+('admin', '1234', '관리자', '12423', 'admin@onetouch.com', 'admin', '010-1234-1123');
 
 -- 해시태그 초기데이터
 INSERT INTO hashtag (hashtag_name) VALUES

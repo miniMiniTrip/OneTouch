@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<insert id="insert" parameterType="list">
+	insert order_item into
+		(order_id,
+		 product_idx,
+		 product_name,
+		 product_cnt,
+		 product_amount,
+		 total_amount,
+		 order_time
+		) values 
+		<foreach collection="list" items="item" separator=",">
+		(
+		 #{item.order_id},
+		 #{item.product_idx},
+		 #{item.product_name},
+		 #{item.product_cnt},
+		 #{item.product_amount},
+		 #{item.total_amount},
+		 now()
+		)
+		</foreach>
+</insert>
