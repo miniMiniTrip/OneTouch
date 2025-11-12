@@ -1,6 +1,8 @@
 package com.onetouch.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.QnaDao;
+import com.onetouch.service.QnaService;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.QnaVo;
 
@@ -19,11 +22,15 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class QnaController {
 
-    @Autowired
+   
+	@Autowired
     private QnaDao qnaDao;
-
     @Autowired
     private HttpSession session;
+    @Autowired
+    private QnaService qnaService;
+    
+   
     
     // 1️⃣ Q&A 목록 페이지
     @GetMapping("/qna/list")
@@ -41,7 +48,12 @@ public class QnaController {
         
         // 로그인한 사용자의 글만 조회
         int mem_idx = user.getMem_idx();
-        List<QnaVo> qna_list = qnaDao.selectQnaList(mem_idx);
+        String mem_roll = user.getMem_roll();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("mem_idx", mem_idx);
+        map.put("mem_roll", mem_roll);
+        
+        List<QnaVo> qna_list = qnaDao.selectQnaList(map);
         
         System.out.println("QnA 목록 개수: " + qna_list.size());
         
@@ -188,4 +200,83 @@ public class QnaController {
         qnaDao.deleteQna(qna_idx);
         return "redirect:/qna/list";
     }
+    
+
+        
+//        // 로그인 체크
+//        MemVo user = (MemVo) session.getAttribute("user");
+//        
+//        if (user == null) {
+//            return "redirect:/qna/list";
+//        }
+//        
+//        // 관리자 권한 체크
+//        if (!"ADMIN".equals(user.getMem_role())) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
+//            return "redirect:/qna/detail?qna_idx=" + qna_idx;
+//        }
+        
+//        try {
+//            System.out.println("=== 답변 등록 ===");
+//            System.out.println("QnA 번호: " + qna_idx);
+//            System.out.println("답변 내용: " + qna_answer_content);
+//            
+//            // 답변 등록
+//           //int result = qnaDao.updateAnswer(qna_idx, qna_answer_content);
+//            
+//            if (result > 0) {
+//                System.out.println("답변 등록 성공");
+//                redirectAttributes.addFlashAttribute("successMessage", "답변이 등록되었습니다.");
+//            } else {
+//                System.out.println("답변 등록 실패 - 업데이트된 행 없음");
+//                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
+//            }
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
+//        }
+        
+//        return "redirect:/qna/detail?qna_idx=" + qna_idx;
+//    }
+    
+ // 답변 등록 처리 (관리자 전용)
+    @PostMapping("/qna/answer")
+    public String registerAnswer(
+            @RequestParam("qna_idx") int qna_idx,
+            @RequestParam("qna_answer_content") String qna_answer_content,
+            RedirectAttributes redirectAttributes) {
+        
+        // 로그인 체크
+        MemVo user = (MemVo) session.getAttribute("user");
+        
+        if (user == null) {
+            return "redirect:/qna/list";
+        }
+        
+        // 관리자 권한 체크
+        if (!"ADMIN".equals(user.getMem_role())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
+            return "redirect:/qna/detail?qna_idx=" + qna_idx;
+        }
+        
+        try {
+            int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
+            
+            if (result > 0) {
+                redirectAttributes.addFlashAttribute("successMessage", "답변이 등록되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
+        }
+        
+        return "redirect:/qna/detail?qna_idx=" + qna_idx;
+    }
+    
+    
+    
 }
