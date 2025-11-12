@@ -1,6 +1,7 @@
 package com.onetouch.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,5 +22,7 @@ public interface ProductDao{
 	int				insert(ProductVo vo);
 	int 			update(ProductVo vo);
 	int				delete(int product_idx);
+
+	List<ProductVo> selectList(Map<String, Object> map);
 	
 }

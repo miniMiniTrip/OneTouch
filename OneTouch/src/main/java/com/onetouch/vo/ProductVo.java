@@ -14,7 +14,7 @@ public class ProductVo{
     private int product_price;
     private String product_name;
     private String product_brand;
-    private String product_comment;
+    private String product_comment; //상품설명
     private int product_cnt;
     private String product_time;
     private String product_update;
