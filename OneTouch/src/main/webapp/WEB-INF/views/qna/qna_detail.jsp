@@ -328,8 +328,8 @@
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
-                        <div class="menu-item">👤 정보/구니</div>
-                        <div class="menu-item">💝 팀</div>
+                        <div class="menu-item">👤 장바구니</div>
+                        <div class="menu-item">💝 찜</div>
                         <div class="menu-item">🎯 주문/배송 조회</div>
                     </div>
                     
