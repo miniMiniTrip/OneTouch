@@ -69,13 +69,13 @@ public class PostController {
 	
 	//post 등록하기
 	@PostMapping("/post/insert")
-	public String postInsert(PostVo postVo) {
+	public String postInsert(PostVo postVo) throws Exception {
 		System.out.println("	[PostController] postInsert() ");
-		
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		postVo.setMem_idx(memVo.getMem_idx());
+		postService.postInsert(postVo);
 		System.out.println("		"+postVo);
-		int res =postDao.postInsert(postVo);
+		
 		System.out.println("	[PostController] redirect:/post/list");
 		System.out.println("");
 		return"redirect:/post/list";

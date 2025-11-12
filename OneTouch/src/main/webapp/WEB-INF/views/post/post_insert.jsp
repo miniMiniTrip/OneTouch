@@ -273,7 +273,7 @@ select.form-control {
 	function postInsert(f){
 		let post_title=f.post_title.value.trim();
 		let post_content=f.post_content.value.trim();
-		let post_image=f.post_image.value.trim();
+		let post_images=f.post_images.value.trim();
 		if(post_title==""){
 			f.post_title.value="";
 			f.post_title.focus();
@@ -284,15 +284,16 @@ select.form-control {
 			f.post_content.focus();
 			alert("내용을 입력해주세요");
 		}else
-		if(post_image==""){
-			f.post_image.value="";
-			f.post_image.focus();
+		if(post_images==""){
+			f.post_images.value="";
+			f.post_images.focus();
 			alert("사진을 선택해주세요");
 		}else{
 			
 		
 		f.method="post";
-		f.action="/post/insert"
+		f.action="/post/insert";
+		f.enctype="multipart/form-data";
 		f.submit();
 		}
 		
@@ -394,7 +395,7 @@ select.form-control {
 
 			<div class="file-upload">
 				<label for="file-input" class="file-upload-btn" id="post_photo_insert">파일 첨부</label> 
-				<input type="file" id="post_image" name="post_image" multiple> <span
+				<input type="file" id="post_images" name="post_images" multiple> <span
 					class="file-name">선택된 파일 없음</span>
 			</div>
 
@@ -429,7 +430,7 @@ select.form-control {
         });
         
         // 파일 업로드 표시
-        document.getElementById('post_image').addEventListener('change', function() {
+        document.getElementById('post_images').addEventListener('change', function() {
             const fileCount = this.files.length;
             const fileNameDisplay = document.querySelector('.file-name');
             
@@ -445,7 +446,7 @@ select.form-control {
         });
         
         document.getElementById('post_photo_insert').addEventListener('click',function(){
-        	document.getElementById('post_image').click();
+        	document.getElementById('post_images').click();
         })
         
         // 스킨 에디터 미리보기 기능
