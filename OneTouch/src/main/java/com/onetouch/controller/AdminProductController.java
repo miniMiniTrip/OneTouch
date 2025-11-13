@@ -58,8 +58,8 @@ public class AdminProductController {
 //		return "admin/product/product_list_admin";
 //	}
 
-	// 상품등록조회
-		@RequestMapping("/product/list")
+	// 상품조회 및 등록
+		@RequestMapping("/products")
 		public String list(@RequestParam(name = "search", defaultValue = "all") String category,
 				@RequestParam(name = "keyword", required = false) String keyword,
 
@@ -80,12 +80,14 @@ public class AdminProductController {
 
 			// 호출해서 상품 목록 가져오기
 			List<ProductVo> list = product_dao.selectList(map);
-
+			List<CategoryVo> category_list = category_dao.selectList();
+			
 			model.addAttribute("list", list);
 			model.addAttribute("category", category);
 			model.addAttribute("keyword", keyword);
+			model.addAttribute("category_list", category_list);
 
-			return "admin/product/product_list_admin";
+			return "admin/product/product_insert_form";
 
 		}// end:list
 	
@@ -106,17 +108,8 @@ public class AdminProductController {
 		return "admin/product/product_content";
 	}
 
-	// 상품등록폼띄우기
-	@RequestMapping("/product/insert_form")
-	public String insert_form(Model model) {
 
-		List<CategoryVo> category_list = category_dao.selectList();
-
-		model.addAttribute("category_list", category_list);
-
-		return "admin/product/product_insert_form";
-	}
-
+	//등록
 	@RequestMapping("/product/insert")
 	public String insert(ProductVo vo, @RequestParam(name = "photo") MultipartFile photo, RedirectAttributes ra)
 			throws Exception, IOException {
