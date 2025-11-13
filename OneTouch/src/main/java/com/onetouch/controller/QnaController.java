@@ -83,7 +83,8 @@ public class QnaController {
         System.out.println("데이터: " + qna);
         
         // 본인의 글인지 확인
-        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
+        System.out.println(!user.getMem_roll().equals("admin"));
+        if (qna == null || (qna.getMem_idx() != user.getMem_idx() && !"admin".equals(user.getMem_roll()))) {
             System.out.println("접근 권한 없음 - 작성자: " + (qna != null ? qna.getMem_idx() : "null") + ", 현재 사용자: " + user.getMem_idx());
             redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
             return "redirect:/qna/list";
@@ -255,7 +256,7 @@ public class QnaController {
         }
         
         // 관리자 권한 체크
-        if (!"ADMIN".equals(user.getMem_role())) {
+        if (!"ADMIN".equals(user.getMem_roll())) {
             redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
             return "redirect:/qna/detail?qna_idx=" + qna_idx;
         }
