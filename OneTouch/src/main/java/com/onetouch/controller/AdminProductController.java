@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.CategoryDao;
 import com.onetouch.dao.ProductDao;
+import com.onetouch.service.ProductService;
 import com.onetouch.vo.CategoryVo;
 import com.onetouch.vo.ProductVo;
 
@@ -33,6 +34,9 @@ public class AdminProductController {
 
 	@Autowired
 	ServletContext application;
+	
+	@Autowired
+	ProductService productService;
 
 //	@RequestMapping("/products") // 상품목록 조회
 //	public String list_admin( // 관리자가 보는 리스트
@@ -58,9 +62,9 @@ public class AdminProductController {
 //		return "admin/product/product_list_admin";
 //	}
 
-	// 상품조회 및 등록
+	//  관리자 상품관리페이지(리스트 검색,등록,수정,삭제외)
 		@RequestMapping("/products")
-		public String list(@RequestParam(name = "search", defaultValue = "all") String category,
+		public String adminProductList(@RequestParam(name = "search", defaultValue = "all") String category,
 				@RequestParam(name = "keyword", required = false) String keyword,
 
 				Model model) {
@@ -81,37 +85,37 @@ public class AdminProductController {
 			// 호출해서 상품 목록 가져오기
 			List<ProductVo> list = product_dao.selectList(map);
 			List<CategoryVo> category_list = category_dao.selectList();
-			
+			System.out.println(list);
 			model.addAttribute("list", list);
 			model.addAttribute("category", category);
 			model.addAttribute("keyword", keyword);
 			model.addAttribute("category_list", category_list);
 
-			return "admin/product/product_insert_form";
+			return "admin/product/product_list_form";
 
 		}// end:list
 	
 	
-	// 상품보기
-	@RequestMapping("/product/view")
-	public String view(int product_idx, Model model) {
+	// 상품보기(유저용)
+//	@RequestMapping("/product/view")
+//	public String view(int product_idx, Model model) {
+//
+//		List<CategoryVo> category_list = category_dao.selectList();
+//
+//		ProductVo vo = product_dao.selectOne(product_idx);
+//
+//		// request binding
+//		model.addAttribute("vo", vo);
+//		model.addAttribute("category_list", category_list);
+//		System.out.println("	[ProductController] product/product_content.jsp ");
+//
+//		return "admin/product/product_content";
+//	}
 
-		List<CategoryVo> category_list = category_dao.selectList();
 
-		ProductVo vo = product_dao.selectOne(product_idx);
-
-		// request binding
-		model.addAttribute("vo", vo);
-		model.addAttribute("category_list", category_list);
-		System.out.println("	[ProductController] product/product_content.jsp ");
-
-		return "admin/product/product_content";
-	}
-
-
-	//등록
+	//상품등록 기능
 	@RequestMapping("/product/insert")
-	public String insert(ProductVo vo, @RequestParam(name = "photo") MultipartFile photo, RedirectAttributes ra)
+	public String insert(ProductVo productVo,@RequestParam(name = "photo") MultipartFile photo, RedirectAttributes ra)
 			throws Exception, IOException {
 		// 화일저장위치 구한다
 		String saveDir = application.getRealPath("/images/");
@@ -137,18 +141,18 @@ public class AdminProductController {
 		}
 
 		// 처리결과를 vo에 담는다
-		vo.setProduct_image_url(product_image_url);
+		productVo.setProduct_image_url(product_image_url);
 
 		// product_comment : \n -> <br>
-		String product_comment = vo.getProduct_comment().replaceAll("\n", "<br>");
-		vo.setProduct_comment(product_comment);
+		String product_comment = productVo.getProduct_comment().replaceAll("\n", "<br>");
+		productVo.setProduct_comment(product_comment);
 
+		System.out.printf("		productVo::%s\n",productVo);
 		// DB insert
-		int res = product_dao.insert(vo);
+		int res = productService.insert(productVo);
 
-		ra.addAttribute("category_idx", vo.getCategory_idx());
-		return "redirect:list"; // list.do 메서드가 없어서 갈곳이 없어 만들어야함
-
+		ra.addAttribute("category_idx", productVo.getCategory_idx());
+		return "redirect:../products"; 
 	}// end: insert
 
 	
