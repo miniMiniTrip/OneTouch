@@ -361,7 +361,7 @@
             <div class="qna-container">
                 <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">user01님 환영합니다</div>
+                    <div class="sidebar-subtitle">${mem.mem_name }님 환영합니다</div>
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
