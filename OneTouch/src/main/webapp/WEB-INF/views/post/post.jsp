@@ -21,339 +21,343 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* OneTouch 커뮤니티 스타일 */
-        :root {
-            --onetouch-navy: #000033;
-            --onetouch-light-blue: #3366cc;
-            --onetouch-accent: #ff3366;
-            --onetouch-text: #333333;
-            --onetouch-light-gray: #f4f5f7;
-            --onetouch-border: #e0e0e0;
-        }
-        
-        body {
-            background-color: #f9f9f9;
-            font-family: 'Noto Sans KR', sans-serif;
-            color: var(--onetouch-text);
-        }
-        
-        /* 커뮤니티 메인 스타일 */
-        .community-content {
-            max-width: 620px;
-            margin: 0 auto;
-            padding-bottom: 50px;
-        }
-        
-        /* 상단 탭 내비게이션 */
-        .community-tabs {
-            display: flex;
-            justify-content: space-around;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
-            background-color: #fff;
-            padding: 0;
-            position: sticky; /* 스티키 헤더처럼 상단 고정 */
-            top: 0;
-            z-index: 100;
-        }
-        
-        .community-tab-item {
-            flex: 1;
-            text-align: center;
-            padding: 15px 5px;
-            font-size: 15px;
-            color: #666;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .community-tab-item.active {
-            color: var(--onetouch-navy);
-            font-weight: 500;
-        }
-        
-        .community-tab-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--onetouch-navy);
-        }
-        
-        /* 게시물 스타일 */
-        .community-post {
-            background-color: #fff;
-            border-radius: 0;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-        
-        .post-header {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-        }
-        
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .username {
-            font-weight: 600;
-            font-size: 14px;
-            margin: 0;
-            color: #333;
-        }
-        
-        .post-actions {
-            margin-left: auto;
-        }
-        
-        .follow-btn {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 20px;
-        }
-        
-        /* 이미지 캐러셀 */
-        .image-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-        
-        .carousel-inner {
-            display: flex;
-            transition: transform 0.3s ease-in-out;
-            width: 100%;
-            /* 캐러셀 이미지가 세로로 길 때 영역을 유지하도록 설정 */
-            aspect-ratio: 1 / 1.3333; /* 3:4 비율, 예시 */
-        }
-        
-        .carousel-item {
-            flex: 0 0 100%;
-            width: 100%;
-            height: 100%; /* 부모 높이에 맞춤 */
-        }
-        
-        .post-image {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover; /* 이미지가 잘리더라도 영역을 꽉 채움 */
-        }
-        
-        .carousel-control {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 32px; /* 버튼 크기 축소 */
-            height: 32px;
-            background-color: rgba(0, 0, 0, 0.4); /* 배경색 어둡게 */
-            color: #fff; /* 아이콘 색상 흰색 */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            font-size: 14px;
-        }
-        
-        .carousel-control:hover {
-            opacity: 1;
-        }
-        
-        .carousel-control.prev {
-            left: 10px;
-        }
-        
-        .carousel-control.next {
-            right: 10px;
-        }
-        
-        .carousel-indicators {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .indicator {
-            width: 7px; /* 인디케이터 크기 축소 */
-            height: 7px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .indicator.active {
-            background-color: var(--onetouch-light-blue); /* 활성 인디케이터 색상 변경 */
-        }
-        
-        /* 제품 정보 섹션 */
-        .product-section {
-            padding: 15px;
-            border-top: 1px solid #f5f5f5;
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-        }
-        
-        .product-card {
-            flex: 0 0 auto;
-            width: 85px;
-            text-align: center;
-        }
-        
-        .product-img {
-            width: 100%;
-            height: 85px;
-            object-fit: cover;
-            border-radius: 3px;
-            margin-bottom: 5px;
-        }
-        
-        .product-discount {
-            color: var(--onetouch-accent);
-            font-size: 11px;
-            font-weight: 500;
-            margin: 0;
-        }
-        
-        .product-price {
-            font-size: 12px;
-            font-weight: 600;
-            margin: 0;
-            color: #333;
-        }
-        
-        /* 게시물 콘텐츠 */
-        .post-content {
-            padding: 15px;
-        }
-        
-        .post-likes {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .post-text {
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .post-tags {
-            color: var(--onetouch-light-blue);
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-        
-        .post-time {
-            color: #999;
-            font-size: 12px;
-            margin: 0;
-        }
-        
-        /* 인터랙션 영역 */
-        .post-interactions {
-            display: flex;
-            padding: 10px 15px;
-            gap: 20px;
-        }
-        
-        .interaction-btn {
-            background: none;
-            border: none;
-            color: #333;
-            font-size: 22px;
-            cursor: pointer;
-        }
-        
-        .interaction-btn.active {
-            color: var(--onetouch-accent);
-        }
-        
-        /* 댓글 입력 */
-        .comment-input {
-            padding: 10px 15px 15px;
-            display: flex;
-            align-items: center;
-            border-top: 1px solid #f5f5f5;
-        }
-        
-        .comment-input input {
-            flex: 1;
-            border: none;
-            font-size: 14px;
-            outline: none;
-            padding: 8px 0;
-        }
-        
-        .comment-input input::placeholder {
-            color: #999;
-        }
-        
-        .comment-submit {
-            background: none;
-            border: none;
-            color: var(--onetouch-light-blue);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        /* 페이지네이션 */
-        .community-pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            gap: 5px;
-        }
-        
-        .pagination-link {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #ddd;
-            color: #666;
-            text-decoration: none;
-            font-size: 13px;
-        }
-        
-        .pagination-link.active {
-            background-color: var(--onetouch-navy);
-            color: #fff;
-            border-color: var(--onetouch-navy);
-        }
-        
-        /* 반응형 설정 */
-        @media (max-width: 767px) {
-            .community-content {
-                padding: 0;
-            }
-        }
+       /* OneTouch 커뮤니티 스타일 */
+:root {
+    --onetouch-navy: #000033;
+    --onetouch-light-blue: #3366cc;
+    --onetouch-accent: #ff3366;
+    --onetouch-text: #333333;
+    --onetouch-light-gray: #f4f5f7;
+    --onetouch-border: #e0e0e0;
+}
+
+body {
+    background-color: #f9f9f9;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--onetouch-text);
+}
+
+/* 커뮤니티 메인 스타일 */
+.community-content {
+    max-width: 620px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+/* 상단 탭 내비게이션 */
+.community-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 0;
+    position: sticky; 
+    top: 0;
+    z-index: 100;
+}
+
+.community-tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 15px 5px;
+    font-size: 15px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.community-tab-item.active {
+    color: var(--onetouch-navy);
+    font-weight: 500;
+}
+
+.community-tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--onetouch-navy);
+}
+
+/* 게시물 스타일 */
+.community-post {
+    background-color: #fff;
+    border-radius: 0;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0;
+    color: #333;
+}
+
+.post-actions {
+    margin-left: auto;
+}
+
+.follow-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* 이미지 캐러셀 */
+.image-carousel {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;  /* 스크롤 이미지 비율 조정하는곳 현재 4:3으로 되어있음 */
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.4s ease-in-out, height 0.3s ease;
+    width: 100%;
+}
+
+.carousel-item {
+    /* flex: 0 0 100%; */
+    width:100%;
+    height:100%;
+}
+
+.post-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* object-fit: cover; */ /* 이미지 비율 유지하며 꽉 채움 */
+    object-fit: contain;  /* 이미지가 잘리지 않게 비율 유지 */
+    object-position: center;
+    /* background-color: #000; */ /* 여백 부분 색 (선택사항) */
+}
+
+/* 캐러셀 컨트롤 */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background-color: rgba(0,0,0,0.4);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    font-size: 14px;
+}
+
+.carousel-control:hover {
+    opacity: 1;
+}
+
+.carousel-control.prev {
+    left: 10px;
+}
+
+.carousel-control.next {
+    right: 10px;
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+    margin: 0;
+}
+
+.indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.indicator.active {
+    background-color: var(--onetouch-light-blue);
+}
+
+/* 제품 정보 섹션 */
+.product-section {
+    padding: 15px;
+    border-top: 1px solid #f5f5f5;
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+}
+
+.product-card {
+    flex: 0 0 auto;
+    width: 85px;
+    text-align: center;
+}
+
+.product-img {
+    width: 100%;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+
+.product-discount {
+    color: var(--onetouch-accent);
+    font-size: 11px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.product-price {
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+/* 게시물 콘텐츠 */
+.post-content {
+    padding: 15px;
+}
+
+.post-likes {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.post-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.post-tags {
+    color: var(--onetouch-light-blue);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.post-time {
+    color: #999;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* 인터랙션 영역 */
+.post-interactions {
+    display: flex;
+    padding: 10px 15px;
+    gap: 20px;
+}
+
+.interaction-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.interaction-btn.active {
+    color: var(--onetouch-accent);
+}
+
+/* 댓글 입력 */
+.comment-input {
+    padding: 10px 15px 15px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #f5f5f5;
+}
+
+.comment-input input {
+    flex: 1;
+    border: none;
+    font-size: 14px;
+    outline: none;
+    padding: 8px 0;
+}
+
+.comment-input input::placeholder {
+    color: #999;
+}
+
+.comment-submit {
+    background: none;
+    border: none;
+    color: var(--onetouch-light-blue);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* 페이지네이션 */
+.community-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.pagination-link {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    color: #666;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.pagination-link.active {
+    background-color: var(--onetouch-navy);
+    color: #fff;
+    border-color: var(--onetouch-navy);
+}
+
+/* 반응형 설정 */
+@media (max-width: 767px) {
+    .community-content {
+        padding: 0;
+    }
+}
+
     </style>
 </head>
 
@@ -396,7 +400,7 @@
                 </div>
                 
                 <!-- 커뮤니티 1개 ============================================================= -->
-                <c:forEach var="postVo" items="${postVo_array }">
+                <c:forEach var="postVo" items="${postVo_array }" varStatus="loop">
                 
                 <div class="community-post">
                     <div class="post-header">
@@ -411,29 +415,27 @@
                     
                     <div class="image-carousel" id="carousel-1">
                         <div class="carousel-inner">
-                        <c:set var="images" value="${fn:split(postVo.post_image,'\\\\*')}"/>
-                        <c:forEach var="img" items="${images }">
-                        ${img }
-                            <div class="carousel-item">
-                                <img src="${pageContext.request.contextPath }/images/${img}" alt="게시물 이미지" class="post-image">
+                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
+                            <div class="carousel-item ${status.first ? 'active' : ''}">
+                            ${pageContext.request.contextPath }
+                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
                             </div>
-                        </c:forEach>
-                        
+                         </c:forTokens>
+                         
                         </div>
                         
-                        <div class="carousel-control prev" data-carousel="carousel-1">
+                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
                             <i class="fas fa-chevron-left"></i>
                         </div>
-                        <div class="carousel-control next" data-carousel="carousel-1">
+                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
                             <i class="fas fa-chevron-right"></i>
                         </div>
                         
-                        <div class="carousel-indicators" id="indicators-1">
-                            <div class="indicator active" data-slide="0" data-carousel="carousel-1"></div>
-                            <div class="indicator" data-slide="1" data-carousel="carousel-1"></div>
-                            <div class="indicator" data-slide="2" data-carousel="carousel-1"></div>
-                            <div class="indicator" data-slide="3" data-carousel="carousel-1"></div>
-                            <div class="indicator" data-slide="4" data-carousel="carousel-1"></div>
+                        <div class="carousel-indicators" id="indicators-${loop.index }">
+                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
+							    <div class="indicator ${s.first ? 'active' : ''}" 
+							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
+							  </c:forTokens>
                         </div>
                     </div>
                     
@@ -480,86 +482,12 @@
                     
                     <div class="comment-input">
                         <input type="text" placeholder="댓글을 남겨보세요...">
-                        <button class="comment-submit">게시</button>
+                        <button class="comment-submit">댓글</button>
                     </div>
                 </div>
                 </c:forEach>
                 <!-- /커뮤니티 1개 ============================================================= -->
                 
-                <div class="community-post">
-                    <div class="post-header">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="프로필" class="profile-img">
-                        <p class="username">준우</p>
-                        <div class="post-actions">
-                            <button class="follow-btn">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="image-carousel" id="carousel-2">
-                        <div class="carousel-inner">
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=제품+리뷰" alt="게시물 이미지" class="post-image">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=사용법" alt="게시물 이미지" class="post-image">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/600x800?text=효과" alt="게시물 이미지" class="post-image">
-                            </div>
-                        </div>
-                        
-                        <div class="carousel-control prev" data-carousel="carousel-2">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="carousel-control next" data-carousel="carousel-2">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                        
-                        <div class="carousel-indicators" id="indicators-2">
-                            <div class="indicator active" data-slide="0" data-carousel="carousel-2"></div>
-                            <div class="indicator" data-slide="1" data-carousel="carousel-2"></div>
-                            <div class="indicator" data-slide="2" data-carousel="carousel-2"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-section">
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=올인원" alt="제품" class="product-img">
-                            <p class="product-discount">25% 할인</p>
-                            <p class="product-price">28,900원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=로션" alt="제품" class="product-img">
-                            <p class="product-price">19,900원</p>
-                        </div>
-                    </div>
-                    
-                    <div class="post-interactions">
-                        <button class="interaction-btn active">
-                            <i class="fas fa-heart"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-share-square"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="post-content">
-                        <p class="post-likes">좋아요 127개</p>
-                        <p class="post-text">올인원 제품 2주 사용 후기 공유합니다. 지성 피부인데 기름기 컨트롤도 잘되고 향도 은은해서 좋아요. 특히 사용감이 가볍고 흡수도 빨라서 아침에 바쁠 때 딱이에요!</p>
-                        <p class="post-tags">#올인원 #남자스킨케어 #지성피부 #원터치</p>
-                        <p class="post-time">5일 전</p>
-                    </div>
-                    
-                    <div class="comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                        <button class="comment-submit">게시</button>
-                    </div>
-                </div>
                 
                 <div class="community-pagination">
                     <a href="#" class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
@@ -584,19 +512,229 @@
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
-        // 프리로더 제거
-        window.addEventListener('load', function() {
-            const preloader = document.querySelector('.preloader');
-            if (preloader) {
-                preloader.style.opacity = '0';
-                setTimeout(() => preloader.style.display = 'none', 500);
-            }
-        });
+ // =========================
+ // 0. 프리로더 제거
+ // =========================
+ window.addEventListener('load', function() {
+     const preloader = document.querySelector('.preloader');
+     if (preloader) {
+         preloader.style.opacity = '0';
+         setTimeout(() => preloader.style.display = 'none', 500);
+     }
+ });
 
-        // =========================
-        // 1. 이미지 캐러셀 기능 (슬라이드 구현)-이미지!
-        // =========================
-        document.addEventListener('DOMContentLoaded', function() {
+
+ // =========================
+ // 1. 이미지 캐러셀 기능
+ // =========================
+ document.addEventListener("DOMContentLoaded", function() {
+     const carousels = document.querySelectorAll('.image-carousel');
+
+     carousels.forEach((carousel, index) => {
+         const inner = carousel.querySelector('.carousel-inner');
+         const items = carousel.querySelectorAll('.carousel-item');
+         const prevBtn = carousel.querySelector('.carousel-control.prev');
+         const nextBtn = carousel.querySelector('.carousel-control.next');
+         const indicators = carousel.querySelectorAll('.indicator');
+
+         let currentIndex = 0;
+         const totalItems = items.length;
+
+         // 초기 슬라이드 설정
+         function showSlide(index) {
+             if (index < 0) index = totalItems - 1;
+             if (index >= totalItems) index = 0;
+             currentIndex = index;
+
+             // active 클래스 업데이트
+             items.forEach((item, i) => {
+                 item.classList.toggle('active', i === currentIndex);
+             });
+
+             indicators.forEach((ind, i) => {
+                 ind.classList.toggle('active', i === currentIndex);
+             });
+         }
+
+         // 버튼 이벤트
+         if (prevBtn) prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+         if (nextBtn) nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
+
+         // 인디케이터 이벤트
+         indicators.forEach((ind, i) => {
+             ind.addEventListener('click', () => showSlide(i));
+         });
+
+         // 첫 이미지 로딩 시 높이 조정
+         const firstImg = items[0]?.querySelector('img');
+         if (firstImg) {
+             if (firstImg.complete) {
+                 inner.style.height = firstImg.offsetHeight + 'px';
+             } else {
+                 firstImg.addEventListener('load', () => {
+                     inner.style.height = firstImg.offsetHeight + 'px';
+                 });
+             }
+         }
+
+         // 윈도우 리사이즈 시 높이 자동 조정
+         window.addEventListener('resize', () => {
+             const activeImg = items[currentIndex]?.querySelector('img');
+             if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
+         });
+
+         // 초기 슬라이드 표시
+         showSlide(0);
+         
+         // 3초마다 슬라이드 전환
+         let autoSlideInterval = setInterval(() => {
+        	    showSlide(currentIndex + 1);
+        	}, 3000); // 3초마다 다음 슬라이드
+
+        	// 마우스 올리면 멈추고, 나가면 다시 시작
+        	carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+        	carousel.addEventListener('mouseleave', () => {
+        	    autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 5000);
+        	});
+        	
+          //스와이프 기능
+          let startX = 0;
+			let endX = 0;
+			
+			carousel.addEventListener('touchstart', e => {
+			    startX = e.touches[0].clientX;
+			});
+			carousel.addEventListener('touchend', e => {
+			    endX = e.changedTouches[0].clientX;
+			    handleSwipe();
+			});
+			
+			carousel.addEventListener('mousedown', e => {
+			    startX = e.clientX;
+			});
+			carousel.addEventListener('mouseup', e => {
+			    endX = e.clientX;
+			    handleSwipe();
+			});
+			
+			function handleSwipe() {
+			    const diff = endX - startX;
+			    if (Math.abs(diff) > 50) {
+			        if (diff > 0) {
+			            showSlide(currentIndex - 1); // 왼→오 스와이프 → 이전
+			        } else {
+			            showSlide(currentIndex + 1); // 오→왼 스와이프 → 다음
+			        }
+			    }
+			}
+		   //end:스와이프 기능
+
+			// 이미지 높이 조절		   
+		   const activeImg = items[currentIndex]?.querySelector('img');
+			if (activeImg) {
+			  inner.style.height = activeImg.offsetHeight + 'px';
+			}
+     });
+ });
+//=========================
+//✅ 모바일 스와이프 슬라이드 기능 추가 (기존 코드 유지 + 이거만 추가)
+//=========================
+document.querySelectorAll('.image-carousel').forEach(carousel => {
+  let startX = 0;
+  let endX = 0;
+
+  // 터치 시작
+  carousel.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  // 터치 이동 중 이미지 드래그 방지
+  carousel.addEventListener('touchmove', e => {
+      e.preventDefault();
+  }, { passive: false });
+
+  // 터치 종료 후 방향 판단
+  carousel.addEventListener('touchend', e => {
+      endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      const threshold = 50; // 감도 (50px 이상 움직이면 슬라이드 전환)
+
+      if (Math.abs(diff) > threshold) {
+          const nextBtn = carousel.querySelector('.carousel-control.next');
+          const prevBtn = carousel.querySelector('.carousel-control.prev');
+
+          if (diff > 0) {
+              // 왼쪽으로 스와이프 → 다음 슬라이드
+              nextBtn?.click();
+          } else {
+              // 오른쪽으로 스와이프 → 이전 슬라이드
+              prevBtn?.click();
+          }
+      }
+  });
+
+  // 이미지 드래그 방지
+  carousel.querySelectorAll('img').forEach(img => {
+      img.addEventListener('dragstart', e => e.preventDefault());
+  });
+});
+
+
+
+ // =========================
+ // 2. 좋아요 하트 토글 기능
+ // =========================
+ document.addEventListener('click', function(e) {
+     const btn = e.target.closest('.interaction-btn');
+     if (!btn) return;
+
+     const icon = btn.querySelector('i');
+     if (icon && icon.classList.contains('fa-heart')) {
+         const isLiked = btn.classList.toggle('active');
+         if (isLiked) {
+             icon.classList.remove('far');
+             icon.classList.add('fas');
+         } else {
+             icon.classList.remove('fas');
+             icon.classList.add('far');
+         }
+     }
+ });
+
+
+ // =========================
+ // 3. 탭 클릭 기능
+ // =========================
+ document.addEventListener('DOMContentLoaded', function() {
+     const tabs = document.querySelectorAll('.community-tab-item');
+     const posts = document.querySelectorAll('.community-post');
+
+     tabs.forEach(tab => {
+         tab.addEventListener('click', function() {
+             // 탭 활성화
+             tabs.forEach(t => t.classList.remove('active'));
+             this.classList.add('active');
+
+             const tabType = this.dataset.tab;
+
+             // 게시물 필터링 (실제 데이터 분류 시 서버 연동 가능)
+             posts.forEach(post => {
+                 // 예: post.dataset.category 값이 tabType과 같은 경우만 표시
+                 if (tabType === 'all' || post.dataset.tab === tabType) {
+                     post.style.display = 'block';
+                 } else {
+                     post.style.display = 'none';
+                 }
+             });
+
+             // 선택된 탭 이름 표시 (테스트용)
+             console.log(`탭 변경됨: ${tabType}`);
+         });
+     });
+ });
+
+       //수정 전 코드 --------------------------------	
+       /* 	document.addEventListener('DOMContentLoaded', function() {
             // 캐러셀 상태 관리 및 초기화
             const carousels = {};
             
@@ -627,8 +765,7 @@
                 if (newIndex !== carousel.currentIndex) {
                     carousel.currentIndex = newIndex;
                     // translateX를 사용하여 슬라이드 이동
-                    const translateX = -newIndex * 100 + '%';
-                    carousel.element.style.transform = `translateX(${translateX})`;
+                    carousel.element.style.transform = `translateX(${-newIndex * 100}%)`;
                     
                     // 인디케이터 업데이트
                     updateIndicators(carouselId);
@@ -642,8 +779,7 @@
                 
                 if (slideIndex >= 0 && slideIndex < carousel.totalSlides) {
                     carousel.currentIndex = slideIndex;
-                    const translateX = -slideIndex * 100 + '%';
-                    carousel.element.style.transform = `translateX(${translateX})`;
+                    carousel.element.style.transform = `translateX(${-slideIndex * 100}%)`;
                     
                     // 인디케이터 업데이트
                     updateIndicators(carouselId);
@@ -657,11 +793,7 @@
                 const currentIndex = carousels[carouselId].currentIndex;
                 
                 indicators.forEach((indicator, index) => {
-                    if (index === currentIndex) {
-                        indicator.classList.add('active');
-                    } else {
-                        indicator.classList.remove('active');
-                    }
+                	indicator.classList.toggle('active', index === currentIndex);
                 });
             }
             
@@ -681,10 +813,11 @@
                     const carouselId = this.dataset.carousel;
                     goToSlide(carouselId, slideIndex);
                 });
-            });
+            }); */
+            //---------------------------------
 
 
-    
+    /* 
             // =========================
             document.querySelectorAll('.interaction-btn').forEach(button => {
                 // 좋아요 버튼에만 이벤트 리스너 추가
@@ -726,7 +859,7 @@
                     alert(`"${tabName}" 탭이 선택되었습니다. 실제 게시물 로딩 기능을 추가해야 합니다.`);
                 });
             });
-        });
+        }); */
     </script>
 </body>
 </html>
