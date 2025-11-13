@@ -249,6 +249,13 @@ body {
 }
 
 /* 게시물 콘텐츠 */
+.post-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  /* margin: 10px 15px; */
+}
+
 .post-content {
     padding: 15px;
 }
@@ -394,15 +401,107 @@ body {
             <div class="community-content">
                 <div class="community-tabs">
                     <div class="community-tab-item active" data-tab="all">전체</div>
-                    <div class="community-tab-item" data-tab="skineditor">스킨에디터</div>
+                    <div class="community-tab-item" data-tab="skin">스킨에디터</div>
                     <div class="community-tab-item" data-tab="review">리뷰</div>
                     <div class="community-tab-item" data-tab="free">자유게시판</div>
                 </div>
                 
                 <!-- 커뮤니티 1개 ============================================================= -->
-                <c:forEach var="postVo" items="${postVo_array }" varStatus="loop">
                 
-                <div class="community-post">
+                <div class="community-post" data-tab="all">
+                <c:forEach var="postVo" items="${postVo_array }" varStatus="loop">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                        <p class="username">${postVo.mem_id }</p>
+                        <div class="post-actions">
+                        (${postVo.post_category })
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-carousel" id="carousel-1">
+                        <div class="carousel-inner">
+                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
+                            <div class="carousel-item ${status.first ? 'active' : ''}">
+                            ${pageContext.request.contextPath }
+                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
+                            </div>
+                         </c:forTokens>
+                         
+                        </div>
+                        
+                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-${loop.index }">
+                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
+							    <div class="indicator ${s.first ? 'active' : ''}" 
+							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
+							  </c:forTokens>
+                        </div>
+                    </div>
+                    
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">19% 할인</p>
+                            <p class="product-price">55,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">10% 할인</p>
+                            <p class="product-price">25,800원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-price">33,000원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">15% 할인</p>
+                            <p class="product-price">42,500원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 503개</p>
+                    	<p class="post-title">${postVo.post_title}</p>
+                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                        <p class="post-time">2일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">댓글</button>
+                    </div>
+                </c:forEach>
+                </div>
+                <!-- /커뮤니티 전체 목록 ============================================================= -->
+
+                <!-- 커뮤니티 스킨 목록 ============================================================= -->
+                	
+                
+                <div class="community-post" data-tab="skin">
+                <c:forEach var="postVo" items="${postSkin_array }" varStatus="loop">
                     <div class="post-header">
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
                         <p class="username">${postVo.mem_id }</p>
@@ -475,6 +574,7 @@ body {
                     
                     <div class="post-content">
                         <p class="post-likes">좋아요 503개</p>
+                    	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
                         <p class="post-time">2일 전</p>
@@ -484,9 +584,187 @@ body {
                         <input type="text" placeholder="댓글을 남겨보세요...">
                         <button class="comment-submit">댓글</button>
                     </div>
-                </div>
                 </c:forEach>
-                <!-- /커뮤니티 1개 ============================================================= -->
+                </div>
+                <!-- /커뮤니티 스킨 목록 ============================================================= -->
+                
+                <!-- 커뮤니티 리뷰 목록 ============================================================= -->
+                <div class="community-post" data-tab="review">
+                <c:forEach var="postVo" items="${postReview_array }" varStatus="loop">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                        <p class="username">${postVo.mem_id }</p>
+                        <div class="post-actions">
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-carousel" id="carousel-1">
+                        <div class="carousel-inner">
+                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
+                            <div class="carousel-item ${status.first ? 'active' : ''}">
+                            ${pageContext.request.contextPath }
+                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
+                            </div>
+                         </c:forTokens>
+                         
+                        </div>
+                        
+                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-${loop.index }">
+                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
+							    <div class="indicator ${s.first ? 'active' : ''}" 
+							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
+							  </c:forTokens>
+                        </div>
+                    </div>
+                    
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">19% 할인</p>
+                            <p class="product-price">55,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">10% 할인</p>
+                            <p class="product-price">25,800원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-price">33,000원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">15% 할인</p>
+                            <p class="product-price">42,500원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 503개</p>
+                    	<p class="post-title">${postVo.post_title}</p>
+                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                        <p class="post-time">2일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">댓글</button>
+                    </div>
+                </c:forEach>
+                </div>
+                <!-- /커뮤니티 리뷰 목록 ============================================================= -->
+
+                <!-- 커뮤니티 자유게시판 목록 ============================================================= -->
+                <div class="community-post" data-tab="free">
+               	   <c:forEach var="postVo" items="${postFree_array }" varStatus="loop">
+                    <div class="post-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                        <p class="username">${postVo.mem_id }</p>
+                        <div class="post-actions">
+                            <button class="follow-btn">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-carousel" id="carousel-1">
+                        <div class="carousel-inner">
+                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
+                            <div class="carousel-item ${status.first ? 'active' : ''}">
+                            ${pageContext.request.contextPath }
+                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
+                            </div>
+                         </c:forTokens>
+                         
+                        </div>
+                        
+                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        
+                        <div class="carousel-indicators" id="indicators-${loop.index }">
+                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
+							    <div class="indicator ${s.first ? 'active' : ''}" 
+							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
+							  </c:forTokens>
+                        </div>
+                    </div>
+                    
+                    <div class="product-section">
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">19% 할인</p>
+                            <p class="product-price">55,900원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">10% 할인</p>
+                            <p class="product-price">25,800원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-price">33,000원</p>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+                            <p class="product-discount">15% 할인</p>
+                            <p class="product-price">42,500원</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-interactions">
+                        <button class="interaction-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="interaction-btn">
+                            <i class="far fa-share-square"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p class="post-likes">좋아요 503개</p>
+                    	<p class="post-title">${postVo.post_title}</p>
+                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                        <p class="post-time">2일 전</p>
+                    </div>
+                    
+                    <div class="comment-input">
+                        <input type="text" placeholder="댓글을 남겨보세요...">
+                        <button class="comment-submit">댓글</button>
+                    </div>
+              	  </c:forEach>
+                </div>
+                <!-- /커뮤니티 자유게시판 목록 ============================================================= -->
                 
                 
                 <div class="community-pagination">
@@ -709,6 +987,24 @@ document.querySelectorAll('.image-carousel').forEach(carousel => {
      const tabs = document.querySelectorAll('.community-tab-item');
      const posts = document.querySelectorAll('.community-post');
 
+     // 처음 페이지 로딩 시 모든 게시물 숨기기
+     posts.forEach(post => {
+         post.style.display = 'none';
+     });
+     
+     // 기본 탭을 'all'로 설정하여 첫 번째 탭을 활성화 시킬 수 있도록 처리
+     const defaultTab = document.querySelector('.community-tab-item[data-tab="all"]');
+     if (defaultTab) {
+         defaultTab.classList.add('active');
+         // 'all' 탭이 클릭되면 모든 게시물이 보이도록 처리
+         posts.forEach(post => {
+             if (post.dataset.tab === 'all') {
+                 post.style.display = 'block';
+             }
+         });
+     }
+     
+     // 탭 클릭 이벤트 처리
      tabs.forEach(tab => {
          tab.addEventListener('click', function() {
              // 탭 활성화
@@ -720,10 +1016,18 @@ document.querySelectorAll('.image-carousel').forEach(carousel => {
              // 게시물 필터링 (실제 데이터 분류 시 서버 연동 가능)
              posts.forEach(post => {
                  // 예: post.dataset.category 값이 tabType과 같은 경우만 표시
-                 if (tabType === 'all' || post.dataset.tab === tabType) {
-                     post.style.display = 'block';
+                 if (tabType === 'all') {
+                	    if (post.dataset.tab === 'all') {
+                            post.style.display = 'block';  // 'all' 탭에 해당하는 게시물만 보이도록
+                        } else {
+                            post.style.display = 'none';  // 다른 탭에 해당하는 게시물은 숨김
+                        }
                  } else {
+                	 if(post.dataset.tab === tabType){
+                     post.style.display = 'block';
+                	 } else{
                      post.style.display = 'none';
+                	 }
                  }
              });
 

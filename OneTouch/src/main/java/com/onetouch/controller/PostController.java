@@ -36,21 +36,21 @@ public class PostController {
 		
 		//커뮤니티 리스트 가져오기
 		List<PostVo> postVo_array=postService.selectPostList();
-		System.out.printf("			[전체]%s\n",postVo_array);
+		System.out.printf("			[전체_%d]%s\n",postVo_array.size(),postVo_array);
 		
 		//스킨에디터 리스트 가져오기
 		List<PostVo> postTip_array=postService.selectTipList();
-		System.out.printf("			[스킨에디터]%s\n",postTip_array);
+		System.out.printf("			[스킨에디터_%d]%s\n",postTip_array.size(),postTip_array);
 		//리뷰 리스트 가져오기
 		List<PostVo> postReview_array=postService.selectReviewList();
-		System.out.printf("			[리뷰]%s\n",postReview_array);
+		System.out.printf("			[리뷰_%d]%s\n",postReview_array.size(),postReview_array);
 		//자유게시판 리스트 가져오기
 		List<PostVo> postFreeBoard_array=postService.selectFreeBoard();
-		System.out.printf("			[자유게시판]%s\n",postFreeBoard_array);
+		System.out.printf("			[자유게시판_%d]%s\n",postFreeBoard_array.size(),postFreeBoard_array);
 		model.addAttribute("postVo_array",postVo_array);
-		model.addAttribute("postTip_array",postTip_array);
-		model.addAttribute("postTip_array",postReview_array);
-		model.addAttribute("postTip_array",postFreeBoard_array);
+		model.addAttribute("postSkin_array",postTip_array);
+		model.addAttribute("postReview_array",postReview_array);
+		model.addAttribute("postFree_array",postFreeBoard_array);
 		
 		System.out.println("	[PostController] return : /post/post.jsp ");
 		System.out.println("");
