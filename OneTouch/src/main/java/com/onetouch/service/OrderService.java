@@ -35,7 +35,7 @@ public class OrderService {
 	
 	//단건
 	@Transactional
-	public int insert_order(OrderVo vo, int product_idx, int product_cnt) {
+	public OrderVo insert_order(OrderVo vo, int product_idx, int product_cnt) {
 		
 		ProductVo pVo = product_dao.selectOne(product_idx);
 		
@@ -62,13 +62,13 @@ public class OrderService {
 		
 		order_item_dao.insert(itemVo);
 		
-		return vo.getOrder_id();
+		return vo;
 	}
 	
 	
 	//장바구니
 	@Transactional
-	public int insert_cart_order(OrderVo vo,
+	public OrderVo insert_cart_order(OrderVo vo,
 								 String[] cart_ids
 								){
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -113,7 +113,7 @@ public class OrderService {
 		//다 했으면 삭제
 		cart_dao.deletePaymentComplete(map);
 		
-		return vo.getOrder_id();
+		return vo;
 	}
 	
 	
