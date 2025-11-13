@@ -218,14 +218,32 @@ body {
     display: flex;
     overflow-x: auto;
     gap: 10px;
+    cursor: grab; /* 마우스 포인터를 '잡기' 아이콘으로 설정 */
+    user-select: none; /* 텍스트 선택 방지 */
+    overflow-x: hidden; /* 스크롤바 숨기기 */
+    scroll-behavior: smooth; /* 부드러운 스크롤 효과 */
 }
 
+/* 상품 카드 */
 .product-card {
-    flex: 0 0 auto;
-    width: 85px;
+    flex: 0 0 auto;  /* 카드가 크기를 고정되도록 설정 */
+    width: 85px;  /* 카드의 고정 너비 */
     text-align: center;
+    scroll-snap-align: start;  /* 카드가 스크롤될 때 시작 부분에 맞춰지도록 */
+    border: 1px solid #ddd;  /* 카드 테두리 */
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+    padding: 5px;  /* 카드 내 여백 */
 }
 
+/* 링크 스타일 제거 */
+.product-link {
+    display: block;
+    text-decoration: none; /* 기본 링크 스타일 제거 */
+}
+
+/* 상품 이미지 */
 .product-img {
     width: 100%;
     height: 85px;
@@ -234,6 +252,7 @@ body {
     margin-bottom: 5px;
 }
 
+/* 할인 정보 */
 .product-discount {
     color: var(--onetouch-accent);
     font-size: 11px;
@@ -241,12 +260,16 @@ body {
     margin: 0;
 }
 
+/* 상품 가격 */
 .product-price {
     font-size: 12px;
     font-weight: 600;
     margin: 0;
     color: #333;
 }
+
+
+/* ================================== */
 
 /* 게시물 콘텐츠 */
 .post-title {
@@ -365,6 +388,18 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+    .product-card {
+        width: 70px;  /* 모바일에서 카드 크기 줄이기 */
+    }
+}
+
+@media (min-width: 1024px) {
+    .product-card {
+        width: 100px;  /* 데스크탑에서 카드 크기 늘리기 */
+    }
+}
+
     </style>
 </head>
 
@@ -449,23 +484,60 @@ body {
                     
                     <div class="product-section">
                         <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">19% 할인</p>
-                            <p class="product-price">55,900원</p>
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
                         </div>
                         <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">10% 할인</p>
-                            <p class="product-price">25,800원</p>
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
                         </div>
                         <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-price">33,000원</p>
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
                         </div>
                         <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">15% 할인</p>
-                            <p class="product-price">42,500원</p>
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
+                        </div>
+                        <div class="product-card">
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
+                        </div>
+                        <div class="product-card">
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
+                        </div>
+                        <div class="product-card">
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
+                        </div>
+                        <div class="product-card">
+                        	<a href="/product/4" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+	                        </a>    
                         </div>
                     </div>
                     
@@ -497,9 +569,8 @@ body {
                 </div>
                 <!-- /커뮤니티 전체 목록 ============================================================= -->
 
+
                 <!-- 커뮤니티 스킨 목록 ============================================================= -->
-                	
-                
                 <div class="community-post" data-tab="skin">
                 <c:forEach var="postVo" items="${postSkin_array }" varStatus="loop">
                     <div class="post-header">
@@ -718,9 +789,11 @@ body {
                     
                     <div class="product-section">
                         <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">19% 할인</p>
-                            <p class="product-price">55,900원</p>
+                        	<a href="#" class="product-link">
+	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
+	                            <p class="product-discount">19% 할인</p>
+	                            <p class="product-price">55,900원</p>
+                            </a>
                         </div>
                         <div class="product-card">
                             <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
@@ -1036,7 +1109,87 @@ document.querySelectorAll('.image-carousel').forEach(carousel => {
          });
      });
  });
+ 
+ /* ------------------------------------------------------------------------ */
+ // 상품 스크린 움직이는 기능
+ document.addEventListener('DOMContentLoaded', () => {
+    // 각 .product-section에 대해서 개별적으로 드래그 기능을 적용
+    const productSections = document.querySelectorAll('.product-section');
+    
+    productSections.forEach((productSection, index) => {
+        let isMouseDown = false;
+        let startX;
+        let scrollLeft;
+        let isDragging = false; // 드래그 상태 추적
+        let clickTimeout; // 클릭 이벤트 딜레이를 위한 변수
 
+        // 드래그 시작
+        productSection.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            isDragging = false; // 드래그 시작되지 않았다고 설정
+            productSection.style.cursor = 'grabbing';  // 마우스가 클릭된 상태에서는 '잡고 있음' 포인터
+            startX = e.pageX - productSection.offsetLeft;
+            scrollLeft = productSection.scrollLeft;
+
+            // 드래그가 시작될 때는 링크 클릭을 방지
+            e.preventDefault(); // 클릭 이벤트 기본 동작을 방지
+        });
+
+        // 드래그 끝
+        productSection.addEventListener('mouseleave', () => {
+            isMouseDown = false;
+            isDragging = false; // 마우스가 영역을 떠나면 드래그 상태를 리셋
+            productSection.style.cursor = 'grab';  // 마우스가 영역을 떠나면 원래 포인터로 돌아감
+        });
+
+        productSection.addEventListener('mouseup', () => {
+            isMouseDown = false;
+            productSection.style.cursor = 'grab';  // 드래그가 끝나면 원래 포인터로 돌아감
+        });
+
+        // 드래그 중에 상품 이미지 영역을 이동
+        productSection.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return; // 마우스 클릭 상태에서만 동작
+            e.preventDefault(); // 링크 클릭을 방지하여 드래그에만 집중
+            isDragging = true; // 드래그 중임을 표시
+
+            const x = e.pageX - productSection.offsetLeft;
+            const walk = (x - startX) * 2;  // 이동 속도 조절
+
+            // 부드러운 스크롤을 위해 requestAnimationFrame 사용
+            const smoothScroll = () => {
+                productSection.scrollLeft = scrollLeft - walk;
+            };
+
+            // requestAnimationFrame을 사용해 부드럽게 스크롤
+            requestAnimationFrame(smoothScroll);
+        });
+
+        // 상품 카드 클릭 시 링크로 이동
+        const productLinks = productSection.querySelectorAll('.product-link');
+        productLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // 드래그가 끝났고, 마우스가 여전히 클릭 상태라면 링크로 이동
+                if (isDragging) {
+                    // 드래그가 끝났다고 처리하고 클릭을 막기 위해 잠시 딜레이
+                    e.preventDefault();  // 링크 이동을 막음
+                    clearTimeout(clickTimeout);  // 이전 클릭 딜레이 타이머를 리셋
+
+                    // 드래그 종료 후 약간의 딜레이 후 링크로 이동
+                    clickTimeout = setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 500); // 500ms 후에 링크 이동
+                } else {
+                    // 드래그가 끝나고 클릭이 발생한 경우 바로 링크 이동
+                    window.location.href = link.href;
+                }
+            });
+        });
+    });
+});
+ /* ------------------------------------------------------------------------ */
+ 
+ 
        //수정 전 코드 --------------------------------	
        /* 	document.addEventListener('DOMContentLoaded', function() {
             // 캐러셀 상태 관리 및 초기화
