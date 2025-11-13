@@ -450,7 +450,7 @@
         </div>
         
         <div class="menu-section">
-            <div class="section-title">시스템</div>
+            <div class="section-title">-</div>
             <nav class="nav flex-column">
                 <a class="nav-link" href="#">
                     <span class="icon">⚙️</span> 시스템 관리
@@ -519,6 +519,7 @@
                             <th width="5%"><input type="checkbox" id="checkAll"></th>
                             <th width="10%" class="sortable" data-sort="product_idx" onclick="sortTable('product_idx')">상품번호</th>
                             <th width="10%" class="sortable" data-sort="category_idx" onclick="sortTable('category_idx')">카테고리번호</th>
+                            <th width="10%" class="sortable" data-sort="product_image_url" onclick="sortTable('product_image_url')">상품이미지</th>
                             <th width="25%" class="sortable" data-sort="product_name" onclick="sortTable('product_name')">상품명</th>
                             <th width="15%" class="sortable" data-sort="product_brand" onclick="sortTable('product_brand')">브랜드</th>
                             <th width="10%" class="sortable" data-sort="product_price" onclick="sortTable('product_price')">가격</th>
@@ -540,6 +541,9 @@
                                         <td><input type="checkbox" name="product_idx_list" value="${product.product_idx}"></td>
                                         <td>P${String.format("%03d", product.product_idx)}</td>
                                         <td>C${product.category_idx}</td>
+                                        <td>
+                                        <img alt="${product.product_image_url}" src="${pageContext.request.contextPath}/images/${product.product_image_url}"> 
+                                        </td>
                                         <td>${product.product_name}</td>
                                         <td>${product.product_brand}</td>
                                         <td><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</td>
@@ -580,7 +584,7 @@
                         <select id="category_name" name="category_idx">
                             <option value="">카테고리 선택</option>
                             <c:forEach var="category" items="${category_list}">
-                                <option value="${category.category_name}">${category.category_name}</option>
+                                <option value="${category.category_idx}">${category.category_name}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -816,7 +820,7 @@
             }
 
             // 폼 제출
-            f.action = "insert.do";
+            f.action = "product/insert.do";
             f.submit();
         }
         

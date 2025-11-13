@@ -20,6 +20,7 @@ public interface ProductDao{
 	ProductVo 		selectOne(int product_idx);
 	
 	int				insert(ProductVo vo);
+	int				productImageInsert(ProductVo productVo);
 	int 			update(ProductVo vo);
 	int				delete(int product_idx);
 

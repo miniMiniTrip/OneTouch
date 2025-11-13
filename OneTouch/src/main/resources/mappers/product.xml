@@ -8,8 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
      SELECT 
         product.*, 
         category.category_name
+        ,product_image.product_image_url
      FROM product 
      LEFT JOIN category ON product.category_idx = category.category_idx 
+     left join product_image on product.product_idx=product_image.product_idx
      
      <where>
         <if test="category_idx != 0 and category_idx != null">
@@ -64,5 +66,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
         ORDER BY product_cnt DESC
     </select>
+    
+    <!-- 상품이미지테이블에 상품이미지 등록 -->
+    <insert id="productImageInsert" parameterType="product">
+     insert into product_image
+     (product_image_idx,product_idx,product_image_url)
+     values
+     (null,#{product_idx},#{product_image_url})
+    </insert>
 
 </mapper>
