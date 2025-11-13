@@ -820,7 +820,7 @@
             }
 
             // 폼 제출
-            f.action = "product/insert.do";
+            f.action = "product/insert";
             f.submit();
         }
         

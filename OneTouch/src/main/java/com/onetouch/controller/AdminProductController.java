@@ -34,6 +34,7 @@ public class AdminProductController {
 
 	@Autowired
 	ServletContext application;
+	
 	@Autowired
 	ProductService productService;
 
@@ -63,7 +64,7 @@ public class AdminProductController {
 
 	//  관리자 상품관리페이지(리스트 검색,등록,수정,삭제외)
 		@RequestMapping("/products")
-		public String list(@RequestParam(name = "search", defaultValue = "all") String category,
+		public String adminProductList(@RequestParam(name = "search", defaultValue = "all") String category,
 				@RequestParam(name = "keyword", required = false) String keyword,
 
 				Model model) {
@@ -90,30 +91,30 @@ public class AdminProductController {
 			model.addAttribute("keyword", keyword);
 			model.addAttribute("category_list", category_list);
 
-			return "admin/product/product_insert_form";
+			return "admin/product/product_list_form";
 
 		}// end:list
 	
 	
-	// 상품보기
-	@RequestMapping("/product/view")
-	public String view(int product_idx, Model model) {
-
-		List<CategoryVo> category_list = category_dao.selectList();
-
-		ProductVo vo = product_dao.selectOne(product_idx);
-
-		// request binding
-		model.addAttribute("vo", vo);
-		model.addAttribute("category_list", category_list);
-		System.out.println("	[ProductController] product/product_content.jsp ");
-
-		return "admin/product/product_content";
-	}
+	// 상품보기(유저용)
+//	@RequestMapping("/product/view")
+//	public String view(int product_idx, Model model) {
+//
+//		List<CategoryVo> category_list = category_dao.selectList();
+//
+//		ProductVo vo = product_dao.selectOne(product_idx);
+//
+//		// request binding
+//		model.addAttribute("vo", vo);
+//		model.addAttribute("category_list", category_list);
+//		System.out.println("	[ProductController] product/product_content.jsp ");
+//
+//		return "admin/product/product_content";
+//	}
 
 
 	//상품등록 기능
-	@RequestMapping("/product/insert.do")
+	@RequestMapping("/product/insert")
 	public String insert(ProductVo productVo,@RequestParam(name = "photo") MultipartFile photo, RedirectAttributes ra)
 			throws Exception, IOException {
 		// 화일저장위치 구한다
@@ -151,8 +152,7 @@ public class AdminProductController {
 		int res = productService.insert(productVo);
 
 		ra.addAttribute("category_idx", productVo.getCategory_idx());
-		return "redirect:../products"; // list.do 메서드가 없어서 갈곳이 없어 만들어야함
-
+		return "redirect:../products"; 
 	}// end: insert
 
 	
