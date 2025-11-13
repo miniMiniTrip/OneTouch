@@ -26,7 +26,7 @@ public class CartController {
 		model.addAttribute("cart_list",cart_list);
 		model.addAttribute("total_amount",total_amount);
 		
-		return "/cart/list";
+		return "/cart/cart_list";
 	}
 	
 	@RequestMapping("/cart/modify.do")

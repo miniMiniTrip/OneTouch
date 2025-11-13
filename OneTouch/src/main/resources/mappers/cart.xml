@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<delete id="deletePaymentComplete" parameterType="Map">
 		delete from cart where
-		<foreach item="cart_id" collection="c_idx_array" separator="or">
+		<foreach item="cart_id" collection="cart_id_array" separator="or">
 		cart_id = #{cart_id}
 		</foreach>
 	</delete>
