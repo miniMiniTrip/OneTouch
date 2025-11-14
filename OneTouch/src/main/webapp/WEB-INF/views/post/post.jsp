@@ -556,9 +556,9 @@ body {
                     <div class="post-content">
                         <p class="post-likes">좋아요 503개</p>
                     	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">2일 전</p>
+                        <p class="post-time">${postVo.post_time }</p>
                     </div>
                     
                     <div class="comment-input">

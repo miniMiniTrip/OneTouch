@@ -4,75 +4,122 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.ProductDao">
 
-  <select id="selectList" parameterType="map" resultType="product">
-     SELECT 
-        product.*, 
-        category.category_name
-        ,product_image.product_image_url
-     FROM product 
-     LEFT JOIN category ON product.category_idx = category.category_idx 
-     left join product_image on product.product_idx=product_image.product_idx
-     
-     <where>
-        <if test="category_idx != 0 and category_idx != null">
-           product.category_idx = #{category_idx}
-        </if>
-        
+	<!-- 검색필드 -->
+    <select id="selectList" parameterType="map" resultType="product">
+    SELECT
+        product.*,
+        category.category_name,
+        product_image.product_image_url
+    FROM product
+    LEFT JOIN category ON product.category_idx = category.category_idx
+    LEFT JOIN product_image ON product.product_idx = product_image.product_idx
+    <where>
         <if test="keyword != null and keyword != ''">
-           <if test="category_idx != 0 and category_idx != null">
-               AND 
-           </if>
-           product.product_name LIKE CONCAT('%', #{keyword}, '%')
+            AND (
+                <!-- 상품 정보 -->
+                product.product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR product.product_brand LIKE CONCAT('%', #{keyword}, '%')
+                OR product.product_comment LIKE CONCAT('%', #{keyword}, '%')
+                
+                <!-- 카테고리명 -->
+                OR category.category_name LIKE CONCAT('%', #{keyword}, '%')
+                
+                <!-- 숫자 필드들 (문자열로 변환하여 검색) -->
+                OR CAST(product.product_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(product.category_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(product.product_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(product.product_cnt AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                
+                <!-- 이미지 URL -->
+                OR product_image.product_image_url LIKE CONCAT('%', #{keyword}, '%')
+            )
         </if>
-     </where>
-     ORDER BY product.product_idx DESC
-  </select>
-  
-  <select id="selectOne" parameterType="int" resultType="product">
-     select * from product where product_idx=#{ product_idx }
-  </select>
-  
-  <insert id="insert"  parameterType="product" useGeneratedKeys="true" keyProperty="product_idx">
-     insert into product (category_idx, product_wishlist, product_price, product_name, product_brand, product_comment, product_cnt, product_time, product_update) 
-     values(
-        #{ category_idx },
-        #{ product_wishlist },
-        #{ product_price },
-        #{ product_name },
-        #{ product_brand },
-        #{ product_comment },
-        #{ product_cnt }, 
-        NOW(),
-        NOW()
-     )
-  </insert>
-     <!-- 여러 idx로 상품 조회 -->
-     <select id="selectByIds" parameterType="list" resultType="product">
+    </where>
+    ORDER BY product.product_idx DESC
+</select>
+
+    <select id="selectOne" parameterType="int" resultType="product">
         SELECT 
-            product_idx,
-            category_idx,
-            product_wishlist,
-            product_price,
-            product_name,
-            product_brand,
-            product_comment,
-            product_cnt,
-            product_time,
+            p.*,
+            pi.product_image_url,
+            pi.product_image_idx,
+            c.category_name
+        FROM product p
+        LEFT JOIN product_image pi ON p.product_idx = pi.product_idx
+        LEFT JOIN category c ON p.category_idx = c.category_idx
+        WHERE p.product_idx = #{product_idx}
+        AND (pi.product_image_level = 1 OR pi.product_image_level IS NULL)
+    </select>
+
+    <insert id="insert" parameterType="product" useGeneratedKeys="true" keyProperty="product_idx">
+        INSERT INTO product (
+            category_idx, 
+            product_wishlist, 
+            product_price, 
+            product_name, 
+            product_brand, 
+            product_comment, 
+            product_cnt, 
+            product_time, 
             product_update
-        FROM product
+        )
+        VALUES (
+            #{category_idx},
+            0,
+            #{product_price},
+            #{product_name},
+            #{product_brand},
+            #{product_comment},
+            #{product_cnt},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+    <insert id="productImageInsert" parameterType="product">
+        INSERT INTO product_image (
+            product_idx,
+            product_image_url,
+            product_image_level
+        )
+        VALUES (
+            #{product_idx},
+            #{product_image_url},
+            1
+        )
+    </insert>
+
+    <update id="update" parameterType="product">
+        UPDATE product
+        SET
+            product_name = #{product_name},
+            product_price = #{product_price},
+            product_comment = #{product_comment},
+            product_brand = #{product_brand},
+            product_cnt = #{product_cnt},
+            category_idx = #{category_idx},
+            product_update = CURRENT_TIMESTAMP
+        WHERE product_idx = #{product_idx}
+    </update>
+
+    <update id="updateProductImage" parameterType="product">
+        UPDATE product_image
+        SET product_image_url = #{product_image_url}
+        WHERE product_idx = #{product_idx}
+        AND product_image_level = 1
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM product
+        WHERE product_idx = #{product_idx}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="list">
+        DELETE FROM product
         WHERE product_idx IN
-        <foreach collection="list" item="id" open="(" separator="," close=")">
+        <foreach item="id" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
-        ORDER BY product_cnt DESC
-    </select>
-    
-    <!-- 상품이미지테이블에 상품이미지 등록 -->
-    <insert id="productImageInsert" parameterType="product">
-     insert into product_image
-     (product_image_idx,product_idx,product_image_url)
-     values
-     (null,#{product_idx},#{product_image_url})
-    </insert>
+    </delete>
 
 </mapper>
