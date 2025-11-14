@@ -8,26 +8,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from post as p 
 		join mem as m 
 		ON p.mem_idx=m.mem_idx
+		ORDER BY p.post_idx desc
 	</select>
 	
 	<select id="selectTipList" resultType="PostVo">
 		SELECT p.*,m.mem_id 
 		FROM otdb.post as p
 		join mem as m
-		WHERE post_category='스킨에디터'	
+		ON p.mem_idx=m.mem_idx
+		WHERE post_category='skin' 	
 	</select>
 	
 	<select id="selectReviewList" resultType="PostVo">
 		SELECT p.*,m.mem_id 
 		FROM otdb.post as p
 		join mem as m
-		WHERE post_category='리뷰'	
+		ON p.mem_idx=m.mem_idx
+		WHERE post_category='review'	
 	</select>
 	<select id="selectFreeBoard" resultType="PostVo">
 		SELECT p.*,m.mem_id 
 		FROM otdb.post as p
 		join mem as m
-		WHERE post_category='자유게시판'	
+		ON p.mem_idx=m.mem_idx
+		WHERE post_category='free'	
 	</select>
+	
+	<insert id="postInsert" parameterType="PostVo">
+		INSERT INTO post (post_idx,mem_idx,post_category,post_title,post_content,post_time,post_update,post_image)
+					VALUES(null,#{mem_idx},#{post_category},#{post_title},#{post_content},now(),now(),#{post_image})
+	</insert>
 	
 </mapper>

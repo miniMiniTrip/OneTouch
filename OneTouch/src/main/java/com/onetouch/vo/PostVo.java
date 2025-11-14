@@ -1,6 +1,7 @@
 package com.onetouch.vo;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -19,12 +20,18 @@ public class PostVo {
 	
 	/** 카테고리*/
 	String post_category;
+
+	/** 제목 */
+	String post_title;
 	
 	/** 글내용*/
 	String post_content;
 	
 	/** 업로드한이미지명*/
 	String post_image;
+	
+	/** 이미지 */
+	MultipartFile post_images[];
 	
 	/** 좋아요 갯수*/
 	int post_like;

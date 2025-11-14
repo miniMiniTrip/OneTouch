@@ -273,7 +273,7 @@ select.form-control {
 	function postInsert(f){
 		let post_title=f.post_title.value.trim();
 		let post_content=f.post_content.value.trim();
-		let post_image=f.post_image.value.trim();
+		let post_images=f.post_images.value.trim();
 		if(post_title==""){
 			f.post_title.value="";
 			f.post_title.focus();
@@ -284,10 +284,17 @@ select.form-control {
 			f.post_content.focus();
 			alert("내용을 입력해주세요");
 		}else
-		if(post_image==""){
-			f.post_image.value="";
-			f.post_image.focus();
+		if(post_images==""){
+			f.post_images.value="";
+			f.post_images.focus();
 			alert("사진을 선택해주세요");
+		}else{
+			
+		
+		f.method="post";
+		f.action="/post/insert";
+		f.enctype="multipart/form-data";
+		f.submit();
 		}
 		
 	}
@@ -308,25 +315,26 @@ select.form-control {
 	<div class="container">
 		<form class="write-form">
 			<div class="form-group">
-				<label for="board-type">게시판 선택</label> <select id="board-type"
+				<label for="board-type">게시판 선택</label> 
+				<select id="post_category" name="post_category"
 					class="form-control">
-					<option value="skin">스킨 에디터</option>
+					<option value="skin">스킨에디터</option>
 					<option value="free">자유게시판</option>
 					<option value="review">구매자리뷰</option>
 				</select>
 			</div>
 
 			<div class="form-group">
-				<label for="post-title">제목</label> <input type="text"
+				<label for="post_title">제목</label> <input type="text"
 					id="post_title" name="post_title" class="form-control" placeholder="제목을 입력해주세요">
 			</div>
 
 			<!-- 스킨 에디터 전용 필드 -->
 			<div id="skin-fields" class="skin-fields">
 				<div class="form-group">
-					<label for="skin-description">내용</label>
+					<label for="post_content">내용</label>
 					<textarea id="post_content" name="post_content" class="form-control" rows="3"
-						placeholder="스킨에 대한 설명을 입력해주세요"></textarea>
+						placeholder="내용을 입력해주세요"></textarea>
 				</div>
 
 				<!--      <div class="form-group">
@@ -370,26 +378,24 @@ select.form-control {
 				<div class="form-group">
 					<label>평점</label>
 					<div class="rating">
-						<input type="radio" id="star5" name="rating" value="5"><label
-							for="star5">★</label> <input type="radio" id="star4"
-							name="rating" value="4"><label for="star4">★</label> <input
-							type="radio" id="star3" name="rating" value="3"><label
-							for="star3">★</label> <input type="radio" id="star2"
-							name="rating" value="2"><label for="star2">★</label> <input
-							type="radio" id="star1" name="rating" value="1"><label
-							for="star1">★</label>
+						<input type="radio" id="star5" name="post_rating" value="5">
+						<label for="star5">★</label> 
+						<input type="radio" id="star4" name="post_rating" value="4">
+						<label for="star4">★</label> 
+						<input type="radio" id="star3" name="post_rating" value="3">
+						<label for="star3">★</label>
+					 	<input type="radio" id="star2" name="post_rating" value="2">
+						<label for="star2">★</label> 
+						<input type="radio" id="star1" name="post_rating" value="1">
+						<label for="star1">★</label>
 					</div>
 				</div>
 			</div>
 
-			<div class="editor-area">
-				<div class="editor-content" contenteditable="true"
-					placeholder="내용을 입력해주세요"></div>
-			</div>
 
 			<div class="file-upload">
-				<label for="file-input" class="file-upload-btn">파일 첨부</label> 
-				<input type="file" id="post_image" name="post_image" multiple> <span
+				<label for="file-input" class="file-upload-btn" id="post_photo_insert">파일 첨부</label> 
+				<input type="file" id="post_images" name="post_images" multiple> <span
 					class="file-name">선택된 파일 없음</span>
 			</div>
 
@@ -403,7 +409,7 @@ select.form-control {
 
 	<script>
         // 게시판 유형에 따른 필드 표시/숨김
-        document.getElementById('board-type').addEventListener('change', function() {
+        document.getElementById('post_category').addEventListener('change', function() {
             const boardType = this.value;
             const reviewFields = document.getElementById('review-fields');
             const skinFields = document.getElementById('skin-fields');
@@ -415,13 +421,16 @@ select.form-control {
             // 선택된 게시판 유형에 따라 필드 표시
             if (boardType === 'review') {
                 reviewFields.style.display = 'block';
+                skinFields.style.display = 'block';
             } else if (boardType === 'skin') {
+                skinFields.style.display = 'block';
+            } else if (boardType ==='free'){
                 skinFields.style.display = 'block';
             }
         });
         
         // 파일 업로드 표시
-        document.getElementById('post_image').addEventListener('change', function() {
+        document.getElementById('post_images').addEventListener('change', function() {
             const fileCount = this.files.length;
             const fileNameDisplay = document.querySelector('.file-name');
             
@@ -435,6 +444,10 @@ select.form-control {
                 fileNameDisplay.textContent = '선택된 파일 없음';
             }
         });
+        
+        document.getElementById('post_photo_insert').addEventListener('click',function(){
+        	document.getElementById('post_images').click();
+        })
         
         // 스킨 에디터 미리보기 기능
         //document.getElementById('skin-html').addEventListener('input', updatePreview);

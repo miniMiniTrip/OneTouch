@@ -10,14 +10,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.dao.PostDao;
 import com.onetouch.service.PostService;
+import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostVo;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PostController {
 
 	@Autowired
 	PostService postService;
+	
+	@Autowired
+	HttpSession httpsesion;
+	
+	@Autowired
+	PostDao postDao;
 	
 	//커뮤니티 전체목록 열기
 	@RequestMapping("/post/list")
@@ -26,23 +36,24 @@ public class PostController {
 		
 		//커뮤니티 리스트 가져오기
 		List<PostVo> postVo_array=postService.selectPostList();
-		System.out.printf("			[전체]%s\n",postVo_array);
+		System.out.printf("			[전체_%d]%s\n",postVo_array.size(),postVo_array);
 		
 		//스킨에디터 리스트 가져오기
 		List<PostVo> postTip_array=postService.selectTipList();
-		System.out.printf("			[스킨에디터]%s\n",postTip_array);
+		System.out.printf("			[스킨에디터_%d]%s\n",postTip_array.size(),postTip_array);
 		//리뷰 리스트 가져오기
 		List<PostVo> postReview_array=postService.selectReviewList();
-		System.out.printf("			[리뷰]%s\n",postReview_array);
+		System.out.printf("			[리뷰_%d]%s\n",postReview_array.size(),postReview_array);
 		//자유게시판 리스트 가져오기
 		List<PostVo> postFreeBoard_array=postService.selectFreeBoard();
-		System.out.printf("			[자유게시판]%s\n",postFreeBoard_array);
+		System.out.printf("			[자유게시판_%d]%s\n",postFreeBoard_array.size(),postFreeBoard_array);
 		model.addAttribute("postVo_array",postVo_array);
-		model.addAttribute("postTip_array",postTip_array);
-		model.addAttribute("postTip_array",postReview_array);
-		model.addAttribute("postTip_array",postFreeBoard_array);
+		model.addAttribute("postSkin_array",postTip_array);
+		model.addAttribute("postReview_array",postReview_array);
+		model.addAttribute("postFree_array",postFreeBoard_array);
 		
 		System.out.println("	[PostController] return : /post/post.jsp ");
+		System.out.println("");
 		return "/post/post";
 	}
 	
@@ -51,15 +62,22 @@ public class PostController {
 	public String postInsertForm() {
 		System.out.println("	[PostController] postInsertForm() ");
 		
-		System.out.println("	[PostController] /post/post_insert ");
+		System.out.println("	[PostController] /post/post_insert.jsp ");
+		System.out.println("");
 		return "/post/post_insert";
 	}
 	
+	//post 등록하기
 	@PostMapping("/post/insert")
-	public String postInsert(PostVo postvo) {
+	public String postInsert(PostVo postVo) throws Exception {
 		System.out.println("	[PostController] postInsert() ");
+		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
+		postVo.setMem_idx(memVo.getMem_idx());
+		postService.postInsert(postVo);
+		System.out.println("		"+postVo);
 		
 		System.out.println("	[PostController] redirect:/post/list");
+		System.out.println("");
 		return"redirect:/post/list";
 	}
 	
