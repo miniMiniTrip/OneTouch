@@ -39,6 +39,7 @@
             padding: 20px 0;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
+            transition: transform 0.3s ease-in-out;
         }
         
         .sidebar .logo {
@@ -87,6 +88,34 @@
         .main-content {
             margin-left: 280px;
             padding: 20px;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        
+        /* 모바일 메뉴 토글 버튼 */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 101;
+            background-color: #3f51b5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* 오버레이 */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
         }
         
         .admin-header {
@@ -98,6 +127,7 @@
             background-color: white;
             border-radius: 5px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
         }
         
         .page-title {
@@ -121,6 +151,7 @@
         .action-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
         
         .search-bar {
@@ -132,13 +163,14 @@
         .product-table {
             background-color: white;
             border-radius: 5px;
-            overflow: hidden;
+            overflow-x: auto;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
         .product-table table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 800px;
         }
         
         .product-table th {
@@ -172,6 +204,20 @@
             text-align: center;
             border-bottom: 1px solid #e0e0e0;
             vertical-align: middle;
+        }
+        
+        /* 관리 버튼 세로 배치 */
+        .manage-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .manage-buttons .btn {
+            width: 60px;
+            padding: 4px 8px;
+            font-size: 12px;
         }
         
         .btn-admin {
@@ -208,6 +254,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
         
         .sort-option select {
@@ -227,16 +274,19 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
         
         .modal-content {
             position: relative;
             background-color: #fff;
-            width: 70%;
+            width: 100%;
             max-width: 600px;
             margin: 0 auto;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal-header {
@@ -368,58 +418,197 @@
         .admin-page .header {
             display: none;
         }
+        
+        /* 현재 이미지 표시 영역 */
+        #currentImageDiv {
+            margin-bottom: 12px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        
+        #currentImage {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* 태블릿 대응 (768px ~ 1024px) */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-content {
+                margin-left: 220px;
+            }
+            
+            .product-table th,
+            .product-table td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+        }
+        
+        /* 모바일 대응 (768px 이하) */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 60px 15px 20px;
+            }
+            
+            .admin-header {
+                padding: 10px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .page-title {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .action-buttons button {
+                flex: 1;
+                min-width: 100px;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .search-bar form {
+                flex-direction: column !important;
+            }
+            
+            .search-bar input,
+            .search-bar button {
+                width: 100%;
+            }
+            
+            /* 모바일 테이블 스크롤 안내 */
+            .product-table::after {
+                content: "← 좌우로 스크롤 →";
+                display: block;
+                text-align: center;
+                padding: 10px;
+                color: #666;
+                font-size: 12px;
+            }
+            
+            /* 테이블 최소 너비 조정 */
+            .product-table table {
+                min-width: 700px;
+            }
+            
+            .product-table th,
+            .product-table td {
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+            
+            /* 이미지 크기 조정 */
+            .product-table td img {
+                max-width: 40px !important;
+                max-height: 40px !important;
+            }
+            
+            .modal-content {
+                margin: 0 10px;
+                max-height: 80vh;
+            }
+            
+            .modal-footer {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-footer button {
+                width: 100%;
+            }
+        }
+        
+        /* 모바일 가로모드 대응 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .product-modal {
+                padding: 10px;
+            }
+            
+            .modal-content {
+                max-height: 90vh;
+            }
+        }
+        
+        /* 초소형 모바일 대응 (400px 이하) */
+        @media (max-width: 400px) {
+            .page-title {
+                font-size: 1rem;
+            }
+            
+            .btn-admin,
+            .btn-login,
+            .btn-blue,
+            .btn-red {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+            
+            .product-table th,
+            .product-table td {
+                padding: 6px 4px;
+                font-size: 11px;
+            }
+            
+            .manage-buttons .btn {
+                width: 50px;
+                font-size: 11px;
+                padding: 3px 6px;
+            }
+        }
     </style>
 </head>
 <body class="admin-page">
-    <!-- 헤더 영역은 관리자 페이지에서 숨김 처리 -->
-    <div style="display: none;">
-        <%@include file="/WEB-INF/views/common/header.jsp" %>
-    </div>
-
-   
+    <!-- 모바일 메뉴 토글 버튼 -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="lni lni-menu"></i>
+    </button>
     
-    <%-- 검색 처리 (클라이언트에서 직접 URL 파라미터로 검색을 요청했을 경우) --%>
-    <c:if test="${not empty param.search_field && not empty param.search_text && not empty list}">
-        <jsp:useBean id="filteredList" class="java.util.ArrayList" scope="request" />
-        
-        <c:forEach var="product" items="${list}">
-            <c:choose>
-                <c:when test="${param.search_field == 'all'}">
-                    <c:set var="temp" value="${filteredList.add(product)}" />
-                </c:when>
-                <c:when test="${param.search_field == 'product_name' && fn:contains(product.product_name, param.search_text)}">
-                    <c:set var="temp" value="${filteredList.add(product)}" />
-                </c:when>
-                <c:when test="${param.search_field == 'product_brand' && fn:contains(product.product_brand, param.search_text)}">
-                    <c:set var="temp" value="${filteredList.add(product)}" />
-                </c:when>
-                <c:when test="${param.search_field == 'product_idx' && product.product_idx == param.search_text}">
-                    <c:set var="temp" value="${filteredList.add(product)}" />
-                </c:when>
-                <c:when test="${param.search_field == 'category_idx' && product.category_idx == param.search_text}">
-                    <c:set var="temp" value="${filteredList.add(product)}" />
-                </c:when>
-            </c:choose>
-        </c:forEach>
-        
-        <c:if test="${not empty filteredList}">
-            <c:set var="list" value="${filteredList}" scope="request" />
-        </c:if>
-    </c:if>
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     
-    <%-- 정렬 처리 --%>
-    <c:set var="sortField" value="${param.sort_field}" />
-    <c:set var="sortOrder" value="${param.sort_order}" />
-    
-    <%-- 기본값으로 상품 번호 내림차순 설정 --%>
-    <c:if test="${empty sortField}">
-        <c:set var="sortField" value="product_idx" />
-    </c:if>
-    <c:if test="${empty sortOrder}">
-        <c:set var="sortOrder" value="desc" />
-    </c:if>
-
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="logo">OneTouch</div>
         
         <div class="menu-section">
@@ -469,46 +658,20 @@
         </div>
         
         <div class="page-title">
-            <span class="indicator"></span> 상품조회
+            <span class="indicator"></span> 상품조회 및 등록
         </div>
         
         <div class="action-buttons mb-3">
             <button class="btn btn-blue" id="openModal">상품등록</button>
-            <button class="btn btn-green">추가</button>
-            <button class="btn btn-red" id="deleteSelectedBtn">삭제</button>
+            <button class="btn btn-red" id="deleteSelectedBtn">선택삭제</button>
         </div>
         
-       <div class="search-bar">
-    <!-- 검색 폼 -->
-    <form id="searchForm" action="${pageContext.request.contextPath}/admin/product/list" method="get" class="d-flex w-100 gap-2">
-        <select class="form-select" style="max-width: 150px;" name="search_field" id="search_field">
-            <option value="all" ${param.search_field == 'all' ? 'selected' : ''}>전체 카테고리</option>
-            <option value="category_idx" ${param.search_field == 'category_idx' ? 'selected' : ''}>카테고리</option>
-            <option value="product_idx" ${param.search_field == 'product_idx' ? 'selected' : ''}>상품번호</option>
-            <option value="product_name" ${param.search_field == 'product_name' ? 'selected' : ''}>상품명</option>
-            <option value="product_brand" ${param.search_field == 'product_brand' ? 'selected' : ''}>브랜드</option>
-            <option value="product_image_url" ${param.search_field == 'product_image_url' ? 'selected' : ''}>이미지</option>
-        </select>
-        <input type="text" class="form-control" name="search_text" id="search_text" placeholder="검색어를 입력하세요" value="${param.search_text}">
-        <button type="button" class="btn btn-primary" onclick="submitSearch()">검색</button>
-                
-        <!-- 정렬 필드와 순서를 저장하는 hidden input -->
-        <input type="hidden" name="sort_field" value="${sortField}" id="sort_field">
-        <input type="hidden" name="sort_order" value="${sortOrder}" id="sort_order">
-    </form>
-</div>
-        
-        <!-- 정렬 옵션 -->
-        <div class="sort-option">
-            <span>정렬:</span>
-            <select class="form-select" id="sort_select" onchange="changeSort(this.value)">
-                <option value="product_idx_desc" ${sortField == 'product_idx' && sortOrder == 'desc' ? 'selected' : ''}>상품번호 내림차순</option>
-                <option value="product_idx_asc" ${sortField == 'product_idx' && sortOrder == 'asc' ? 'selected' : ''}>상품번호 오름차순</option>
-                <option value="product_name_asc" ${sortField == 'product_name' && sortOrder == 'asc' ? 'selected' : ''}>상품명 오름차순</option>
-                <option value="product_name_desc" ${sortField == 'product_name' && sortOrder == 'desc' ? 'selected' : ''}>상품명 내림차순</option>
-                <option value="product_price_asc" ${sortField == 'product_price' && sortOrder == 'asc' ? 'selected' : ''}>가격 오름차순</option>
-                <option value="product_price_desc" ${sortField == 'product_price' && sortOrder == 'desc' ? 'selected' : ''}>가격 내림차순</option>
-            </select>
+        <div class="search-bar">
+            <form id="searchForm" action="${pageContext.request.contextPath}/admin/products" method="get" class="d-flex w-100 gap-2">
+                <input type="text" class="form-control" name="keyword" id="search_text"
+                       placeholder="검색어를 입력하세요" value="${param.keyword}">
+                <button type="submit" class="btn btn-primary">검색</button>
+            </form>
         </div>
         
         <div class="product-table">
@@ -517,13 +680,13 @@
                     <thead>
                         <tr>
                             <th width="5%"><input type="checkbox" id="checkAll"></th>
-                            <th width="10%" class="sortable" data-sort="product_idx" onclick="sortTable('product_idx')">상품번호</th>
-                            <th width="10%" class="sortable" data-sort="category_idx" onclick="sortTable('category_idx')">카테고리번호</th>
-                            <th width="10%" class="sortable" data-sort="product_image_url" onclick="sortTable('product_image_url')">상품이미지</th>
-                            <th width="25%" class="sortable" data-sort="product_name" onclick="sortTable('product_name')">상품명</th>
-                            <th width="15%" class="sortable" data-sort="product_brand" onclick="sortTable('product_brand')">브랜드</th>
-                            <th width="10%" class="sortable" data-sort="product_price" onclick="sortTable('product_price')">가격</th>
-                            <th width="10%" class="sortable" data-sort="product_cnt" onclick="sortTable('product_cnt')">재고</th>
+                            <th width="10%">상품번호</th>
+                            <th width="10%">카테고리번호</th>
+                            <th width="10%">상품이미지</th>
+                            <th width="25%">상품명</th>
+                            <th width="15%">브랜드</th>
+                            <th width="10%">가격</th>
+                            <th width="10%">재고</th>
                             <th width="15%">관리</th>
                         </tr>
                     </thead>
@@ -531,35 +694,32 @@
                         <c:choose>
                             <c:when test="${not empty list}">
                                 <c:forEach var="product" items="${list}">
-                                    <tr class="product-row" 
-                                        data-category="${product.category_idx}" 
-                                        data-id="${product.product_idx}" 
-                                        data-name="${product.product_name}" 
-                                        data-brand="${product.product_brand}"
-                                        data-price="${product.product_price}"
-                                        data-cnt="${product.product_cnt}">
+                                    <tr>
                                         <td><input type="checkbox" name="product_idx_list" value="${product.product_idx}"></td>
                                         <td>P${String.format("%03d", product.product_idx)}</td>
                                         <td>C${product.category_idx}</td>
                                         <td>
-                                        <img alt="${product.product_image_url}" src="${pageContext.request.contextPath}/images/${product.product_image_url}"> 
+                                            <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" 
+                                                 style="max-width: 60px; max-height: 60px;">
                                         </td>
                                         <td>${product.product_name}</td>
                                         <td>${product.product_brand}</td>
                                         <td><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</td>
                                         <td>${product.product_cnt}개</td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-outline-primary" 
-                                                    onclick="location.href='${pageContext.request.contextPath}/admin/product/update_form?product_idx=${product.product_idx}'">수정</button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" 
-                                                    onclick="deleteSingleProduct(${product.product_idx})">삭제</button>
+                                            <div class="manage-buttons">
+                                                <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                        onclick="editProduct(${product.product_idx})">수정</button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        onclick="deleteSingleProduct(${product.product_idx})">삭제</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                <tr id="no-results">
-                                    <td colspan="8">검색 결과가 없거나 등록된 상품이 없습니다.</td>
+                                <tr>
+                                    <td colspan="9">검색 결과가 없거나 등록된 상품이 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -569,19 +729,30 @@
         </div>
     </div>
 
-    <!-- 상품등록 모달 -->
-    <form name="f" method="post" enctype="multipart/form-data">
+    <!-- 상품등록/수정 모달 -->
+    <form name="f" method="post" enctype="multipart/form-data" id="productForm">
+        <input type="hidden" id="product_idx" name="product_idx" value="0">
+        <input type="hidden" id="mode" name="mode" value="insert">
+        
         <div id="productModal" class="product-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">상품 등록</h3>
+                    <h3 class="modal-title" id="modalTitle">상품 등록</h3>
                     <button class="close-btn" id="closeModal">×</button>
                 </div>
                 <div class="modal-body">
-                    <!-- 1. 카테고리번호 -->
+                    <!-- 현재 이미지 표시 (수정 모드일 때만 표시) -->
+                    <div class="form-group" id="currentImageDiv" style="display:none;">
+                        <label>현재 이미지</label>
+                        <div>
+                            <img id="currentImage" src="">
+                        </div>
+                    </div>
+                    
+                    <!-- 카테고리번호 -->
                     <div class="form-group">
-                        <label for="category_name">카테고리번호</label>
-                        <select id="category_name" name="category_idx">
+                        <label for="category_idx">카테고리번호</label>
+                        <select id="category_idx" name="category_idx">
                             <option value="">카테고리 선택</option>
                             <c:forEach var="category" items="${category_list}">
                                 <option value="${category.category_idx}">${category.category_name}</option>
@@ -589,148 +760,151 @@
                         </select>
                     </div>
                     
-                    <!-- 2. 상품명 -->
+                    <!-- 상품명 -->
                     <div class="form-group">
                         <label for="product_name">상품명</label>
                         <input type="text" id="product_name" name="product_name" placeholder="상품명 입력">
                     </div>
                     
-                    <!-- 3. 브랜드 -->
+                    <!-- 브랜드 -->
                     <div class="form-group">
                         <label for="product_brand">브랜드</label>
                         <input type="text" id="product_brand" name="product_brand" placeholder="브랜드명 입력">
                     </div>
                     
-                    <!-- 4. 가격 -->
+                    <!-- 가격 -->
                     <div class="form-group">
                         <label for="product_price">가격</label>
                         <input type="text" id="product_price" name="product_price" placeholder="가격 입력">
                     </div>
                     
-                    <!-- 5. 상품설명 -->
+                    <!-- 상품설명 -->
                     <div class="form-group">
                         <label for="product_comment">상품설명</label>
                         <textarea id="product_comment" name="product_comment" placeholder="상품설명 입력"></textarea>
                     </div>
                     
-                    <!-- 6. 재고수량 -->
+                    <!-- 재고수량 -->
                     <div class="form-group">
                         <label for="product_cnt">재고수량</label>
                         <input type="text" id="product_cnt" name="product_cnt" placeholder="재고수량 입력" value="0">
                     </div>
                     
-                    <!-- 7. 상품 이미지 -->
+                    <!-- 상품 이미지 -->
                     <div class="form-group">
-                        <label for="photo">상품 이미지</label>
+                        <label for="photo" id="photoLabel">상품 이미지</label>
                         <div class="file-upload-box">
                             <input type="file" id="photo" name="photo" class="hidden-file-input">
                             <label for="photo" class="file-input-label">파일 선택</label>
-                            <div class="file-input-text">선택된 파일 없음</div>
+                            <div class="file-input-text" id="fileInputText">선택된 파일 없음</div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" id="cancelBtn">취소</button>
-                    <button type="button" class="btn-submit" onclick="send(this.form);return false;">등록하기</button>
+                    <button type="button" class="btn-submit" id="submitBtn" onclick="send(this.form);return false;">등록하기</button>
                 </div>
             </div>
         </div>
     </form>
-    
-    <!-- 푸터 영역도 숨김 처리 -->
-    <div style="display: none;">
-        <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-    </div>
 
-    <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
-        // 페이지 로드 시 초기화
-        $(document).ready(function() {
-            // 초기 정렬 설정
-            const currentSortField = "${sortField}";
-            const currentSortOrder = "${sortOrder}";
-            
-            if (currentSortField && currentSortOrder) {
-                // 테이블 헤더에 정렬 표시 업데이트
-                updateSortUI(currentSortField, currentSortOrder);
-                // 클라이언트 사이드에서 테이블 정렬 적용
-                sortClientSide(currentSortField, currentSortOrder);
-            }
-            
-            // 전체 선택 체크박스 기능
-            $("#checkAll").change(function() {
-                $("input[name='product_idx_list']").prop('checked', $(this).prop('checked'));
-            });
-            
-            // 개별 체크박스 변경 시 전체 선택 상태 업데이트
-            $(document).on("change", "input[name='product_idx_list']", function() {
-                let allChecked = true;
-                $("input[name='product_idx_list']").each(function() {
-                    if (!$(this).prop('checked')) {
-                        allChecked = false;
-                        return false;
-                    }
-                });
-                $("#checkAll").prop('checked', allChecked);
-            });
-            
-            // 일괄 삭제 버튼 클릭 이벤트
-            $("#deleteSelectedBtn").click(function() {
-                const checkedItems = $("input[name='product_idx_list']:checked");
-                
-                if (checkedItems.length === 0) {
-                    alert('삭제할 상품을 하나 이상 선택하세요.');
-                    return;
-                }
-                
-                if (confirm(checkedItems.length + '개의 상품을 정말로 삭제하시겠습니까?')) {
-                    // 데모 환경에서는 실제로 삭제하지 않고 메시지만 표시
-                    alert('선택한 상품들이 삭제되었습니다.');
-                    // 실제 환경에서는 아래 코드 사용
-                    // $("#deleteForm").submit();
-                }
-            });
-            
-            // Enter 키로 검색 실행
-            $("#search_text").keypress(function(e) {
-                if (e.keyCode === 13) {
-                    submitSearch();
-                    e.preventDefault();
-                }
-            });
-            
-            // 카테고리 변경 시 검색어 필드 상태 변경
-            $("#search_field").change(function() {
-                if ($(this).val() === "all") {
-                    $("#search_text").val("").prop("disabled", true);
-                } else {
-                    $("#search_text").prop("disabled", false);
-                }
-            });
-            
-            // 초기 상태 설정 - 전체 카테고리인 경우 검색어 필드 비활성화
-            if ($("#search_field").val() === "all") {
-                $("#search_text").prop("disabled", true);
+        // 모바일 메뉴 토글
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+        
+        // 화면 크기 변경 시 사이드바 초기화
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
             }
         });
         
-        // 모달 관련 스크립트
+        // 모달 관련 변수
         var modal = document.getElementById("productModal");
         var openBtn = document.getElementById("openModal");
         var closeBtn = document.getElementById("closeModal");
         var cancelBtn = document.getElementById("cancelBtn");
         var fileInput = document.getElementById("photo");
-        var fileInputText = document.querySelector(".file-input-text");
+        var fileInputText = document.getElementById("fileInputText");
 
-        // 모달 열기 - 가운데 정렬을 위해 display 설정 수정
+        // 모달 열기 - 등록 모드
         openBtn.onclick = function() {
+            console.log("[openModal] 등록 모드로 모달 열기");
+            
+            // 모드 설정
+            document.getElementById("mode").value = "insert";
+            document.getElementById("product_idx").value = "0";
+            document.getElementById("modalTitle").textContent = "상품 등록";
+            document.getElementById("submitBtn").textContent = "등록하기";
+            document.getElementById("photoLabel").textContent = "상품 이미지";
+            document.getElementById("currentImageDiv").style.display = "none";
+            
+            // 폼 초기화
+            document.getElementById("productForm").reset();
+            fileInputText.textContent = "선택된 파일 없음";
+            
             modal.style.display = "flex";
+        }
+
+        // 수정 버튼 클릭 시
+        function editProduct(product_idx) {
+            console.log("[editProduct] product_idx:", product_idx);
+            
+            // Ajax로 상품 정보 조회
+            $.ajax({
+                url: "${pageContext.request.contextPath}/admin/product/get",
+                type: "GET",
+                data: { product_idx: product_idx },
+                success: function(vo) {
+                    console.log("[editProduct] 조회된 상품:", vo);
+                    
+                    // 모드 설정
+                    document.getElementById("mode").value = "update";
+                    document.getElementById("product_idx").value = vo.product_idx;
+                    document.getElementById("modalTitle").textContent = "상품 수정";
+                    document.getElementById("submitBtn").textContent = "수정하기";
+                    document.getElementById("photoLabel").textContent = "새 이미지 (변경시에만 선택)";
+                    
+                    // 폼 필드에 값 설정
+                    document.getElementById("category_idx").value = vo.category_idx;
+                    document.getElementById("product_name").value = vo.product_name;
+                    document.getElementById("product_brand").value = vo.product_brand || '';
+                    document.getElementById("product_price").value = vo.product_price;
+                    document.getElementById("product_comment").value = vo.product_comment ? vo.product_comment.replace(/<br>/g, '\n') : '';
+                    document.getElementById("product_cnt").value = vo.product_cnt;
+                    
+                    // 현재 이미지 표시
+                    if (vo.product_image_url) {
+                        document.getElementById("currentImageDiv").style.display = "block";
+                        document.getElementById("currentImage").src = 
+                            "${pageContext.request.contextPath}/images/" + vo.product_image_url;
+                    }
+                    
+                    // 파일 입력 초기화
+                    document.getElementById("photo").value = "";
+                    fileInputText.textContent = "선택된 파일 없음";
+                    
+                    // 모달 열기
+                    modal.style.display = "flex";
+                },
+                error: function() {
+                    alert("상품 정보를 불러오는데 실패했습니다.");
+                }
+            });
         }
 
         // 모달 닫기
@@ -738,7 +912,7 @@
             modal.style.display = "none";
         }
 
-        // 취소 버튼 클릭 시 모달 닫기
+        // 취소 버튼
         cancelBtn.onclick = function() {
             modal.style.display = "none";
         }
@@ -759,24 +933,20 @@
             }
         });
 
-        // 폼 제출 전 유효성 검사 - ProductVo 필드 순서에 맞게 작성
+        // 폼 제출
         function send(f) {
-            // 카테고리번호
+            let mode = f.mode.value;
+            console.log("[send] mode:", mode);
+            
+            // 필드 값 가져오기
             let category_idx = f.category_idx.value;
-            // 상품명
             let product_name = f.product_name.value;
-            // 브랜드
-            let product_brand = f.product_brand.value;
-            // 가격
             let product_price = f.product_price.value;
-            // 상품설명
             let product_comment = f.product_comment.value;
-            // 재고수량
             let product_cnt = f.product_cnt.value;
-            // 상품 이미지
             let photo = f.photo.value;
 
-            // 입력체크 - 필수 항목 순서대로
+            // 입력 검증
             if (category_idx == "") {
                 alert("카테고리를 선택하세요!");
                 f.category_idx.focus();
@@ -794,7 +964,7 @@
                 f.product_price.focus();
                 return;
             }
-            
+
             if (isNaN(product_price.replace(/,/g, ''))) {
                 alert("가격은 숫자만 입력하세요!");
                 f.product_price.value = "";
@@ -814,162 +984,63 @@
                 return;
             }
 
-            if (photo == "") {
+            // 등록 모드에서만 이미지 필수
+            if (mode == "insert" && photo == "") {
                 alert("상품 이미지를 선택하세요!");
                 return;
             }
 
             // 폼 제출
-            f.action = "product/insert";
+            if (mode == "insert") {
+                f.action = "${pageContext.request.contextPath}/admin/product/insert";
+            } else {
+                f.action = "${pageContext.request.contextPath}/admin/product/update";
+            }
+            
+            console.log("[send] action:", f.action);
             f.submit();
         }
-        
-        // 정렬 변경 함수
-        function changeSort(value) {
-            const [field, order] = value.split('_');
-            $("#sort_field").val(field);
-            $("#sort_order").val(order);
-            
-            // 서버 측 정렬을 위한 폼 제출 (실제 환경에서 사용)
-            // $("#searchForm").submit();
-            
-            // 클라이언트 측 정렬 (데모 환경에서 사용)
-            sortClientSide(field, order);
-            updateSortUI(field, order);
-            
-            // URL 파라미터 업데이트
-            updateUrlParams(field, order);
-        }
-        
-        // URL 파라미터 업데이트 함수
-        function updateUrlParams(field, order) {
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set("sort_field", field);
-            currentUrl.searchParams.set("sort_order", order);
-            
-            // 현재 페이지 URL 업데이트
-            window.history.replaceState({}, '', currentUrl.toString());
-        }
-        
-        // 테이블 헤더 클릭으로 정렬
-        function sortTable(field) {
-            const currentField = $("#sort_field").val();
-            let newOrder = "asc";
-            
-            if (currentField === field) {
-                // 같은 필드를 다시 클릭한 경우 정렬 순서 토글
-                newOrder = $("#sort_order").val() === "asc" ? "desc" : "asc";
-            } else if (field === "product_idx") {
-                // 상품번호는 기본적으로 내림차순으로 시작
-                newOrder = "desc";
-            }
-            
-            $("#sort_field").val(field);
-            $("#sort_order").val(newOrder);
-            
-            // 정렬 UI 업데이트
-            updateSortUI(field, newOrder);
-            
-            // 클라이언트 측 정렬 적용
-            sortClientSide(field, newOrder);
-            
-            // 정렬 선택 옵션 업데이트
-            $("#sort_select").val(field + '_' + newOrder);
-            
-            // URL 파라미터 업데이트
-            updateUrlParams(field, newOrder);
-        }
-        
-        // 정렬 UI 업데이트 함수
-        function updateSortUI(field, order) {
-            // 모든 헤더에서 정렬 클래스 제거
-            $(".sortable").removeClass("sorted-asc sorted-desc");
-            
-            // 현재 정렬 중인 헤더에 클래스 추가
-            $(".sortable[data-sort='" + field + "']").addClass("sorted-" + order);
-        }
-        
-        // 클라이언트 측 테이블 정렬 함수
-        function sortClientSide(field, order) {
-            const tbody = $("#productTableBody");
-            if (tbody.find(".product-row").length === 0) return;
-            
-            // 행을 배열로 변환하여 정렬
-            const rows = tbody.find(".product-row").get();
-            
-            rows.sort(function(a, b) {
-                let aValue, bValue;
-                
-                // 필드에 따른 값 가져오기
-                if (field === "product_idx" || field === "category_idx") {
-                    aValue = parseInt($(a).attr("data-" + (field === "product_idx" ? "id" : "category")));
-                    bValue = parseInt($(b).attr("data-" + (field === "product_idx" ? "id" : "category")));
-                } else if (field === "product_price" || field === "product_cnt") {
-                    aValue = parseInt($(a).attr("data-" + field.split('_')[1]));
-                    bValue = parseInt($(b).attr("data-" + field.split('_')[1]));
-                } else {
-                    // 문자열 필드는 소문자로 변환하여 비교
-                    aValue = $(a).attr("data-" + field.split('_')[1]).toLowerCase();
-                    bValue = $(b).attr("data-" + field.split('_')[1]).toLowerCase();
-                }
-                
-                // 정렬 순서에 따라 비교
-                if (order === "asc") {
-                    return aValue > bValue ? 1 : -1;
-                } else {
-                    return aValue < bValue ? 1 : -1;
-                }
-            });
-            
-            // 정렬된 행을 테이블에 다시 추가
-            $.each(rows, function(index, row) {
-                tbody.append(row);
-            });
-        }
-        
-        // 검색 폼 제출 함수
-        function submitSearch() {
-            const searchField = $("#search_field").val();
-            const searchText = $("#search_text").val().trim();
-            
-            // 전체 카테고리 선택이 아니고, 검색어가 없는 경우 검증
-            if (searchField !== "all" && searchText === "") {
-                alert("검색어를 입력하세요!");
-                $("#search_text").focus();
-                return;
-            }
-            
-            // 서버 환경에서는 이 방식으로 서버에 요청
-            // $("#searchForm").submit();
-            
-            // 클라이언트 사이드 검색 (서버가 없는 환경에서 테스트용)
-            clientSideSearch(searchField, searchText);
-        }
-        
-        // 클라이언트 사이드 검색 (서버 환경이 아닐 때 사용)
-        function clientSideSearch(searchField, searchText) {
-            // URL을 현재 페이지로 변경하고 검색 파라미터 추가
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set("search_field", searchField);
-            
-            if (searchField !== "all") {
-                currentUrl.searchParams.set("search_text", searchText);
-            } else {
-                currentUrl.searchParams.delete("search_text");
-            }
-            
-            window.location.href = currentUrl.toString();
-        }
-        
-        // 단일 상품 삭제 함수
+
+        // 단일 삭제
         function deleteSingleProduct(product_idx) {
             if (confirm('상품번호 ' + product_idx + '번 상품을 삭제하시겠습니까?')) {
-                // 데모 환경에서는 실제로 삭제하지 않고 메시지만 표시
-                alert('상품이 삭제되었습니다.');
-                // 실제 환경에서는 아래 코드 사용
-                // window.location.href = '${pageContext.request.contextPath}/admin/product/delete?product_idx=' + product_idx;
+                window.location.href = '${pageContext.request.contextPath}/admin/product/delete?product_idx=' + product_idx;
             }
         }
+
+        // 페이지 로드 시 초기화
+        $(document).ready(function() {
+            // 전체 선택 체크박스
+            $("#checkAll").change(function() {
+                $("input[name='product_idx_list']").prop('checked', $(this).prop('checked'));
+            });
+            
+            // 개별 체크박스
+            $(document).on("change", "input[name='product_idx_list']", function() {
+                let allChecked = true;
+                $("input[name='product_idx_list']").each(function() {
+                    if (!$(this).prop('checked')) {
+                        allChecked = false;
+                        return false;
+                    }
+                });
+                $("#checkAll").prop('checked', allChecked);
+            });
+            
+            // 선택 삭제 버튼
+            $("#deleteSelectedBtn").click(function() {
+                const checkedItems = $("input[name='product_idx_list']:checked");
+                
+                if (checkedItems.length === 0) {
+                    alert('삭제할 상품을 하나 이상 선택하세요.');
+                    return;
+                }
+                
+                if (confirm(checkedItems.length + '개의 상품을 정말로 삭제하시겠습니까?')) {
+                    $("#deleteForm").submit();
+                }
+            });
+        });
     </script>
 </body>
 </html>
