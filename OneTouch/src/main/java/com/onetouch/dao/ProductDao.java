@@ -34,5 +34,8 @@ public interface ProductDao {
     // 다중 삭제
     int deleteBatch(@Param("list") List<Integer> product_idx_list);
     
+    // 전체 상품 수 조회
+    int selectCount(Map<String, Object> map);
+    
     
 }

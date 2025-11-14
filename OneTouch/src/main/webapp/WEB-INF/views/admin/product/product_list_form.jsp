@@ -28,6 +28,112 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
+		    /* 페이징 스타일 */
+		.pagination-info {
+		    text-align: center;
+		    color: #666;
+		    font-size: 14px;
+		    margin-bottom: 20px;
+		}
+		
+		.pagination {
+		    margin: 0;
+		    gap: 5px;
+		}
+		
+		.page-item {
+		    margin: 0 2px;
+		}
+		
+		.page-link {
+		    color: #213997;
+		    border: 1px solid #dee2e6;
+		    padding: 8px 12px;
+		    min-width: 40px;
+		    height: 40px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    border-radius: 5px;
+		    font-weight: 500;
+		    transition: all 0.3s ease;
+		    background-color: white;
+		}
+		
+		.page-link:hover {
+		    background-color: #f0f4ff;
+		    color: #213997;
+		    border-color: #213997;
+		    transform: translateY(-2px);
+		    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+		
+		.page-item.active .page-link {
+		    background-color: #213997;
+		    border-color: #213997;
+		    color: white;
+		    font-weight: 600;
+		    box-shadow: 0 2px 5px rgba(33, 57, 151, 0.3);
+		}
+		
+		.page-item.disabled .page-link {
+		    color: #6c757d;
+		    background-color: #f8f9fa;
+		    border-color: #dee2e6;
+		    cursor: not-allowed;
+		    opacity: 0.5;
+		}
+		
+		/* 화살표 스타일 */
+		.page-link span {
+		    font-size: 14px;
+		    font-weight: bold;
+		}
+		
+		/* 페이지 번호 호버 효과 */
+		.page-item:not(.active):not(.disabled) .page-link:hover {
+		    text-decoration: none;
+		}
+		
+		/* 모바일 페이징 스타일 */
+		@media (max-width: 768px) {
+		    .pagination {
+		        flex-wrap: wrap;
+		        gap: 3px;
+		    }
+		    
+		    .page-link {
+		        padding: 6px 10px;
+		        min-width: 35px;
+		        height: 35px;
+		        font-size: 13px;
+		    }
+		    
+		    .pagination-info {
+		        font-size: 12px;
+		    }
+		    
+		    .page-item {
+		        margin: 0 1px;
+		    }
+		}
+		
+		/* 초소형 모바일 */
+		@media (max-width: 400px) {
+		    .page-link {
+		        padding: 5px 8px;
+		        min-width: 30px;
+		        height: 30px;
+		        font-size: 12px;
+		    }
+		    
+		    .page-link span {
+		        font-size: 12px;
+		    }
+		}
+		    
+    
+    
         /* 관리자 페이지 스타일 */
         .sidebar {
             width: 280px;
@@ -597,6 +703,9 @@
                 padding: 3px 6px;
             }
         }
+        
+        
+        
     </style>
 </head>
 <body class="admin-page">
@@ -728,6 +837,57 @@
             </form>
         </div>
     </div>
+
+<!-- 페이징추가 -->
+
+<!-- 페이징 네비게이션 -->
+<nav aria-label="Page navigation" class="mt-3">
+    <ul class="pagination justify-content-center">
+        <!-- 처음으로 -->
+        <c:if test="${currentPage > 1}">
+            <li class="page-item">
+                <a class="page-link" href="?page=1<c:if test='${keyword != null}'>&keyword=${keyword}</c:if>" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+        </c:if>
+        
+        <!-- 이전 페이지 -->
+        <c:if test="${currentPage > 1}">
+            <li class="page-item">
+                <a class="page-link" href="?page=${currentPage-1}<c:if test='${keyword != null}'>&keyword=${keyword}</c:if>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        </c:if>
+        
+        <!-- 페이지 번호 -->
+        <c:forEach var="pageNum" begin="${startPage}" end="${endPage}">
+            <li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+                <a class="page-link" href="?page=${pageNum}<c:if test='${keyword != null}'>&keyword=${keyword}</c:if>">${pageNum}</a>
+            </li>
+        </c:forEach>
+        
+        <!-- 다음 페이지 -->
+        <c:if test="${currentPage < totalPage}">
+            <li class="page-item">
+                <a class="page-link" href="?page=${currentPage+1}<c:if test='${keyword != null}'>&keyword=${keyword}</c:if>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </c:if>
+        
+        <!-- 마지막으로 -->
+        <c:if test="${currentPage < totalPage}">
+            <li class="page-item">
+                <a class="page-link" href="?page=${totalPage}<c:if test='${keyword != null}'>&keyword=${keyword}</c:if>" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        </c:if>
+    </ul>
+</nav>
+
 
     <!-- 상품등록/수정 모달 -->
     <form name="f" method="post" enctype="multipart/form-data" id="productForm">
@@ -1042,5 +1202,31 @@
             });
         });
     </script>
+    <script type="text/javascript">
+    
+ // 페이지 크기 변경 시
+    document.getElementById('pageSizeSelect').addEventListener('change', function() {
+        const pageSize = this.value;
+        const keyword = '${keyword}' || '';
+        let url = '?page=1&pageSize=' + pageSize;
+        if (keyword) {
+            url += '&keyword=' + encodeURIComponent(keyword);
+        }
+        window.location.href = url;
+    });
+   
+    
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const keyword = document.getElementById('search_text').value;
+        let url = '${pageContext.request.contextPath}/admin/products?page=1';
+        if (keyword) {
+            url += '&keyword=' + encodeURIComponent(keyword);
+        }
+        window.location.href = url;
+    });
+    
+    </script>
+    
 </body>
 </html>
