@@ -241,43 +241,72 @@ public class QnaController {
 //        return "redirect:/qna/detail?qna_idx=" + qna_idx;
 //    }
     
- // 답변 등록 처리 (관리자 전용)
+// // 답변 등록 처리 (관리자 전용)
+//    @PostMapping("/qna/answer")
+//    public String registerAnswer(
+//            @RequestParam("qna_idx") int qna_idx,
+//            @RequestParam("qna_answer_content") String qna_answer_content,
+//            RedirectAttributes redirectAttributes) {
+//        
+//        // 로그인 체크
+//        MemVo user = (MemVo) session.getAttribute("user");
+//        
+//        if (user == null) {
+//            return "redirect:/qna/list";
+//        }
+//        
+//        // 관리자 권한 체크
+//        if (!"ADMIN".equals(user.getMem_roll())) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
+//            return "redirect:/qna/detail?qna_idx=" + qna_idx;
+//        }
+//        
+//        try {
+//            int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
+//            
+//            if (result > 0) {
+//                redirectAttributes.addFlashAttribute("successMessage", "답변이 등록되었습니다.");
+//            } else {
+//                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
+//            }
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
+//        }
+//        
+//        return "redirect:/qna/detail?qna_idx=" + qna_idx;
+ //   }
+    // 답변 등록 처리
     @PostMapping("/qna/answer")
-    public String registerAnswer(
+    public String answerQna(
             @RequestParam("qna_idx") int qna_idx,
             @RequestParam("qna_answer_content") String qna_answer_content,
             RedirectAttributes redirectAttributes) {
         
-        // 로그인 체크
-        MemVo user = (MemVo) session.getAttribute("user");
-        
-        if (user == null) {
-            return "redirect:/qna/list";
-        }
-        
-        // 관리자 권한 체크
-        if (!"ADMIN".equals(user.getMem_roll())) {
-            redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
-            return "redirect:/qna/detail?qna_idx=" + qna_idx;
-        }
-        
         try {
+            // 디버깅용 로그 (개발 완료 후 제거)
+            System.out.println("=== 답변 등록 요청 ===");
+            System.out.println("qna_idx: " + qna_idx);
+            System.out.println("qna_answer_content: " + qna_answer_content);
+            
+            // 답변 등록
             int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
             
             if (result > 0) {
-                redirectAttributes.addFlashAttribute("successMessage", "답변이 등록되었습니다.");
+                redirectAttributes.addFlashAttribute("message", "답변이 등록되었습니다.");
             } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
+                redirectAttributes.addFlashAttribute("error", "답변 등록에 실패했습니다.");
             }
             
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
+            redirectAttributes.addFlashAttribute("error", "답변 등록 중 오류가 발생했습니다.");
         }
         
+        // 상세 페이지로 리다이렉트
         return "redirect:/qna/detail?qna_idx=" + qna_idx;
     }
-    
-    
-    
 }
+    
+    
