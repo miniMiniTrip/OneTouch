@@ -1,7 +1,6 @@
 package com.onetouch.controller;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.onetouch.dao.CategoryDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.ProductService;
+import com.onetouch.vo.CategoryVo;
 import com.onetouch.vo.ProductVo;
 
 import jakarta.servlet.ServletContext;
@@ -43,31 +43,51 @@ public class AdminProductController {
 
  // 관리자 상품관리페이지 - 리스트 조회
     @RequestMapping("/products")
-    public String adminProductList(@RequestParam(name = "keyword", required = false) String keyword,
+    public String adminProductList(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "page", defaultValue = "1") int currentPage,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             Model model) {
 
-        System.out.printf("[AdminProductController-adminProductList()] keyword: %s\n", keyword);
-        
-        // 키워드 인코딩 확인
-        if (keyword != null) {
-            System.out.println("Keyword bytes: " + Arrays.toString(keyword.getBytes()));
-            System.out.println("Keyword encoding: " + keyword);
-        }
+        System.out.printf("[AdminProductController-adminProductList()] keyword: %s, page: %d\n", keyword, currentPage);
 
         Map<String, Object> map = new HashMap<>();
+        
+        // 페이징 계산
+        int startRow = (currentPage - 1) * pageSize;
+        map.put("startRow", startRow);
+        map.put("pageSize", pageSize);
 
         if (keyword != null && !keyword.trim().isEmpty()) {
             map.put("keyword", keyword.trim());
         }
 
-        List<ProductVo> list = product_dao.selectList(map);
+        // 전체 상품 수 조회
+        int totalCount = product_dao.selectCount(map);
         
-        // 결과 확인
-        System.out.printf("[AdminProductController-adminProductList()] 조회된 상품 수: %d\n", list.size());
+        // 상품 목록 조회
+        List<ProductVo> list = product_dao.selectList(map);
+        List<CategoryVo> category_list = category_dao.selectList();
+
+        // 페이징 정보 계산
+        int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+        
+        // 페이지 블록 계산 (한 번에 표시할 페이지 번호 개수)
+        int pageBlock = 5;
+        int startPage = ((currentPage - 1) / pageBlock) * pageBlock + 1;
+        int endPage = Math.min(startPage + pageBlock - 1, totalPage);
+
+        System.out.printf("[AdminProductController-adminProductList()] 조회된 상품 수: %d, 총 페이지: %d\n", list.size(), totalPage);
 
         model.addAttribute("list", list);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("category_list", category_dao.selectList());
+        model.addAttribute("category_list", category_list);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "admin/product/product_list_form";
     }

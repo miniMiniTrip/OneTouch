@@ -491,46 +491,7 @@
                             <div class="qna-content-text">${qna.qna_content}</div>
                         </div>
                         
-                        <!-- 답변 영역 -->
-                        <div class="qna-answer">
-                            <c:choose>
-                                <c:when test="${qna.qna_answered && not empty qna.qna_answer_content}">
-                                    <div class="answer-header">
-                                        <span class="answer-badge">관리자 답변</span>
-                                        <c:if test="${qna.qna_answer_time != null}">
-                                            <span class="answer-date">
-                                                <fmt:formatDate value="${qna.qna_answer_time}" pattern="yyyy-MM-dd HH:mm" />
-                                            </span>
-                                        </c:if>
-                                    </div>
-                                    <div class="answer-content">${qna.qna_answer_content}</div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="no-answer">
-                                        아직 답변이 등록되지 않았습니다.<br>
-                                        빠른 시일 내에 답변 드리겠습니다.
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                    </div>
-                    
-                    <!-- 버튼 그룹 -->
-                    <div class="btn-group">
-                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">수정</button>
-                        <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Q&A Section -->
-   
-   
-   
-   
-    
-    <!-- 답변 영역 -->
+<!-- 답변 영역 -->
 <div class="qna-answer">
     <c:choose>
         <c:when test="${qna.qna_answered && not empty qna.qna_answer_content}">
@@ -549,7 +510,7 @@
             <!-- 답변 없을 때 -->
             <c:choose>
                 <%-- 관리자인 경우에만 답변 작성 폼 표시 --%>
-                <c:when test="${sessionScope.loginMember.mem_role == 'ADMIN'}">
+                <c:when test="${user.mem_roll == 'admin'}">
                     <div class="answer-header">
                         <span class="answer-badge">답변 작성</span>
                     </div>
@@ -561,11 +522,11 @@
                                   placeholder="답변 내용을 입력하세요..."
                                   required></textarea>
                         
-                        <div class="file-upload-area">
+                        <!-- <div class="file-upload-area">
                             <label for="answerFile">📎 파일 첨부 (선택)</label>
                             <input type="file" id="answerFile" name="answerFile" multiple>
                             <small>최대 5개, 각 10MB 이하</small>
-                        </div>
+                        </div> -->
                         
                         <div class="answer-btn-group">
                             <button type="submit" class="btn btn-submit">답변 등록</button>
@@ -583,6 +544,26 @@
         </c:otherwise>
     </c:choose>
 </div>
+                        
+                        
+                    </div>
+                    
+                    <!-- 버튼 그룹 -->
+                    <div class="btn-group">
+                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">수정</button>
+                        <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Q&A Section -->
+   
+   
+   
+   
+    
+
 
 
 
