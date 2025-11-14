@@ -182,6 +182,9 @@
         qna_answer_time = NOW(),
         qna_answered = 1
     WHERE qna_idx = #{qna_idx}
+    
+  
 </update>
+
 
 </mapper>
