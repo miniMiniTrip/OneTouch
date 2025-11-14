@@ -28,4 +28,10 @@ public interface QnaDao {
 
 	 // 3️⃣ 답변 등록 (추가)
 	 int updateAnswer(Map<String, Object> map);
+
+	
+	
+	
 	 }
+
+
