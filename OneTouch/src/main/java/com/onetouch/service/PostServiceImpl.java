@@ -79,6 +79,11 @@ public class PostServiceImpl implements PostService {
 		postVo.setPost_image(full_image_name);		
 		
 		int res =postDao.postInsert(postVo);
+		//-------------------------------------
+		
+		// post_product 목록 테이블에저장
+		res=res * (postDao.postProductInsert(postVo));
+		
 		
 		return res;
 	}

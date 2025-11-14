@@ -15,4 +15,6 @@ public interface PostDao {
 	List<PostVo> selectFreeBoard();
 
 	int postInsert(PostVo postVo);
+
+	int postProductInsert(PostVo postVo);
 }

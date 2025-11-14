@@ -29,6 +29,7 @@ public class PostController {
 	@Autowired
 	PostDao postDao;
 	
+	
 	//커뮤니티 전체목록 열기
 	@RequestMapping("/post/list")
 	public String postFormList(Model model) {
@@ -73,7 +74,9 @@ public class PostController {
 		System.out.println("	[PostController] postInsert() ");
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		postVo.setMem_idx(memVo.getMem_idx());
+		postVo.setPost_content(postVo.getPost_content().replaceAll("\n", "<br>"));
 		postService.postInsert(postVo);
+		
 		System.out.println("		"+postVo);
 		
 		System.out.println("	[PostController] redirect:/post/list");
