@@ -131,24 +131,33 @@ body {
     overflow: hidden;
 }
 
+/* 슬라이드 트랙 */
 .carousel-inner {
-    display: flex;
+     display: flex;
     transition: transform 0.4s ease-in-out, height 0.3s ease;
     width: 100%;
+    cursor: grab;         /* 마우스 드래그 커서 */
 }
 
+/* 슬라이드 아이템 */
 .carousel-item {
-    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;  /* 가로 중앙 */
+    align-items: center;      /* 세로 중앙 */
+    
+    flex: 0 0 100%;  /* 한 번에 하나의 아이템만 보이도록 */
     width:100%;
     height:100%;
 }
 
+/* 이미지 */
 .post-image {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 10px; /* 선택사항: 모서리 둥글게 */
     display: block;
     /* object-fit: cover; */ /* 이미지 비율 유지하며 꽉 채움 */
-    object-fit: contain;  /* 이미지가 잘리지 않게 비율 유지 */
+    object-fit: fill;  /* 이미지가 잘리지 않게 비율 유지 */
     object-position: center;
     /* background-color: #000; */ /* 여백 부분 색 (선택사항) */
 }
@@ -381,6 +390,31 @@ body {
     border-color: var(--onetouch-navy);
 }
 
+/* 데스크탑에서 드래그 슬라이드 */
+@media (min-width: 768px) {
+    .image-carousel {
+        aspect-ratio: 3 / 4; /* 3:4 비율 유지 */
+    }
+
+    .carousel-inner {
+        cursor: grab; /* 마우스 드래그 커서 */
+    }
+
+    .carousel-item {
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: cover;
+    }
+
+    .post-image {
+        width: 100%;
+        height: auto;
+        object-fit: conter;  /* 이미지 꽉 채우기 */
+    }
+}
+
 /* 반응형 설정 */
 @media (max-width: 767px) {
     .community-content {
@@ -418,13 +452,14 @@ body {
 
     /* 바깥 컨테이너는 비율 제거 */
     .image-carousel {
-        aspect-ratio: auto;
+        aspect-ratio: auto; /* 모바일에서는 비율 해제 */
         height: auto;
     }
 
     /* 슬라이드 트랙은 flex 구조 유지 + 자동 높이 */
     .carousel-inner {
     	overflow-x: auto;
+    	/* height:827; */
     	scroll-snap-type: x mandatory; /* 스냅 효과 */
         -webkit-overflow-scrolling: touch;
         display: flex;
@@ -941,111 +976,184 @@ body {
      }
  });
 
- // =========================
- // 1. 이미지 캐러셀 기능 (데스크탑 + 모바일 통합)
- // =========================
- document.addEventListener("DOMContentLoaded", function() {
+//=========================
+//1. 이미지 캐러셀 기능 (데스크탑 + 모바일 통합)
+//=========================
+document.addEventListener("DOMContentLoaded", function () {
 
-     const isMobile = window.innerWidth <= 767;
-     const carousels = document.querySelectorAll('.image-carousel');
+  const isMobile = window.innerWidth <= 767; // 모바일 여부 판단
+  const carousels = document.querySelectorAll('.image-carousel'); // 모든 캐러셀 요소 선택
 
-     carousels.forEach(carousel => {
-         const inner = carousel.querySelector('.carousel-inner');
-         const items = carousel.querySelectorAll('.carousel-item');
-         const prevBtn = carousel.querySelector('.carousel-control.prev');
-         const nextBtn = carousel.querySelector('.carousel-control.next');
-         const indicators = carousel.querySelectorAll('.indicator');
+  carousels.forEach(carousel => {
+      const inner = carousel.querySelector('.carousel-inner'); // 이미지 슬라이드 컨테이너
+      const items = carousel.querySelectorAll('.carousel-item'); // 모든 슬라이드 아이템
+      const prevBtn = carousel.querySelector('.carousel-control.prev'); // 이전 버튼
+      const nextBtn = carousel.querySelector('.carousel-control.next'); // 다음 버튼
+      const indicators = carousel.querySelectorAll('.indicator'); // 하단 인디케이터
 
-         let currentIndex = 0;
-         const totalItems = items.length;
+      let currentIndex = 0; // 현재 슬라이드 인덱스
+      const totalItems = items.length; // 전체 슬라이드 개수
 
-         // ----------------------------
-         // 공통: 이미지 높이 자동 조정
-         // ----------------------------
-         function adjustHeight(index) {
-             const activeImg = items[index]?.querySelector('img');
-             if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
-         }
+      // =========================
+      // 공통: 이미지 높이 자동 조정
+      // =========================
+      function adjustHeight(index) {
+          const activeImg = items[index]?.querySelector('img');
+          //if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
+          if (activeImg) inner.style.height = '827px';
+      }
 
-         window.addEventListener('resize', () => adjustHeight(currentIndex));
+      window.addEventListener('resize', () => adjustHeight(currentIndex));
 
-         // ----------------------------
-         // 데스크탑 슬라이드 기능
-         // ----------------------------
-         if (!isMobile) {
-             function showSlide(index) {
-                 if (index < 0) index = totalItems - 1;
-                 if (index >= totalItems) index = 0;
-                 currentIndex = index;
+      // =========================
+      // 데스크탑 기능
+      // =========================
+      if (!isMobile) {
 
-                 items.forEach((item, i) => item.classList.toggle('active', i === currentIndex));
-                 indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentIndex));
-                 adjustHeight(currentIndex);
-             }
+          // 슬라이드 표시 함수
+          function showSlide(index) {
+              if (index < 0) index = totalItems - 1;
+              if (index >= totalItems) index = 0;
+              currentIndex = index;
 
-             if (prevBtn) prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
-             if (nextBtn) nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
-             indicators.forEach((ind, i) => ind.addEventListener('click', () => showSlide(i)));
+              // 슬라이드 활성화
+              items.forEach((item, i) => item.classList.toggle('active', i === currentIndex));
+              // 인디케이터 활성화
+              indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentIndex));
+              // 높이 조정
+              adjustHeight(currentIndex);
+          }
 
-             showSlide(0);
+          // 버튼 클릭 이벤트
+          if (prevBtn) prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+          if (nextBtn) nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
 
-             let autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 3000);
+          // 인디케이터 클릭 이벤트
+          indicators.forEach((ind, i) => ind.addEventListener('click', () => showSlide(i)));
 
-             carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-             carousel.addEventListener('mouseleave', () => {
-                 autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 3000);
-             });
+          // 초기 슬라이드 표시
+          showSlide(0);
 
-             // 마우스 드래그/스와이프 기능 (데스크탑)
-             let startX = 0, endX = 0;
+          // 자동 슬라이드 (3초 간격)
+          let autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 10000);
 
-             carousel.addEventListener('mousedown', e => { startX = e.clientX; });
-             carousel.addEventListener('mouseup', e => { endX = e.clientX; handleSwipe(); });
+          // 마우스 진입 시 자동 슬라이드 중지
+          carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+          // 마우스 떠나면 자동 슬라이드 재개
+          carousel.addEventListener('mouseleave', () => {
+              autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 10000);
+          });
 
-             carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-             carousel.addEventListener('touchend', e => { endX = e.changedTouches[0].clientX; handleSwipe(); });
+          // =========================
+          // 마우스 드래그/스와이프 기능
+          // =========================
+          let isDragging = false;
+          let startX = 0;
+          let currentX = 0;
 
-             function handleSwipe() {
-                 const diff = endX - startX;
-                 if (Math.abs(diff) > 50) {
-                     if (diff > 0) showSlide(currentIndex - 1);
-                     else showSlide(currentIndex + 1);
-                 }
-             }
+          // 커서 스타일 변경
+          carousel.style.cursor = 'grab';
 
-         } else {
-             // ----------------------------
-             // 모바일: 좌우 스크롤 전용
-             // ----------------------------
-             let isDown = false;
-             let startX = 0, scrollLeft = 0;
+          // 마우스 드래그 시작
+          carousel.addEventListener('mousedown', e => {
+              isDragging = true;
+              startX = e.clientX;
+              carousel.style.cursor = 'grabbing';
+              e.preventDefault();
+          });
 
-             inner.addEventListener("touchstart", e => {
-                 isDown = true;
-                 startX = e.touches[0].pageX;
-                 scrollLeft = inner.scrollLeft;
-             }, { passive: true });
+          // 마우스 이동 기록
+          carousel.addEventListener('mousemove', e => {
+              if (!isDragging) return;
+              currentX = e.clientX;
+          });
 
-             inner.addEventListener("touchmove", e => {
-                 if (!isDown) return;
-                 const x = e.touches[0].pageX;
-                 const walk = startX - x;
-                 inner.scrollLeft = scrollLeft + walk;
-             }, { passive: true });
+          // 마우스 드래그 종료
+          carousel.addEventListener('mouseup', e => {
+              if (!isDragging) return;
+              isDragging = false;
+              carousel.style.cursor = 'grab';
 
-             inner.addEventListener("touchend", () => { isDown = false; });
+              const diff = e.clientX - startX;
+              if (Math.abs(diff) > 50) {
+                  if (diff > 0) showSlide(currentIndex - 1);
+                  else showSlide(currentIndex + 1);
+              }
+          });
 
-             // 이미지 드래그 방지
-             items.forEach(item => {
-                 const img = item.querySelector('img');
-                 if (img) img.addEventListener('dragstart', e => e.preventDefault());
-             });
-         }
+          // 마우스가 캐러셀 밖으로 나가도 드래그 종료 처리
+          carousel.addEventListener('mouseleave', e => {
+              if (isDragging) {
+                  isDragging = false;
+                  carousel.style.cursor = 'grab';
+                  const diff = e.clientX - startX;
+                  if (Math.abs(diff) > 50) {
+                      if (diff > 0) showSlide(currentIndex - 1);
+                      else showSlide(currentIndex + 1);
+                  }
+              }
+          });
 
-         // 초기 높이 조정
-         adjustHeight(currentIndex);
-     });
- });
+          // 터치 이벤트도 데스크탑과 동일하게 스와이프 처리
+          carousel.addEventListener('touchstart', e => {
+              isDragging = true;
+              startX = e.touches[0].clientX;
+          }, { passive: true });
+
+          carousel.addEventListener('touchmove', e => {
+              if (!isDragging) return;
+              currentX = e.touches[0].clientX;
+          }, { passive: true });
+
+          carousel.addEventListener('touchend', e => {
+              if (!isDragging) return;
+              isDragging = false;
+              const diff = e.changedTouches[0].clientX - startX;
+              if (Math.abs(diff) > 50) {
+                  if (diff > 0) showSlide(currentIndex - 1);
+                  else showSlide(currentIndex + 1);
+              }
+          });
+
+      } else {
+          // =========================
+          // 모바일 기능 (좌우 스크롤)
+          // =========================
+          let isDown = false;
+          let startX = 0, scrollLeft = 0;
+
+          // 터치 시작
+          inner.addEventListener("touchstart", e => {
+              isDown = true;
+              startX = e.touches[0].pageX;
+              scrollLeft = inner.scrollLeft;
+          }, { passive: true });
+
+          // 터치 이동
+          inner.addEventListener("touchmove", e => {
+              if (!isDown) return;
+              const x = e.touches[0].pageX;
+              const walk = startX - x;
+              inner.scrollLeft = scrollLeft + walk;
+          }, { passive: true });
+
+          // 터치 종료
+          inner.addEventListener("touchend", () => { isDown = false; });
+          inner.addEventListener("touchcancel", () => { isDown = false; });
+
+          // 이미지 드래그 방지
+          items.forEach(item => {
+              const img = item.querySelector('img');
+              if (img) img.addEventListener('dragstart', e => e.preventDefault());
+          });
+      }
+
+      // =========================
+      // 초기 높이 조정
+      // =========================
+      adjustHeight(currentIndex);
+  });
+});
 
  // =========================
  // 2. 좋아요 하트 토글 기능
