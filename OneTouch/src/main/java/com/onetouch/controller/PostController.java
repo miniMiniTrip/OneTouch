@@ -14,6 +14,7 @@ import com.onetouch.dao.PostDao;
 import com.onetouch.service.PostService;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostVo;
+import com.onetouch.vo.ProductVo;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,6 +29,7 @@ public class PostController {
 	
 	@Autowired
 	PostDao postDao;
+	
 	
 	
 	//커뮤니티 전체목록 열기
@@ -60,8 +62,13 @@ public class PostController {
 	
 	//post 등록 폼
 	@GetMapping("/post/insert")
-	public String postInsertForm() {
+	public String postInsertForm(Model model) {
 		System.out.println("	[PostController] postInsertForm() ");
+		
+		//등록 페이지 갈때 상품 목록데이터 보내주기
+		List<ProductVo> product_list_array=postDao.selectProductList();
+		System.out.printf("		productList(%d):%s\n",product_list_array.size(),product_list_array);
+		model.addAttribute("product_list_array", product_list_array);
 		
 		System.out.println("	[PostController] /post/post_insert.jsp ");
 		System.out.println("");
@@ -75,9 +82,9 @@ public class PostController {
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		postVo.setMem_idx(memVo.getMem_idx());
 		postVo.setPost_content(postVo.getPost_content().replaceAll("\n", "<br>"));
+		System.out.println("		"+postVo);
 		postService.postInsert(postVo);
 		
-		System.out.println("		"+postVo);
 		
 		System.out.println("	[PostController] redirect:/post/list");
 		System.out.println("");

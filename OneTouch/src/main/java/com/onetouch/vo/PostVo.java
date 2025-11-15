@@ -61,4 +61,7 @@ public class PostVo {
 	
 	/** post에 등록된 상품 정보*/
 	List<ProductVo> productList;
+	
+	/** 상품번호*/
+	int product_idx;
 }

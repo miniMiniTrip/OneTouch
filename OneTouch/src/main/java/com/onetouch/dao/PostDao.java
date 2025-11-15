@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.onetouch.vo.PostVo;
+import com.onetouch.vo.ProductVo;
 
 @Mapper
 public interface PostDao {
@@ -17,4 +18,6 @@ public interface PostDao {
 	int postInsert(PostVo postVo);
 
 	int postProductInsert(PostVo postVo);
+
+	List<ProductVo> selectProductList();
 }

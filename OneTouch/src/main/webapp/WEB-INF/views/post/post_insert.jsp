@@ -337,17 +337,15 @@ select.form-control {
 						placeholder="내용을 입력해주세요"></textarea>
 				</div>
 
-				<!--      <div class="form-group">
-                    <label for="skin-category">카테고리</label>
-                    <select id="skin-category" class="form-control">
-                        <option value="">카테고리를 선택해주세요</option>
-                        <option value="simple">심플</option>
-                        <option value="business">비즈니스</option>
-                        <option value="blog">블로그</option>
-                        <option value="shop">쇼핑몰</option>
-                        <option value="portfolio">포트폴리오</option>
+				<div class="form-group">
+                    <label for="skin-category">상품</label>
+                    <select id="skin-category" name="product_idx" class="form-control">
+                        <option value="">상품을 선택해주세요</option>
+                        <c:forEach var="productVo" items="${product_list_array }">
+                        <option value="${productVo.product_idx }">${productVo.product_name }</option>
+                        </c:forEach>
                     </select>
-                </div> -->
+                </div>
 
 				<!--      <div class="form-group">
                     <label>스킨 미리보기</label>
