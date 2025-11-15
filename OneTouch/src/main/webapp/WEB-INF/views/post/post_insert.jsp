@@ -336,7 +336,8 @@ select.form-control {
 					<textarea id="post_content" name="post_content" class="form-control" rows="3"
 						placeholder="내용을 입력해주세요"></textarea>
 				</div>
-
+			
+			<div id="product-add">
 				<div class="form-group">
                     <label for="skin-category">상품추가</label>
           <%--           <select id="skin-category" name="product_idx" class="form-control">
@@ -356,6 +357,7 @@ select.form-control {
 			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
 			        </div>
 			   </div>
+			</div>
 			   
 			   <!-- ----------------- 상풍 추가 js------------------ -->
 				<script>
@@ -444,6 +446,7 @@ select.form-control {
             const boardType = this.value;
             const reviewFields = document.getElementById('review-fields');
             const skinFields = document.getElementById('skin-fields');
+            const productAddFields = document.getElementById('product-add');
             
             // 모든 필드 숨기기
             reviewFields.style.display = 'none';
@@ -453,9 +456,12 @@ select.form-control {
             if (boardType === 'review') {
                 reviewFields.style.display = 'block';
                 skinFields.style.display = 'block';
+            	productAddFields.style.display='none';
             } else if (boardType === 'skin') {
+            	productAddFields.style.display='block';
                 skinFields.style.display = 'block';
             } else if (boardType ==='free'){
+            	productAddFields.style.display='none';
                 skinFields.style.display = 'block';
             }
         });

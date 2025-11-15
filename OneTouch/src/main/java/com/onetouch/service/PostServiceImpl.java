@@ -1,7 +1,6 @@
 package com.onetouch.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.dao.PostDao;
 import com.onetouch.vo.PostVo;
+import com.onetouch.vo.ProductVo;
 
 import jakarta.servlet.ServletContext;
 
@@ -80,8 +80,17 @@ public class PostServiceImpl implements PostService {
 		int res =postDao.postInsert(postVo);
 		//-------------------------------------
 		System.out.printf("		[PostServiceImpl-postInsert()]postVo:%s\n",postVo);
-		// post_product 목록 테이블에저장
-		 res=res * (postDao.postProductInsert(postVo));
+		
+		//==== 카테고리가 스킨일때 상품등록처리
+		if(postVo.getPost_category().equals("skin")) {
+			
+			List<Integer> product_idx_array=postVo.getProduct_idx_array();
+			for(Integer product_idx : product_idx_array ) {
+				postVo.setProduct_idx(product_idx);
+				// post_product 목록 테이블에저장
+				res=res * (postDao.postProductInsert(postVo));
+			}
+		}
 		
 		
 		return res;
