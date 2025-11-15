@@ -583,65 +583,17 @@ body {
                     </div>
                     
                     <div class="product-section">
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
                         		<c:forEach var="productVo" items="${postVo.productList }">
-	                            <img src="${pageContext.request.contextPath }/images/${productVo.product_image_url}" alt="제품" class="product-img">
-	                            <p class="product-discount">${productVo.product_name }</p>
-	                            <p class="product-price">${productVo.product_price }</p>
+                        <div class="product-card">
+                        	<a href="/product/4" class="product-link">
+			                            <img src="${pageContext.request.contextPath }/images/${productVo.product_image_url}" alt="제품" class="product-img">
+			                            <p class="product-discount">${productVo.product_name }</p>
+			                            <p class="product-price">${productVo.product_price }</p> 
+	                        </a>    
+                        </div>
                         		</c:forEach>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
                     </div>
+                    
                     
                     <div class="post-interactions">
                         <button class="interaction-btn">

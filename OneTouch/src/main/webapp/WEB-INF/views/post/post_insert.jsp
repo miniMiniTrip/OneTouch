@@ -338,14 +338,47 @@ select.form-control {
 				</div>
 
 				<div class="form-group">
-                    <label for="skin-category">상품</label>
-                    <select id="skin-category" name="product_idx" class="form-control">
+                    <label for="skin-category">상품추가</label>
+          <%--           <select id="skin-category" name="product_idx" class="form-control">
                         <option value="">상품을 선택해주세요</option>
                         <c:forEach var="productVo" items="${product_list_array }">
                         <option value="${productVo.product_idx }">${productVo.product_name }</option>
                         </c:forEach>
-                    </select>
+                    </select> --%>
                 </div>
+                
+			    <div class="container mt-4">
+			        <!-- 상품 선택 폼을 추가하는 버튼 -->
+			        <button type="button" class="btn btn-primary" id="add-product-btn">+</button>
+			
+			        <!-- 상품 폼을 담을 영역 -->
+			        <div id="product-form-container" class="mt-4">
+			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
+			        </div>
+			   </div>
+			   
+			   <!-- ----------------- 상풍 추가 js------------------ -->
+				<script>
+				        $(document).ready(function() {
+				            $('#add-product-btn').click(function() {
+				                // 새로운 상품 선택 폼을 생성할 HTML 코드
+				                var newFormGroup = `
+				                    <div class="form-group">
+				                        <select name="product_idx_array" class="form-control">
+				                            <option value="">상품을 선택해주세요</option>
+				                            <c:forEach var="productVo" items="${product_list_array}">
+				                                <option value="${productVo.product_idx}">${productVo.product_name}</option>
+				                            </c:forEach>
+				                        </select>
+				                    </div>
+				                `;
+				
+				                // 생성된 폼을 화면에 추가
+				                $('#product-form-container').append(newFormGroup);
+				            });
+				        });
+				</script>
+			   <!-- ----------------- end/상풍 추가 js------------------ -->
 
 				<!--      <div class="form-group">
                     <label>스킨 미리보기</label>
