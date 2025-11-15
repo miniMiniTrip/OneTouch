@@ -500,6 +500,84 @@ body {
     }
 }
 
+/* 게시물 작성 버튼 컨테이너 */
+.post-write-container {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f9f9f9;
+}
+
+	/* 게시물 작성 버튼 */
+	.post-write-btn {
+	    background: linear-gradient(135deg, var(--onetouch-navy) 0%, var(--onetouch-light-blue) 100%);
+	    color: white;
+	    border: none;
+	    border-radius: 25px;
+	    padding: 15px 30px;
+	    font-size: 16px;
+	    font-weight: 600;
+	    cursor: pointer;
+	    display: inline-flex;
+	    align-items: center;
+	    justify-content: center;
+	    gap: 10px;
+	    box-shadow: 0 8px 25px rgba(0, 0, 51, 0.4);
+	    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	    position: relative;
+	    overflow: hidden;
+	    letter-spacing: 0.5px;
+	}
+	
+	/* 호버 효과 */
+	.post-write-btn:hover {
+	    transform: translateY(-3px) scale(1.05);
+	    box-shadow: 0 12px 35px rgba(0, 0, 51, 0.6);
+	}
+	
+	/* 클릭 효과 */
+	.post-write-btn:active {
+	    transform: translateY(-1px) scale(1.02);
+	}
+	
+	/* 버튼 내부 빛나는 효과 */
+	.post-write-btn::before {
+	    content: '';
+	    position: absolute;
+	    top: 0;
+	    left: -100%;
+	    width: 100%;
+	    height: 100%;
+	    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+	    transition: left 0.5s;
+	}
+	
+	.post-write-btn:hover::before {
+	    left: 100%;
+	}
+	
+	/* 아이콘 스타일 */
+	.post-write-btn i {
+	    font-size: 16px;
+	    transition: transform 0.3s ease;
+	}
+	
+	.post-write-btn:hover i {
+	    transform: rotate(90deg);
+	}
+	
+	/* 텍스트 스타일 */
+	.post-write-btn span {
+	    font-weight: 600;
+	    position: relative;
+	}
+	.post-write-btn span {
+	    background: linear-gradient(45deg, #ffffff, #f0f8ff);
+	    -webkit-background-clip: text;
+	    -webkit-text-fill-color: transparent;
+	    background-clip: text;
+	    font-weight: 700;
+	    letter-spacing: 1px;
+	}
     </style>
 </head>
 
@@ -530,7 +608,14 @@ body {
             </div>
         </div>
     </div>
-    <input type="button" value="등록" onclick="location.href='/post/insert'">
+    
+   <div class="post-write-container">
+   <button class="post-write-btn" onclick="location.href='/post/insert'">
+    <i class="fas fa-plus"></i>
+    <span>새 게시물 작성</span>
+  </button>
+  </div>
+  
     <section class="section">
         <div class="container">
             <div class="community-content">
