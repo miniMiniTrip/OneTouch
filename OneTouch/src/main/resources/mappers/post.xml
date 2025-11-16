@@ -41,12 +41,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    ORDER BY p.post_idx DESC
 	</select>
 	
-	<select id="selectTipList" resultType="PostVo">
-		SELECT p.*,m.mem_id 
+	<select id="selectTipList" resultMap="PostResultMap">
+		SELECT
+			p.*,m.mem_id 
+		   ,pr.product_idx, pr.product_name, pr.product_price
+	       ,pi.product_image_url
 		FROM otdb.post as p
-		join mem as m
-		ON p.mem_idx=m.mem_idx
+		join mem as m ON p.mem_idx=m.mem_idx
+	    LEFT JOIN post_product pp ON p.post_idx = pp.post_idx
+	    LEFT JOIN product pr ON pp.product_idx = pr.product_idx
+	    LEFT JOIN product_image pi ON pp.product_idx =pi.product_idx
 		WHERE post_category='skin' 	
+		ORDER BY p.post_idx DESC
 	</select>
 	
 	<select id="selectReviewList" resultType="PostVo">
@@ -55,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join mem as m
 		ON p.mem_idx=m.mem_idx
 		WHERE post_category='review'	
+		ORDER BY p.post_idx DESC
 	</select>
 	<select id="selectFreeBoard" resultType="PostVo">
 		SELECT p.*,m.mem_id 
@@ -62,6 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join mem as m
 		ON p.mem_idx=m.mem_idx
 		WHERE post_category='free'	
+		ORDER BY p.post_idx DESC
 	</select>
 	
 	<insert id="postInsert" parameterType="PostVo" useGeneratedKeys="true" keyProperty="post_idx">
