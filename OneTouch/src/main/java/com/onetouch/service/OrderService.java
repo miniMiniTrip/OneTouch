@@ -108,7 +108,7 @@ public class OrderService {
 		}
 		
 		//order_list에 다 넣기
-		order_item_dao.insertProduct(order_list);
+		order_item_dao.insertProducts(order_list);
 		
 		//다 했으면 삭제
 		cart_dao.deletePaymentComplete(map);

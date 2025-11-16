@@ -3,8 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.OrderDao">
-<insert id="insert" parameterType="order" useGeneratedKeys="true" keyProperty="order">
-	insert into order(
+<insert id="insert" parameterType="order" useGeneratedKeys="true" keyProperty="order_id">
+	insert into 'order'(
 		mem_idx,
 		order_no,
 		order_status,
@@ -37,8 +37,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </select>
 
 <!-- 회원별 주문 목록 조회 -->
-<select id="selectOne" parameterType="int">
+<select id="selectList" parameterType="int">
 	select * from order where mem_idx = #{mem_idx}
+	order by order_time desc
 </select>
 
 <!-- 주문번호로 조회 -->
