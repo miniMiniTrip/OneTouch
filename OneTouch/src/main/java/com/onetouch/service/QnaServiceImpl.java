@@ -23,4 +23,12 @@ public class QnaServiceImpl implements QnaService {
         map.put("qna_answer_content", qna_answer_content);
         return qnaDao.updateAnswer(map);
     }
+    
+    // Service 구현체에 추가
+
+
+    @Override
+    public int deleteAnswer(int qnaIdx) {
+        return qnaDao.deleteAnswerOnly(qnaIdx);
+    }
 }

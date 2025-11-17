@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Q&A 상세보기 - OneTouch</title>
+    <title>Q&A 작성 - OneTouch</title>
     <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
@@ -118,137 +118,12 @@
             background: #555;
         }
         
-        .qna-detail {
+        .write-form {
             background: white;
         }
         
-        .qna-header {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .qna-meta {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .badge {
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .badge-category {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .badge-status {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .badge-private {
-            background: #fce4ec;
-            color: #c2185b;
-        }
-        
-        .qna-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .qna-info {
-            display: flex;
-            gap: 20px;
-            font-size: 13px;
-            color: #666;
-        }
-        
-        .qna-content {
-            padding: 30px 20px;
-            line-height: 1.8;
-            font-size: 14px;
-            color: #333;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .answer-section {
-            margin-top: 30px;
-        }
-        
-        .answer-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            background: #e8f5e9;
-            border-radius: 8px 8px 0 0;
-        }
-        
-        .answer-header h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2e7d32;
-            margin: 0;
-        }
-        
-        .answer-empty {
-            padding: 40px 20px;
-            text-align: center;
-            background: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-radius: 0 0 8px 8px;
-        }
-        
-        .answer-empty-text {
-            font-size: 14px;
-            color: #999;
-            line-height: 1.6;
-        }
-        
-        .answer-content {
-            padding: 30px 20px;
-            background: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-        }
-        
-        .answer-text {
-            font-size: 14px;
-            color: #333;
-            line-height: 1.8;
-            margin-bottom: 15px;
-        }
-        
-        .answer-info {
-            display: flex;
-            gap: 15px;
-            font-size: 12px;
-            color: #666;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        /* 답변 작성 폼 스타일 */
-        .answer-form {
-            padding: 20px;
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-        }
-        
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
         }
         
         .form-label {
@@ -256,7 +131,12 @@
             font-size: 14px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .form-label .required {
+            color: #dc3545;
+            margin-left: 3px;
         }
         
         .form-control {
@@ -275,26 +155,135 @@
         }
         
         .form-control.textarea {
-            min-height: 150px;
+            min-height: 200px;
             resize: vertical;
         }
         
-        .char-count {
-            text-align: right;
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: #5c6bc0;
+        }
+        
+        .product-search {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .product-search .form-control {
+            flex: 1;
+        }
+        
+        .btn-search {
+            background: #5c6bc0;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+        
+        .btn-search:hover {
+            background: #4a5aaf;
+        }
+        
+        .selected-product {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .selected-product.show {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .product-image {
+            width: 80px;
+            height: 80px;
+            background: #ddd;
+            border-radius: 4px;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .product-price {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
             font-size: 12px;
-            color: #999;
-            margin-top: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-remove:hover {
+            background: #c82333;
+        }
+        
+        .form-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .form-notice-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+        
+        .form-notice-text {
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.6;
         }
         
         .btn-group {
             display: flex;
             gap: 10px;
-            justify-content: flex-end;
-            margin-top: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
         }
         
         .btn {
-            padding: 10px 30px;
+            padding: 12px 40px;
             border: none;
             border-radius: 4px;
             font-size: 14px;
@@ -303,58 +292,28 @@
         }
         
         .btn-submit {
-            background: #2e7d32;
-            color: white;
+            background: #5c6bc0 !important ;
+            color: white !important ;
         }
         
         .btn-submit:hover {
-            background: #1b5e20;
+            background: #4a5aaf !important ;
         }
         
         .btn-cancel {
-            background: #6c757d;
-            color: white;
+            background: #6c757d !important ;
+            color: white !important ;
         }
         
         .btn-cancel:hover {
-            background: #5a6268;
+            background: #5a6268 !important ;
         }
         
-        .btn-edit {
-            background: #1976d2;
-            color: white;
-        }
-        
-        .btn-edit:hover {
-            background: #1565c0;
-        }
-        
-        .btn-delete {
-            background: #d32f2f;
-            color: white;
-        }
-        
-        .btn-delete:hover {
-            background: #c62828;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            padding: 30px 20px 0;
-            border-top: 1px solid #e0e0e0;
-            margin-top: 30px;
-        }
-        
-        .admin-notice {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 4px;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            color: #856404;
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -381,14 +340,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">Q&A 상세보기</h1>
+                        <h1 class="page-title">Q&A 작성</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
                         <li>마이페이지</li>
-                        <li>Q&A 상세보기</li>
+                        <li>Q&A 작성</li>
                     </ul>
                 </div>
             </div>
@@ -402,7 +361,7 @@
             <div class="qna-container">
                 <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">${mem.mem_name}님 환영합니다</div>
+                    <div class="sidebar-subtitle">${mem.mem_name }님 환영합니다</div>
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
@@ -430,103 +389,70 @@
                 
                 <div class="content">
                     <div class="content-header">
-                        <h2>💬 상품 Q&A 상세보기</h2>
+                        <h2>✎ Q&A 작성하기</h2>
                         <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/list'">목록으로</button>
                     </div>
                     
-                    <div class="qna-detail">
-                        <!-- Q&A 헤더 -->
-                        <div class="qna-header">
-                            <div class="qna-meta">
-                                <span class="badge badge-category">교환/반품</span>
-                                <span class="badge badge-status">답변대기</span>
-                                <span class="badge badge-private">비공개</span>
-                            </div>
-                            <h1 class="qna-title">파운데이션 색상이 저랑 안맞네요 교환 해주세요</h1>
-                            <div class="qna-info">
-                                <span>👤 구창본</span>
-                                <span>📅 2025-11-14 14:34</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Q&A 내용 -->
-                        <div class="qna-content">
-                            교환 해주라고
-                        </div>
-                        
-                        <!-- 답변 섹션 -->
-                        <div class="answer-section">
-                            <div class="answer-header">
-                                <h3>💬 답변</h3>
-                            </div>
-                            
-                            <!-- 답변이 없을 때 -->
-                            <c:if test="${empty qna.answer}">
-                                <div class="answer-empty">
-                                    <p class="answer-empty-text">
-                                        아직 답변이 등록되지 않았습니다.<br>
-                                        빠른 시일 내에 답변 드리겠습니다.
-                                    </p>
-                                </div>
-                                
-                                <!-- 관리자 답변 작성 폼 -->
-                                <c:if test="${user.mem_roll == 'admin'}">
-                                    <form class="answer-form" method="post" action="${pageContext.request.contextPath}/qna/answer">
-                                        <div class="admin-notice">
-                                            ℹ️ 관리자 권한으로 답변을 작성할 수 있습니다.
-                                        </div>
-                                        
-                                        <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
-                                        
-                                        <div class="form-group">
-                                            <label class="form-label">답변 내용</label>
-                                            <textarea class="form-control textarea" name="qna_answer_content"
-                                                      placeholder="고객님께 답변할 내용을 작성해주세요." required maxlength="2000"
-                                                      oninput="updateCharCount(this)"></textarea>
-                                            <div class="char-count">
-                                                <span id="charCount">0</span> / 2000
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="btn-group">
-                                            <button type="submit" class="btn btn-submit">답변 등록</button>
-                                            <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
-                                        </div>
-                                    </form>
-                                </c:if>
-                            </c:if>
-                            
-                            <!-- 답변이 있을 때 -->
-                            <c:if test="${not empty qna.answer}">
-                                <div class="answer-content">
-                                    <div class="answer-text">
-                                        ${qna.answer.answer_content}
-                                    </div>
-                                    <div class="answer-info">
-                                        <span>👤 관리자</span>
-                                        <span>📅 ${qna.answer.answer_date}</span>
-                                    </div>
-                                    
-                                    <!-- 관리자 답변 수정/삭제 버튼 -->
-                                    <c:if test="${user.mem_roll == 'admin'}">
-                                        <div class="btn-group" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
-                                            <button type="button" class="btn btn-edit" onclick="editAnswer()">답변 수정</button>
-                                            <button type="button" class="btn btn-delete" onclick="deleteAnswer()">답변 삭제</button>
-                                        </div>
-                                    </c:if>
-                                </div>
-                            </c:if>
-                        </div>
-                        
-                        <!-- 하단 버튼 -->
-                        <div class="action-buttons">
-                            <button type="button" class="btn btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/list'">목록으로</button>
-                            <c:if test="${user.mem_idx == qna.mem_idx}">
-                                <button type="button" class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/edit?qna_idx=${qna.qna_idx}'">수정</button>
-                                <button type="button" class="btn btn-delete" onclick="deleteQna()">삭제</button>
-                            </c:if>
+                    <div class="form-notice">
+                        <div class="form-notice-title">📢 문의 전 확인해주세요</div>
+                        <div class="form-notice-text">
+                            • 상품에 대한 문의사항을 작성해주세요.<br>
+                            • 답변은 영업일 기준 1~2일 내에 등록됩니다.<br>
+                            • 욕설, 비방 등 부적절한 내용은 관리자에 의해 삭제될 수 있습니다.
                         </div>
                     </div>
+                    
+                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/qna/write">
+    <!-- 카테고리 -->
+    <div class="form-group">
+        <label class="form-label">문의 유형<span class="required">*</span></label>
+        <select class="form-select" name="qna_category" required>
+            <option value="">선택하세요</option>
+            <option value="0">상품 문의</option>
+            <option value="1">배송 문의</option>
+            <option value="2">교환/반품</option>
+            <option value="3">재입고 문의</option>
+            <option value="4">기타</option>
+        </select>
+    </div>
+
+    <!-- 제목 -->
+    <div class="form-group">
+        <label class="form-label">제목<span class="required">*</span></label>
+        <input type="text" class="form-control" name="qna_title" placeholder="제목을 입력하세요" required maxlength="100">
+    </div>
+
+    <!-- 내용 -->
+   
+    
+    <div class="form-group">
+        <label class="form-label">문의 내용<span class="required">*</span></label>
+        <textarea class="form-control textarea" name="qna_content"
+                  placeholder="문의 내용을 작성해주세요" required maxlength="1000"
+                  oninput="updateCharCount(this)"></textarea>
+        <div class="char-count">
+            <span id="charCount">0</span> / 1000
+        </div>
+    </div>
+
+    <!-- 공개 여부 -->
+    <div class="form-group">
+        <label class="form-label">공개 여부</label>
+        <select class="form-select" name="qna_private">
+            <option value="false">공개</option>
+            <option value="true" selected>비공개</option>
+        </select>
+    </div>
+
+    <!-- 임시 회원번호 -->
+    <input type="hidden" name="mem_idx" value="${user.mem_idx }">
+
+    <div class="btn-group">
+        <button type="submit" class="btn btn-submit">등록하기</button>
+        <button type="button" class="btn btn-cancel" onclick="location.href='${pageContext.request.contextPath}/qna/list'">취소</button>
+    </div>
+</form>
+
                 </div>
             </div>
         </div>
@@ -550,23 +476,30 @@
             document.getElementById('charCount').textContent = count;
         }
         
-        function deleteQna() {
-            if(confirm('정말 삭제하시겠습니까?')) {
-                location.href = '${pageContext.request.contextPath}/qna/delete?qna_idx=${qna.qna_idx}';
+        function searchProduct() {
+            const searchValue = document.getElementById('productSearch').value;
+            if(searchValue) {
+                document.getElementById('productId').value = '1';
+                document.getElementById('selectedProductName').textContent = '무선 블루투스 이어폰 Pro 3세대';
+                document.getElementById('selectedProductPrice').textContent = '₩ 159,000';
+                document.getElementById('selectedProduct').classList.add('show');
+            } else {
+                alert('상품명을 입력해주세요.');
             }
         }
         
-        function editAnswer() {
-            if(confirm('답변을 수정하시겠습니까?')) {
-                // 답변 수정 페이지로 이동 또는 수정 폼 표시
-                location.href = '${pageContext.request.contextPath}/qna/answer/edit?qna_idx=${qna.qna_idx}';
-            }
+        function removeProduct() {
+            document.getElementById('productId').value = '';
+            document.getElementById('productSearch').value = '';
+            document.getElementById('selectedProduct').classList.remove('show');
         }
         
-        function deleteAnswer() {
-            if(confirm('답변을 삭제하시겠습니까?')) {
-                location.href = '${pageContext.request.contextPath}/qna/answer/delete?qna_idx=${qna.qna_idx}';
+        function validateForm() {
+            if(!document.getElementById('productId').value) {
+                alert('상품을 선택해주세요.');
+                return false;
             }
+            return true;
         }
     </script>
 
