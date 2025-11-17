@@ -14,6 +14,9 @@ public interface WishlistDao {
 	
 	//중복검사
 	WishlistVo selectWishlistByIdProduct(WishlistVo vo);
+
+	//idx로 검색
+	WishlistVo selectOne(int wishlist_idx);
 	
 	int insert(WishlistVo vo);
 	int delete(int wishlist_idx);
@@ -21,5 +24,6 @@ public interface WishlistDao {
 	//찜 개수 (토글)
 	int plusWishlistCount(int wishlist_idx);
 	int minusWishlistCount(int wishlist_idx);
+
 	
 }

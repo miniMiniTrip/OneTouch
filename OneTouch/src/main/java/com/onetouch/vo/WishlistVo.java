@@ -13,4 +13,9 @@ public class WishlistVo {
 	int mem_idx;
 	int product_idx;
 	Timestamp wishlist_time;
+	
+    String product_name;
+    int product_price;
+    int product_sale_price;
+    String product_image_url;
 }

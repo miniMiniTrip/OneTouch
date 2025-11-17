@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.ProductDao;
@@ -16,7 +18,7 @@ import com.onetouch.vo.WishlistVo;
 
 import jakarta.servlet.http.HttpSession;
 
-//@Controller
+@Controller
 public class WishlistController {
 
 	@Autowired
@@ -29,6 +31,7 @@ public class WishlistController {
 	HttpSession session;
 	
 	@RequestMapping("/wishlist/list.do")
+	@ResponseBody
 	public String list(Model model) {
 
 		MemVo memVo =  
@@ -39,9 +42,9 @@ public class WishlistController {
 		Integer mem_idx = memVo.getMem_idx();
 		
 		List<WishlistVo> wishlist_list = wishlist_dao.selectList(mem_idx);
-		model.addAttribute(wishlist_list);
+		model.addAttribute("wishlist_list", wishlist_list);
 		
-		return "/wishlist/list";
+		return "/wishlist/wishlist_list";
 	}
 	
 	@RequestMapping("/wishlist/insert.do")
@@ -74,10 +77,23 @@ public class WishlistController {
 		return map;
 	}
 	
-	@RequestMapping("/wishlist/delete.do")
-	public String delete(WishlistVo vo, RedirectAttributes ra) {
-		int res = wishlist_dao.delete(vo.getWishlist_idx());
-		ra.addAttribute("mem_idx", vo.getMem_idx());
-		return "redirect:list.do";
-	}
+    @RequestMapping("/wishlist/delete.do")
+    public String delete(int wishlist_idx, RedirectAttributes ra) { 
+        MemVo memVo = (MemVo) session.getAttribute("user");
+        
+        if(memVo == null) {
+            return "redirect:/user/login";
+        }
+        
+        // ✅ 삭제 전에 product_idx 먼저 조회
+        WishlistVo vo = wishlist_dao.selectOne(wishlist_idx); 
+        
+        if(vo != null) {
+            wishlist_dao.delete(wishlist_idx);
+            wishlist_dao.minusWishlistCount(vo.getProduct_idx()); 
+        }
+        
+        ra.addAttribute("mem_idx", memVo.getMem_idx()); 
+        return "redirect:list.do";
+    }
 }
