@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.dao.PaymentDao">
+	
+	<!-- 결제정보 생성(토스페이먼츠) -->
+	<insert id="insertPayment" parameterType="payment">
+		insert into payment (payment_key,
+								order_id,
+								amount,
+								method,
+								status
+			 				) values (
+			 					#{payment_key},
+								#{order_id},
+								#{amount},
+								#{method},
+								#{status}
+			 				)
+	</insert>
+	
+	<!-- payment 키로 조회 -->
+	<select id="selectPaymentByKey" parameterType="String" resultType="payment">
+		select  payment_id,
+				payment_key,
+				order_id,
+				amount,
+				method,
+				status,
+				approved_at,
+				failed_reason,
+				cancel_reason,
+				receipt_url,
+				order_time,
+				order_update
+		from payment where payment_key = #{payment_key}
+	</select>
+	
+	<!-- OrderId로 조회 -->
+	<select id="selectPaymentByOrderId" parameterType="String" resultType="payment">
+		select  payment_id,
+				payment_key,
+				order_id,
+				amount,
+				method,
+				status,
+				approved_at,
+				failed_reason,
+				cancel_reason,
+				receipt_url,
+				order_time,
+				order_update
+		from payment where payment_id = #{payment_id}
+	</select>
+	
+	<!-- 결제승인처리 -->
+	<update id="updatePaymentApproved" parameterType="payment">
+		update payment set
+				status = 'DONE',
+				approved_at = #{approved_at},
+				receipt_url = #{receipt_url},
+				method = #{method}
+		where payment_key = #{payment_key} 
+	</update>
+
+	<!-- 결제실패처리 -->
+	<update id="updatePaymentFailed" parameterType="payment">
+        update payment set 
+            status = 'FAILED',
+            failed_reason = #{failed_reason}
+        where payment_key = #{payment_key}
+    </update>
+    
+    <!-- 결제취소처리 -->
+    <update id="updatePaymentCanceled" parameterType="payment">
+        update payment set
+            status = 'CANCELED',
+            cancel_reason = #{cancel_reason}
+        where payment_key = #{payment_key}
+    </update>
+</mapper>
+
