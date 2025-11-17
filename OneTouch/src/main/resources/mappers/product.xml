@@ -4,8 +4,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.ProductDao">
 
-    <!-- 상품 목록 조회 (페이징 포함) -->
-    <select id="selectList" parameterType="map" resultType="product">
+    <!-- 관리자용 상품 목록 조회 (페이징 포함) -->
+    <select id="selectListAdmin" parameterType="map" resultType="product">
         SELECT
             product.*,
             category.category_name,
@@ -41,29 +41,70 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </select>
 
-    <!-- 상품 총 개수 조회 -->
-    <select id="selectCount" parameterType="map" resultType="int">
-        SELECT COUNT(DISTINCT product.product_idx)
-        FROM product
-        LEFT JOIN category ON product.category_idx = category.category_idx
-        LEFT JOIN product_image ON product.product_idx = product_image.product_idx
+    <!-- 🔥 고객용 상품 목록 조회 (정렬 기능 포함) -->
+    <select id="selectList" parameterType="map" resultType="product">
+        SELECT 
+            p.product_idx,
+            p.product_name,
+            p.product_brand,
+            p.product_comment,
+            p.product_price,
+            p.product_cnt,
+            p.product_time,
+            p.product_update,
+            p.category_idx,
+            p.product_wishlist,
+            c.category_name,
+            pi.product_image_url
+        FROM product p
+        LEFT JOIN category c ON p.category_idx = c.category_idx
+        LEFT JOIN (
+            SELECT product_idx, product_image_url 
+            FROM product_image 
+            WHERE product_image_level = 1
+        ) pi ON p.product_idx = pi.product_idx
+        
         <where>
             <if test="keyword != null and keyword != ''">
-                AND (
-                    product.product_name LIKE CONCAT('%', #{keyword}, '%')
-                    OR product.product_brand LIKE CONCAT('%', #{keyword}, '%')
-                    OR product.product_comment LIKE CONCAT('%', #{keyword}, '%')
-                    OR category.category_name LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.product_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.category_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.product_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.product_cnt AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR product_image.product_image_url LIKE CONCAT('%', #{keyword}, '%')
-                )
+                AND p.product_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="category_idx != null and category_idx != ''">
+                AND p.category_idx = #{category_idx}
+            </if>
+        </where>
+        
+        <!-- ⭐ ORDER BY 처리 -->
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                ORDER BY ${orderBy}
+            </when>
+            <otherwise>
+                ORDER BY p.product_idx DESC
+            </otherwise>
+        </choose>
+        
+        <!-- 페이징 처리 -->
+        <if test="startRow != null and pageSize != null">
+            LIMIT #{startRow}, #{pageSize}
+        </if>
+    </select>
+
+    <!-- 상품 총 개수 조회 (통합) -->
+    <select id="selectCount" parameterType="map" resultType="int">
+        SELECT COUNT(DISTINCT p.product_idx)
+        FROM product p
+        LEFT JOIN category c ON p.category_idx = c.category_idx
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND p.product_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="category_idx != null and category_idx != ''">
+                AND p.category_idx = #{category_idx}
             </if>
         </where>
     </select>
 
+    <!-- 상품 상세 조회 -->
     <select id="selectOne" parameterType="int" resultType="product">
         SELECT 
             p.*,
@@ -77,6 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND (pi.product_image_level = 1 OR pi.product_image_level IS NULL)
     </select>
 
+    <!-- 상품 등록 -->
     <insert id="insert" parameterType="product" useGeneratedKeys="true" keyProperty="product_idx">
         INSERT INTO product (
             category_idx, 
@@ -102,6 +144,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
 
+    <!-- 상품 이미지 등록 -->
     <insert id="productImageInsert" parameterType="product">
         INSERT INTO product_image (
             product_idx,
@@ -115,6 +158,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
 
+    <!-- 상품 수정 -->
     <update id="update" parameterType="product">
         UPDATE product
         SET
@@ -128,6 +172,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE product_idx = #{product_idx}
     </update>
 
+    <!-- 상품 이미지 수정 -->
     <update id="updateProductImage" parameterType="product">
         UPDATE product_image
         SET product_image_url = #{product_image_url}
@@ -135,11 +180,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND product_image_level = 1
     </update>
 
+    <!-- 상품 삭제 -->
     <delete id="delete" parameterType="int">
         DELETE FROM product
         WHERE product_idx = #{product_idx}
     </delete>
 
+    <!-- 상품 일괄 삭제 -->
     <delete id="deleteBatch" parameterType="list">
         DELETE FROM product
         WHERE product_idx IN
