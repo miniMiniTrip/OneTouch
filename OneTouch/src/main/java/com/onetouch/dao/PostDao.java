@@ -30,5 +30,10 @@ public interface PostDao {
 	LikeVo selectLikePostIdxOne(Map<String, Object> map);
 	int deletePostLike(Map<String, Object> map);
 
+	
+	// 좋아요수 카운트
+	int selectLikeCount(Map<String, Object> map);
+
+	int updatePostLikeCount(Map<String, Object> map);
 
 }

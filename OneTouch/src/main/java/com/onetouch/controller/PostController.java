@@ -116,10 +116,6 @@ public class PostController {
 		System.out.println("");
 		return map;
 	}
-	@RequestMapping("/post/postLikeNotUser")
-	public String postLikeNotUser() {
-		return "";
-	}
 	
 	
 	

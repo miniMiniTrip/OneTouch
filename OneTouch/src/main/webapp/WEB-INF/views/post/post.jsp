@@ -728,29 +728,29 @@ body {
                     
                     <div class="post-interactions">
 					    <!-- 하트 버튼 -->
-<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
-<c:set var="isLiked" value="false" />
-
-<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
-<c:forEach var="likeVo" items="${postVo.likeList}">
-    <c:if test="${likeVo.mem_idx == login_mem_idx}">
-        <c:set var="isLiked" value="true" />
-    </c:if>
-</c:forEach>
-
-<!-- 좋아요를 누른 경우 -->
-<c:if test="${isLiked}">
-    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
-        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
-    </button>
-</c:if>
-
-<!-- 좋아요를 누르지 않은 경우 -->
-<c:if test="${!isLiked}">
-    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
-        <i class="far fa-heart"></i> <!-- 빈 하트 -->
-    </button>
-</c:if>
+						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
+						<c:set var="isLiked" value="false" />
+						
+						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+						<c:forEach var="likeVo" items="${postVo.likeList}">
+						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
+						        <c:set var="isLiked" value="true" />
+						    </c:if>
+						</c:forEach>
+						
+						<!-- 좋아요를 누른 경우 -->
+						<c:if test="${isLiked}">
+						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
+						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+						    </button>
+						</c:if>
+						
+						<!-- 좋아요를 누르지 않은 경우 -->
+						<c:if test="${!isLiked}">
+						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
+						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+						    </button>
+						</c:if>
 						
 					    <button class="interaction-btn">
 					        <i class="far fa-comment"></i>
@@ -772,7 +772,7 @@ body {
 					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 ${postVo.post_like }개</p>
+                        <p class="post-likes" id="likeCount-${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -1287,6 +1287,8 @@ document.addEventListener('click', function(e) {
                     icon.classList.remove('fas');
                     icon.classList.add('far');
                 }
+                alert(d.post_like);
+                $("#likeCount-"+post_idx).text("좋아요 "+d.post_like+"개");
             },
             error: function(e) {
                 alert("좋아요 버튼 실패\n관리자에게 문의");
