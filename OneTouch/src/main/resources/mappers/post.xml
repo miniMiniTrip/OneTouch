@@ -113,4 +113,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deletePostLike" parameterType="map">
 		delete FROM `like` WHERE post_idx=#{post_idx} and mem_idx=#{mem_idx}
 	</delete>
+	
+	<!-- 좋아요 갯수 카운트 -->
+	<select id="selectLikeCount" parameterType="map" resultType="int">
+		select count(*) from `like` where post_idx = #{post_idx}
+	</select>
+	
+	<!-- 좋아요 저장 -->
+	<update id="updatePostLikeCount" parameterType="map" >
+		UPDATE post SET post_like = #{post_like} WHERE post_idx=#{post_idx} 
+	</update>
+	
+	<!-- post 테이블에서  post_idx 기준으로 1개 select -->
+	<select id="selectPostOne" parameterType="int" resultType="PostVo">
+		select p.* from post as p where post_idx=#{post_idx}
+	</select>
+	<!-- post_product 테이블에서 post_idx 기준으로 1개 select -->
+	<select id="selectPostProductOne" parameterType="int" resultType="PostProductVo">
+		select 
+			pp.*
+		from 
+			post_product as pp
+		where pp.post_idx= #{post_idx}
+	</select>
 </mapper>

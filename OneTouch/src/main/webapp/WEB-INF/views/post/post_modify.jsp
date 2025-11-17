@@ -319,7 +319,7 @@ select.form-control {
 				<select id="post_category" name="post_category"
 					class="form-control">
 					<option value="skin">스킨에디터</option>
-					<option value="free">자유게시판</option>
+					<option value="free" >자유게시판</option>
 					<option value="review">구매자리뷰</option>
 				</select>
 			</div>

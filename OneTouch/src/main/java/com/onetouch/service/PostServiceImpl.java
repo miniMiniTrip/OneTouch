@@ -123,6 +123,10 @@ public class PostServiceImpl implements PostService {
 			res = res*postDao.deletePostLike(map);
 			map.put("res",res==1 );
 		}
+			int count=postDao.selectLikeCount(map);
+			System.out.println("count:"+count);
+			map.put("post_like", count);
+			res=res*postDao.updatePostLikeCount(map);
 		
 		if(res==0) {
 			throw new Exception("like_not");

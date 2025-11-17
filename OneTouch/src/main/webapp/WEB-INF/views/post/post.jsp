@@ -766,8 +766,8 @@ body {
 					
 					    <!-- 숨겨진 수정/삭제 버튼 -->
 					    <div class="more-options-menu" style="display: none;">
-					        <button class="edit-btn">수정</button>
-					        <button class="delete-btn">삭제</button>
+					        <button class="edit-btn" data-post-idx="${postVo.post_idx }">수정</button>
+					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
 					    </div>
 					</div>
                     
@@ -1400,7 +1400,10 @@ document.addEventListener('click', function(e) {
 
     // 수정 버튼 클릭 시 처리
     $('.edit-btn').click(function() {
+    	
         alert("수정 버튼 클릭!");
+        let post_idx=$(this).data('post-idx');
+        location.href="/post/modify?post_idx="+post_idx;
         // 여기에 수정 처리 로직을 추가하세요
     });
 

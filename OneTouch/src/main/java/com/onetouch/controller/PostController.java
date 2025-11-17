@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.onetouch.dao.PostDao;
 import com.onetouch.service.PostService;
 import com.onetouch.vo.MemVo;
+import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
 
@@ -115,6 +116,24 @@ public class PostController {
 		System.out.println("	[PostController] return : map");
 		System.out.println("");
 		return map;
+	}
+	
+	//post 수정하기 페이지로 이동
+	@RequestMapping("/post/modify")
+	public String postModifyForm(int post_idx,Model model) {
+		System.out.printf("	[PostController] postModifyForm(post_idx=%d)\n",post_idx);
+		
+		PostVo postVo=postDao.selectPostOne(post_idx);
+		System.out.println(postVo);
+		List<PostProductVo> postProductVo=postDao.selectPostProductOne(post_idx);
+		System.out.println(postProductVo);
+		
+		model.addAttribute("postVo", postVo);
+		model.addAttribute("postProductVo", postProductVo);
+		System.out.println("	[PostController] return : /post/post_modify");
+		System.out.println("");
+		
+		return"/post/post_modify";
 	}
 	
 	

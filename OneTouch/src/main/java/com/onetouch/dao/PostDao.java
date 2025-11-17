@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.onetouch.vo.LikeVo;
+import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
 
@@ -35,5 +36,9 @@ public interface PostDao {
 	int selectLikeCount(Map<String, Object> map);
 
 	int updatePostLikeCount(Map<String, Object> map);
+
+	PostVo selectPostOne(int post_idx);
+
+	List<PostProductVo> selectPostProductOne(int post_idx);
 
 }
