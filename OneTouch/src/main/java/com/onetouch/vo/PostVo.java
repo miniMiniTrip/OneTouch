@@ -67,4 +67,7 @@ public class PostVo {
 
 	/** 상품번호*/
 	int product_idx;
+	
+	/**좋아요 테이블*/
+	List<LikeVo> likeList;
 }
