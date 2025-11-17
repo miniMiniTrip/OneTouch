@@ -1,6 +1,8 @@
 package com.onetouch.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,11 +38,9 @@ public class PostController {
 	@RequestMapping("/post/list")
 	public String postFormList(Model model) {
 		System.out.println("	[PostController] postFormList() ");
-		
 		//커뮤니티 리스트 가져오기
 		List<PostVo> postVo_array=postService.selectPostList();
 		System.out.printf("			[전체_%d]%s\n",postVo_array.size(),postVo_array);
-		
 		//스킨에디터 리스트 가져오기
 		List<PostVo> postTip_array=postService.selectTipList();
 		System.out.printf("			[스킨에디터_%d]%s\n",postTip_array.size(),postTip_array);
@@ -91,32 +91,38 @@ public class PostController {
 		return"redirect:/post/list";
 	}
 	
-	//스킨케어팁 목록 화면 출력 열기
-	@RequestMapping("/post/tiplist")
+	
+	//좋아요 ajax 통신을 통해서 좋아요 추가 좋아요 삭제 처리
+	@RequestMapping("/post/postLike")
 	@ResponseBody
-	public String postTipList() {
+	public Map<String, Object> postLikeUpdate(String post_idx){
+		System.out.println("	[PostController] postLikeUpdate() ");
+		System.out.println("		[@ResponseBody] ");
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.printf("		post_idx:%s\n",post_idx);
+		map.put("post_idx", post_idx);
+		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
+		System.out.printf("		memVo:%s\n",memVo);
+		int mem_idx=memVo.getMem_idx();
+		map.put("mem_idx", mem_idx);
+		try {
+			map = postService.postLikeUpdate(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			map.put("error",e.getMessage() );
+		}
+		System.out.println("	[PostController] return : map");
+		System.out.println("");
+		return map;
+	}
+	@RequestMapping("/post/postLikeNotUser")
+	public String postLikeNotUser() {
 		return "";
 	}
-	@RequestMapping("/post/reviewlist")
-	@ResponseBody
-	public String postReviewList() {
-		return "";
-	}
-	@RequestMapping("/post/freeboard")
-	@ResponseBody
-	public String postFreeBoard() {
-		return "";
-	}
 	
 	
 	
-	
-//	//모달창
-//	@RequestMapping("/post/detail")
-//	
-//	public String postDetail() {
-//		return "";
-//	}
 	
 	
 }

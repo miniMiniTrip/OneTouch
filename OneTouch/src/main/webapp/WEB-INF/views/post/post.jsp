@@ -500,11 +500,15 @@ body {
     }
 }
 
+
+/* post 등록 버튼 css------------------------------------------------------------- */
 /* 게시물 작성 버튼 컨테이너 */
 .post-write-container {
     text-align: center;
-    padding: 20px 0;
-    background-color: #f9f9f9;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+   /*  background-color: #f9f9f9; */
 }
 
 	/* 게시물 작성 버튼 */
@@ -578,6 +582,47 @@ body {
 	    font-weight: 700;
 	    letter-spacing: 1px;
 	}
+	
+/* end: post 등록 버튼 css------------------------------------------------------------- */
+
+/* 점3개버튼 , 수정 삭제 버튼 css --------------------------------*/
+/* 점 3개 버튼 (ellipsis) */
+.more-options {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.more-options i {
+    font-size: 20px;
+}
+
+/* 수정/삭제 메뉴 */
+.more-options-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    padding: 10px;
+    display: none;
+}
+
+.more-options-menu button {
+    background: none;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.more-options-menu button:hover {
+    background-color: #f0f0f0;
+}
+/* end: 점3개버튼 , 수정 삭제 버튼 css --------------------------------------*/
+	
     </style>
 </head>
 
@@ -608,16 +653,16 @@ body {
             </div>
         </div>
     </div>
-    
-   <div class="post-write-container">
-   <button class="post-write-btn" onclick="location.href='/post/insert'">
-    <i class="fas fa-plus"></i>
-    <span>새 게시물 작성</span>
-  </button>
-  </div>
+ 
   
     <section class="section">
         <div class="container">
+			  <div class="post-write-container">
+			   <button class="post-write-btn" onclick="location.href='/post/insert'">
+			    <i class="fas fa-plus"></i>
+			    <span>등록</span>
+			  </button>
+			  </div>
             <div class="community-content">
                 <div class="community-tabs">
                     <div class="community-tab-item active" data-tab="all">전체</div>
@@ -625,6 +670,7 @@ body {
                     <div class="community-tab-item" data-tab="review">리뷰</div>
                     <div class="community-tab-item" data-tab="free">자유게시판</div>
                 </div>
+
                 
                 <!-- 커뮤니티 1개 ============================================================= -->
                 
@@ -681,19 +727,52 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-share-square"></i>
-                        </button>
-                    </div>
+					    <!-- 하트 버튼 -->
+<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
+<c:set var="isLiked" value="false" />
+
+<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+<c:forEach var="likeVo" items="${postVo.likeList}">
+    <c:if test="${likeVo.mem_idx == login_mem_idx}">
+        <c:set var="isLiked" value="true" />
+    </c:if>
+</c:forEach>
+
+<!-- 좋아요를 누른 경우 -->
+<c:if test="${isLiked}">
+    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
+        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+    </button>
+</c:if>
+
+<!-- 좋아요를 누르지 않은 경우 -->
+<c:if test="${!isLiked}">
+    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
+        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+    </button>
+</c:if>
+						
+					    <button class="interaction-btn">
+					        <i class="far fa-comment"></i>
+					    </button>
+					    <button class="interaction-btn">
+					        <i class="far fa-share-square"></i>
+					    </button>
+					
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn">수정</button>
+					        <button class="delete-btn">삭제</button>
+					    </div>
+					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -704,6 +783,8 @@ body {
                         <input type="text" placeholder="댓글을 남겨보세요...">
                         <button class="comment-submit">댓글</button>
                     </div>
+                    <br>
+                    <br>
                 </c:forEach>
                 </div>
                 <!-- /커뮤니티 전체 목록 ============================================================= -->
@@ -762,7 +843,7 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
+                        <button class="interaction-btn" data-post-idx="${postVo.post_idx }">
                             <i class="far fa-heart"></i>
                         </button>
                         <button class="interaction-btn">
@@ -771,10 +852,21 @@ body {
                         <button class="interaction-btn">
                             <i class="far fa-share-square"></i>
                         </button>
+                        
+                    	<!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn">수정</button>
+					        <button class="delete-btn">삭제</button>
+					    </div>
                     </div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -830,7 +922,7 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
+                        <button class="interaction-btn" data-post-idx="${postVo.post_idx }">
                             <i class="far fa-heart"></i>
                         </button>
                         <button class="interaction-btn">
@@ -839,10 +931,21 @@ body {
                         <button class="interaction-btn">
                             <i class="far fa-share-square"></i>
                         </button>
+                        
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn">수정</button>
+					        <button class="delete-btn">삭제</button>
+					    </div>                       
                     </div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -898,7 +1001,7 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
+                        <button class="interaction-btn" data-post-idx="${postVo.post_idx }">
                             <i class="far fa-heart"></i>
                         </button>
                         <button class="interaction-btn">
@@ -907,10 +1010,21 @@ body {
                         <button class="interaction-btn">
                             <i class="far fa-share-square"></i>
                         </button>
+                        
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn">수정</button>
+					        <button class="delete-btn">삭제</button>
+					    </div>                        
                     </div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -1142,22 +1256,44 @@ document.addEventListener("DOMContentLoaded", function () {
  // =========================
  // 2. 좋아요 하트 토글 기능
  // =========================
- document.addEventListener('click', function(e) {
-     const btn = e.target.closest('.interaction-btn');
-     if (!btn) return;
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.interaction-btn');
+    if (!btn) return;
 
-     const icon = btn.querySelector('i');
-     if (icon && icon.classList.contains('fa-heart')) {
-         const isLiked = btn.classList.toggle('active');
-         if (isLiked) {
-             icon.classList.remove('far');
-             icon.classList.add('fas');
-         } else {
-             icon.classList.remove('fas');
-             icon.classList.add('far');
-         }
-     }
- });
+    const icon = btn.querySelector('i');
+    if (icon && icon.classList.contains('fa-heart')) {
+
+        // 로그인 체크
+        if (!'${user}') {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+        // 클릭한 버튼이 어느 게시글인지 확인
+        const post_idx = btn.getAttribute('data-post-idx');
+        console.log("클릭한 게시글 ID:", post_idx);
+
+        // Ajax 요청 보내기
+        $.ajax({
+            url: "/post/postLike",
+            type: "post",
+            data: { "post_idx": post_idx },
+            success: function(d) {
+                // 서버 성공 시 하트 토글
+                const isLiked = btn.classList.toggle('active');
+                if (isLiked) { //하트 표시
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else { //하트 제거
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            },
+            error: function(e) {
+                alert("좋아요 버튼 실패\n관리자에게 문의");
+            }
+        });
+    }
+});
 
  // =========================
  // 3. 탭 클릭 기능
@@ -1244,6 +1380,38 @@ document.addEventListener("DOMContentLoaded", function () {
      });
  });
  /* ------------------------------------------------------------------------ */
+ 
+ /* 내용에서 수정삭제 머튼 컨트롤 js------------------------------------------------------------------------ */
+ $(document).ready(function() {
+    // 점 3개 버튼 클릭 시 수정/삭제 메뉴 토글
+    $('.more-options').click(function(e) {
+        e.stopPropagation(); // 클릭 이벤트가 부모 요소로 전달되지 않게 함
+        $(this).siblings('.more-options-menu').toggle(); // 해당 메뉴를 보이거나 숨김
+    });
+
+    // 메뉴 바깥 영역 클릭 시 메뉴 숨기기
+    $(document).click(function(e) {
+        if (!$(e.target).closest('.post-interactions').length) {
+            $('.more-options-menu').hide(); // .post-interactions 외 클릭 시 숨김
+        }
+    });
+
+    // 수정 버튼 클릭 시 처리
+    $('.edit-btn').click(function() {
+        alert("수정 버튼 클릭!");
+        // 여기에 수정 처리 로직을 추가하세요
+    });
+
+    // 삭제 버튼 클릭 시 처리
+    $('.delete-btn').click(function() {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            alert("삭제 버튼 클릭!");
+            // 여기에 삭제 처리 로직을 추가하세요
+        }
+    });
+});
+ /* end: 내용에서 수정삭제 머튼 컨트롤 js------------------------------------------------------------------------ */
+ 
  
  
        //수정 전 코드 --------------------------------	
