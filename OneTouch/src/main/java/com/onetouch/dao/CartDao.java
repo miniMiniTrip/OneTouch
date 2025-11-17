@@ -23,7 +23,7 @@ public interface CartDao {
 	
 	int insert(CartVo vo);
 	int update(CartVo vo);
-	int delete(int cart_id);
+	int delete(int cart_idx);
 	//결제시 삭제
 	int deletePaymentComplete(Map<String, Object> map);
 
