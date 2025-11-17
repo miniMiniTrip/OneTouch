@@ -1,5 +1,7 @@
 package com.onetouch.vo;
 
+import java.util.List;
+
 import org.apache.ibatis.type.Alias;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +32,7 @@ public class PostVo {
 	/** 업로드한이미지명*/
 	String post_image;
 	
-	/** 이미지 */
+	/** 이미지 받아올때 사용 */
 	MultipartFile post_images[];
 	
 	/** 좋아요 갯수*/
@@ -56,4 +58,13 @@ public class PostVo {
 	
 	/** 업데이트시각*/
 	String post_update;
+	
+	/** post에 등록된 상품 정보*/
+	List<ProductVo> productList;
+	
+	/** post_insert 페이지에서 상품 등록할때 상품번호들*/
+	List<Integer> product_idx_array;
+
+	/** 상품번호*/
+	int product_idx;
 }

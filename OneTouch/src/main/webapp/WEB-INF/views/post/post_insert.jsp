@@ -336,18 +336,51 @@ select.form-control {
 					<textarea id="post_content" name="post_content" class="form-control" rows="3"
 						placeholder="내용을 입력해주세요"></textarea>
 				</div>
-
-				<!--      <div class="form-group">
-                    <label for="skin-category">카테고리</label>
-                    <select id="skin-category" class="form-control">
-                        <option value="">카테고리를 선택해주세요</option>
-                        <option value="simple">심플</option>
-                        <option value="business">비즈니스</option>
-                        <option value="blog">블로그</option>
-                        <option value="shop">쇼핑몰</option>
-                        <option value="portfolio">포트폴리오</option>
-                    </select>
-                </div> -->
+			
+			<div id="product-add">
+				<div class="form-group">
+                    <label for="skin-category">상품추가</label>
+          <%--           <select id="skin-category" name="product_idx" class="form-control">
+                        <option value="">상품을 선택해주세요</option>
+                        <c:forEach var="productVo" items="${product_list_array }">
+                        <option value="${productVo.product_idx }">${productVo.product_name }</option>
+                        </c:forEach>
+                    </select> --%>
+                </div>
+                
+			    <div class="container mt-4">
+			        <!-- 상품 선택 폼을 추가하는 버튼 -->
+			        <button type="button" class="btn btn-primary" id="add-product-btn">+</button>
+			
+			        <!-- 상품 폼을 담을 영역 -->
+			        <div id="product-form-container" class="mt-4">
+			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
+			        </div>
+			   </div>
+			</div>
+			   
+			   <!-- ----------------- 상풍 추가 js------------------ -->
+				<script>
+				        $(document).ready(function() {
+				            $('#add-product-btn').click(function() {
+				                // 새로운 상품 선택 폼을 생성할 HTML 코드
+				                var newFormGroup = `
+				                    <div class="form-group">
+				                        <select name="product_idx_array" class="form-control">
+				                            <option value="">상품을 선택해주세요</option>
+				                            <c:forEach var="productVo" items="${product_list_array}">
+				                                <option value="${productVo.product_idx}">${productVo.product_name}</option>
+				                            </c:forEach>
+				                        </select>
+				                    </div>
+				                `;
+				
+				                // 생성된 폼을 화면에 추가
+				                $('#product-form-container').append(newFormGroup);
+				            });
+				        });
+				</script>
+			   <!-- ----------------- end/상풍 추가 js------------------ -->
 
 				<!--      <div class="form-group">
                     <label>스킨 미리보기</label>
@@ -413,6 +446,7 @@ select.form-control {
             const boardType = this.value;
             const reviewFields = document.getElementById('review-fields');
             const skinFields = document.getElementById('skin-fields');
+            const productAddFields = document.getElementById('product-add');
             
             // 모든 필드 숨기기
             reviewFields.style.display = 'none';
@@ -422,9 +456,12 @@ select.form-control {
             if (boardType === 'review') {
                 reviewFields.style.display = 'block';
                 skinFields.style.display = 'block';
+            	productAddFields.style.display='none';
             } else if (boardType === 'skin') {
+            	productAddFields.style.display='block';
                 skinFields.style.display = 'block';
             } else if (boardType ==='free'){
+            	productAddFields.style.display='none';
                 skinFields.style.display = 'block';
             }
         });

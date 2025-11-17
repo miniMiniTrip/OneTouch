@@ -131,24 +131,33 @@ body {
     overflow: hidden;
 }
 
+/* 슬라이드 트랙 */
 .carousel-inner {
-    display: flex;
+     display: flex;
     transition: transform 0.4s ease-in-out, height 0.3s ease;
     width: 100%;
+    cursor: grab;         /* 마우스 드래그 커서 */
 }
 
+/* 슬라이드 아이템 */
 .carousel-item {
-    /* flex: 0 0 100%; */
+    display: flex;
+    justify-content: center;  /* 가로 중앙 */
+    align-items: center;      /* 세로 중앙 */
+    
+    flex: 0 0 100%;  /* 한 번에 하나의 아이템만 보이도록 */
     width:100%;
     height:100%;
 }
 
+/* 이미지 */
 .post-image {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 10px; /* 선택사항: 모서리 둥글게 */
     display: block;
     /* object-fit: cover; */ /* 이미지 비율 유지하며 꽉 채움 */
-    object-fit: contain;  /* 이미지가 잘리지 않게 비율 유지 */
+    object-fit: fill;  /* 이미지가 잘리지 않게 비율 유지 */
     object-position: center;
     /* background-color: #000; */ /* 여백 부분 색 (선택사항) */
 }
@@ -381,6 +390,31 @@ body {
     border-color: var(--onetouch-navy);
 }
 
+/* 데스크탑에서 드래그 슬라이드 */
+@media (min-width: 768px) {
+    .image-carousel {
+        aspect-ratio: 3 / 4; /* 3:4 비율 유지 */
+    }
+
+    .carousel-inner {
+        cursor: grab; /* 마우스 드래그 커서 */
+    }
+
+    .carousel-item {
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: cover;
+    }
+
+    .post-image {
+        width: 100%;
+        height: auto;
+        object-fit: conter;  /* 이미지 꽉 채우기 */
+    }
+}
+
 /* 반응형 설정 */
 @media (max-width: 767px) {
     .community-content {
@@ -399,7 +433,151 @@ body {
         width: 100px;  /* 데스크탑에서 카드 크기 늘리기 */
     }
 }
+/* 모바일에서 이미지 잘림 방지 */
+@media (max-width: 767px) {
+    .image-carousel {
+        aspect-ratio: auto; /* 비율 제한 해제 */
+        height: auto;
+    }
 
+    .carousel-item,
+    .post-image {
+        height: auto; 
+        max-height: none;
+        object-fit: contain; /* 이미지 잘림 방지 */
+    }
+}
+/* 모바일에서 이미지 잘림 방지 + 슬라이드 정상화 */
+@media (max-width: 767px) {
+
+    /* 바깥 컨테이너는 비율 제거 */
+    .image-carousel {
+        aspect-ratio: auto; /* 모바일에서는 비율 해제 */
+        height: auto;
+    }
+
+    /* 슬라이드 트랙은 flex 구조 유지 + 자동 높이 */
+    .carousel-inner {
+    	overflow-x: auto;
+    	/* height:827; */
+    	scroll-snap-type: x mandatory; /* 스냅 효과 */
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        transition: none; /* transform 전환 제거 */
+        /* transition: transform 0.4s ease-in-out; */
+        height: auto; /* auto OK */
+    }
+
+    /* 슬라이드 아이템은 width 고정, height 자동 */
+    .carousel-item {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 이미지가 슬라이드 높이를 자연스럽게 결정하도록 */
+    .post-image {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* 모바일 상품 슬라이드 가능하도록 수정 */
+@media (max-width: 767px) {
+    .product-section {
+        overflow-x: auto;  /* 가로 스크롤 가능하게 변경 */
+        -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+    }
+
+    /* 스크롤바 숨기기 */
+    .product-section::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* 게시물 작성 버튼 컨테이너 */
+.post-write-container {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f9f9f9;
+}
+
+	/* 게시물 작성 버튼 */
+	.post-write-btn {
+	    background: linear-gradient(135deg, var(--onetouch-navy) 0%, var(--onetouch-light-blue) 100%);
+	    color: white;
+	    border: none;
+	    border-radius: 25px;
+	    padding: 15px 30px;
+	    font-size: 16px;
+	    font-weight: 600;
+	    cursor: pointer;
+	    display: inline-flex;
+	    align-items: center;
+	    justify-content: center;
+	    gap: 10px;
+	    box-shadow: 0 8px 25px rgba(0, 0, 51, 0.4);
+	    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	    position: relative;
+	    overflow: hidden;
+	    letter-spacing: 0.5px;
+	}
+	
+	/* 호버 효과 */
+	.post-write-btn:hover {
+	    transform: translateY(-3px) scale(1.05);
+	    box-shadow: 0 12px 35px rgba(0, 0, 51, 0.6);
+	}
+	
+	/* 클릭 효과 */
+	.post-write-btn:active {
+	    transform: translateY(-1px) scale(1.02);
+	}
+	
+	/* 버튼 내부 빛나는 효과 */
+	.post-write-btn::before {
+	    content: '';
+	    position: absolute;
+	    top: 0;
+	    left: -100%;
+	    width: 100%;
+	    height: 100%;
+	    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+	    transition: left 0.5s;
+	}
+	
+	.post-write-btn:hover::before {
+	    left: 100%;
+	}
+	
+	/* 아이콘 스타일 */
+	.post-write-btn i {
+	    font-size: 16px;
+	    transition: transform 0.3s ease;
+	}
+	
+	.post-write-btn:hover i {
+	    transform: rotate(90deg);
+	}
+	
+	/* 텍스트 스타일 */
+	.post-write-btn span {
+	    font-weight: 600;
+	    position: relative;
+	}
+	.post-write-btn span {
+	    background: linear-gradient(45deg, #ffffff, #f0f8ff);
+	    -webkit-background-clip: text;
+	    -webkit-text-fill-color: transparent;
+	    background-clip: text;
+	    font-weight: 700;
+	    letter-spacing: 1px;
+	}
     </style>
 </head>
 
@@ -430,7 +608,14 @@ body {
             </div>
         </div>
     </div>
-    <input type="button" value="등록" onclick="location.href='/post/insert'">
+    
+   <div class="post-write-container">
+   <button class="post-write-btn" onclick="location.href='/post/insert'">
+    <i class="fas fa-plus"></i>
+    <span>새 게시물 작성</span>
+  </button>
+  </div>
+  
     <section class="section">
         <div class="container">
             <div class="community-content">
@@ -483,63 +668,17 @@ body {
                     </div>
                     
                     <div class="product-section">
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
-                        <div class="product-card">
-                        	<a href="/product/4" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-	                        </a>    
-                        </div>
+                    	<c:forEach var="productVo" items="${postVo.productList }">
+	                        <div class="product-card">
+	                        	<a href="/product/4" class="product-link">
+				                            <img src="${pageContext.request.contextPath }/images/${productVo.product_image_url}" alt="제품" class="product-img">
+				                            <p class="product-discount">${productVo.product_name }</p>
+				                            <p class="product-price">${productVo.product_price }</p> 
+		                        </a>    
+	                        </div>
+                     	</c:forEach>
                     </div>
+                    
                     
                     <div class="post-interactions">
                         <button class="interaction-btn">
@@ -609,27 +748,18 @@ body {
                         </div>
                     </div>
                     
-                    <div class="product-section">
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">19% 할인</p>
-                            <p class="product-price">55,900원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">10% 할인</p>
-                            <p class="product-price">25,800원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-price">33,000원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">15% 할인</p>
-                            <p class="product-price">42,500원</p>
-                        </div>
+                  	<div class="product-section">
+                    	<c:forEach var="productVo" items="${postVo.productList }">
+	                        <div class="product-card">
+	                        	<a href="/product/4" class="product-link">
+				                            <img src="${pageContext.request.contextPath }/images/${productVo.product_image_url}" alt="제품" class="product-img">
+				                            <p class="product-discount">${productVo.product_name }</p>
+				                            <p class="product-price">${productVo.product_price }</p> 
+		                        </a>    
+	                        </div>
+                     	</c:forEach>
                     </div>
+                    
                     
                     <div class="post-interactions">
                         <button class="interaction-btn">
@@ -698,27 +828,6 @@ body {
                         </div>
                     </div>
                     
-                    <div class="product-section">
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">19% 할인</p>
-                            <p class="product-price">55,900원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">10% 할인</p>
-                            <p class="product-price">25,800원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-price">33,000원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">15% 할인</p>
-                            <p class="product-price">42,500원</p>
-                        </div>
-                    </div>
                     
                     <div class="post-interactions">
                         <button class="interaction-btn">
@@ -787,29 +896,6 @@ body {
                         </div>
                     </div>
                     
-                    <div class="product-section">
-                        <div class="product-card">
-                        	<a href="#" class="product-link">
-	                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-	                            <p class="product-discount">19% 할인</p>
-	                            <p class="product-price">55,900원</p>
-                            </a>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">10% 할인</p>
-                            <p class="product-price">25,800원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-price">33,000원</p>
-                        </div>
-                        <div class="product-card">
-                            <img src="https://via.placeholder.com/100?text=제품" alt="제품" class="product-img">
-                            <p class="product-discount">15% 할인</p>
-                            <p class="product-price">42,500원</p>
-                        </div>
-                    </div>
                     
                     <div class="post-interactions">
                         <button class="interaction-btn">
@@ -874,163 +960,184 @@ body {
      }
  });
 
-
- // =========================
- // 1. 이미지 캐러셀 기능
- // =========================
- document.addEventListener("DOMContentLoaded", function() {
-     const carousels = document.querySelectorAll('.image-carousel');
-
-     carousels.forEach((carousel, index) => {
-         const inner = carousel.querySelector('.carousel-inner');
-         const items = carousel.querySelectorAll('.carousel-item');
-         const prevBtn = carousel.querySelector('.carousel-control.prev');
-         const nextBtn = carousel.querySelector('.carousel-control.next');
-         const indicators = carousel.querySelectorAll('.indicator');
-
-         let currentIndex = 0;
-         const totalItems = items.length;
-
-         // 초기 슬라이드 설정
-         function showSlide(index) {
-             if (index < 0) index = totalItems - 1;
-             if (index >= totalItems) index = 0;
-             currentIndex = index;
-
-             // active 클래스 업데이트
-             items.forEach((item, i) => {
-                 item.classList.toggle('active', i === currentIndex);
-             });
-
-             indicators.forEach((ind, i) => {
-                 ind.classList.toggle('active', i === currentIndex);
-             });
-         }
-
-         // 버튼 이벤트
-         if (prevBtn) prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
-         if (nextBtn) nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
-
-         // 인디케이터 이벤트
-         indicators.forEach((ind, i) => {
-             ind.addEventListener('click', () => showSlide(i));
-         });
-
-         // 첫 이미지 로딩 시 높이 조정
-         const firstImg = items[0]?.querySelector('img');
-         if (firstImg) {
-             if (firstImg.complete) {
-                 inner.style.height = firstImg.offsetHeight + 'px';
-             } else {
-                 firstImg.addEventListener('load', () => {
-                     inner.style.height = firstImg.offsetHeight + 'px';
-                 });
-             }
-         }
-
-         // 윈도우 리사이즈 시 높이 자동 조정
-         window.addEventListener('resize', () => {
-             const activeImg = items[currentIndex]?.querySelector('img');
-             if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
-         });
-
-         // 초기 슬라이드 표시
-         showSlide(0);
-         
-         // 3초마다 슬라이드 전환
-         let autoSlideInterval = setInterval(() => {
-        	    showSlide(currentIndex + 1);
-        	}, 3000); // 3초마다 다음 슬라이드
-
-        	// 마우스 올리면 멈추고, 나가면 다시 시작
-        	carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-        	carousel.addEventListener('mouseleave', () => {
-        	    autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 5000);
-        	});
-        	
-          //스와이프 기능
-          let startX = 0;
-			let endX = 0;
-			
-			carousel.addEventListener('touchstart', e => {
-			    startX = e.touches[0].clientX;
-			});
-			carousel.addEventListener('touchend', e => {
-			    endX = e.changedTouches[0].clientX;
-			    handleSwipe();
-			});
-			
-			carousel.addEventListener('mousedown', e => {
-			    startX = e.clientX;
-			});
-			carousel.addEventListener('mouseup', e => {
-			    endX = e.clientX;
-			    handleSwipe();
-			});
-			
-			function handleSwipe() {
-			    const diff = endX - startX;
-			    if (Math.abs(diff) > 50) {
-			        if (diff > 0) {
-			            showSlide(currentIndex - 1); // 왼→오 스와이프 → 이전
-			        } else {
-			            showSlide(currentIndex + 1); // 오→왼 스와이프 → 다음
-			        }
-			    }
-			}
-		   //end:스와이프 기능
-
-			// 이미지 높이 조절		   
-		   const activeImg = items[currentIndex]?.querySelector('img');
-			if (activeImg) {
-			  inner.style.height = activeImg.offsetHeight + 'px';
-			}
-     });
- });
 //=========================
-//✅ 모바일 스와이프 슬라이드 기능 추가 (기존 코드 유지 + 이거만 추가)
+//1. 이미지 캐러셀 기능 (데스크탑 + 모바일 통합)
 //=========================
-document.querySelectorAll('.image-carousel').forEach(carousel => {
-  let startX = 0;
-  let endX = 0;
+document.addEventListener("DOMContentLoaded", function () {
 
-  // 터치 시작
-  carousel.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-  }, { passive: true });
+  const isMobile = window.innerWidth <= 767; // 모바일 여부 판단
+  const carousels = document.querySelectorAll('.image-carousel'); // 모든 캐러셀 요소 선택
 
-  // 터치 이동 중 이미지 드래그 방지
-  carousel.addEventListener('touchmove', e => {
-      e.preventDefault();
-  }, { passive: false });
+  carousels.forEach(carousel => {
+      const inner = carousel.querySelector('.carousel-inner'); // 이미지 슬라이드 컨테이너
+      const items = carousel.querySelectorAll('.carousel-item'); // 모든 슬라이드 아이템
+      const prevBtn = carousel.querySelector('.carousel-control.prev'); // 이전 버튼
+      const nextBtn = carousel.querySelector('.carousel-control.next'); // 다음 버튼
+      const indicators = carousel.querySelectorAll('.indicator'); // 하단 인디케이터
 
-  // 터치 종료 후 방향 판단
-  carousel.addEventListener('touchend', e => {
-      endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
-      const threshold = 50; // 감도 (50px 이상 움직이면 슬라이드 전환)
+      let currentIndex = 0; // 현재 슬라이드 인덱스
+      const totalItems = items.length; // 전체 슬라이드 개수
 
-      if (Math.abs(diff) > threshold) {
-          const nextBtn = carousel.querySelector('.carousel-control.next');
-          const prevBtn = carousel.querySelector('.carousel-control.prev');
-
-          if (diff > 0) {
-              // 왼쪽으로 스와이프 → 다음 슬라이드
-              nextBtn?.click();
-          } else {
-              // 오른쪽으로 스와이프 → 이전 슬라이드
-              prevBtn?.click();
-          }
+      // =========================
+      // 공통: 이미지 높이 자동 조정
+      // =========================
+      function adjustHeight(index) {
+          const activeImg = items[index]?.querySelector('img');
+          //if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
+          if (activeImg) inner.style.height = '827px';
       }
-  });
 
-  // 이미지 드래그 방지
-  carousel.querySelectorAll('img').forEach(img => {
-      img.addEventListener('dragstart', e => e.preventDefault());
+      window.addEventListener('resize', () => adjustHeight(currentIndex));
+
+      // =========================
+      // 데스크탑 기능
+      // =========================
+      if (!isMobile) {
+
+          // 슬라이드 표시 함수
+          function showSlide(index) {
+              if (index < 0) index = totalItems - 1;
+              if (index >= totalItems) index = 0;
+              currentIndex = index;
+
+              // 슬라이드 활성화
+              items.forEach((item, i) => item.classList.toggle('active', i === currentIndex));
+              // 인디케이터 활성화
+              indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentIndex));
+              // 높이 조정
+              adjustHeight(currentIndex);
+          }
+
+          // 버튼 클릭 이벤트
+          if (prevBtn) prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+          if (nextBtn) nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
+
+          // 인디케이터 클릭 이벤트
+          indicators.forEach((ind, i) => ind.addEventListener('click', () => showSlide(i)));
+
+          // 초기 슬라이드 표시
+          showSlide(0);
+
+          // 자동 슬라이드 (3초 간격)
+          let autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 10000);
+
+          // 마우스 진입 시 자동 슬라이드 중지
+          carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+          // 마우스 떠나면 자동 슬라이드 재개
+          carousel.addEventListener('mouseleave', () => {
+              autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 10000);
+          });
+
+          // =========================
+          // 마우스 드래그/스와이프 기능
+          // =========================
+          let isDragging = false;
+          let startX = 0;
+          let currentX = 0;
+
+          // 커서 스타일 변경
+          carousel.style.cursor = 'grab';
+
+          // 마우스 드래그 시작
+          carousel.addEventListener('mousedown', e => {
+              isDragging = true;
+              startX = e.clientX;
+              carousel.style.cursor = 'grabbing';
+              e.preventDefault();
+          });
+
+          // 마우스 이동 기록
+          carousel.addEventListener('mousemove', e => {
+              if (!isDragging) return;
+              currentX = e.clientX;
+          });
+
+          // 마우스 드래그 종료
+          carousel.addEventListener('mouseup', e => {
+              if (!isDragging) return;
+              isDragging = false;
+              carousel.style.cursor = 'grab';
+
+              const diff = e.clientX - startX;
+              if (Math.abs(diff) > 50) {
+                  if (diff > 0) showSlide(currentIndex - 1);
+                  else showSlide(currentIndex + 1);
+              }
+          });
+
+          // 마우스가 캐러셀 밖으로 나가도 드래그 종료 처리
+          carousel.addEventListener('mouseleave', e => {
+              if (isDragging) {
+                  isDragging = false;
+                  carousel.style.cursor = 'grab';
+                  const diff = e.clientX - startX;
+                  if (Math.abs(diff) > 50) {
+                      if (diff > 0) showSlide(currentIndex - 1);
+                      else showSlide(currentIndex + 1);
+                  }
+              }
+          });
+
+          // 터치 이벤트도 데스크탑과 동일하게 스와이프 처리
+          carousel.addEventListener('touchstart', e => {
+              isDragging = true;
+              startX = e.touches[0].clientX;
+          }, { passive: true });
+
+          carousel.addEventListener('touchmove', e => {
+              if (!isDragging) return;
+              currentX = e.touches[0].clientX;
+          }, { passive: true });
+
+          carousel.addEventListener('touchend', e => {
+              if (!isDragging) return;
+              isDragging = false;
+              const diff = e.changedTouches[0].clientX - startX;
+              if (Math.abs(diff) > 50) {
+                  if (diff > 0) showSlide(currentIndex - 1);
+                  else showSlide(currentIndex + 1);
+              }
+          });
+
+      } else {
+          // =========================
+          // 모바일 기능 (좌우 스크롤)
+          // =========================
+          let isDown = false;
+          let startX = 0, scrollLeft = 0;
+
+          // 터치 시작
+          inner.addEventListener("touchstart", e => {
+              isDown = true;
+              startX = e.touches[0].pageX;
+              scrollLeft = inner.scrollLeft;
+          }, { passive: true });
+
+          // 터치 이동
+          inner.addEventListener("touchmove", e => {
+              if (!isDown) return;
+              const x = e.touches[0].pageX;
+              const walk = startX - x;
+              inner.scrollLeft = scrollLeft + walk;
+          }, { passive: true });
+
+          // 터치 종료
+          inner.addEventListener("touchend", () => { isDown = false; });
+          inner.addEventListener("touchcancel", () => { isDown = false; });
+
+          // 이미지 드래그 방지
+          items.forEach(item => {
+              const img = item.querySelector('img');
+              if (img) img.addEventListener('dragstart', e => e.preventDefault());
+          });
+      }
+
+      // =========================
+      // 초기 높이 조정
+      // =========================
+      adjustHeight(currentIndex);
   });
 });
-
-
 
  // =========================
  // 2. 좋아요 하트 토글 기능
@@ -1052,7 +1159,6 @@ document.querySelectorAll('.image-carousel').forEach(carousel => {
      }
  });
 
-
  // =========================
  // 3. 탭 클릭 기능
  // =========================
@@ -1060,133 +1166,83 @@ document.querySelectorAll('.image-carousel').forEach(carousel => {
      const tabs = document.querySelectorAll('.community-tab-item');
      const posts = document.querySelectorAll('.community-post');
 
-     // 처음 페이지 로딩 시 모든 게시물 숨기기
-     posts.forEach(post => {
-         post.style.display = 'none';
-     });
-     
-     // 기본 탭을 'all'로 설정하여 첫 번째 탭을 활성화 시킬 수 있도록 처리
+     posts.forEach(post => post.style.display = 'none');
+
      const defaultTab = document.querySelector('.community-tab-item[data-tab="all"]');
      if (defaultTab) {
          defaultTab.classList.add('active');
-         // 'all' 탭이 클릭되면 모든 게시물이 보이도록 처리
-         posts.forEach(post => {
-             if (post.dataset.tab === 'all') {
-                 post.style.display = 'block';
-             }
-         });
+         posts.forEach(post => { if (post.dataset.tab === 'all') post.style.display = 'block'; });
      }
-     
-     // 탭 클릭 이벤트 처리
+
      tabs.forEach(tab => {
          tab.addEventListener('click', function() {
-             // 탭 활성화
              tabs.forEach(t => t.classList.remove('active'));
              this.classList.add('active');
 
              const tabType = this.dataset.tab;
-
-             // 게시물 필터링 (실제 데이터 분류 시 서버 연동 가능)
              posts.forEach(post => {
-                 // 예: post.dataset.category 값이 tabType과 같은 경우만 표시
-                 if (tabType === 'all') {
-                	    if (post.dataset.tab === 'all') {
-                            post.style.display = 'block';  // 'all' 탭에 해당하는 게시물만 보이도록
-                        } else {
-                            post.style.display = 'none';  // 다른 탭에 해당하는 게시물은 숨김
-                        }
-                 } else {
-                	 if(post.dataset.tab === tabType){
-                     post.style.display = 'block';
-                	 } else{
-                     post.style.display = 'none';
-                	 }
-                 }
+                 post.style.display = (tabType === 'all') 
+                     ? (post.dataset.tab === 'all' ? 'block' : 'none')
+                     : (post.dataset.tab === tabType ? 'block' : 'none');
              });
-
-             // 선택된 탭 이름 표시 (테스트용)
-             console.log(`탭 변경됨: ${tabType}`);
          });
      });
  });
- 
- /* ------------------------------------------------------------------------ */
- // 상품 스크린 움직이는 기능
+
+ // =========================
+ // 4. 상품 스크롤 드래그 기능
+ // =========================
  document.addEventListener('DOMContentLoaded', () => {
-    // 각 .product-section에 대해서 개별적으로 드래그 기능을 적용
-    const productSections = document.querySelectorAll('.product-section');
-    
-    productSections.forEach((productSection, index) => {
-        let isMouseDown = false;
-        let startX;
-        let scrollLeft;
-        let isDragging = false; // 드래그 상태 추적
-        let clickTimeout; // 클릭 이벤트 딜레이를 위한 변수
+     const productSections = document.querySelectorAll('.product-section');
 
-        // 드래그 시작
-        productSection.addEventListener('mousedown', (e) => {
-            isMouseDown = true;
-            isDragging = false; // 드래그 시작되지 않았다고 설정
-            productSection.style.cursor = 'grabbing';  // 마우스가 클릭된 상태에서는 '잡고 있음' 포인터
-            startX = e.pageX - productSection.offsetLeft;
-            scrollLeft = productSection.scrollLeft;
+     productSections.forEach(productSection => {
+         let isMouseDown = false;
+         let startX = 0;
+         let scrollLeft = 0;
+         let isDragging = false;
+         let clickTimeout;
 
-            // 드래그가 시작될 때는 링크 클릭을 방지
-            e.preventDefault(); // 클릭 이벤트 기본 동작을 방지
-        });
+         productSection.addEventListener('mousedown', (e) => {
+             isMouseDown = true;
+             isDragging = false;
+             productSection.style.cursor = 'grabbing';
+             startX = e.pageX - productSection.offsetLeft;
+             scrollLeft = productSection.scrollLeft;
+             e.preventDefault();
+         });
 
-        // 드래그 끝
-        productSection.addEventListener('mouseleave', () => {
-            isMouseDown = false;
-            isDragging = false; // 마우스가 영역을 떠나면 드래그 상태를 리셋
-            productSection.style.cursor = 'grab';  // 마우스가 영역을 떠나면 원래 포인터로 돌아감
-        });
+         productSection.addEventListener('mouseleave', () => {
+             isMouseDown = false;
+             isDragging = false;
+             productSection.style.cursor = 'grab';
+         });
 
-        productSection.addEventListener('mouseup', () => {
-            isMouseDown = false;
-            productSection.style.cursor = 'grab';  // 드래그가 끝나면 원래 포인터로 돌아감
-        });
+         productSection.addEventListener('mouseup', () => {
+             isMouseDown = false;
+             productSection.style.cursor = 'grab';
+         });
 
-        // 드래그 중에 상품 이미지 영역을 이동
-        productSection.addEventListener('mousemove', (e) => {
-            if (!isMouseDown) return; // 마우스 클릭 상태에서만 동작
-            e.preventDefault(); // 링크 클릭을 방지하여 드래그에만 집중
-            isDragging = true; // 드래그 중임을 표시
+         productSection.addEventListener('mousemove', (e) => {
+             if (!isMouseDown) return;
+             e.preventDefault();
+             isDragging = true;
+             const x = e.pageX - productSection.offsetLeft;
+             const walk = (x - startX) * 2;
+             requestAnimationFrame(() => { productSection.scrollLeft = scrollLeft - walk; });
+         });
 
-            const x = e.pageX - productSection.offsetLeft;
-            const walk = (x - startX) * 2;  // 이동 속도 조절
-
-            // 부드러운 스크롤을 위해 requestAnimationFrame 사용
-            const smoothScroll = () => {
-                productSection.scrollLeft = scrollLeft - walk;
-            };
-
-            // requestAnimationFrame을 사용해 부드럽게 스크롤
-            requestAnimationFrame(smoothScroll);
-        });
-
-        // 상품 카드 클릭 시 링크로 이동
-        const productLinks = productSection.querySelectorAll('.product-link');
-        productLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // 드래그가 끝났고, 마우스가 여전히 클릭 상태라면 링크로 이동
-                if (isDragging) {
-                    // 드래그가 끝났다고 처리하고 클릭을 막기 위해 잠시 딜레이
-                    e.preventDefault();  // 링크 이동을 막음
-                    clearTimeout(clickTimeout);  // 이전 클릭 딜레이 타이머를 리셋
-
-                    // 드래그 종료 후 약간의 딜레이 후 링크로 이동
-                    clickTimeout = setTimeout(() => {
-                        window.location.href = link.href;
-                    }, 500); // 500ms 후에 링크 이동
-                } else {
-                    // 드래그가 끝나고 클릭이 발생한 경우 바로 링크 이동
-                    window.location.href = link.href;
-                }
-            });
-        });
-    });
-});
+         const productLinks = productSection.querySelectorAll('.product-link');
+         productLinks.forEach(link => {
+             link.addEventListener('click', (e) => {
+                 if (isDragging) {
+                     e.preventDefault();
+                     clearTimeout(clickTimeout);
+                     clickTimeout = setTimeout(() => { window.location.href = link.href; }, 500);
+                 }
+             });
+         });
+     });
+ });
  /* ------------------------------------------------------------------------ */
  
  
