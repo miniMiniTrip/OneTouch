@@ -45,7 +45,7 @@
 								<ul class="user-login">
 									<li><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
 									<c:if test="${ user.mem_roll=='admin' }">
-									<li><a href="${pageContext.request.contextPath}/adminpage">관리자</a></li>
+									<li><a href="${pageContext.request.contextPath}/adminpage/dashboard">관리자</a></li>
 									</c:if>
 									<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
 								</ul>
