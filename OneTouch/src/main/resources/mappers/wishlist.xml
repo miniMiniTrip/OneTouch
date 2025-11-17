@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.dao.WishlistDao">
+	
+	<select id="selectList" resultType="wishlist">
+	select
+        w.wishlist_idx,
+        w.mem_idx,
+        w.product_idx,
+        w.wishlist_time,
+        p.product_name,
+        p.product_price,
+        pi.product_image_url
+    from wishlist w
+    inner join product p on w.product_idx = p.product_idx
+    left join product_image pi on p.product_idx = pi.product_idx 
+        and pi.product_image_level = 1
+   	where w.mem_idx = #{mem_idx}
+    order by w.wishlist_time desc
+	</select>
+
+	<!-- 중복검사 -->
+	<select id="selectWishlistByIdProduct" resultType="wishlist">
+		select * from wishlist
+		where product_idx = #{product_idx} and mem_idx = #{mem_idx}
+	</select>
+
+	<!-- 추가 -->
+	<insert id="insert" parameterType="wishlist">
+		insert into wishlist 
+			(mem_idx, product_idx, wishlist_time)
+		values
+			(#{ mem_idx }, #{ product_idx }, now())
+	</insert>
+		
+	<!-- 삭제 -->	
+	<delete id="delete" parameterType="int">
+		delete from wishlist where wishlist_idx=#{wishlist_idx}
+	</delete>
+	
+	<!-- 찜 개수 업데이트 -->
+	<update id="plusWishlistCount" parameterType="int">
+		update product set product_wishlist = product_wishlist + 1
+		where product_idx = #{product_idx} 
+	</update>
+	
+	<update id="minusWishlistCount" parameterType="int">
+		update product set product_wishlist = product_wishlist - 1
+		where product_idx = #{product_idx} 
+	</update>
+	
+</mapper>
+
