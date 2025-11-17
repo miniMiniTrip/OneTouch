@@ -186,7 +186,15 @@
   
 </update>
 
-
+<!-- q&a 답변  삭제 추가 함.  -->
+<!-- Mapper XML -->
+<update id="deleteAnswerOnly" parameterType="int">
+    UPDATE qna 
+    SET qna_answer_content = NULL,
+        qna_answered = false,
+        qna_answer_time = NULL
+    WHERE qna_idx = #{qna_idx}
+</update>
 
 
 
