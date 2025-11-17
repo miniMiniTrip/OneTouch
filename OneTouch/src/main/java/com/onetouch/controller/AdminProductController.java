@@ -26,7 +26,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/adminpage")
 public class AdminProductController {
 
     @Autowired
@@ -40,8 +40,18 @@ public class AdminProductController {
     
     @Autowired
     ProductService productService;
+    
 
- // 관리자 상품관리페이지 - 리스트 조회
+    // 통계 대시보드 페이지 추가
+    @RequestMapping("/dashboard")
+    public String adminDashboard() {
+    	System.out.println("[AdminController] adminDashboard()");
+    	return "/admin/dashboard";  // dashboard.jsp 또는 dashboard.html
+    }
+    
+
+ // 상품-> 관리자페이지로  url 변경 products->adminpage
+ // 관리자 
     @RequestMapping("/products")
     public String adminProductList(
             @RequestParam(name = "keyword", required = false) String keyword,
@@ -199,4 +209,12 @@ public class AdminProductController {
         
         return "redirect:/admin/products";
     }
-}
+    
+    
+    
+    
+    
+    
+    
+    
+}//end controller
