@@ -292,21 +292,21 @@
         }
         
         .btn-submit {
-            background: #5c6bc0;
-            color: white;
+            background: #5c6bc0 !important ;
+            color: white !important ;
         }
         
         .btn-submit:hover {
-            background: #4a5aaf;
+            background: #4a5aaf !important ;
         }
         
         .btn-cancel {
-            background: #6c757d;
-            color: white;
+            background: #6c757d !important ;
+            color: white !important ;
         }
         
         .btn-cancel:hover {
-            background: #5a6268;
+            background: #5a6268 !important ;
         }
         
         .char-count {
