@@ -307,6 +307,54 @@ public class QnaController {
         // 상세 페이지로 리다이렉트
         return "redirect:/qna/detail?qna_idx=" + qna_idx;
     }
+    
+
+
+    
+    
+    
+    
+    //________ 관리자 일 경우 썻던 답변 삭제 하기 삭제 한 후 공백으로 만드는)
+    
+ // Controller에 추가
+    @GetMapping("/qna/deleteAnswer")
+    public String deleteAnswer(
+        @RequestParam("qna_idx") int qnaIdx,
+        HttpSession session,
+        RedirectAttributes redirectAttributes) {
+        
+        try {
+            // 관리자 권한 확인
+            MemVo user = (MemVo) session.getAttribute("user");
+            if (user == null || !"admin".equals(user.getMem_roll())) {
+                redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
+                return "redirect:/qna/detail?qna_idx=" + qnaIdx;
+            }
+            
+            int result = qnaService.deleteAnswer(qnaIdx);
+            
+            if(result > 0) {
+                redirectAttributes.addFlashAttribute("message", "답변이 삭제되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "답변 삭제에 실패했습니다.");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "답변 삭제 중 오류가 발생했습니다.");
+        }
+        
+        return "redirect:/qna/detail?qna_idx=" + qnaIdx;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
 }
     
     
