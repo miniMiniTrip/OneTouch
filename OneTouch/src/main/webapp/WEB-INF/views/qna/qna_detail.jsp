@@ -233,7 +233,8 @@
             justify-content: flex-end;
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #e0e0e0 !important;
+            
         }
         
         .btn {
@@ -243,24 +244,25 @@
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
+             color: white !important;
         }
         
         .btn-edit {
-            background: #5c6bc0;
+            background: #5c6bc0 !important;
             color: white;
         }
         
         .btn-edit:hover {
-            background: #4a5aaf;
+            background: #4a5aaf !important;
         }
         
         .btn-delete {
-            background: #dc3545;
+            background: #dc3545 !important;
             color: white;
         }
         
         .btn-delete:hover {
-            background: #c82333;
+            background: #c82333 !important;
         }
         
         .category-badge {
@@ -349,7 +351,38 @@
  
 /* end 관리자 답변 css */   
     
+    /* 관리자 답변 삭제 .. 버튼 */
+    .btn-delete-answer {
+    background: #dc3545;
+    color: white;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: auto;
+    transition: background 0.3s;
+}
+
+.btn-delete-answer:hover {
+    background: #c82333;
+}
     </style>
+    
+    
+    <script type="text/javascript">
+   
+    
+    function confirmDeleteAnswer() {
+        if(confirm('답변을 삭제하시겠습니까?')) {
+            location.href = '${pageContext.request.contextPath}/qna/deleteAnswer?qna_idx=${qna.qna_idx}';
+        }
+    }
+    
+    
+    
+    </script>
+    
 </head>
 
 <body>
@@ -503,6 +536,10 @@
                         <fmt:formatDate value="${qna.qna_answer_time}" pattern="yyyy-MM-dd HH:mm" />
                     </span>
                 </c:if>
+                <!-- 관리자인 경우 답변 삭제 버튼 -->
+                <c:if test="${user.mem_roll == 'admin'}">
+                    <button class="btn-delete-answer" onclick="confirmDeleteAnswer()">답변 삭제</button>
+                </c:if>
             </div>
             <div class="answer-content">${qna.qna_answer_content}</div>
         </c:when>
@@ -516,18 +553,12 @@
                     </div>
                     <form action="${pageContext.request.contextPath}/qna/answer" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
-                        
-                        <textarea name="qna_answer_content" 
-                                  class="answer-textarea" 
+
+                        <textarea name="qna_answer_content"
+                                  class="answer-textarea"
                                   placeholder="답변 내용을 입력하세요..."
                                   required></textarea>
-                        
-                        <!-- <div class="file-upload-area">
-                            <label for="answerFile">📎 파일 첨부 (선택)</label>
-                            <input type="file" id="answerFile" name="answerFile" multiple>
-                            <small>최대 5개, 각 10MB 이하</small>
-                        </div> -->
-                        
+
                         <div class="answer-btn-group">
                             <button type="submit" class="btn btn-submit">답변 등록</button>
                         </div>
@@ -544,8 +575,6 @@
         </c:otherwise>
     </c:choose>
 </div>
-                        
-                        
                     </div>
                     
                     <!-- 버튼 그룹 -->
@@ -560,15 +589,6 @@
     <!-- End Q&A Section -->
    
    
-   
-   
-    
-
-
-
-
-
-
 
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
