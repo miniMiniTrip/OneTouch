@@ -36,7 +36,6 @@ public class CartController {
 	
 	@RequestMapping("/cart/list.do")
 	public String list(Model model) {
-		System.out.println("cart_list");
 		
 		MemVo memVo =  
 				(MemVo)session.getAttribute("user");
@@ -44,7 +43,6 @@ public class CartController {
 		if(memVo==null)	{return "redirect:/user/login";}
 		
 		Integer mem_idx = memVo.getMem_idx();
-		System.out.printf("mem_idx : %d \n", mem_idx);
 		
 
 		List<CartVo> cart_list = cart_dao.selectList(mem_idx);
