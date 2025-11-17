@@ -29,7 +29,8 @@ public interface QnaDao {
 	 // 3️⃣ 답변 등록 (추가)
 	 int updateAnswer(Map<String, Object> map);
 
-	
+	 //관리자 답변 삭제 dao
+	 int deleteAnswerOnly(int qna_idx);
 	
 	
 	 }
