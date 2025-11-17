@@ -16,6 +16,7 @@ import com.onetouch.dao.OrderDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.OrderService;
 import com.onetouch.vo.CartVo;
+import com.onetouch.vo.MemVo;
 import com.onetouch.vo.OrderVo;
 import com.onetouch.vo.ProductVo;
 
@@ -47,11 +48,11 @@ public class OrderController {
 				@RequestParam int product_cnt,
 				Model model) {
 		
-			Integer mem_idx = (Integer) session.getAttribute("mem_idx");
-	        if (mem_idx == null) {
-	            return "redirect:/member/login.do";
-	        }	
-	        
+			MemVo memVo =  
+					(MemVo)session.getAttribute("user");
+			
+			if(memVo==null) {return "redirect:/user/login";}
+
 	        ProductVo pVo = product_dao.selectOne(product_idx);
 			int total_amount = pVo.getProduct_price() * product_cnt;
 			
@@ -72,12 +73,12 @@ public class OrderController {
 	public String order_cart_form(
 				@RequestParam("cart_id") String[] cart_ids,
 				Model model) {
-		
-			Integer mem_idx = (Integer) session.getAttribute("mem_idx");
-	        if (mem_idx == null) {
-	            return "redirect:/member/login.do";
-	        }		
-	        
+			
+			MemVo memVo =  
+					(MemVo)session.getAttribute("user");
+			
+			if(memVo==null)	{return "redirect:/user/login";}
+			
 			//선택한 상품 찾기
 			Map<String, Object> map = new HashMap<>();
 			map.put("cart_id_array", cart_ids);
@@ -111,10 +112,12 @@ public class OrderController {
 		        RedirectAttributes ra
 				) {
 		
-		Integer mem_idx = (Integer) session.getAttribute("mem_idx");
-        if (mem_idx == null) {
-            return "redirect:/member/login.do";
-        }
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		
+		if(memVo==null)	{return "redirect:/user/login";}
+		
+		Integer mem_idx = memVo.getMem_idx();
         
         vo.setMem_idx(mem_idx);
         

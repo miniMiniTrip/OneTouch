@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css" />
     <link rel="stylesheet" href="/assets/css/animate.css" />
@@ -178,7 +179,7 @@
 </head>
 <body>
     <!-- 헤더 포함 -->
-    <jsp:include page="/WEB-INF/views/common/header.jsp" />
+    <%@include file="/WEB-INF/views/common/header.jsp" %>
     
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
@@ -325,7 +326,7 @@
     </section>
     
     <!-- 푸터 포함 -->
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     
     <!-- JavaScript -->
     <script src="/assets/js/bootstrap.min.js"></script>

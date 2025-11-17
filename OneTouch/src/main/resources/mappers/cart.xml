@@ -73,9 +73,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" parameterType="cart">
 		insert into cart 
-			(mem_idx, p_idx, cart_cnt, cart_time)
+			(mem_idx, product_idx, cart_cnt, cart_time)
 		values
-			(#{ mem_idx }, { p_idx }, #{ cart_cnt }, now())
+			(#{ mem_idx }, #{ product_idx }, #{ cart_cnt }, now())
 	</insert>
 	
 	<!-- 수정 -->

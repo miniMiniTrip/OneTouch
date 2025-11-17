@@ -16,12 +16,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css" />
-    <link rel="stylesheet" href="/assets/css/animate.css" />
-    <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
-    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
     
     <style>
         .shopping-cart {
@@ -31,6 +30,8 @@
             border-bottom: 1px solid #e9e9e9;
             padding-bottom: 15px;
             margin-bottom: 25px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
         .cart-list-head h6 {
             font-size: 16px;
@@ -43,8 +44,6 @@
             margin-bottom: 20px;
             border: 1px solid #e9e9e9;
             border-radius: 5px;
-            display: flex;
-            align-items: center;
         }
         .product-image img {
             width: 100px;
@@ -64,6 +63,15 @@
             padding: 5px;
             border-radius: 3px;
         }
+        .qty-increase, .qty-decrease{
+			width: 25px;
+			height: 25px;
+			text-align: center;        
+        }
+        .remove-item{
+        	width: 60px;
+        	height: 30px;
+        }
         .total-amount {
             background: #f7f7f7;
             padding: 30px;
@@ -82,7 +90,7 @@
 </head>
 <body>
     <!-- 헤더 포함 -->
-    <jsp:include page="/WEB-INF/views/common/header.jsp" />
+    <%@include file="/WEB-INF/views/common/header.jsp" %>
     
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
@@ -107,7 +115,7 @@
     <div class="shopping-cart section">
         <div class="container">
             <form id="cartForm" action="/order/cart_form.do" method="post">
-                <div class="cart-list-head">
+                <div class="cart-list-head" style="padding-left: 0; padding-right: 0;">
                     <div class="row">
                         <div class="col-lg-1 col-md-1 col-12">
                             <div class="checkbox-style">
@@ -146,7 +154,7 @@
                 </c:if>
                 
                 <c:forEach var="cart" items="${cart_list}">
-                    <div class="cart-single-list">
+                    <div class="cart-single-list" style="padding: 20px 0;">
                         <div class="row align-items-center">
                             <div class="col-lg-1 col-md-1 col-12">
                                 <div class="checkbox-style">
@@ -187,7 +195,7 @@
                             </div>
                             <div class="col-lg-1 col-md-1 col-12">
                                 <button type="button" class="remove-item" data-cart-id="${cart.cart_id}" data-mem-idx="${cart.mem_idx}">
-                                    <i class="lni lni-trash"></i>
+                                    <i class="lni lni-trash"></i>삭제
                                 </button>
                             </div>
                         </div>
@@ -240,7 +248,7 @@
     </div>
     
     <!-- 푸터 포함 -->
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     
     <!-- JavaScript -->
     <script src="/assets/js/bootstrap.min.js"></script>
@@ -263,9 +271,9 @@
         
         // 수량 증가
         $('.qty-increase').on('click', function() {
-            var cartId = $(this).data('cart-id');
-            var input = $('.qty-input[data-cart-id="' + cartId + '"]');
-            var currentVal = parseInt(input.val());
+            let cartId = $(this).data('cart-id');
+            let input = $('.qty-input[data-cart-id="' + cartId + '"]');
+            let currentVal = parseInt(input.val());
             if (currentVal < 99) {
                 input.val(currentVal + 1);
                 updateCart(cartId, currentVal + 1);
@@ -274,9 +282,9 @@
         
         // 수량 감소
         $('.qty-decrease').on('click', function() {
-            var cartId = $(this).data('cart-id');
-            var input = $('.qty-input[data-cart-id="' + cartId + '"]');
-            var currentVal = parseInt(input.val());
+            let cartId = $(this).data('cart-id');
+            let input = $('.qty-input[data-cart-id="' + cartId + '"]');
+            let currentVal = parseInt(input.val());
             if (currentVal > 1) {
                 input.val(currentVal - 1);
                 updateCart(cartId, currentVal - 1);
@@ -285,8 +293,8 @@
         
         // 수량 직접 입력
         $('.qty-input').on('change', function() {
-            var cartId = $(this).data('cart-id');
-            var qty = parseInt($(this).val());
+            let cartId = $(this).data('cart-id');
+            let qty = parseInt($(this).val());
             if (qty < 1) qty = 1;
             if (qty > 99) qty = 99;
             $(this).val(qty);
@@ -295,7 +303,7 @@
         
         // 장바구니 수량 업데이트
         function updateCart(cartId, qty) {
-            var memIdx = $('.qty-input[data-cart-id="' + cartId + '"]').data('mem-idx');
+            let memIdx = $('.qty-input[data-cart-id="' + cartId + '"]').data('mem-idx');
             
             $.ajax({
                 url: '/cart/modify.do',
@@ -314,8 +322,8 @@
         // 개별 삭제
         $('.remove-item').on('click', function() {
             if (confirm('상품을 삭제하시겠습니까?')) {
-                var cartId = $(this).data('cart-id');
-                var memIdx = $(this).data('mem-idx');
+                let cartId = $(this).data('cart-id');
+                let memIdx = $(this).data('mem-idx');
                 
                 $.ajax({
                     url: '/cart/delete.do',
@@ -333,7 +341,7 @@
         
         // 선택 삭제
         function deleteSelected() {
-            var selected = $('.cart-check:checked');
+            let selected = $('.cart-check:checked');
             if (selected.length === 0) {
                 alert('삭제할 상품을 선택해주세요.');
                 return;
@@ -341,8 +349,8 @@
             
             if (confirm('선택한 상품을 삭제하시겠습니까?')) {
                 selected.each(function() {
-                    var cartId = $(this).val();
-                    var memIdx = $('.qty-input[data-cart-id="' + cartId + '"]').data('mem-idx');
+                    let cartId = $(this).val();
+                    let memIdx = $('.qty-input[data-cart-id="' + cartId + '"]').data('mem-idx');
                     
                     $.ajax({
                         url: '/cart/delete.do',
@@ -362,10 +370,10 @@
         
         // 총 금액 업데이트
         function updateTotalAmount() {
-            var total = 0;
+            let total = 0;
             $('.cart-check:checked').each(function() {
-                var cartId = $(this).val();
-                var subtotal = parseInt($('.subtotal[data-cart-id="' + cartId + '"]').text().replace(/[^0-9]/g, ''));
+                let cartId = $(this).val();
+                let subtotal = parseInt($('.subtotal[data-cart-id="' + cartId + '"]').text().replace(/[^0-9]/g, ''));
                 total += subtotal;
             });
             
@@ -374,15 +382,20 @@
         }
         
         // 주문하기
-        function proceedToCheckout() {
-            var selected = $('.cart-check:checked');
-            if (selected.length === 0) {
-                alert('주문할 상품을 선택해주세요.');
-                return;
-            }
-            
-            $('#cartForm').submit();
-        }
+		function proceedToCheckout() {
+		    let selected = $('.cart-check:checked');
+		    if (selected.length === 0) {
+		        alert('주문할 상품을 선택해주세요.');
+		        return;
+		    }
+
+		    console.log("Selected items:", selected.length);
+		    selected.each(function() {
+		        console.log("cart_id:", $(this).val());
+		    });
+		    
+		    $('#cartForm').submit(); 
+		}
     </script>
 </body>
 </html>

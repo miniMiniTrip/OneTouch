@@ -148,7 +148,7 @@
 </head>
 <body>
     <!-- 헤더 포함 -->
-    <jsp:include page="/WEB-INF/views/common/header.jsp" />
+    <%@include file="/WEB-INF/views/common/header.jsp" %>
     
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
@@ -339,7 +339,7 @@
     </section>
     
     <!-- 푸터 포함 -->
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     
     <!-- JavaScript -->
     <script src="/assets/js/bootstrap.min.js"></script>

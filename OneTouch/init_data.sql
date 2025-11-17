@@ -12,6 +12,9 @@ INSERT INTO category (category_name) VALUES
 INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone) VALUES 
 ('admin', '1234', '관리자', '12423', 'admin@onetouch.com', 'admin', '010-1234-1123');
 
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone) VALUES 
+('user1', '1234', '김유저', '12423', 'user1@onetouch.com', 'user', '010-1234-1123');
+
 -- 해시태그 초기데이터
 INSERT INTO hashtag (hashtag_name) VALUES
 ('지성'),('복합성'),('건성'),('민감성'),('저항성'),('색소성'),('비색소성'),('주름성'),('탄력성'),('밝은톤'),('중간톤'),('어두운톤');

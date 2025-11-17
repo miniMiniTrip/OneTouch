@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>${vo.product_name} - OneTouch</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -68,34 +69,35 @@
     
     <script>
     function addToCart() {
-        const cart_cnt = document.getElementById('cart_cnt').value;
+        let product_idx = ${vo.product_idx};
+        let cart_cnt = $('#cart_cnt').val();
         
-        fetch('/cart/insert.do', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+        $.ajax({
+            url: '/cart/insert.do',
+            type: 'POST',
+            data: {
+                product_idx: product_idx, 
+                cart_cnt: cart_cnt
             },
-            body: 'product_idx=${vo.product_idx}&cart_cnt=' + cart_cnt
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result === 'success') {
-                if (confirm('장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
-                    location.href = '/cart/list.do';
+            success: function(response) {
+                if(response.result === 'not_login') {
+                    alert('로그인이 필요합니다.');
+                    location.href = '/user/login';
+                } else if(response.result === 'exist') {
+                    if(confirm('이미 장바구니에 있는 상품입니다.\n장바구니로 이동하시겠습니까?')) {
+                        location.href = '/cart/list.do';
+                    }
+                } else if(response.result === 'success') {
+                    if(confirm('장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
+                        location.href = '/cart/list.do';
+                    } 
+                } else {
+                    alert('장바구니 추가에 실패했습니다.');
                 }
-            } else if (data.result === 'exist') {
-                alert('이미 장바구니에 있는 상품입니다.');
-            } else if (data.result === 'login_required') {
-                if (confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) {
-                    location.href = '/member/login.do';
-                }
-            } else {
-                alert('장바구니 추가에 실패했습니다.');
+            },
+            error: function() {
+                alert('서버 오류가 발생했습니다.');
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('오류가 발생했습니다.');
         });
     }
     </script>
