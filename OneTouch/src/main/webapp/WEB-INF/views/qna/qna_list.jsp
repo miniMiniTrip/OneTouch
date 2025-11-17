@@ -214,10 +214,16 @@
 	    vertical-align: middle; /* 세로 중앙 정렬 */
 	}
       
+      
+  
     </style>
+    
 </head>
 
 <body>
+
+
+
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
@@ -264,7 +270,7 @@
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
-                        <div class="menu-item">👤 정보/구니</div>
+                        <div class="menu-item">👤 장바구니</div>
                         <div class="menu-item">💝 팀</div>
                         <div class="menu-item">🎯 주문/배송 조회</div>
                     </div>
@@ -290,11 +296,25 @@
                     <div class="content-header">
                         <h2>💬 상품 Q&A</h2>
                        
-                       
-                       
-                       
-                       
-                       
+                      <!-- 로그인한 사용자만 Q&A 쓰기 버튼 표시 -->
+<!-- 로그인 여부에 따라 버튼 하나만 출력 -->
+<%-- <c:choose>
+    <!-- 로그인한 경우 -->
+    <c:when test="${sessionScope.loginUserId != null}">
+        <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
+            Q&A 쓰기
+        </button>
+    </c:when>
+
+    <!-- 로그인하지 않은 경우 -->
+    <c:otherwise>
+        <button class="btn-write" onclick="alert('로그인 후 이용해주세요.');">
+            Q&A 쓰기
+        </button>
+    </c:otherwise>
+</c:choose>
+
+           --%>             
                         <!-- 글이 있을 때만 버튼 표시 -->
                         <c:if test="${not empty qna_list}">
                             <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">

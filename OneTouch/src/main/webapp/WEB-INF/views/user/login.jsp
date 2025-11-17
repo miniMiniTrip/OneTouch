@@ -437,7 +437,7 @@
 
         <!-- 회원가입 링크 -->
         <div class="register-link">
-            아직 회원이 아니신가요? <a href="register.jsp">회원가입</a>
+            아직 회원이 아니신가요? <a href="${pageContext.request.contextPath}/user/register">회원가입</a>
         </div>
     </div>
     

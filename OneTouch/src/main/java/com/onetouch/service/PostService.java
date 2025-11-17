@@ -13,4 +13,6 @@ public interface PostService {
 	List<PostVo> selectReviewList();
 
 	List<PostVo> selectFreeBoard();
+
+	int postInsert(PostVo postVo) throws Exception;
 }

@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Q&A 작성 - OneTouch</title>
+    <title>Q&A 수정 - OneTouch</title>
     <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
@@ -175,86 +175,9 @@
             border-color: #5c6bc0;
         }
         
-        .product-search {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .product-search .form-control {
-            flex: 1;
-        }
-        
-        .btn-search {
-            background: #5c6bc0;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.3s;
-            white-space: nowrap;
-        }
-        
-        .btn-search:hover {
-            background: #4a5aaf;
-        }
-        
-        .selected-product {
-            margin-top: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            display: none;
-        }
-        
-        .selected-product.show {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .product-image {
-            width: 80px;
-            height: 80px;
-            background: #ddd;
-            border-radius: 4px;
-        }
-        
-        .product-info {
-            flex: 1;
-        }
-        
-        .product-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .product-price {
-            font-size: 13px;
-            color: #666;
-        }
-        
-        .btn-remove {
-            background: #dc3545;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .btn-remove:hover {
-            background: #c82333;
-        }
-        
         .form-notice {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
             border-radius: 4px;
             padding: 15px;
             margin-bottom: 25px;
@@ -263,13 +186,13 @@
         .form-notice-title {
             font-size: 14px;
             font-weight: 600;
-            color: #856404;
+            color: #1565c0;
             margin-bottom: 8px;
         }
         
         .form-notice-text {
             font-size: 13px;
-            color: #856404;
+            color: #1976d2;
             line-height: 1.6;
         }
         
@@ -340,14 +263,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">Q&A 작성</h1>
+                        <h1 class="page-title">Q&A 수정</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
                         <li>마이페이지</li>
-                        <li>Q&A 작성</li>
+                        <li>Q&A 수정</li>
                     </ul>
                 </div>
             </div>
@@ -365,8 +288,8 @@
                     
                     <div class="menu-section">
                         <div class="menu-item">📋 쇼핑</div>
-                        <div class="menu-item">👤 정보/구니</div>
-                        <div class="menu-item">💝 팀</div>
+                        <div class="menu-item">👤 장바구니</div>
+                        <div class="menu-item">💝 찜</div>
                         <div class="menu-item">🎯 주문/배송 조회</div>
                     </div>
                     
@@ -389,68 +312,70 @@
                 
                 <div class="content">
                     <div class="content-header">
-                        <h2>✎ Q&A 작성하기</h2>
-                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/list'">목록으로</button>
+                        <h2>✎ Q&A 수정하기</h2>
+                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/detail?qna_idx=${qna.qna_idx}'">취소</button>
                     </div>
                     
                     <div class="form-notice">
-                        <div class="form-notice-title">📢 문의 전 확인해주세요</div>
+                        <div class="form-notice-title">📝 수정 안내</div>
                         <div class="form-notice-text">
-                            • 상품에 대한 문의사항을 작성해주세요.<br>
-                            • 답변은 영업일 기준 1~2일 내에 등록됩니다.<br>
-                            • 욕설, 비방 등 부적절한 내용은 관리자에 의해 삭제될 수 있습니다.
+                            • 답변이 등록된 문의는 수정할 수 없습니다.<br>
+                            • 문의 내용을 수정하시면 답변이 다시 등록될 수 있습니다.
                         </div>
                     </div>
                     
-                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/qna/write">
-    <!-- 카테고리 -->
-    <div class="form-group">
-        <label class="form-label">문의 유형<span class="required">*</span></label>
-        <select class="form-select" name="qna_category" required>
-            <option value="">선택하세요</option>
-            <option value="0">상품 문의</option>
-            <option value="1">배송 문의</option>
-            <option value="2">교환/반품</option>
-            <option value="3">재입고 문의</option>
-            <option value="4">기타</option>
-        </select>
-    </div>
+                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/qna/modify">
+                        <!-- 숨겨진 필드 -->
+                        <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
+                        <input type="hidden" name="mem_idx" value="${qna.mem_idx}">
+                        
+                        <!-- 카테고리 -->
+                        <div class="form-group">
+                            <label class="form-label">문의 유형<span class="required">*</span></label>
+                            <select class="form-select" name="qna_category" required>
+                                <option value="">선택하세요</option>
+                                <option value="0" ${qna.qna_category == 0 ? 'selected' : ''}>상품 문의</option>
+                                <option value="1" ${qna.qna_category == 1 ? 'selected' : ''}>배송 문의</option>
+                                <option value="2" ${qna.qna_category == 2 ? 'selected' : ''}>교환/반품</option>
+                                <option value="3" ${qna.qna_category == 3 ? 'selected' : ''}>재입고 문의</option>
+                                <option value="4" ${qna.qna_category == 4 ? 'selected' : ''}>기타</option>
+                            </select>
+                        </div>
 
-    <!-- 제목 -->
-    <div class="form-group">
-        <label class="form-label">제목<span class="required">*</span></label>
-        <input type="text" class="form-control" name="qna_title" placeholder="제목을 입력하세요" required maxlength="100">
-    </div>
+                        <!-- 제목 -->
+                        <div class="form-group">
+                            <label class="form-label">제목<span class="required">*</span></label>
+                            <input type="text" class="form-control" name="qna_title" 
+                                   value="${qna.qna_title}" 
+                                   placeholder="제목을 입력하세요" required maxlength="100">
+                        </div>
 
-    <!-- 내용 -->
-    <div class="form-group">
-        <label class="form-label">문의 내용<span class="required">*</span></label>
-        <textarea class="form-control textarea" name="qna_content"
-                  placeholder="문의 내용을 작성해주세요" required maxlength="1000"
-                  oninput="updateCharCount(this)"></textarea>
-        <div class="char-count">
-            <span id="charCount">0</span> / 1000
-        </div>
-    </div>
+                        <!-- 내용 -->
+                        <div class="form-group">
+                            <label class="form-label">문의 내용<span class="required">*</span></label>
+                            <textarea class="form-control textarea" name="qna_content"
+                                      placeholder="문의 내용을 작성해주세요" required maxlength="1000"
+                                      oninput="updateCharCount(this)">${qna.qna_content}</textarea>
+                            <div class="char-count">
+                                <span id="charCount">${qna.qna_content.length()}</span> / 1000
+                            </div>
+                        </div>
 
-    <!-- 공개 여부 -->
-    <div class="form-group">
-        <label class="form-label">공개 여부</label>
-        <select class="form-select" name="qna_private">
-            <option value="false">공개</option>
-            <option value="true" selected>비공개</option>
-        </select>
-    </div>
+                        <!-- 공개 여부 -->
+                        <div class="form-group">
+                            <label class="form-label">공개 여부</label>
+                            <select class="form-select" name="qna_private">
+                                <option value="false" ${!qna.qna_private ? 'selected' : ''}>공개</option>
+                                <option value="true" ${qna.qna_private ? 'selected' : ''}>비공개</option>
+                            </select>
+                        </div>
 
-    <!-- 임시 회원번호 -->
-    <input type="hidden" name="mem_idx" value="1">
-
-    <div class="btn-group">
-        <button type="submit" class="btn btn-submit">등록하기</button>
-        <button type="button" class="btn btn-cancel" onclick="location.href='${pageContext.request.contextPath}/qna/list'">취소</button>
-    </div>
-</form>
-
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-submit">수정완료</button>
+                            <button type="button" class="btn btn-cancel" 
+                                    onclick="location.href='${pageContext.request.contextPath}/qna/detail?qna_idx=${qna.qna_idx}'">취소</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -474,31 +399,14 @@
             document.getElementById('charCount').textContent = count;
         }
         
-        function searchProduct() {
-            const searchValue = document.getElementById('productSearch').value;
-            if(searchValue) {
-                document.getElementById('productId').value = '1';
-                document.getElementById('selectedProductName').textContent = '무선 블루투스 이어폰 Pro 3세대';
-                document.getElementById('selectedProductPrice').textContent = '₩ 159,000';
-                document.getElementById('selectedProduct').classList.add('show');
-            } else {
-                alert('상품명을 입력해주세요.');
+        // 프리로더 제거
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
             }
-        }
-        
-        function removeProduct() {
-            document.getElementById('productId').value = '';
-            document.getElementById('productSearch').value = '';
-            document.getElementById('selectedProduct').classList.remove('show');
-        }
-        
-        function validateForm() {
-            if(!document.getElementById('productId').value) {
-                alert('상품을 선택해주세요.');
-                return false;
-            }
-            return true;
-        }
+        });
     </script>
 
     <!-- Start Footer Area -->

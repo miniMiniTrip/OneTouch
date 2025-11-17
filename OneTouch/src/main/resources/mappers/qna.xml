@@ -25,8 +25,8 @@
         ORDER BY qna_idx DESC
     </select> -->
     
-<select id="selectQnaList" resultType="com.onetouch.vo.QnaVo">
-      SELECT 
+<select id="selectQnaList" resultType="com.onetouch.vo.QnaVo" parameterType="map">
+  SELECT 
     qna.qna_idx,
     qna.mem_idx,
     mem.mem_name,          
@@ -40,11 +40,15 @@
     qna.qna_time,
     qna.qna_update,
     qna.qna_answer_time
-	FROM qna
-	JOIN mem ON qna.mem_idx = mem.mem_idx   
-	WHERE qna.qna_delete = 0                
-	ORDER BY qna.qna_idx DESC;   
+  FROM qna
+  JOIN mem ON qna.mem_idx = mem.mem_idx
+  WHERE qna.qna_delete = 0
+    <if test="mem_roll != 'admin'">
+      AND qna.mem_idx = #{mem_idx}
+    </if>
+  ORDER BY qna.qna_idx DESC
 </select>
+
 
     <!-- ✅ Q&A 상세보기 -->
     <!-- <select id="selectQnaDetail" parameterType="int" resultType="QnaVo">
@@ -143,6 +147,44 @@
     )
 </insert>
 
+<!-- Q&A 수정 -->
+<update id="updateQna" parameterType="com.onetouch.vo.QnaVo">
+    UPDATE qna
+    SET
+        qna_title = #{qna_title},
+        qna_content = #{qna_content},
+        qna_category = #{qna_category},
+        qna_private = #{qna_private},
+        qna_update = now()
+    WHERE qna_idx = #{qna_idx}
+</update>
+
+<!-- Q&A 삭제 (하드 삭제) -->
+
+<delete id="deleteQna" parameterType="int">
+    DELETE FROM qna WHERE qna_idx = #{qna_idx}
+</delete>
+
+ <!-- 답변 등록 -->
+<!-- <update id="update_answer" parameterType="map">
+    UPDATE qna 
+    SET qna_answer_content = #{qna_answer_content},
+        qna_answer_time = NOW(),
+        qna_answered = 1
+    WHERE qna_idx = #{qna_idx}
+</update> 
+ -->
+<!-- 답변 등록 -->
+<!-- 답변 등록 -->
+<update id="updateAnswer" parameterType="map">
+    UPDATE qna 
+    SET qna_answer_content = #{qna_answer_content},
+        qna_answer_time = NOW(),
+        qna_answered = 1
+    WHERE qna_idx = #{qna_idx}
+    
+  
+</update>
 
 
 </mapper>

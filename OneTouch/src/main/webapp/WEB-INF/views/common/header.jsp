@@ -22,7 +22,7 @@
 					<div class="top-left">
 						<ul class="menu-top-link">
 							<li><a href="${pageContext.request.contextPath}/about">소개</a></li>
-							<li><a href="${pageContext.request.contextPath}/contact">문의</a></li>
+							<li><a href="${pageContext.request.contextPath}/qna/list">문의</a></li>
 						</ul>
 					</div>
 				</div>
@@ -30,7 +30,7 @@
 					<div class="top-middle">
 						<ul class="useful-links">
 							<li><a href="${pageContext.request.contextPath}/">홈</a></li>
-							<li><a href="${pageContext.request.contextPath}/products">상품</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/products">상품</a></li>
 							<li><a href="${pageContext.request.contextPath}/community">커뮤니티</a></li>
 						</ul>
 					</div>
