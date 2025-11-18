@@ -114,6 +114,22 @@ INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
 (1, 1), (1, 4), (1, 6);
 INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
 (2, 3), (2, 7), (2, 9); 
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(3, 1), (3, 2), (3, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(4, 3), (4, 8), (4, 9);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(5, 1), (5, 5), (5, 6);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(6, 2), (6, 4), (6, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(7, 3), (7, 2), (7, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(8, 4), (8, 5), (8, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(9, 1), (9, 2), (9, 9);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(10, 3), (10, 8), (10, 9);
 
 
 -- 상품 리스트 더미데이터 파일이름 --

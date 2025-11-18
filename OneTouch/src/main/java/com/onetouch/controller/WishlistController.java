@@ -85,7 +85,6 @@ public class WishlistController {
             return "redirect:/user/login";
         }
         
-        // ✅ 삭제 전에 product_idx 먼저 조회
         WishlistVo vo = wishlist_dao.selectOne(wishlist_idx); 
         
         if(vo != null) {
