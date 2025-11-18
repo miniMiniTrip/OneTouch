@@ -1,6 +1,7 @@
 package com.onetouch.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,4 +15,4 @@ public class AdminCotroller {  // 클래스명 수정 (Cotroller → Controller)
 //		System.out.println("	[AdminCotroller] return : /admin/admin_page.jsp ");
 //		return "/admin/admin_page";
 //	}
-//}
+}
