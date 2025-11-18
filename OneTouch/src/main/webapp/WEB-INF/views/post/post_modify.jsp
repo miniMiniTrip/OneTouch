@@ -270,34 +270,78 @@ select.form-control {
 
 <!-- =======================================js : post등록============================================ -->
 <script type="text/javascript">
-	function postInsert(f){
-		let post_title=f.post_title.value.trim();
-		let post_content=f.post_content.value.trim();
-		let post_images=f.post_images.value.trim();
-		if(post_title==""){
-			f.post_title.value="";
-			f.post_title.focus();
-			alert("제목을 입력해주세요");
-		}else
-		if(post_content==""){
-			f.post_content.value="";
-			f.post_content.focus();
-			alert("내용을 입력해주세요");
-		}else
-		if(post_images==""){
-			f.post_images.value="";
-			f.post_images.focus();
-			alert("사진을 선택해주세요");
-		}else{
-			
-		
-		f.method="post";
-		f.action="/post/insert";
-		f.enctype="multipart/form-data";
-		f.submit();
-		}
-		
-	}
+
+function postInsert(f) {
+	let post_category= f.post_category.value;
+    let post_title = f.post_title.value.trim();
+    let post_content = f.post_content.value.trim();
+    let post_images = f.post_images.value.trim();
+    
+    // 상품 선택 검증
+    let product_idx_array = [];
+    let allSelected = true;  // 모든 상품이 선택되었는지 여부를 체크할 변수
+
+    // product_idx_array 배열에 상품 선택된 값을 추가
+    $('#product-form-container .form-group select').each(function() {
+        let selected_value = $(this).val().trim();
+        
+        if (selected_value === "") {
+            allSelected = false; // 빈 값이 있으면 allSelected를 false로 설정
+        } else {
+            product_idx_array.push(selected_value);  // 비어있지 않으면 배열에 추가
+        }
+    });
+
+    // 상품 선택 검증
+    if (!allSelected) {
+        alert("모든 상품을 선택해주세요.");
+        return; // 함수 종료
+    }
+
+    // 제목 검증
+    if (post_title == "") {
+        alert("제목을 입력해주세요");
+        f.post_title.value = "";
+        f.post_title.focus();
+        return; // 함수 종료
+    }
+
+    // 내용 검증
+    if (post_content == "") {
+        alert("내용을 입력해주세요");
+        f.post_content.value = "";
+        f.post_content.focus();
+        return; // 함수 종료
+    }
+
+
+
+    // 별점 선택 검증
+    let post_rating = f.post_rating.value; // 선택된 별점 값
+
+    if (post_category=='review'&&!post_rating) {
+        alert("별점을 선택해주세요");
+        // 별점 영역으로 포커스를 이동하거나 스크롤을 부드럽게 할 수 있음
+        $('html, body').animate({
+            scrollTop: $("#review-fields").offset().top
+        }, 500);
+        return; // 함수 종료
+    }
+    
+    // 사진 검증 (file input은 값이 없으면 빈 문자열)
+    if (post_images == "") {
+        alert("사진을 선택해주세요");
+        f.post_images.value = "";
+        f.post_images.focus();
+        return; // 함수 종료
+    }
+    
+    // 폼 제출
+    f.method = "post";
+    f.action = "/post/insert";
+    f.enctype = "multipart/form-data";
+    f.submit();
+}
 </script>
 <!-- =======================================/js : post등록============================================ -->
 </head>
@@ -316,17 +360,24 @@ select.form-control {
 		<form class="write-form">
 			<div class="form-group">
 				<label for="board-type">게시판 선택</label> 
+				
 				<select id="post_category" name="post_category"
 					class="form-control">
+					<c:if test="${postVo.post_category =='skin' }">
 					<option value="skin">스킨에디터</option>
-					<option value="free">자유게시판</option>
+					</c:if>
+					<c:if test="${postVo.post_category == 'free' }">
+					<option value="free" >자유게시판</option>
+					</c:if>
+					<c:if test="${postVo.post_category == 'review'}">
 					<option value="review">구매자리뷰</option>
+					</c:if>
 				</select>
 			</div>
 
 			<div class="form-group">
 				<label for="post_title">제목</label> <input type="text"
-					id="post_title" name="post_title" class="form-control" placeholder="제목을 입력해주세요">
+					id="post_title" name="post_title" class="form-control" value="${postVo.post_title }" placeholder="제목을 입력해주세요">
 			</div>
 
 			<!-- 스킨 에디터 전용 필드 -->
@@ -334,10 +385,10 @@ select.form-control {
 				<div class="form-group">
 					<label for="post_content">내용</label>
 					<textarea id="post_content" name="post_content" class="form-control" rows="3"
-						placeholder="내용을 입력해주세요"></textarea>
+						placeholder="내용을 입력해주세요" >${postVo.post_content }</textarea>
 				</div>
 			
-			<div id="product-add">
+			<div id="product-add" style="display: none;">
 				<div class="form-group">
                     <label for="skin-category">상품추가</label>
           <%--           <select id="skin-category" name="product_idx" class="form-control">
@@ -361,24 +412,38 @@ select.form-control {
 			   
 			   <!-- ----------------- 상풍 추가 js------------------ -->
 				<script>
-				        $(document).ready(function() {
-				            $('#add-product-btn').click(function() {
-				                // 새로운 상품 선택 폼을 생성할 HTML 코드
-				                var newFormGroup = `
-				                    <div class="form-group">
-				                        <select name="product_idx_array" class="form-control">
-				                            <option value="">상품을 선택해주세요</option>
-				                            <c:forEach var="productVo" items="${product_list_array}">
-				                                <option value="${productVo.product_idx}">${productVo.product_name}</option>
-				                            </c:forEach>
-				                        </select>
-				                    </div>
-				                `;
-				
-				                // 생성된 폼을 화면에 추가
-				                $('#product-form-container').append(newFormGroup);
-				            });
-				        });
+			    $(document).ready(function() {
+			        $('#add-product-btn').click(function() {
+			            // 새로운 상품 선택 폼을 생성할 HTML 코드
+			            let newFormGroup = `
+			                <div class="form-group product-form">
+			                    <div class="d-flex align-items-center">
+			                        <select name="product_idx_array" class="form-control">
+			                            <option value="">상품을 선택해주세요</option>
+			                            <c:forEach var="productVo" items="${product_list_array}">
+			                                <option value="${productVo.product_idx}">${productVo.product_name}</option>
+			                            </c:forEach>
+			                        </select>
+			                        <!-- 상품 삭제 버튼 추가 (select 오른쪽) -->
+			                        <button type="button" class="btn btn-danger btn-sm remove-product-btn ms-2">-</button>
+			                    </div>
+			                </div>
+			            `;
+			
+			            // 생성된 폼을 화면에 추가
+			            $('#product-form-container').append(newFormGroup);
+			        });
+			
+			        // 상품 삭제 버튼 클릭 시 해당 폼 삭제
+			        $(document).on('click', '.remove-product-btn', function() {
+			            // 클릭된 삭제 버튼의 부모 div.product-form을 찾고 삭제
+			            let formGroup = $(this).closest('.product-form');
+			            console.log(formGroup); // 콘솔에서 삭제될 요소 확인
+			            formGroup.remove(); // 해당 폼을 삭제
+			        });
+			        
+
+			    });
 				</script>
 			   <!-- ----------------- end/상풍 추가 js------------------ -->
 
@@ -441,6 +506,8 @@ select.form-control {
 	</div>
 
 	<script>
+
+		
         // 게시판 유형에 따른 필드 표시/숨김
         document.getElementById('post_category').addEventListener('change', function() {
             const boardType = this.value;
@@ -547,6 +614,26 @@ select.form-control {
             }
         });
 
+        
+		// 카테고리 정보가 넘어왔을때 수정 폼 어떤걸 보여줄지 초기화 시킴
+		window.onload = function(){
+			let post_category=document.getElementById('post_category').value;
+	        let reviewFields = document.getElementById('review-fields');
+	        let skinFields = document.getElementById('skin-fields');
+	        let productAddFields = document.getElementById('product-add');
+	        
+            if (post_category === 'review') {
+                reviewFields.style.display = 'block';
+                skinFields.style.display = 'block';
+            	productAddFields.style.display='none';
+            } else if (post_category === 'skin') {
+            	productAddFields.style.display='block';
+                skinFields.style.display = 'block';
+            } else if (post_category ==='free'){
+            	productAddFields.style.display='none';
+                skinFields.style.display = 'block';
+            }
+		}
     </script>
 </body>
 </html>
