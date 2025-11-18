@@ -46,13 +46,20 @@ public class AdminProductController {
     @RequestMapping("/dashboard")
     public String adminDashboard() {
     	System.out.println("[AdminController] adminDashboard()");
-    	return "/admin/dashboard";  // dashboard.jsp 또는 dashboard.html
+    	return "/admin/dashboard";  
+    }
+    
+    // 재고 페이지 추가
+    @RequestMapping("/remain")
+    public String RemainManagement() {
+    	System.out.println("[AdminController] RemainManagement()");
+    	return "/admin/remain_management";  
     }
     
 
  // 상품-> 관리자페이지로  url 변경 products->adminpage
  // 관리자 
-    @RequestMapping("/products")
+    @RequestMapping("/product")
     public String adminProductList(
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "page", defaultValue = "1") int currentPage,

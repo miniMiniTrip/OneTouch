@@ -360,17 +360,24 @@ function postInsert(f) {
 		<form class="write-form">
 			<div class="form-group">
 				<label for="board-type">게시판 선택</label> 
+				
 				<select id="post_category" name="post_category"
 					class="form-control">
+					<c:if test="${postVo.post_category =='skin' }">
 					<option value="skin">스킨에디터</option>
+					</c:if>
+					<c:if test="${postVo.post_category == 'free' }">
+					<option value="free" >자유게시판</option>
+					</c:if>
+					<c:if test="${postVo.post_category == 'review'}">
 					<option value="review">구매자리뷰</option>
-					<option value="free">자유게시판</option>
+					</c:if>
 				</select>
 			</div>
 
 			<div class="form-group">
 				<label for="post_title">제목</label> <input type="text"
-					id="post_title" name="post_title" class="form-control" placeholder="제목을 입력해주세요">
+					id="post_title" name="post_title" class="form-control" value="${postVo.post_title }" placeholder="제목을 입력해주세요">
 			</div>
 
 			<!-- 스킨 에디터 전용 필드 -->
@@ -378,24 +385,20 @@ function postInsert(f) {
 				<div class="form-group">
 					<label for="post_content">내용</label>
 					<textarea id="post_content" name="post_content" class="form-control" rows="3"
-						placeholder="내용을 입력해주세요"></textarea>
+						placeholder="내용을 입력해주세요" >${postVo.post_content }</textarea>
 				</div>
-				
-				
-			<!-- 상품 추가 하는 영역 -->			
-			<div id="product-add">
-			    <div class="form-group">
-			        <label for="skin-category">상품추가</label>
-			        <%--  
-			            <select id="skin-category" name="product_idx" class="form-control">
-			                <option value="">상품을 선택해주세요</option>
-			                <c:forEach var="productVo" items="${product_list_array }">
-			                    <option value="${productVo.product_idx }">${productVo.product_name }</option>
-			                </c:forEach>
-			            </select>
-			        --%>
-			    </div>
 			
+			<div id="product-add" style="display: none;">
+				<div class="form-group">
+                    <label for="skin-category">상품추가</label>
+          <%--           <select id="skin-category" name="product_idx" class="form-control">
+                        <option value="">상품을 선택해주세요</option>
+                        <c:forEach var="productVo" items="${product_list_array }">
+                        <option value="${productVo.product_idx }">${productVo.product_name }</option>
+                        </c:forEach>
+                    </select> --%>
+                </div>
+                
 			    <div class="container mt-4">
 			        <!-- 상품 선택 폼을 추가하는 버튼 -->
 			        <button type="button" class="btn btn-primary" id="add-product-btn">+</button>
@@ -404,11 +407,11 @@ function postInsert(f) {
 			        <div id="product-form-container" class="mt-4">
 			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
 			        </div>
-			    </div>
+			   </div>
 			</div>
-			
-			<!-- ----------------- 상품 추가 js ------------------ -->
-			<script>
+			   
+			   <!-- ----------------- 상풍 추가 js------------------ -->
+				<script>
 			    $(document).ready(function() {
 			        $('#add-product-btn').click(function() {
 			            // 새로운 상품 선택 폼을 생성할 HTML 코드
@@ -441,10 +444,8 @@ function postInsert(f) {
 			        
 
 			    });
-			</script>
-			<!-- ----------------- end/상품 추가 js ------------------ -->
-			
-			
+				</script>
+			   <!-- ----------------- end/상풍 추가 js------------------ -->
 
 				<!--      <div class="form-group">
                     <label>스킨 미리보기</label>
@@ -497,14 +498,16 @@ function postInsert(f) {
 			</div>
 
 			<div class="button-group">
-				<button type="button" class="btn btn-secondary">임시저장</button>
+				<button type="button" class="btn btn-secondary">취소하기</button>
 				<button type="button" class="btn btn-primary"
-					onclick="postInsert(this.form);">등록하기</button>
+					onclick="postInsert(this.form);">수정하기</button>
 			</div>
 		</form>
 	</div>
 
 	<script>
+
+		
         // 게시판 유형에 따른 필드 표시/숨김
         document.getElementById('post_category').addEventListener('change', function() {
             const boardType = this.value;
@@ -610,6 +613,27 @@ function postInsert(f) {
                 setTimeout(() => preloader.style.display = 'none', 500);
             }
         });
+
+        
+		// 카테고리 정보가 넘어왔을때 수정 폼 어떤걸 보여줄지 초기화 시킴
+		window.onload = function(){
+			let post_category=document.getElementById('post_category').value;
+	        let reviewFields = document.getElementById('review-fields');
+	        let skinFields = document.getElementById('skin-fields');
+	        let productAddFields = document.getElementById('product-add');
+	        
+            if (post_category === 'review') {
+                reviewFields.style.display = 'block';
+                skinFields.style.display = 'block';
+            	productAddFields.style.display='none';
+            } else if (post_category === 'skin') {
+            	productAddFields.style.display='block';
+                skinFields.style.display = 'block';
+            } else if (post_category ==='free'){
+            	productAddFields.style.display='none';
+                skinFields.style.display = 'block';
+            }
+		}
     </script>
 </body>
 </html>

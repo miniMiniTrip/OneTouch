@@ -500,11 +500,15 @@ body {
     }
 }
 
+
+/* post 등록 버튼 css------------------------------------------------------------- */
 /* 게시물 작성 버튼 컨테이너 */
 .post-write-container {
     text-align: center;
-    padding: 20px 0;
-    background-color: #f9f9f9;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+   /*  background-color: #f9f9f9; */
 }
 
 	/* 게시물 작성 버튼 */
@@ -578,6 +582,47 @@ body {
 	    font-weight: 700;
 	    letter-spacing: 1px;
 	}
+	
+/* end: post 등록 버튼 css------------------------------------------------------------- */
+
+/* 점3개버튼 , 수정 삭제 버튼 css --------------------------------*/
+/* 점 3개 버튼 (ellipsis) */
+.more-options {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.more-options i {
+    font-size: 20px;
+}
+
+/* 수정/삭제 메뉴 */
+.more-options-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    padding: 10px;
+    display: none;
+}
+
+.more-options-menu button {
+    background: none;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.more-options-menu button:hover {
+    background-color: #f0f0f0;
+}
+/* end: 점3개버튼 , 수정 삭제 버튼 css --------------------------------------*/
+	
     </style>
 </head>
 
@@ -608,23 +653,24 @@ body {
             </div>
         </div>
     </div>
-    
-   <div class="post-write-container">
-   <button class="post-write-btn" onclick="location.href='/post/insert'">
-    <i class="fas fa-plus"></i>
-    <span>새 게시물 작성</span>
-  </button>
-  </div>
+ 
   
     <section class="section">
         <div class="container">
+			  <div class="post-write-container">
+			   <button class="post-write-btn" onclick="location.href='/post/insert'">
+			    <i class="fas fa-plus"></i>
+			    <span>등록</span>
+			  </button>
+			  </div>
             <div class="community-content">
                 <div class="community-tabs">
-                    <div class="community-tab-item active" data-tab="all">전체</div>
-                    <div class="community-tab-item" data-tab="skin">스킨에디터</div>
-                    <div class="community-tab-item" data-tab="review">리뷰</div>
-                    <div class="community-tab-item" data-tab="free">자유게시판</div>
+                    <div class="community-tab-item active" data-tab="all" id="post-all">전체</div>
+                    <div class="community-tab-item" data-tab="skin" id="post-skin">스킨에디터</div>
+                    <div class="community-tab-item" data-tab="review" id="post-review">리뷰</div>
+                    <div class="community-tab-item" data-tab="free" id="post-free">자유게시판</div>
                 </div>
+
                 
                 <!-- 커뮤니티 1개 ============================================================= -->
                 
@@ -681,19 +727,53 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-share-square"></i>
-                        </button>
-                    </div>
+					    <!-- 하트 버튼 -->
+						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
+						<c:set var="isLiked" value="false" />
+						
+						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+						<c:forEach var="likeVo" items="${postVo.likeList}">
+						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
+						        <c:set var="isLiked" value="true" />
+						    </c:if>
+						</c:forEach>
+						
+						<!-- 좋아요를 누른 경우 -->
+						<c:if test="${isLiked}">
+						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
+						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+						    </button>
+						</c:if>
+						
+						<!-- 좋아요를 누르지 않은 경우 -->
+						<c:if test="${!isLiked}">
+						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
+						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+						    </button>
+						</c:if>
+						
+					    <button class="interaction-btn">
+					        <i class="far fa-comment"></i>
+					    </button>
+					    <button class="interaction-btn">
+					        <i class="far fa-share-square"></i>
+					    </button>
+					    <c:if test="${postVo.mem_idx==user.mem_idx }">
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
+					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
+					    </div>
+					    </c:if>
+					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -704,6 +784,8 @@ body {
                         <input type="text" placeholder="댓글을 남겨보세요...">
                         <button class="comment-submit">댓글</button>
                     </div>
+                    <br>
+                    <br>
                 </c:forEach>
                 </div>
                 <!-- /커뮤니티 전체 목록 ============================================================= -->
@@ -762,23 +844,57 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-share-square"></i>
-                        </button>
-                    </div>
+					    <!-- 하트 버튼 -->
+						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
+						<c:set var="isLiked" value="false" />
+						
+						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+						<c:forEach var="likeVo" items="${postVo.likeList}">
+						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
+						        <c:set var="isLiked" value="true" />
+						    </c:if>
+						</c:forEach>
+						
+						<!-- 좋아요를 누른 경우 -->
+						<c:if test="${isLiked}">
+						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
+						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+						    </button>
+						</c:if>
+						
+						<!-- 좋아요를 누르지 않은 경우 -->
+						<c:if test="${!isLiked}">
+						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
+						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+						    </button>
+						</c:if>
+						
+					    <button class="interaction-btn">
+					        <i class="far fa-comment"></i>
+					    </button>
+					    <button class="interaction-btn">
+					        <i class="far fa-share-square"></i>
+					    </button>
+					    <c:if test="${postVo.mem_idx==user.mem_idx }">
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
+					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
+					    </div>
+					    </c:if>
+					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">2일 전</p>
+                        <p class="post-time">${postVo.post_time }</p>
                     </div>
                     
                     <div class="comment-input">
@@ -830,23 +946,57 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-share-square"></i>
-                        </button>
-                    </div>
+					    <!-- 하트 버튼 -->
+						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
+						<c:set var="isLiked" value="false" />
+						
+						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+						<c:forEach var="likeVo" items="${postVo.likeList}">
+						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
+						        <c:set var="isLiked" value="true" />
+						    </c:if>
+						</c:forEach>
+						
+						<!-- 좋아요를 누른 경우 -->
+						<c:if test="${isLiked}">
+						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
+						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+						    </button>
+						</c:if>
+						
+						<!-- 좋아요를 누르지 않은 경우 -->
+						<c:if test="${!isLiked}">
+						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
+						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+						    </button>
+						</c:if>
+						
+					    <button class="interaction-btn">
+					        <i class="far fa-comment"></i>
+					    </button>
+					    <button class="interaction-btn">
+					        <i class="far fa-share-square"></i>
+					    </button>
+					    <c:if test="${postVo.mem_idx==user.mem_idx }">
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
+					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
+					    </div>
+					    </c:if>
+					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">2일 전</p>
+                        <p class="post-time">${postVo.post_time }</p>
                     </div>
                     
                     <div class="comment-input">
@@ -898,23 +1048,57 @@ body {
                     
                     
                     <div class="post-interactions">
-                        <button class="interaction-btn">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="interaction-btn">
-                            <i class="far fa-share-square"></i>
-                        </button>
-                    </div>
+					    <!-- 하트 버튼 -->
+						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
+						<c:set var="isLiked" value="false" />
+						
+						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+						<c:forEach var="likeVo" items="${postVo.likeList}">
+						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
+						        <c:set var="isLiked" value="true" />
+						    </c:if>
+						</c:forEach>
+						
+						<!-- 좋아요를 누른 경우 -->
+						<c:if test="${isLiked}">
+						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
+						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+						    </button>
+						</c:if>
+						
+						<!-- 좋아요를 누르지 않은 경우 -->
+						<c:if test="${!isLiked}">
+						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
+						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+						    </button>
+						</c:if>
+						
+					    <button class="interaction-btn">
+					        <i class="far fa-comment"></i>
+					    </button>
+					    <button class="interaction-btn">
+					        <i class="far fa-share-square"></i>
+					    </button>
+					    <c:if test="${postVo.mem_idx==user.mem_idx }">
+					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+					    <button class="interaction-btn more-options">
+					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+					    </button>
+					
+					    <!-- 숨겨진 수정/삭제 버튼 -->
+					    <div class="more-options-menu" style="display: none;">
+					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
+					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
+					    </div>
+					    </c:if>
+					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes">좋아요 503개</p>
+                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">최근에 구매한 원터치 화장품! 남자 피부에 딱 좋은 제품이네요.</p>
+                        <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">2일 전</p>
+                        <p class="post-time">${postVo.post_time }</p>
                     </div>
                     
                     <div class="comment-input">
@@ -1142,22 +1326,61 @@ document.addEventListener("DOMContentLoaded", function () {
  // =========================
  // 2. 좋아요 하트 토글 기능
  // =========================
- document.addEventListener('click', function(e) {
-     const btn = e.target.closest('.interaction-btn');
-     if (!btn) return;
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.interaction-btn');
+    if (!btn) return;
 
-     const icon = btn.querySelector('i');
-     if (icon && icon.classList.contains('fa-heart')) {
-         const isLiked = btn.classList.toggle('active');
-         if (isLiked) {
-             icon.classList.remove('far');
-             icon.classList.add('fas');
-         } else {
-             icon.classList.remove('fas');
-             icon.classList.add('far');
-         }
-     }
- });
+    const icon = btn.querySelector('i');
+    
+    if (icon && icon.classList.contains('fa-heart')) {
+
+        // 로그인 체크
+        if (!'${user}') {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+        // 클릭한 버튼이 어느 게시글인지 확인
+        const post_idx = btn.getAttribute('data-post-idx');
+
+        // Ajax 요청 보내기
+        $.ajax({
+            url: "/post/postLike",
+            type: "post",
+            data: { "post_idx": post_idx },
+            success: function(d) {
+                // 서버 성공 시 하트 토글
+                const isLiked = btn.classList.toggle('active');
+                if (isLiked) { //하트 표시
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else { //하트 제거
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+                // 같은 post_idx 버튼 모두 동기화
+                
+                const allBtns = document.querySelectorAll(`.interaction-btn[data-post-idx="\${d.post_idx}"]`);
+                allBtns.forEach(otherBtn => {
+                    const otherIcon = otherBtn.querySelector('i');
+                    otherBtn.classList.toggle('active', isLiked);  // isLiked는 클릭한 버튼 상태
+                    if (isLiked) {
+                        otherIcon.classList.remove('far');
+                        otherIcon.classList.add('fas');
+                    } else {
+                        otherIcon.classList.remove('fas');
+                        otherIcon.classList.add('far');
+                    }
+                });
+                
+                alert(d.post_like);
+                $(".post-likes[data-post-idx='" + d.post_idx + "']").text("좋아요 " + d.post_like + "개");
+            },
+            error: function(e) {
+                alert("좋아요 버튼 실패\n관리자에게 문의");
+            }
+        });
+    }
+});
 
  // =========================
  // 3. 탭 클릭 기능
@@ -1245,134 +1468,44 @@ document.addEventListener("DOMContentLoaded", function () {
  });
  /* ------------------------------------------------------------------------ */
  
+ /* 내용에서 수정삭제 머튼 컨트롤 js------------------------------------------------------------------------ */
+ $(document).ready(function() {
+    // 점 3개 버튼 클릭 시 수정/삭제 메뉴 토글
+    $('.more-options').click(function(e) {
+        e.stopPropagation(); // 클릭 이벤트가 부모 요소로 전달되지 않게 함
+        $(this).siblings('.more-options-menu').toggle(); // 해당 메뉴를 보이거나 숨김
+    });
+
+    // 메뉴 바깥 영역 클릭 시 메뉴 숨기기
+    $(document).click(function(e) {
+        if (!$(e.target).closest('.post-interactions').length) {
+            $('.more-options-menu').hide(); // .post-interactions 외 클릭 시 숨김
+        }
+    });
+
+    // 수정 버튼 클릭 시 처리
+    $('.edit-btn').click(function() {
+    	
+    	
+        let post_idx=$(this).data('post-idx');
+        location.href="/post/modify?post_idx="+post_idx;
+        // 여기에 수정 처리 로직을 추가하세요
+    });
+
+    // 삭제 버튼 클릭 시 처리
+    $('.delete-btn').click(function() {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            alert("삭제 버튼 클릭!");
+            // 여기에 삭제 처리 로직을 추가하세요
+        }
+    });
+});
+ /* end: 내용에서 수정삭제 머튼 컨트롤 js------------------------------------------------------------------------ */
+
  
-       //수정 전 코드 --------------------------------	
-       /* 	document.addEventListener('DOMContentLoaded', function() {
-            // 캐러셀 상태 관리 및 초기화
-            const carousels = {};
-            
-            document.querySelectorAll('.image-carousel').forEach(carousel => {
-                const carouselId = carousel.id;
-                const carouselInner = carousel.querySelector('.carousel-inner');
-                const slides = carouselInner.querySelectorAll('.carousel-item');
-                
-                carousels[carouselId] = {
-                    element: carouselInner,
-                    slides: slides,
-                    currentIndex: 0,
-                    totalSlides: slides.length
-                };
-            });
-            
-            // 캐러셀 이동 함수
-            function moveCarousel(carouselId, direction) {
-                const carousel = carousels[carouselId];
-                if (!carousel) return;
-                
-                let newIndex = carousel.currentIndex + direction;
-                
-                // 범위 체크: 첫 번째/마지막 슬라이드에서 멈춤
-                if (newIndex < 0) newIndex = 0;
-                if (newIndex >= carousel.totalSlides) newIndex = carousel.totalSlides - 1;
-                
-                if (newIndex !== carousel.currentIndex) {
-                    carousel.currentIndex = newIndex;
-                    // translateX를 사용하여 슬라이드 이동
-                    carousel.element.style.transform = `translateX(${-newIndex * 100}%)`;
-                    
-                    // 인디케이터 업데이트
-                    updateIndicators(carouselId);
-                }
-            }
-            
-            // 특정 슬라이드로 이동
-            function goToSlide(carouselId, slideIndex) {
-                const carousel = carousels[carouselId];
-                if (!carousel) return;
-                
-                if (slideIndex >= 0 && slideIndex < carousel.totalSlides) {
-                    carousel.currentIndex = slideIndex;
-                    carousel.element.style.transform = `translateX(${-slideIndex * 100}%)`;
-                    
-                    // 인디케이터 업데이트
-                    updateIndicators(carouselId);
-                }
-            }
-            
-            // 인디케이터 업데이트
-            function updateIndicators(carouselId) {
-                // 캐러셀 ID를 기반으로 인디케이터 그룹을 찾습니다. (예: indicators-1)
-                const indicators = document.querySelectorAll(`#indicators-${carouselId.split('-')[1]} .indicator`);
-                const currentIndex = carousels[carouselId].currentIndex;
-                
-                indicators.forEach((indicator, index) => {
-                	indicator.classList.toggle('active', index === currentIndex);
-                });
-            }
-            
-            // 이전/다음 버튼 이벤트 리스너
-            document.querySelectorAll('.carousel-control').forEach(button => {
-                button.addEventListener('click', function() {
-                    const carouselId = this.dataset.carousel;
-                    const direction = this.classList.contains('prev') ? -1 : 1;
-                    moveCarousel(carouselId, direction);
-                });
-            });
-            
-            // 인디케이터 클릭 이벤트 리스너
-            document.querySelectorAll('.indicator').forEach(indicator => {
-                indicator.addEventListener('click', function() {
-                    const slideIndex = parseInt(this.dataset.slide);
-                    const carouselId = this.dataset.carousel;
-                    goToSlide(carouselId, slideIndex);
-                });
-            }); */
-            //---------------------------------
 
 
-    /* 
-            // =========================
-            document.querySelectorAll('.interaction-btn').forEach(button => {
-                // 좋아요 버튼에만 이벤트 리스너 추가
-                if (button.querySelector('.fa-heart')) {
-                    button.addEventListener('click', function() {
-                        const icon = this.querySelector('i');
-                        const isLiked = this.classList.toggle('active'); // active 클래스 토글
-
-                        if (isLiked) {
-                            icon.classList.remove('far'); // 빈 하트
-                            icon.classList.add('fas'); // 채워진 하트
-                        } else {
-                            icon.classList.remove('fas');
-                            icon.classList.add('far');
-                        }
-                    });
-                }
-            });
-
-
-          
-            // =========================
-            document.querySelectorAll('.community-tab-item').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // 모든 탭의 active 클래스 제거
-                    document.querySelectorAll('.community-tab-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-
-                    // 클릭한 탭에 active 클래스 추가 (시각적 효과)
-                    this.classList.add('active');
-                    
-                    const tabName = this.textContent.trim();
-                    const tabData = this.dataset.tab;
-                    
-                    // 실제 탭 이동 로직 (Alert로 대체)
-                    // 실제 구현 시, 이 부분에 AJAX를 이용한 게시물 로딩이나 페이지 리다이렉션을 구현해야 합니다.
-                    console.log(`탭 전환 요청: ${tabData} (${tabName})`);
-                    alert(`"${tabName}" 탭이 선택되었습니다. 실제 게시물 로딩 기능을 추가해야 합니다.`);
-                });
-            });
-        }); */
+ 
     </script>
 </body>
 </html>

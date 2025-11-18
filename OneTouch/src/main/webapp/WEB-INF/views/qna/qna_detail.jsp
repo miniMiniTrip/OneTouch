@@ -339,7 +339,7 @@
 }
 
 .btn-submit {
-    background: #5c6bc0;
+    background: #5c6bc0 !important;
     color: white;
     padding: 10px 30px;
 }
@@ -377,8 +377,18 @@
         if(confirm('답변을 삭제하시겠습니까?')) {
             location.href = '${pageContext.request.contextPath}/qna/deleteAnswer?qna_idx=${qna.qna_idx}';
         }
+        
+        
+        
     }
     
+  /*   function checkEdit(isAnswered, qna_idx) {
+        if(isAnswered) {
+            alert('답변이 등록되면 수정할 수 없습니다.');
+        } else {
+            location.href = '${pageContext.request.contextPath}/qna/modify?qna_idx=' + qna_idx;
+        }
+    } */
     
     
     </script>
@@ -577,11 +587,20 @@
 </div>
                     </div>
                     
-                    <!-- 버튼 그룹 -->
-                    <div class="btn-group">
-                        <button class="btn btn-edit" onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">수정</button>
-                        <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
-                    </div>
+                    <<div class="btn-group">
+    <!-- 작성자 본인만 수정/삭제 버튼 표시, 관리자 제외 -->
+    <c:if test="${user.mem_idx == qna.mem_idx && user.mem_roll != 'admin'}">
+        <!-- 답변이 없는 경우에만 수정 버튼 표시 -->
+        <c:if test="${not qna.qna_answered}">
+            <button class="btn btn-edit" 
+                    onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">
+                수정
+            </button>
+        </c:if>
+        <button class="btn btn-delete" onclick="confirmDelete()">삭제</button>
+    </c:if>
+</div>
+
                 </div>
             </div>
         </div>
