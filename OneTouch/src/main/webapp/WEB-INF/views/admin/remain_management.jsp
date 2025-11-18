@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OneTouch - 상품관리</title>
     <style>
-        /* 기존 스타일 그대로 사용 */
-        /* ... 생략 ... */
+        <!-- 추가해야함 -->
     </style>
 </head>
 <body>
@@ -49,7 +48,7 @@
                     <li class="sidebar-menu-item <c:if test='${page eq "products"}'>active</c:if>'">
                         <a href="/adminpage/products">📦 상품관리</a>
                     </li>
-                    <li class="sidebar-menu-item <c:if test='${page eq "inventory"}'>active</c:if>'">
+                    <li class="sidebar-menu-item <c:if test='${page eq "remain"}'>active</c:if>'">
                         <span>📦</span> 재고관리
                     </li>
                     <li class="sidebar-menu-item">
@@ -84,9 +83,9 @@
                     <label class="filter-label">상태</label>
                     <select class="filter-select">
                         <option value="">전체</option>
-                        <option value="in-stock" <c:if test='${param.status eq "in-stock"}'>selected</c:if>>정상</option>
-                        <option value="low-stock" <c:if test='${param.status eq "low-stock"}'>selected</c:if>>부족</option>
-                        <option value="out-stock" <c:if test='${param.status eq "out-stock"}'>selected</c:if>>품절</option>
+                        <option value="in-remain" <c:if test='${param.status eq "in-remain"}'>selected</c:if>>정상</option>
+                        <option value="low-remain" <c:if test='${param.status eq "low-remain"}'>selected</c:if>>부족</option>
+                        <option value="out-remain" <c:if test='${param.status eq "out-remain"}'>selected</c:if>>품절</option>
                     </select>
                 </div>
                 <div class="filter-item">
@@ -121,13 +120,13 @@
                             <td>${product.code}</td>
                             <td>${product.name}</td>
                             <td>${product.category}</td>
-                            <td>${product.stock}개</td>
+                            <td>${product.remain}개</td>
                             <td>
                                 <span class="status-badge 
                                     <c:choose>
-                                        <c:when test='${product.status eq "in-stock"}'>status-in-stock</c:when>
-                                        <c:when test='${product.status eq "low-stock"}'>status-low-stock</c:when>
-                                        <c:when test='${product.status eq "out-stock"}'>status-out-stock</c:when>
+                                        <c:when test='${product.status eq "in-remain"}'>status-in-remain</c:when>
+                                        <c:when test='${product.status eq "low-remain"}'>status-low-remain</c:when>
+                                        <c:when test='${product.status eq "out-remain"}'>status-out-remain</c:when>
                                     </c:choose>
                                 ">
                                     ${product.statusName}
@@ -137,8 +136,8 @@
                             <td>${product.lastOutDate}</td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="action-button in" onclick="openStockInModal('${product.code}')">입고</button>
-                                    <button class="action-button out" onclick="openStockOutModal('${product.code}')">출고</button>
+                                    <button class="action-button in" onclick="openRemainInModal('${product.code}')">입고</button>
+                                    <button class="action-button out" onclick="openRemainOutModal('${product.code}')">출고</button>
                                     <button class="action-button edit" onclick="openEditProductModal('${product.code}')">수정</button>
                                     <button class="action-button delete" onclick="deleteProduct('${product.code}')">삭제</button>
                                 </div>
@@ -157,9 +156,40 @@
     </div>
     
     <!-- 모달 및 JS 동일 -->
+    
     <script>
-        // 기존 JS 그대로 사용 가능
-        // ...
-    </script>
+    // 섹션 표시
+    function showSection(sectionName) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        const sections = {
+            'dashboard': 'dashboardSection',
+            'members': 'memberSection',
+            'remain': 'remainSection',
+            'order': 'orderSection',
+            'board': 'boardSection'
+        };
+
+        document.getElementById(sections[sectionName]).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function goToHome() {
+        window.location.href = '/';
+    }
+
+    function handleLogout() {
+        if (confirm('로그아웃 하시겠습니까?')) {
+            alert('로그아웃되었습니다.');
+            window.location.href = '/';
+        }
+    }
+</script>
+  
 </body>
 </html>

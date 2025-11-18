@@ -303,9 +303,9 @@
                     <div class="sidebar-title">관리</div>
                     <ul class="sidebar-menu">
                         <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
-                        <li><a href="/adminpage/products">📦 상품관리</a></li>
-                        <li><a href="#" onclick="showSection('inventory'); return false;">📋 재고관리</a></li>
-                        <li><a href="#" onclick="showSection('orders'); return false;">🚚 주문관리</a></li>
+                        <li><a href="/adminpage/product">📦 상품관리</a></li>
+                        <li><a href="/ddminpage/remain">📋 재고관리</a></li>
+                        <li><a href="/order/management#" onclick="showSection('orders'); return false;">🚚 주문관리</a></li>
                     </ul>
                 </div>
 
@@ -350,8 +350,8 @@
                             <h2 class="section-title">🚀 빠른 액세스</h2>
                         </div>
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <a href="/adminpage/products" class="btn btn-primary">상품관리</a>
-                            <a href="#" class="btn btn-secondary" onclick="showSection('members'); return false;">회원관리</a>
+                            <a href="/adminpage/product" class="btn btn-primary">상품관리</a>
+                            <a href="/adminpage/remain" class="btn btn-secondary" onclick="showSection('members'); return false;">회원관리</a>
                             <a href="#" class="btn btn-secondary" onclick="showSection('orders'); return false;">주문관리</a>
                             <a href="#" class="btn btn-secondary" onclick="showSection('board'); return false;">게시판 관리</a>
                         </div>
@@ -369,7 +369,7 @@
                 </section>
 
                 <!-- 재고관리 -->
-                <section id="inventorySection" class="content-section">
+                <section id="remainSection" class="content-section">
                     <div class="section-card">
                         <div class="section-header">
                             <h2 class="section-title">📋 재고관리</h2>
@@ -414,8 +414,8 @@
             const sections = {
                 'dashboard': 'dashboardSection',
                 'members': 'membersSection',
-                'inventory': 'inventorySection',
-                'orders': 'ordersSection',
+                'remain': 'remainSection',
+                'order': 'ordersSection',
                 'board': 'boardSection'
             };
 
