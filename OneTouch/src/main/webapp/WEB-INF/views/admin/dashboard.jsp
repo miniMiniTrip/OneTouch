@@ -304,16 +304,14 @@
                     <ul class="sidebar-menu">
                         <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
                         <li><a href="/adminpage/product">📦 상품관리</a></li>
-                        <li><a href="/ddminpage/remain">📋 재고관리</a></li>
                         <li><a href="/order/management">🚚 주문관리</a></li>
+                        <li><a href="/ddminpage/remain">📋 Q&A</a></li>
                     </ul>
                 </div>
 
                 <div class="sidebar-section">
-                    <div class="sidebar-title">시스템</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" onclick="showSection('board'); return false;">💬 게시판 관리</a></li>
-                    </ul>
+                    
+                    
                 </div>
             </aside>
 
