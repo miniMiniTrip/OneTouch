@@ -544,9 +544,9 @@
                     <div class="sidebar-title">관리</div>
                     <ul class="sidebar-menu">
                         <li><a href="#">👥 회원관리</a></li>
-                        <li><a href="/adminpage/products" class="active">📦 상품관리</a></li>
-                        <li><a href="#">📋 재고관리</a></li>
-                        <li><a href="#">🚚 주문관리</a></li>
+                        <li><a href="/adminpage/product" class="active">📦 상품관리</a></li>
+                        <li><a href="/adminpage/remain">📋 재고관리</a></li>
+                        <li><a href="/order/management">🚚 주문관리</a></li>
                     </ul>
                 </div>
 
@@ -571,7 +571,7 @@
 
                     <!-- 검색 컨트롤 -->
                     <div class="search-controls">
-                        <form action="${pageContext.request.contextPath}/adminpage/products" method="get" style="display: flex; gap: 10px; width: 100%;">
+                        <form action="${pageContext.request.contextPath}/adminpage/product" method="get" style="display: flex; gap: 10px; width: 100%;">
                             <input type="text" class="search-input" name="keyword" 
                                    placeholder="상품명으로 검색하세요" value="${param.keyword}">
                             <button type="submit" class="btn btn-primary">검색</button>
