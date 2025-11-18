@@ -304,17 +304,11 @@
                     <ul class="sidebar-menu">
                         <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
                         <li><a href="/adminpage/product">📦 상품관리</a></li>
-                        <li><a href="/ddminpage/remain">📋 재고관리</a></li>
                         <li><a href="/order/management">🚚 주문관리</a></li>
+                        <li><a href="#">💬 게시판 관리</a></li>
                     </ul>
                 </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-title">시스템</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" onclick="showSection('board'); return false;">💬 게시판 관리</a></li>
-                    </ul>
-                </div>
+                
             </aside>
 
             <!-- 메인 컨텐츠 -->
@@ -352,8 +346,8 @@
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                             <a href="#" class="btn btn-secondary">회원관리</a>
                             <a href="/adminpage/product" class="btn btn-primary">상품관리</a>
-                            <a href="/adminpage/remain" class="btn btn-secondary">재고관리</a>
                             <a href="/order/management" class="btn btn-secondary">주문관리</a>
+                            <a href="#" class="btn btn-secondary">💬 게시판 관리</a>
                         </div>
                     </div>
                 </section>
@@ -372,9 +366,9 @@
                 <section id="remainSection" class="content-section">
                     <div class="section-card">
                         <div class="section-header">
-                            <h2 class="section-title">📋 재고관리</h2>
+                            <h2 class="section-title">📦 상품관리</h2>
                         </div>
-                        <p>재고관리 기능이 곧 추가될 예정입니다.</p>
+                        <p>상품관리 기능이 곧 추가될 예정입니다.</p>
                     </div>
                 </section>
 
