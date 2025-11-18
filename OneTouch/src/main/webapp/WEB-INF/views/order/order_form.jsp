@@ -251,7 +251,7 @@
                                     <small class="text-muted ml-2">간편하게 결제하세요</small>
                                 </label>
                             </div>
-                            <div class="payment-method">
+<!--                   		<div class="payment-method">
                                 <label>
                                     <input type="radio" name="payment_method" value="card">
                                     <strong>신용카드</strong>
@@ -262,7 +262,7 @@
                                     <input type="radio" name="payment_method" value="bank">
                                     <strong>실시간 계좌이체</strong>
                                 </label>
-                            </div>
+                        	</div> -->
                         </div>
                     </div>
                     
@@ -274,7 +274,7 @@
                             <!-- 단건 구매 -->
                             <c:if test="${order_type eq 'direct'}">
                                 <div class="product-item">
-                                    <img src="${product.product_image_url}" alt="${product.product_name}">
+                                    <img src="${pageContext.request.contextPath}/images/${product.product_image_url}"  alt="${product.product_name}">
                                     <div class="product-info">
                                         <h6>${product.product_name}</h6>
                                         <span>수량: ${param.product_cnt}개</span>
@@ -291,7 +291,7 @@
                             <c:if test="${order_type eq 'cart'}">
                                 <c:forEach var="item" items="${cart_list}">
                                     <div class="product-item">
-                                        <img src="${item.product_image_url}" alt="${item.product_name}">
+                                        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="${item.product_name}">
                                         <div class="product-info">
                                             <h6>${item.product_name}</h6>
                                             <span>수량: ${item.cart_cnt}개</span>
