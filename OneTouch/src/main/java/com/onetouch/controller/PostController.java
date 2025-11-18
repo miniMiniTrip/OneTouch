@@ -124,15 +124,17 @@ public class PostController {
 		System.out.printf("	[PostController] postModifyForm(post_idx=%d)\n",post_idx);
 		
 		PostVo postVo=postDao.selectPostOne(post_idx);
-		System.out.println(postVo);
+		System.out.printf("		postVo => %s\n",postVo);
 		List<PostProductVo> postProductVo=postDao.selectPostProductOne(post_idx);
-		System.out.println(postProductVo);
+		System.out.printf("		postProductVo =>%s\n",postProductVo);
 		
 		model.addAttribute("postVo", postVo);
 		model.addAttribute("postProductVo", postProductVo);
+		
+		
+		
 		System.out.println("	[PostController] return : /post/post_modify");
 		System.out.println("");
-		
 		return"/post/post_modify";
 	}
 	
