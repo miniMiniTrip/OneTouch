@@ -31,13 +31,14 @@ public class WishlistController {
 	HttpSession session;
 	
 	@RequestMapping("/wishlist/list.do")
-	@ResponseBody
 	public String list(Model model) {
 
 		MemVo memVo =  
 				(MemVo)session.getAttribute("user");
 		
-		if(memVo==null)	{return "redirect:/user/login";}
+		if(memVo==null)	{
+			return "redirect:/user/login";
+			}
 		
 		Integer mem_idx = memVo.getMem_idx();
 		
@@ -48,6 +49,7 @@ public class WishlistController {
 	}
 	
 	@RequestMapping("/wishlist/insert.do")
+	@ResponseBody
 	public Map<String, String> insert(WishlistVo vo){
 		Map<String, String> map = new HashMap<String, String>();
 	    
@@ -71,11 +73,47 @@ public class WishlistController {
 	        map.put("result", "success");
 	        wishlist_dao.plusWishlistCount(vo.getProduct_idx());
 	    }
-	    else
+	    else {
 	        map.put("result", "fail");
-	    
+	    }
 		return map;
 	}
+	
+	//찜 토글에 필요
+	@RequestMapping("/wishlist/toggle.do")
+	@ResponseBody
+	public Map<String, String> toggle(WishlistVo vo){
+Map<String, String> map = new HashMap<String, String>();
+	    
+	    MemVo memVo = (MemVo) session.getAttribute("user");
+	    if(memVo == null) {
+	        map.put("result", "not_login");
+	        return map;
+	    }
+	    
+	    vo.setMem_idx(memVo.getMem_idx());
+	    
+	    WishlistVo existWishlist = wishlist_dao.selectWishlistByIdProduct(vo);
+	    
+	    if(existWishlist != null) {
+	    	wishlist_dao.delete(existWishlist.getWishlist_idx());
+	    	wishlist_dao.minusWishlistCount(vo.getProduct_idx());	    	
+            map.put("result", "success");
+            map.put("action", "removed");
+	    } else {
+	    	 int res = wishlist_dao.insert(vo);
+	            if (res == 1) {
+	                wishlist_dao.plusWishlistCount(vo.getProduct_idx());
+	                map.put("result", "success");
+	                map.put("action", "added");  // 추가했다는 정보
+	            } else {
+	                map.put("result", "fail");
+	            }
+	    }
+	    
+	    return map;
+	}
+	
 	
     @RequestMapping("/wishlist/delete.do")
     public String delete(int wishlist_idx, RedirectAttributes ra) { 

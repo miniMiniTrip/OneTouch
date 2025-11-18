@@ -3,15 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false" %>
  <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
-
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
- <!-- j쿼리 -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- Start Header Area -->
 <header class="header navbar-area">
 	<!-- Start Topbar -->

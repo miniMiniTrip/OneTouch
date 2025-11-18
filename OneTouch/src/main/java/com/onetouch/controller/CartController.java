@@ -40,7 +40,9 @@ public class CartController {
 		MemVo memVo =  
 				(MemVo)session.getAttribute("user");
 		
-		if(memVo==null)	{return "redirect:/user/login";}
+		if(memVo==null)	{
+			return "redirect:/user/login";
+			}
 		
 		Integer mem_idx = memVo.getMem_idx();
 		

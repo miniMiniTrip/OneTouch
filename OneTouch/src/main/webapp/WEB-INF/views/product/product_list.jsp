@@ -2,7 +2,66 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<style>
+.sidebar {
+    width: 250px;
+    background: #fafafa;
+    border-right: 1px solid #e0e0e0;
+    padding: 30px 0;
+    min-height: calc(100vh - 400px);
+}
 
+.sidebar-header {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+.sidebar-subtitle {
+    padding: 5px 30px 20px;
+    font-size: 13px;
+    color: #999;
+}
+
+.menu-section {
+    margin: 25px 0;
+}
+
+.menu-title {
+    padding: 10px 30px;
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.menu-item {
+    padding: 14px 30px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background: #f0f0f0;
+    padding-left: 35px;
+    color: #333;
+}
+
+.menu-item.active {
+    background: #e8eaf6;
+    color: #5c6bc0;
+    font-weight: 600;
+    border-left: 3px solid #5c6bc0;
+}
+</style>
 <%@include file="/WEB-INF/views/common/header.jsp" %>
 
 <!-- Breadcrumbs -->

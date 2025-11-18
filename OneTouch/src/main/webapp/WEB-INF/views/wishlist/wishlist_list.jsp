@@ -367,20 +367,62 @@
 <body>
 
     <%@include file="/WEB-INF/views/common/header.jsp" %>
-
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">찜 목록</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
+                        <li>마이페이지</li>
+                        <li>찜 목록</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- End Breadcrumbs -->
+	
     <!-- Start Wishlist Section -->
     <section class="wishlist-section">
-        <div class="wishlist-container">
-            
-            <!-- Sidebar -->
-            <%@include file="/WEB-INF/views/common/mypage_sidebar.jsp" %>
-            
+        <div class="container">
+          	<div class="wishlist-container">
+				<!-- Sidebar -->
+				<div class="sidebar">
+				    
+				    <div class="menu-section">
+				        <div class="menu-item">🛒 장바구니</div>
+				        <div class="menu-item active">💝 찜</div>
+				        <div class="menu-item">🎯 주문/배송 조회</div>
+				    </div>
+				    
+				    <div class="menu-section">
+				        <div class="menu-title">나의 활동</div>
+				        <div class="menu-item">💬 상품 Q&A</div>
+				    </div>
+				    
+				    <div class="menu-section">
+				        <div class="menu-title">회원 정보</div>
+				        <div class="menu-item">👥 회원정보 수정</div>
+				        <div class="menu-item">🔒 배송지 관리</div>
+						<div class="menu-item">📧 알림톡신청 관리</div>
+					</div>
+	                    
+					<div class="menu-section">
+						<div class="menu-item">📝 로그아웃</div>
+	            	</div>
+	            </div>
+                
             <!-- Content -->
             <div class="content">
                 <div class="content-header">
                     <div>
-                        <h2>찜 목록</h2>
-                        <p class="wishlist-count">총 ${fn:length(wishlist_list)}개의 상품</p>
+                        <p class="wishlist-count"><h2>총 ${fn:length(wishlist_list)}개의 상품</h2></p>
                     </div>
                 </div>
                 
@@ -442,7 +484,7 @@
                                             </button>
                                             <button type="button" class="btn-remove" 
                                                     onclick="removeWishlist(${wishlist.wishlist_idx})">
-                                                <i class="lni lni-trash"></i>
+                                                <i class="lni lni-trash-can"></i> 삭제
                                             </button>
                                         </div>
                                     </div>
@@ -463,7 +505,7 @@
                         </a>
                     </div>
                 </c:if>
-                
+                </div>
             </div>
         </div>
     </section>

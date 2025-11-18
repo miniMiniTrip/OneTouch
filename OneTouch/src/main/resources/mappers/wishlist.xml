@@ -12,7 +12,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         w.wishlist_time,
         p.product_name,
         p.product_price,
-        p.product_sale_price,
         pi.product_image_url
     from wishlist w
     inner join product p on w.product_idx = p.product_idx
