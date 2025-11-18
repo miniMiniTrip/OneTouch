@@ -305,10 +305,21 @@
                         <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
                         <li><a href="/adminpage/product">📦 상품관리</a></li>
                         <li><a href="/order/management">🚚 주문관리</a></li>
+
+                        <li><a href="/ddminpage/remain">📋 Q&A</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    
+                    
+                </div>
+
                         <li><a href="#">💬 게시판 관리</a></li>
                     </ul>
                 </div>
                 
+
             </aside>
 
             <!-- 메인 컨텐츠 -->
