@@ -545,17 +545,12 @@
                     <ul class="sidebar-menu">
                         <li><a href="#">👥 회원관리</a></li>
                         <li><a href="/adminpage/product" class="active">📦 상품관리</a></li>
-                        <li><a href="/adminpage/remain">📋 재고관리</a></li>
                         <li><a href="/order/management">🚚 주문관리</a></li>
+                        <li><a href="#">💬 게시판관리</a></li>
                     </ul>
                 </div>
 
-                <div class="sidebar-section">
-                    <div class="sidebar-title">시스템</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="/adminpage/board">💬 게시판 관리</a></li>
-                    </ul>
-                </div>
+              
             </aside>
 
             <!-- 메인 컨텐츠 -->
