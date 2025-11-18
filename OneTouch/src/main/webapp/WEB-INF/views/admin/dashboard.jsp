@@ -305,7 +305,7 @@
                         <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
                         <li><a href="/adminpage/product">📦 상품관리</a></li>
                         <li><a href="/ddminpage/remain">📋 재고관리</a></li>
-                        <li><a href="/order/management#" onclick="showSection('orders'); return false;">🚚 주문관리</a></li>
+                        <li><a href="/order/management">🚚 주문관리</a></li>
                     </ul>
                 </div>
 
@@ -350,10 +350,10 @@
                             <h2 class="section-title">🚀 빠른 액세스</h2>
                         </div>
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <a href="#" class="btn btn-secondary">회원관리</a>
                             <a href="/adminpage/product" class="btn btn-primary">상품관리</a>
-                            <a href="/adminpage/remain" class="btn btn-secondary" onclick="showSection('members'); return false;">회원관리</a>
-                            <a href="#" class="btn btn-secondary" onclick="showSection('orders'); return false;">주문관리</a>
-                            <a href="#" class="btn btn-secondary" onclick="showSection('board'); return false;">게시판 관리</a>
+                            <a href="/adminpage/remain" class="btn btn-secondary">재고관리</a>
+                            <a href="/order/management" class="btn btn-secondary">주문관리</a>
                         </div>
                     </div>
                 </section>
