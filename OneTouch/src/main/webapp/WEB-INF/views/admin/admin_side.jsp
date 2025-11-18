@@ -4,14 +4,15 @@
 
 <style>
     /* 레이아웃 그리드 - 메인 페이지에 추가 필요 */
-    .admin-layout {
+/*     .admin-layout {
         display: grid;
         grid-template-columns: 280px 1fr;
         gap: 30px;
         max-width: 1600px;
         margin: 40px auto;
         padding: 0 40px;
-    }
+        
+    } */
 
     /* 사이드바 */
     .sidebar {
@@ -22,6 +23,7 @@
         position: sticky;
         top: 20px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-left: px;
     }
 
     .sidebar-section {
@@ -67,10 +69,10 @@
     }
 
     .sidebar-menu a.active {
-        background: #e8eaf6;
-        color: #1a237e;
-        font-weight: 600;
-        border-left-color: #1a237e;
+        background: #e8eaf6 !important;
+        color: #1a237e !important;
+        font-weight: 600 !important;
+        border-left-color: #1a237e !important;
     }
 </style>
 
@@ -97,34 +99,33 @@
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/adminpage/products" 
+                <a href="${pageContext.request.contextPath}/adminpage/product" 
                    class="${pageContext.request.requestURI.contains('/products') ? 'active' : ''}">
                     📦 상품관리
                 </a>
             </li>
+            
             <li>
-                <a href="${pageContext.request.contextPath}/adminpage/inventory"
-                   class="${pageContext.request.requestURI.contains('/inventory') ? 'active' : ''}">
-                    📋 재고관리
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/adminpage/orders"
+                <a href="${pageContext.request.contextPath}/order/management"
                    class="${pageContext.request.requestURI.contains('/orders') ? 'active' : ''}">
                     🚚 주문관리
                 </a>
             </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/ddminpage/remain"
+                   class="${pageContext.request.requestURI.contains('/qna') ? 'active' : ''}">
+                    📋 Q&A
+                </a>
+            </li>
+            
         </ul>
     </div>
 
     <div class="sidebar-section">
-        <div class="sidebar-title">시스템</div>
+        
         <ul class="sidebar-menu">
             <li>
-                <a href="${pageContext.request.contextPath}/adminpage/board"
-                   class="${pageContext.request.requestURI.contains('/board') ? 'active' : ''}">
-                    💬 게시판 관리
-                </a>
+                
             </li>
         </ul>
     </div>

@@ -30,7 +30,7 @@
 					<div class="top-middle">
 						<ul class="useful-links">
 							<li><a href="${pageContext.request.contextPath}/">홈</a></li>
-							<li><a href="${pageContext.request.contextPath}/admin/products">상품</a></li>
+							<li><a href="${pageContext.request.contextPath}/admin/product">상품</a></li>
 							<li><a href="${pageContext.request.contextPath}/community">커뮤니티</a></li>
 						</ul>
 					</div>
@@ -178,7 +178,7 @@
 											href="${pageContext.request.contextPath}/products?category=bodycare">바디케어</a></li>
 									</ul></li>
 								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/product/product_list">전체 상품</a></li>
+									href="${pageContext.request.contextPath}/product/list">전체 상품</a></li>
 								<li class="nav-item"><a
 									href="${pageContext.request.contextPath}/post/list">커뮤니티</a></li>
 								<li class="nav-item"><a
