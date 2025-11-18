@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-lg-3 col-12">
                 <!-- Start Product Sidebar -->
-                <div class="product-sidebar">
+                <div class="sidebar">
                     <!-- Start Single Widget -->
                     <div class="single-widget search">
                         <h3>검색</h3>
@@ -142,7 +142,7 @@
                                                     <div class="product-image">
                                                         <c:choose>
                                                             <c:when test="${not empty product.product_image_url}">
-                                                                <img src="${pageContext.request.contextPath}${product.product_image_url}" alt="${product.product_name}">
+                                                                <img src="${pageContext.request.contextPath}/images/${product.product_image_url}"  alt="${product.product_name}">
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <div class="no-image">이미지 준비중</div>
@@ -487,7 +487,7 @@ console.log('현재 로그인 상태:', mem_idx !== null ? '로그인됨 (mem_id
 function toggleWishlist(product_idx, element) {
     if (!mem_idx || mem_idx === null) {
         alert('로그인이 필요한 서비스입니다.');
-        location.href = '${pageContext.request.contextPath}/member/login.do';
+        location.href = '${pageContext.request.contextPath}/user/login';
         return;
     }
     
@@ -521,7 +521,7 @@ function toggleWishlist(product_idx, element) {
             }
         } else if (data.result === 'not_login') {
             alert('로그인이 필요한 서비스입니다.');
-            location.href = '${pageContext.request.contextPath}/member/login.do';
+            location.href = '${pageContext.request.contextPath}/user/login';
         } else {
             alert('처리 중 오류가 발생했습니다.');
         }
@@ -535,7 +535,7 @@ function toggleWishlist(product_idx, element) {
 function addToCart(product_idx) {
     if (!mem_idx || mem_idx === null) {
         alert('로그인이 필요한 서비스입니다.');
-        location.href = '${pageContext.request.contextPath}/member/login.do';
+        location.href = '${pageContext.request.contextPath}/user/login';
         return;
     }
     
@@ -556,7 +556,7 @@ function addToCart(product_idx) {
             alert('이미 장바구니에 담긴 상품입니다.');
         } else if (data.result === 'not_login') {
             alert('로그인이 필요한 서비스입니다.');
-            location.href = '${pageContext.request.contextPath}/member/login.do';
+            location.href = '${pageContext.request.contextPath}/user/login';
         } else {
             alert('장바구니 추가 중 오류가 발생했습니다.');
         }
@@ -571,7 +571,7 @@ function addToCart(product_idx) {
 function buyNow(product_idx) {
     if (!mem_idx || mem_idx === null) {
         alert('로그인이 필요한 서비스입니다.');
-        location.href = '${pageContext.request.contextPath}/member/login.do';
+        location.href = '${pageContext.request.contextPath}/user/login';
         return;
     }
     

@@ -161,13 +161,23 @@
                                     <input type="checkbox" name="cart_id" value="${cart.cart_id}" class="cart-check" checked>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-2 col-12">
-                                <div class="product-image">
-                                    <a href="/product/detail.do?product_idx=${cart.product_idx}">
-                                        <img src="${cart.product_image_url}" alt="${cart.product_name}">
-                                    </a>
-                                </div>
-                            </div>
+							<div class="col-lg-2 col-md-2 col-12">
+							    <div class="product-image">
+							        <a href="/product/detail.do?product_idx=${cart.product_idx}">
+							            <c:choose>
+							                <c:when test="${not empty cart.product_image_url}">
+							                    <img src="${pageContext.request.contextPath}/images/${cart.product_image_url}" 
+							                         alt="${cart.product_name}"
+							                         onerror="this.src='${pageContext.request.contextPath}/images/no-image.png'">
+							                </c:when>
+							                <c:otherwise>
+							                    <img src="${pageContext.request.contextPath}/images/no-image.png" 
+							                         alt="이미지 없음">
+							                </c:otherwise>
+							            </c:choose>
+							        </a>
+							    </div>
+							</div>
                             <div class="col-lg-3 col-md-3 col-12">
                                 <h5>
                                     <a href="/product/detail.do?product_idx=${cart.product_idx}">
