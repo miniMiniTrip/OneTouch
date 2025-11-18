@@ -1,7 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- Account Sidebar -->
-<div class="account-sidebar">
+<div class="sidebar">
+	<div class="sidebar-header">마이페이지</div>
+	<div class="sidebar-subtitle">user01님 환영합니다</div>
+                    
+	<div class="menu-section">
+		<div class="menu-item">📋 쇼핑</div>
+		<div class="menu-item">👤 장바구니</div>
+		<div class="menu-item">💝 찜</div>
+		<div class="menu-item">🎯 주문/배송 조회</div>
+	</div>
+                    
+	<div class="menu-section">
+		<div class="menu-title">나의 활동</div>
+		<div class="menu-item active">💬 상품 Q&A</div>
+	</div>
+                    
+	<div class="menu-section">
+		<div class="menu-title">문의 정보</div>
+		<div class="menu-item">👥 회원정보 수정</div>
+		<div class="menu-item">🔒 배송지 관리</div>
+		<div class="menu-item">📧 알림톡신청 관리</div>
+	</div>
+                    
+	<div class="menu-section">
+		<div class="menu-item">📝 로그아웃</div>
+	</div>
+</div>
+<%-- <div class="account-sidebar">
     <div class="author-image">
         <img src="${pageContext.request.contextPath}/resources/assets/images/account/author.png" alt="#">
     </div>
@@ -46,5 +73,5 @@
             </a>
         </li>
     </ul>
-</div>
+</div> --%>
 <!-- End Account Sidebar -->

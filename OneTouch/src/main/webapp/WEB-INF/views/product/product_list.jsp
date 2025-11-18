@@ -236,7 +236,7 @@
                                                     <div class="product-image">
                                                         <c:choose>
                                                             <c:when test="${not empty product.product_image_url}">
-                                                                <img src="${pageContext.request.contextPath}${product.product_image_url}" alt="${product.product_name}">
+                                                                <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="${product.product_name}">
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <div class="no-image">이미지 준비중</div>

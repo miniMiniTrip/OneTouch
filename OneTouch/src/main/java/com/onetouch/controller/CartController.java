@@ -50,7 +50,7 @@ public class CartController {
 		model.addAttribute("cart_list",cart_list);
 		model.addAttribute("total_amount",total_amount);
 		
-		return "/cart/cart_list";
+		return "/cart/test_cart_list";
 	}
 	
 	@RequestMapping("/cart/modify.do")
