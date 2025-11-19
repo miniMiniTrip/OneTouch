@@ -46,7 +46,7 @@ public class AdminProductController {
     @RequestMapping("/dashboard")
     public String adminDashboard() {
     	System.out.println("[AdminController] adminDashboard()");
-    	return "admin/dashboard";  
+    	return "/admin/dashboard";  
     }
    
 
