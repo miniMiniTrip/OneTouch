@@ -182,18 +182,21 @@ public class PostServiceImpl implements PostService {
 		//post에 등록된 post_product 삭제 처리 후 다시 등록
 		int res = 1;
 		List<PostProductVo> ppv=postDao.selectPostProductOne(postVo.getPost_idx());
-		if(ppv!=null) {
+		System.out.printf("		postProduct테이블에서 데이터 있는지 체크 : %s\n",ppv);
+		if(ppv!=null&&!ppv.isEmpty()) {
 			res =res*postDao.deletePostProduct(postVo.getPost_idx());
 			if(res==0) { 
 				throw new Exception("deletePostProduct()_not");
 			}
 		};
-		for(int product_idx:postVo.getProduct_idx_array()) {
-			postVo.setProduct_idx(product_idx);
-			// post_product 목록 테이블에저장
-			res=res * (postDao.postProductInsert(postVo));
-			if(res==0) { 
-				throw new Exception("postProductInsert()_not");
+		if(postVo.getProduct_idx_array()!=null){
+			for(int product_idx:postVo.getProduct_idx_array()) {
+				postVo.setProduct_idx(product_idx);
+				// post_product 목록 테이블에저장
+				res=res * (postDao.postProductInsert(postVo));
+				if(res==0) { 
+					throw new Exception("postProductInsert()_not");
+				}
 			}
 		}
 		
