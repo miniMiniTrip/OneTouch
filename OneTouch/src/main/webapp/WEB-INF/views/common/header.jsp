@@ -199,7 +199,7 @@
                             </a>
                             <ul class="user-dropdown-menu" id="admin-menu" style="display: none;">
                                 <li><a href="${pageContext.request.contextPath}/adminpage/dashboard">대시보드</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/product">상품 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/adminpage/product">상품 관리</a></li>
                                 <li><a href="${pageContext.request.contextPath}/admin/user">회원 관리</a></li>
                                 <li><a href="${pageContext.request.contextPath}/admin/order">주문 관리</a></li>
                             </ul>
@@ -316,6 +316,8 @@
                             <span class="toggler-icon"></span>
                             <span class="toggler-icon"></span>
                         </button>
+                        
+                        
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
                                 <li class="nav-item">
@@ -349,6 +351,9 @@
                                 <li class="nav-item">
                                     <a href="${pageContext.request.contextPath}/skintest">피부 진단</a>
                                 </li>
+                                
+                                   
+                                
                             </ul>
                         </div>
                     </nav>
@@ -379,6 +384,31 @@
 </header>
 <!-- End Header Area -->
 
+
+<!-- ========================= JS here ========================= -->
+<%-- <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/main.js"></script> --%>
+
+<script type="text/javascript">
+    // 프리로더 제거
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+        
+        document.getElementById('search-input')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });    
+        
+        
+    });
+</script>
 <script>
 function performSearch() {
     const keyword = document.getElementById('search-input').value.trim();
@@ -388,11 +418,9 @@ function performSearch() {
     }
 }
 
-document.getElementById('search-input')?.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        performSearch();
-    }
-});
+
+
+
 
 /* function updateHeaderCartCount() {
     const contextPath = '${pageContext.request.contextPath}';
@@ -407,21 +435,7 @@ document.getElementById('search-input')?.addEventListener('keypress', function(e
 /* document.addEventListener('DOMContentLoaded', function() {
     updateHeaderCartCount(); 
 });*/
+
+
 </script>
 
-<!-- ========================= JS here ========================= -->
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-
-<script type="text/javascript">
-    // 프리로더 제거
-    window.addEventListener('load', function() {
-        const preloader = document.querySelector('.preloader');
-        if (preloader) {
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.display = 'none', 500);
-        }
-    });
-</script>

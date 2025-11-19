@@ -12,6 +12,7 @@ public interface ProductDao {
     // 카테고리별 목록조회
     List<ProductVo> selectList(@Param("category_idx") int category_idx, @Param("keyword") String keyword);
     List<ProductVo> selectList(Map<String, Object> map);
+    List<ProductVo> selectListAdmin(Map<String, Object> map);
     
     // 단일상품조회
     ProductVo selectOne(int product_idx);
@@ -36,6 +37,8 @@ public interface ProductDao {
     
     // 전체 상품 수 조회
     int selectCount(Map<String, Object> map);
+    
+    public int selectCountAdmin(Map<String,Object>map);
     
     
 }

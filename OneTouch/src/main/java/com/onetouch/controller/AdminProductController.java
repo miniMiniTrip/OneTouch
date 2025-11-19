@@ -66,8 +66,9 @@ public class AdminProductController {
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             Model model) {
 
-        System.out.printf("[AdminProductController-adminProductList()] keyword: %s, page: %d\n", keyword, currentPage);
-
+    	 System.out.println("============= 디버깅 =============");
+    	 System.out.println("입력된 keyword: [" + keyword + "]");
+       
         Map<String, Object> map = new HashMap<>();
         
         // 페이징 계산
@@ -77,13 +78,17 @@ public class AdminProductController {
 
         if (keyword != null && !keyword.trim().isEmpty()) {
             map.put("keyword", keyword.trim());
+            System.out.println("맵에 저장된 keyword: [" + map.get("keyword") + "]");
         }
+        
+        System.out.println("Map 내용: " + map);
 
         // 전체 상품 수 조회
-        int totalCount = product_dao.selectCount(map);
+        int totalCount = product_dao.selectCountAdmin(map);
         
         // 상품 목록 조회
-        List<ProductVo> list = product_dao.selectList(map);
+        List<ProductVo> list = product_dao.selectListAdmin(map);
+        
         List<CategoryVo> category_list = category_dao.selectList();
 
         // 페이징 정보 계산

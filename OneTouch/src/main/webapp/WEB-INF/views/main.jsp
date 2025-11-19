@@ -12,11 +12,11 @@
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg" />
 
     <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+    <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" /> --%>
 </head>
 
 <body>
@@ -409,7 +409,7 @@
         });
 
         //========= Hero Slider 
-        tns({
+        /* tns({
             container: '.hero-slider',
             slideBy: 'page',
             autoplay: true,
@@ -420,10 +420,10 @@
             nav: false,
             controls: true,
             controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
-        });
+        }); */
 
         //======== Tiny Slider For Product Carousel
-        tns({
+        /* tns({
             container: '.product-carousel',
             slideBy: 'page',
             autoplay: false,
@@ -446,7 +446,7 @@
                     items: 4,
                 }
             }
-        });
+        }); */
     </script>
 </body>
 </html>

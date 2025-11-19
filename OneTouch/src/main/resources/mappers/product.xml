@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             LIMIT #{startRow}, #{pageSize}
         </if>
     </select>
-
+   
     <!-- 🔥 고객용 상품 목록 조회 (정렬 기능 포함) -->
     <select id="selectList" parameterType="map" resultType="product">
         SELECT 
@@ -194,5 +194,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    <!-- 관리자용 상품 총 개수 조회 (통합 검색) -->
+<select id="selectCountAdmin" parameterType="map" resultType="int">
+    SELECT COUNT(DISTINCT product.product_idx)
+    FROM product
+    LEFT JOIN category ON product.category_idx = category.category_idx
+    LEFT JOIN product_image ON product.product_idx = product_image.product_idx
+    <where>
+        <if test="keyword != null and keyword != ''">
+            AND (
+                <!-- 상품 정보 -->
+                product.product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR product.product_brand LIKE CONCAT('%', #{keyword}, '%')
+                OR product.product_comment LIKE CONCAT('%', #{keyword}, '%')
+                
+                <!-- 카테고리명 -->
+                OR category.category_name LIKE CONCAT('%', #{keyword}, '%')
+                
+                <!-- 숫자 필드들 (문자열로 변환하여 검색) -->
+                OR CAST(product.product_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(product.category_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(product.product_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(product.product_cnt AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                
+                <!-- 이미지 URL -->
+                OR product_image.product_image_url LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </if>
+    </where>
+</select>
+    
+    
 
 </mapper>
