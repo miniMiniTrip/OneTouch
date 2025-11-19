@@ -14,71 +14,94 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
+/* 드롭다운 컨테이너 */
 .user-dropdown {
     position: relative !important;
     display: inline-block !important;
 }
 
+/* 드롭다운 메뉴 (세로 정렬) */
 .user-dropdown-menu {
     position: absolute !important;
     top: 100% !important;
     left: 0 !important;
-    background: white !important;
-    border: 1px solid #ddd !important;
-    border-radius: 5px !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
-    min-width: 180px !important;
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+    min-width: 160px !important;
     z-index: 9999 !important;
     list-style: none !important;
     padding: 8px 0 !important;
-    margin: 5px 0 0 0 !important;
+    margin: 8px 0 0 0 !important;
     display: none !important;
+    
+    /* 세로 정렬 강제 */
+    flex-direction: column !important;
+    align-items: stretch !important;
 }
 
+/* 메뉴 항목들 */
 .user-dropdown-menu li {
     margin: 0 !important;
     padding: 0 !important;
     list-style: none !important;
+    width: 100% !important;
+    display: block !important;
 }
 
+/* 메뉴 링크 스타일 */
 .user-dropdown-menu li a {
     display: block !important;
+    width: 100% !important;
     padding: 12px 16px !important;
     color: #333333 !important;
     background: transparent !important;
     text-decoration: none !important;
-    border-bottom: 1px solid #f5f5f5 !important;
     font-size: 14px !important;
-    font-weight: normal !important;
-    line-height: 1.4 !important;
-    transition: all 0.2s ease !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
     white-space: nowrap !important;
+    border: none !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
 }
 
+/* 마지막 항목 경계선 제거 */
 .user-dropdown-menu li:last-child a {
     border-bottom: none !important;
 }
 
+/* 호버 효과 */
 .user-dropdown-menu li a:hover {
     background-color: #f8f9fa !important;
     color: #2a5298 !important;
-    padding-left: 20px !important;
     text-decoration: none !important;
+    transform: translateX(4px) !important;
 }
 
-/* 확실하게 보이게 하기 위한 추가 스타일 */
+/* 드롭다운 표시 상태 */
 .user-dropdown-menu[style*="block"] {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
 
+/* 화살표 회전 애니메이션 */
 .user-dropdown a i {
     transition: transform 0.3s ease !important;
+    margin-left: 5px !important;
 }
 
 .user-dropdown.active a i {
     transform: rotate(180deg) !important;
+}
+
+/* 추가: 드롭다운 활성화 시 부모 스타일 */
+.user-dropdown.active > a {
+    color: #2a5298 !important;
 }
 </style>
 
