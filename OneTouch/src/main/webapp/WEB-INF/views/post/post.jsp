@@ -1483,20 +1483,39 @@ document.addEventListener('click', function(e) {
         }
     });
 
-    // 수정 버튼 클릭 시 처리
+    // 수정 버튼 클릭 시 수정페이지로 이동
     $('.edit-btn').click(function() {
+        // 여기에 수정 처리 로직을 추가하세요
     	
     	
         let post_idx=$(this).data('post-idx');
         location.href="/post/modify?post_idx="+post_idx;
-        // 여기에 수정 처리 로직을 추가하세요
     });
 
     // 삭제 버튼 클릭 시 처리
     $('.delete-btn').click(function() {
-        if (confirm("정말 삭제하시겠습니까?")) {
-            alert("삭제 버튼 클릭!");
             // 여기에 삭제 처리 로직을 추가하세요
+        if (confirm("정말 삭제하시겠습니까?")) {
+            const deleteBtn=document.querySelector('.delete-btn');
+            const postIdx=this.getAttribute('data-post-idx');
+            
+     		$.ajax({
+     			url:"/post/delete"
+     			,data:{"post_idx":postIdx}
+     			,method:"post"
+     			,success:function(d){
+     				if(d.post_delete){
+     				alert("삭제성공");
+     				location.href="/post/list"
+     				};
+     				
+     			}
+     			,error:function(e){
+     				alert("삭제처리 실패");
+     			}
+     			
+     		});
+           	alert(postIdx);
         }
     });
 });

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -150,7 +151,7 @@ public class PostController {
 		return"/post/post_modify";
 	}
 	
-	//post modify 버튼 클릭
+	//post modify 버튼 클릭시 수정처리
 	@PostMapping("/post/modify")
 	public String postModify(PostVo postVo) throws Exception {
 		System.out.printf("	[PostController] postModify()\n");
@@ -161,6 +162,18 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	
+	//post delete 버튼클릭시 삭제처리
+	@RequestMapping("/post/delete")
+	@ResponseBody
+	public Map<String,Object>  postDeleteOne(int post_idx) {
+		System.out.printf("	[PostController] postDeleteOne()\n");
+		Map<String,Object> map =new HashMap<String, Object>();
+		map.put("post_idx", post_idx);
+		int res = postDao.deletePost(map);
+		map.put("post_delete",res==1);
+		System.out.printf("	[PostController] return : map(post_idx,post_delete)\n");
+		return map;
+	}
 	
 	
 	
