@@ -345,7 +345,7 @@ function postModify(f) {
     let postImageInput = f.querySelector('input[name="post_image"]');
     if (!postImageInput) {
         postImageInput = document.createElement('input');
-        postImageInput.type = 'hidden';ㄱ
+        postImageInput.type = 'hidden';
         postImageInput.name = 'post_image';
         f.appendChild(postImageInput);
     }
