@@ -122,8 +122,10 @@ public class PostController {
 	@GetMapping("/post/modify")
 	public String postModifyForm(int post_idx,Model model) {
 		System.out.printf("	[PostController] postModifyForm(post_idx=%d)\n",post_idx);
-		
+		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		PostVo postVo=postDao.selectPostOne(post_idx);
+		if(postVo.getMem_idx()==memVo.getMem_idx()) {
+			
 		postVo.setPost_content(postVo.getPost_content().replaceAll("<br>", "\n"));
 		System.out.printf("		postVo => %s\n",postVo);
 		List<PostProductVo> postProductVo=postDao.selectPostProductOne(post_idx);
@@ -137,6 +139,9 @@ public class PostController {
 		model.addAttribute("product_list_array", product_list_array);
 		model.addAttribute("postVo", postVo);
 		model.addAttribute("postProductVo", postProductVo);
+		}else {
+			return"redirect:/post/list";
+		}
 		
 		
 		
