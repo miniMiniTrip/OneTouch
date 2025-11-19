@@ -546,7 +546,7 @@
                         <li><a href="#">👥 회원관리</a></li>
                         <li><a href="/adminpage/product" class="active">📦 상품관리</a></li>
                         <li><a href="/order/management">🚚 주문관리</a></li>
-                        <li><a href="#">💬 게시판관리</a></li>
+                        <li><a href="#">💬 Q&A관리</a></li>
                     </ul>
                 </div>
 
