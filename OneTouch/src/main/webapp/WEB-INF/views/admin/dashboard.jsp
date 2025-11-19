@@ -22,65 +22,6 @@
             color: #333;
         }
 
-        /* 헤더 */
-        .header {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 20px 40px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1a237e;
-            letter-spacing: -1px;
-            cursor: pointer;
-        }
-        
-        .logo span {
-            color: #3949ab;
-        }
-
-        .admin-badge {
-            background: #d32f2f;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-left: 12px;
-        }
-
-        .header-right {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .header-user {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .btn-logout {
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s;
-        }
-
-        .btn-logout:hover {
-            border-color: #1a237e;
-            color: #1a237e;
-        }
-
         /* 컨테이너 */
         .container {
             max-width: 1600px;
@@ -93,64 +34,6 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 30px;
-        }
-
-        /* 사이드바 */
-        .sidebar {
-            background: white;
-            border-radius: 12px;
-            padding: 30px 0;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .sidebar-section {
-            margin-bottom: 30px;
-        }
-
-        .sidebar-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .sidebar-title {
-            padding: 0 24px 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin: 0;
-        }
-
-        .sidebar-menu a {
-            display: block;
-            padding: 14px 24px;
-            color: #666;
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar-menu a:hover {
-            background: #f5f7fa;
-            color: #1a237e;
-        }
-
-        .sidebar-menu a.active {
-            background: #e8eaf6;
-            color: #1a237e;
-            font-weight: 600;
-            border-left-color: #1a237e;
         }
 
         /* 메인 컨텐츠 */
@@ -290,10 +173,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .sidebar {
-                position: static;
-            }
-
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -306,46 +185,13 @@
 </head>
 <body>
     <!-- 헤더 -->
-    <header class="header">
-        <div>
-            <span class="logo" onclick="goToHome()">One<span>Touch</span></span>
-            <span class="admin-badge">관리자</span>
-        </div>
-        <div class="header-right">
-            <span class="header-user">관리자님</span>
-            <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
-        </div>
-    </header>
+    <%@ include file="admin_header.jsp" %>
 
     <!-- 메인 컨테이너 -->
     <div class="container">
         <div class="admin-layout">
             <!-- 사이드바 -->
-            <aside class="sidebar">
-                <div class="sidebar-section">
-                    <div class="sidebar-title">대시보드</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" class="active" onclick="showSection('dashboard'); return false;">📊 통계 대시보드</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-title">관리</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
-                        <li><a href="/adminpage/product">📦 상품관리</a></li>
-                        <li><a href="/order/management">🚚 주문관리</a></li>
-                        <li><a href="/adminpage/qna">💬 Q&A 관리</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-title">기타</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" onclick="showSection('board'); return false;">📋 게시판 관리</a></li>
-                    </ul>
-                </div>
-            </aside>
+            <%@ include file="admin_side.jsp"%>
 
             <!-- 메인 컨텐츠 -->
             <main class="main-content">
@@ -383,7 +229,7 @@
                             <a href="#" onclick="showSection('members'); return false;" class="btn btn-secondary">👥 회원관리</a>
                             <a href="/adminpage/product" class="btn btn-primary">📦 상품관리</a>
                             <a href="/order/management" class="btn btn-secondary">🚚 주문관리</a>
-                            <a href="/adminpage/qna" class="btn btn-secondary">💬 Q&A 관리</a>
+                            <a href="/admin/qna_list" class="btn btn-secondary">💬 Q&A 관리</a>
                         </div>
                     </div>
                 </section>
