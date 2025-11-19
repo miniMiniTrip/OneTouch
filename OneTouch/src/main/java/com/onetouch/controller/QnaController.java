@@ -350,8 +350,54 @@ public class QnaController {
     
     
     
+    // admin_qna_list부분. 
     
     
+    
+    // 관리자 Q&A 목록 페이지
+    @GetMapping("/admin/qna_list")
+    public String adminQna(Model model) {
+		/*
+		 * System.out.println("	[QnaController] list() ");
+		 * 
+		 * // 세션에서 로그인 정보 가져오기 MemVo user = (MemVo) session.getAttribute("user");
+		 * 
+		 * // ✅ 로그인하지 않은 경우 - 로그인 안내만 표시 if (user == null) {
+		 * model.addAttribute("needLogin", true); return "admin/admin_qna_list"; }
+		 * 
+		 * // 로그인한 사용자의 글만 조회 int mem_idx = user.getMem_idx(); String mem_roll =
+		 * user.getMem_roll(); Map<String, Object> map = new HashMap<String, Object>();
+		 * map.put("mem_idx", mem_idx); map.put("mem_roll", mem_roll);
+		 * 
+		 * List<QnaVo> admin_qna_list = qnaDao.selectQnaList(map);
+		 * 
+		 * System.out.println("QnA 목록 개수: " + admin_qna_list.size());
+		 * 
+		 * model.addAttribute("admin_qna_list", admin_qna_list);
+		 * model.addAttribute("needLogin", false);
+		 * 
+		 * System.out.println("	[QnaController] return : admin/admin_qna_list ");
+		 * System.out.println("");
+		 */
+    	
+    	 
+        return "admin/admin_qna_list";
+    }
+    
+    
+ 
+ // 관리자 Q&A 답변 작성 폼 이동
+    @GetMapping("/admin/qna/write")
+    public String adminQnaWrite(HttpSession session) {
+
+//        MemVo user = (MemVo) session.getAttribute("user");
+//
+//        if (user == null || !"admin".equals(user.getMem_roll())) {
+//            return "redirect:/admin/qna";  // 관리자가 아니면 관리자 리스트로
+//        }
+
+        return "admin/admin_qna_write"; // 관리자용 글쓰기 / 답변 폼
+    }
     
     
     
