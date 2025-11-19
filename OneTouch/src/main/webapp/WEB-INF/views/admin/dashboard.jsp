@@ -110,9 +110,13 @@
             margin-bottom: 30px;
         }
 
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
         .sidebar-title {
             padding: 0 24px 12px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: #999;
             text-transform: uppercase;
@@ -121,6 +125,10 @@
 
         .sidebar-menu {
             list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
         }
 
         .sidebar-menu a {
@@ -195,6 +203,12 @@
             padding: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-left: 4px solid #1a237e;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .stat-label {
@@ -217,7 +231,7 @@
 
         /* 버튼 */
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
             font-size: 14px;
@@ -236,6 +250,7 @@
         .btn-primary:hover {
             background: #0d47a1;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
         }
 
         .btn-secondary {
@@ -245,12 +260,23 @@
         }
 
         .btn-secondary:hover {
-            background: #f5f7fa;
+            background: #1a237e;
+            color: white;
+        }
+
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
         /* 반응형 */
         @media (max-width: 1200px) {
             .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-access-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -269,6 +295,10 @@
             }
 
             .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-access-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -305,21 +335,16 @@
                         <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
                         <li><a href="/adminpage/product">📦 상품관리</a></li>
                         <li><a href="/order/management">🚚 주문관리</a></li>
-
-                        <li><a href="/ddminpage/remain">📋 Q&A</a></li>
+                        <li><a href="/adminpage/qna">💬 Q&A 관리</a></li>
                     </ul>
                 </div>
 
                 <div class="sidebar-section">
-                    
-                    
-                </div>
-
-                        <li><a href="#">💬 게시판 관리</a></li>
+                    <div class="sidebar-title">기타</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#" onclick="showSection('board'); return false;">📋 게시판 관리</a></li>
                     </ul>
                 </div>
-                
-
             </aside>
 
             <!-- 메인 컨텐츠 -->
@@ -354,11 +379,11 @@
                         <div class="section-header">
                             <h2 class="section-title">🚀 빠른 액세스</h2>
                         </div>
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <a href="#" class="btn btn-secondary">회원관리</a>
-                            <a href="/adminpage/product" class="btn btn-primary">상품관리</a>
-                            <a href="/order/management" class="btn btn-secondary">주문관리</a>
-                            <a href="#" class="btn btn-secondary">💬 게시판 관리</a>
+                        <div class="quick-access-grid">
+                            <a href="#" onclick="showSection('members'); return false;" class="btn btn-secondary">👥 회원관리</a>
+                            <a href="/adminpage/product" class="btn btn-primary">📦 상품관리</a>
+                            <a href="/order/management" class="btn btn-secondary">🚚 주문관리</a>
+                            <a href="/adminpage/qna" class="btn btn-secondary">💬 Q&A 관리</a>
                         </div>
                     </div>
                 </section>
@@ -369,27 +394,7 @@
                         <div class="section-header">
                             <h2 class="section-title">👥 회원관리</h2>
                         </div>
-                        <p>회원관리 기능이 곧 추가될 예정입니다.</p>
-                    </div>
-                </section>
-
-                <!-- 재고관리 -->
-                <section id="remainSection" class="content-section">
-                    <div class="section-card">
-                        <div class="section-header">
-                            <h2 class="section-title">📦 상품관리</h2>
-                        </div>
-                        <p>상품관리 기능이 곧 추가될 예정입니다.</p>
-                    </div>
-                </section>
-
-                <!-- 주문관리 -->
-                <section id="ordersSection" class="content-section">
-                    <div class="section-card">
-                        <div class="section-header">
-                            <h2 class="section-title">🚚 주문관리</h2>
-                        </div>
-                        <p>주문관리 기능이 곧 추가될 예정입니다.</p>
+                        <p style="color: #666; line-height: 1.6;">회원관리 기능이 곧 추가될 예정입니다.</p>
                     </div>
                 </section>
 
@@ -397,9 +402,9 @@
                 <section id="boardSection" class="content-section">
                     <div class="section-card">
                         <div class="section-header">
-                            <h2 class="section-title">💬 Q&A FAQ 게시판</h2>
+                            <h2 class="section-title">📋 게시판 관리</h2>
                         </div>
-                        <p>게시판 관리 기능이 곧 추가될 예정입니다.</p>
+                        <p style="color: #666; line-height: 1.6;">게시판 관리 기능이 곧 추가될 예정입니다.</p>
                     </div>
                 </section>
             </main>
@@ -409,23 +414,33 @@
     <script>
         // 섹션 표시
         function showSection(sectionName) {
+            // 모든 섹션 숨기기
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
+            
+            // 모든 메뉴 active 제거
             document.querySelectorAll('.sidebar-menu a').forEach(link => {
                 link.classList.remove('active');
             });
 
+            // 섹션 매핑
             const sections = {
                 'dashboard': 'dashboardSection',
                 'members': 'membersSection',
-                'remain': 'remainSection',
-                'order': 'ordersSection',
                 'board': 'boardSection'
             };
 
-            document.getElementById(sections[sectionName]).classList.add('active');
-            event.target.classList.add('active');
+            // 선택된 섹션 표시
+            const targetSection = document.getElementById(sections[sectionName]);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // 클릭된 메뉴 active 추가
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
         function goToHome() {
