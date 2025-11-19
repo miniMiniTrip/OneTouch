@@ -515,32 +515,79 @@
             <div class="cart-container">
                 <!-- Sidebar -->
                 <div class="sidebar">
+                    <div class="sidebar-header">마이페이지</div>
+                    <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
                     
+                    <!-- 쇼핑 메뉴 -->
                     <div class="menu-section">
-                        <div class="menu-item active">🛒 장바구니</div>
-                        <div class="menu-item">💝 찜</div>
-                        <div class="menu-item">🎯 주문/배송 조회</div>
+                        <!-- 장바구니 - 현재 페이지 (active) -->
+                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item active">
+                            🛒 장바구니
+                        </a>
+                        
+                        <!-- 찜 목록 -->
+                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item">
+                            💝 찜
+                        </a>
+                        
+                        <!-- 주문/배송 조회 -->
+                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item">
+                            🎯 주문/배송 조회
+                        </a>
                     </div>
                     
+                    <!-- 나의 활동 -->
                     <div class="menu-section">
                         <div class="menu-title">나의 활동</div>
-                        <div class="menu-item">💬 상품 Q&A</div>
+                        
+                        <!-- 상품 Q&A -->
+                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item">
+                            💬 상품 Q&A
+                        </a>
                     </div>
                     
+                    <!-- 회원 정보 -->
                     <div class="menu-section">
                         <div class="menu-title">회원 정보</div>
-                        <div class="menu-item">👥 회원정보 수정</div>
-                        <div class="menu-item">🔒 배송지 관리</div>
-                        <div class="menu-item">📧 알림톡신청 관리</div>
+                        
+                        <!-- 회원정보 수정 -->
+                        <a href="${pageContext.request.contextPath}/member/modify.do" 
+                           class="menu-item">
+                            👥 회원정보 수정
+                        </a>
+                        
+                        <!-- 배송지 관리 -->
+                        <a href="${pageContext.request.contextPath}/member/address.do" 
+                           class="menu-item">
+                            🔒 배송지 관리
+                        </a>
+                        
+                        <!-- 알림톡신청 관리 -->
+                        <a href="${pageContext.request.contextPath}/member/notification.do" 
+                           class="menu-item">
+                            📧 알림톡신청 관리
+                        </a>
                     </div>
                     
+                    <!-- 로그아웃 -->
                     <div class="menu-section">
-                        <div class="menu-item">📝 로그아웃</div>
+                        <a href="${pageContext.request.contextPath}/member/logout.do" 
+                           class="menu-item"
+                           onclick="return confirm('로그아웃 하시겠습니까?');">
+                            📝 로그아웃
+                        </a>
                     </div>
                 </div>
                 
                 <!-- Content -->
                 <div class="content">
+                    <div class="content-header">
+                        <h2>장바구니</h2>
+                    </div>
                     
                     <!-- 장바구니에 상품이 있는 경우 -->
                     <c:if test="${not empty cart_list}">
@@ -588,12 +635,12 @@
                                                 <a href="/product/detail.do?product_idx=${cart.product_idx}">
                                                     <c:choose>
                                                         <c:when test="${not empty cart.product_image_url}">
-                                                            <img src="${pageContext.request.contextPath}/images/${cart.product_image_url}" 
+                                                            <img src="${pageContext.request.contextPath}${cart.product_image_url}" 
                                                                  alt="${cart.product_name}"
-                                                                 onerror="this.src='${pageContext.request.contextPath}/images/default.png'">
+                                                                 onerror="this.src='${pageContext.request.contextPath}/images/no-image.png'">
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <img src="${pageContext.request.contextPath}/images/default.png" 
+                                                            <img src="${pageContext.request.contextPath}/images/no-image.png" 
                                                                  alt="이미지 없음">
                                                         </c:otherwise>
                                                     </c:choose>
@@ -707,6 +754,15 @@
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
+    // 프리로더 제거
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+    });
+    
     // 전체 선택/해제
     $('#checkAll').on('change', function() {
         $('.cart-check').prop('checked', $(this).prop('checked'));
@@ -831,20 +887,20 @@
     }
     
     // 주문하기
-	function proceedToCheckout() {
-	    let selected = $('.cart-check:checked');
-	    if (selected.length === 0) {
-	        alert('주문할 상품을 선택해주세요.');
-	        return;
-	    }
+    function proceedToCheckout() {
+        let selected = $('.cart-check:checked');
+        if (selected.length === 0) {
+            alert('주문할 상품을 선택해주세요.');
+            return;
+        }
 
-	    console.log("Selected items:", selected.length);
-	    selected.each(function() {
-	        console.log("cart_id:", $(this).val());
-	    });
-	    
-	    $('#cartForm').submit(); 
-	}
+        console.log("Selected items:", selected.length);
+        selected.each(function() {
+            console.log("cart_id:", $(this).val());
+        });
+        
+        $('#cartForm').submit(); 
+    }
     </script>
     
 </body>
