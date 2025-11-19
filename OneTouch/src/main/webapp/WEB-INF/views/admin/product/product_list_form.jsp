@@ -569,7 +569,7 @@
                         <form action="${pageContext.request.contextPath}/adminpage/product" method="get" style="display: flex; gap: 10px; width: 100%;">
                             <input type="text" class="search-input" name="keyword" 
                                    placeholder="상품명으로 검색하세요" value="${param.keyword}">
-                            <button type="submit" class="btn btn-primary">검색</button>
+                            <button type="submit" class="btn btn-primary">통합검색</button>
                         </form>
                     </div>
 

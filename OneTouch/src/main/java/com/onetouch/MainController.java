@@ -66,7 +66,15 @@ public class MainController {
 		return "product/product_list";
 	}
 	
+	@RequestMapping("/test/mypage")
+	public String myPage()	{
+		return "test/mypage_template";
+	}
 
+	@RequestMapping("/test/order_list")
+	public String orderList()	{
+		return "test/order_list_example";
+	}
 	
 	
 }
