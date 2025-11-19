@@ -1372,7 +1372,7 @@ document.addEventListener('click', function(e) {
                     }
                 });
                 
-                alert(d.post_like);
+                //alert(d.post_like);
                 $(".post-likes[data-post-idx='" + d.post_idx + "']").text("좋아요 " + d.post_like + "개");
             },
             error: function(e) {
