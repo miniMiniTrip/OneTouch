@@ -495,6 +495,9 @@ function postInsert(f) {
 				<input type="file" id="post_images" name="post_images" multiple> <span
 					class="file-name">선택된 파일 없음</span>
 			</div>
+			
+			<!-- 선택한 이미지 미리보기 영역 -->
+			<div id="image-preview" class="row mt-3"></div>
 
 			<div class="button-group">
 				<button type="button" class="btn btn-secondary">임시저장</button>
@@ -505,6 +508,63 @@ function postInsert(f) {
 	</div>
 
 	<script>
+	
+	/* 선택한 이미지 미리보기 ------------------------ */
+	document.getElementById('post_images').addEventListener('change', function(event) {
+	    const files = event.target.files;
+	    const previewContainer = document.getElementById('image-preview');
+	    
+	    // 이전 미리보기 초기화
+	    previewContainer.innerHTML = "";
+
+	    // 파일 이름 표시
+	    const fileNameDisplay = document.querySelector('.file-name');
+	    if (files.length === 1) {
+	        fileNameDisplay.textContent = files[0].name;
+	    } else if (files.length > 1) {
+	        fileNameDisplay.textContent = files.length + "개의 파일 선택됨";
+	    } else {
+	        fileNameDisplay.textContent = "선택된 파일 없음";
+	    }
+
+	    // 이미지 미리보기 생성
+	    Array.from(files).forEach(file => {
+	        if (!file.type.startsWith("image/")) return; // 이미지 파일만
+
+	        const reader = new FileReader();
+	        reader.onload = function(e) {
+	            const col = document.createElement("div");
+	            col.className = "col-4 mb-3 text-center"; // text-center 추가
+
+	            // 이미지 감싸는 div (정사각형 유지)
+	            const wrapper = document.createElement("div");
+	            wrapper.style.width = "100%";
+	            wrapper.style.paddingTop = "100%"; // 높이 비율 1:1
+	            wrapper.style.position = "relative";
+	            wrapper.style.borderRadius = "6px";
+	            wrapper.style.overflow = "hidden";
+	            wrapper.style.border = "1px solid #ddd";
+
+	            // 이미지
+	            const img = document.createElement("img");
+	            img.src = e.target.result;
+	            img.style.position = "absolute";
+	            img.style.top = "0";
+	            img.style.left = "0";
+	            img.style.width = "100%";
+	            img.style.height = "100%";
+	            img.style.objectFit = "cover"; // 이미지 비율 유지
+
+	            wrapper.appendChild(img);
+	            col.appendChild(wrapper);
+	            previewContainer.appendChild(col);
+	        };
+	        reader.readAsDataURL(file);
+	    });
+	});
+
+		/* end : 선택한 이미지 미리보기 ------------------------ */
+		
         // 게시판 유형에 따른 필드 표시/숨김
         document.getElementById('post_category').addEventListener('change', function() {
             const boardType = this.value;
