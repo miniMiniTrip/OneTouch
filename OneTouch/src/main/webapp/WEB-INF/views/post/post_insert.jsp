@@ -500,7 +500,7 @@ function postInsert(f) {
 			<div id="image-preview" class="row mt-3"></div>
 
 			<div class="button-group">
-				<button type="button" class="btn btn-secondary">임시저장</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/post/list'">목록보기</button>
 				<button type="button" class="btn btn-primary"
 					onclick="postInsert(this.form);">등록하기</button>
 			</div>
@@ -576,6 +576,13 @@ function postInsert(f) {
             reviewFields.style.display = 'none';
             skinFields.style.display = 'none';
             
+            //평점 초기화
+            document.querySelectorAll('input[name="post_rating"]').forEach(input => input.checked = false);
+            
+            // 2. 상품 선택 폼 초기화
+            const productContainer = document.getElementById('product-form-container');
+            productContainer.innerHTML = ""; // 기존에 추가된 상품 폼 삭제
+            
             // 선택된 게시판 유형에 따라 필드 표시
             if (boardType === 'review') {
                 reviewFields.style.display = 'block';
@@ -610,23 +617,6 @@ function postInsert(f) {
         	document.getElementById('post_images').click();
         })
         
-        // 스킨 에디터 미리보기 기능
-        //document.getElementById('skin-html').addEventListener('input', updatePreview);
-        //document.getElementById('skin-css').addEventListener('input', updatePreview);
-        //document.getElementById('skin-js').addEventListener('input', updatePreview);
-        
-        function updatePreview() {
-            const htmlCode = document.getElementById('skin-html').value;
-            const cssCode = document.getElementById('skin-css').value;
-            
-            const preview = document.querySelector('.skin-preview');
-            
-            if (htmlCode.trim()) {
-                preview.innerHTML = '<p>HTML 코드가 적용된 미리보기가 표시됩니다.</p>';
-            } else {
-                preview.innerHTML = '<p>스킨 미리보기 영역입니다.</p><p>CSS와 HTML 코드가 적용된 모습이 여기에 표시됩니다.</p>';
-            }
-        }
         
         // 페이지 로드 시 초기 상태 설정
         window.addEventListener('load', function() {
