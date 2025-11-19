@@ -119,15 +119,22 @@ public class PostController {
 	}
 	
 	//post 수정하기 페이지로 이동
-	@RequestMapping("/post/modify")
+	@GetMapping("/post/modify")
 	public String postModifyForm(int post_idx,Model model) {
 		System.out.printf("	[PostController] postModifyForm(post_idx=%d)\n",post_idx);
 		
 		PostVo postVo=postDao.selectPostOne(post_idx);
+		postVo.setPost_content(postVo.getPost_content().replaceAll("<br>", "\n"));
 		System.out.printf("		postVo => %s\n",postVo);
 		List<PostProductVo> postProductVo=postDao.selectPostProductOne(post_idx);
 		System.out.printf("		postProductVo =>%s\n",postProductVo);
 		
+		
+		//등록 페이지 갈때 상품 목록데이터 보내주기
+		List<ProductVo> product_list_array=postDao.selectProductList();
+		System.out.printf("		productList(%d개):%s\n",product_list_array.size(),product_list_array);
+		
+		model.addAttribute("product_list_array", product_list_array);
 		model.addAttribute("postVo", postVo);
 		model.addAttribute("postProductVo", postProductVo);
 		
@@ -136,6 +143,17 @@ public class PostController {
 		System.out.println("	[PostController] return : /post/post_modify");
 		System.out.println("");
 		return"/post/post_modify";
+	}
+	
+	//post modify 버튼 클릭
+	@PostMapping("/post/modify")
+	public String postModify(PostVo postVo) throws Exception {
+		System.out.printf("	[PostController] postModify()\n");
+		System.out.printf("		%s\n",postVo);
+		int res=postService.updatePostVo(postVo);
+		System.out.println("	[PostController] return : /post/post_modify");
+		System.out.println("");
+		return "redirect:/post/list";
 	}
 	
 	

@@ -18,4 +18,6 @@ public interface PostService {
 	int postInsert(PostVo postVo) throws Exception;
 
 	Map<String, Object> postLikeUpdate(Map<String, Object> map) throws Exception;
+
+	int updatePostVo(PostVo postVo) throws Exception;
 }

@@ -270,32 +270,24 @@ select.form-control {
 
 <!-- =======================================js : post등록============================================ -->
 <script type="text/javascript">
-
-function postInsert(f) {
-	let post_category= f.post_category.value;
+function postModify(f) {
+    let post_category = f.post_category.value;
     let post_title = f.post_title.value.trim();
     let post_content = f.post_content.value.trim();
-    let post_images = f.post_images.value.trim();
-    
+    let post_images = f.post_images.value;
+
     // 상품 선택 검증
     let product_idx_array = [];
-    let allSelected = true;  // 모든 상품이 선택되었는지 여부를 체크할 변수
+    let allSelected = true;  // 모든 상품이 선택되었는지 여부
 
-    // product_idx_array 배열에 상품 선택된 값을 추가
     $('#product-form-container .form-group select').each(function() {
         let selected_value = $(this).val().trim();
-        
-        if (selected_value === "") {
-            allSelected = false; // 빈 값이 있으면 allSelected를 false로 설정
-        } else {
-            product_idx_array.push(selected_value);  // 비어있지 않으면 배열에 추가
-        }
+        if (selected_value === "") allSelected = false;
+        else product_idx_array.push(selected_value);
     });
-
-    // 상품 선택 검증
     if (!allSelected) {
         alert("모든 상품을 선택해주세요.");
-        return; // 함수 종료
+        return;
     }
 
     // 제목 검증
@@ -303,7 +295,7 @@ function postInsert(f) {
         alert("제목을 입력해주세요");
         f.post_title.value = "";
         f.post_title.focus();
-        return; // 함수 종료
+        return;
     }
 
     // 내용 검증
@@ -311,34 +303,60 @@ function postInsert(f) {
         alert("내용을 입력해주세요");
         f.post_content.value = "";
         f.post_content.focus();
-        return; // 함수 종료
+        return;
     }
-
-
 
     // 별점 선택 검증
-    let post_rating = f.post_rating.value; // 선택된 별점 값
-
-    if (post_category=='review'&&!post_rating) {
+    let post_rating = f.post_rating?.value; // 선택된 별점 값
+    if (post_category == 'review' && !post_rating) {
         alert("별점을 선택해주세요");
-        // 별점 영역으로 포커스를 이동하거나 스크롤을 부드럽게 할 수 있음
-        $('html, body').animate({
-            scrollTop: $("#review-fields").offset().top
-        }, 500);
-        return; // 함수 종료
+        $('html, body').animate({ scrollTop: $("#review-fields").offset().top }, 500);
+        return;
     }
-    
-    // 사진 검증 (file input은 값이 없으면 빈 문자열)
-    if (post_images == "") {
+
+    // 사진 검증 (기존 이미지 + 새 이미지가 모두 없으면 경고)
+    const remainingExisting = document.querySelectorAll('.col-4 img[src*="/images/posts/"]');
+    if (remainingExisting.length === 0 && post_images === "") {
         alert("사진을 선택해주세요");
-        f.post_images.value = "";
         f.post_images.focus();
-        return; // 함수 종료
+        return;
+    }
+
+    // ---------------- 기존 이미지 처리 ----------------
+    const allExistingImages = [];
+    
+ 	// 삭제 체크박스를 기준으로 기존 이미지 선택
+    document.querySelectorAll('input[name="delete_image"]').forEach(cb => {
+        if (!cb.checked) { // 체크되지 않은 이미지만
+            const img = cb.closest('.col-4').querySelector('img');
+            if (img) {
+            	// src에서 마지막 '/' 뒤 문자열만 가져오기
+            	const parts = img.src.split('/');
+            	const imgFileName = parts[parts.length - 1]; // 빈 값이 아니면 push
+                if (imgFileName) allExistingImages.push(imgFileName);
+            }
+        }
+    });
+
+    // ---------------- 새로운 이미지 처리 ----------------
+    const newFiles = document.getElementById('post_images').files;
+    
+    // hidden input 생성 / 기존 이미지만 처리
+    let postImageInput = f.querySelector('input[name="post_image"]');
+    if (!postImageInput) {
+        postImageInput = document.createElement('input');
+        postImageInput.type = 'hidden';ㄱ
+        postImageInput.name = 'post_image';
+        f.appendChild(postImageInput);
     }
     
+    // 기존 이미지 파일명만 `*`로 구분하여 전달
+    postImageInput.value = allExistingImages.join('*');
+    // ---------------- end 기존 이미지 처리 ----------------
+
     // 폼 제출
     f.method = "post";
-    f.action = "/post/insert";
+    f.action = "/post/modify";
     f.enctype = "multipart/form-data";
     f.submit();
 }
@@ -358,6 +376,7 @@ function postInsert(f) {
 
 	<div class="container">
 		<form class="write-form">
+			<input type="hidden" name="post_idx" value="${ postVo.post_idx}">
 			<div class="form-group">
 				<label for="board-type">게시판 선택</label> 
 				
@@ -412,63 +431,71 @@ function postInsert(f) {
 			   
 			   <!-- ----------------- 상풍 추가 js------------------ -->
 				<script>
-			    $(document).ready(function() {
-			        $('#add-product-btn').click(function() {
-			            // 새로운 상품 선택 폼을 생성할 HTML 코드
-			            let newFormGroup = `
-			                <div class="form-group product-form">
-			                    <div class="d-flex align-items-center">
-			                        <select name="product_idx_array" class="form-control">
-			                            <option value="">상품을 선택해주세요</option>
-			                            <c:forEach var="productVo" items="${product_list_array}">
-			                                <option value="${productVo.product_idx}">${productVo.product_name}</option>
-			                            </c:forEach>
-			                        </select>
-			                        <!-- 상품 삭제 버튼 추가 (select 오른쪽) -->
-			                        <button type="button" class="btn btn-danger btn-sm remove-product-btn ms-2">-</button>
-			                    </div>
-			                </div>
-			            `;
-			
-			            // 생성된 폼을 화면에 추가
-			            $('#product-form-container').append(newFormGroup);
-			        });
-			
-			        // 상품 삭제 버튼 클릭 시 해당 폼 삭제
-			        $(document).on('click', '.remove-product-btn', function() {
-			            // 클릭된 삭제 버튼의 부모 div.product-form을 찾고 삭제
-			            let formGroup = $(this).closest('.product-form');
-			            console.log(formGroup); // 콘솔에서 삭제될 요소 확인
-			            formGroup.remove(); // 해당 폼을 삭제
-			        });
-			        
+				$(document).ready(function () {
 
-			    });
+				    /** ================================================
+				     *   1) 기존 상품 목록 불러오기 (수정 화면)
+				     *  ================================================ */
+				    let selectedProducts = [
+				        <c:forEach var="prod" items="${postProductVo}" varStatus="s">
+				            "${prod.product_idx}" <c:if test="${!s.last}">,</c:if>
+				        </c:forEach>
+				    ];
+
+				    // 기존 상품 개수만큼 폼 자동 생성
+				    for (let idx of selectedProducts) {
+				        addProductForm(idx); // ★ 기존 상품은 값까지 넣어서 생성
+				    }
+
+
+				    /** ================================================
+				     *   2) + 버튼 클릭 시 빈 상품 선택 폼 추가
+				     *  ================================================ */
+				    $('#add-product-btn').click(function () {
+				        addProductForm(null); // ★ null → 새로운 상품 선택 폼
+				    });
+
+				    /** ================================================
+				     *   3) - 버튼 클릭 시 삭제
+				     *  ================================================ */
+				    $(document).on('click', '.remove-product-btn', function () {
+				        $(this).closest('.product-form').remove();
+				    });
+
+				});
+				
+				//
+				function addProductForm(selectedValue) {
+
+				    let newFormGroup = `
+				        <div class="form-group product-form">
+				            <div class="d-flex align-items-center">
+				                <select name="product_idx_array" class="form-control product-select">
+				                    <option value="">상품을 선택해주세요</option>
+				                    <c:forEach var="productVo" items="${product_list_array}">
+				                        <option value="${productVo.product_idx}">
+				                            ${productVo.product_name}
+				                        </option>
+				                    </c:forEach>
+				                </select>
+
+				                <button type="button"
+				                        class="btn btn-danger btn-sm remove-product-btn ms-2">-</button>
+				            </div>
+				        </div>
+				    `;
+
+				    // HTML 추가
+				    $('#product-form-container').append(newFormGroup);
+
+				    // 선택값이 있으면 세팅 (기존 상품 편집 시)
+				    if (selectedValue) {
+				        $('#product-form-container .product-select:last').val(selectedValue);
+				    }
+				}
 				</script>
 			   <!-- ----------------- end/상풍 추가 js------------------ -->
 
-				<!--      <div class="form-group">
-                    <label>스킨 미리보기</label>
-                    <div class="skin-preview">
-                        <p>스킨 미리보기 영역입니다.</p>
-                        <p>CSS와 HTML 코드가 적용된 모습이 여기에 표시됩니다.</p>
-                    </div>
-                </div> -->
-
-				<!--    <div class="form-group">
-                    <label for="skin-html">HTML 코드</label>
-                    <textarea id="skin-html" class="skin-code-editor" placeholder="HTML 코드를 입력해주세요"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="skin-css">CSS 코드</label>
-                    <textarea id="skin-css" class="skin-code-editor" placeholder="CSS 코드를 입력해주세요"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="skin-js">JavaScript 코드 (선택사항)</label>
-                    <textarea id="skin-js" class="skin-code-editor" placeholder="JavaScript 코드를 입력해주세요"></textarea>
-                </div> -->
 			</div>
 
 			<!-- 구매자리뷰 전용 필드 -->
@@ -496,17 +523,109 @@ function postInsert(f) {
 				<input type="file" id="post_images" name="post_images" multiple> <span
 					class="file-name">선택된 파일 없음</span>
 			</div>
+			
+			<!-- 선택한 이미지 미리보기 영역 -->
+			<div id="image-preview" class="row mt-3"></div>
+			
+<!-- 기존 이미지 목록 출력 -->
+<c:if test="${not empty postVo.post_image}">
+    <div class="form-group">
+        <label>기존 이미지</label>
+        <div class="row">
+            <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="status">
+                <div class="col-4 mb-3 text-center">
+                    <!-- 썸네일 -->
+                    <div style="width:100%; padding-top:100%; position:relative; border-radius:6px; overflow:hidden; border:1px solid #ddd;">
+                        <img src="${pageContext.request.contextPath}/images/posts/${img}"
+                             style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;">
+                    </div>
+
+                    <!-- 삭제 체크박스 -->
+                    <label style="font-size:12px; color:#777; display:block; margin-top:5px;">
+                        <input type="checkbox" name="delete_image" value="${img}">
+                        삭제하기
+                    </label>
+                </div>
+            </c:forTokens>
+        </div>
+    </div>
+</c:if>
 
 			<div class="button-group">
 				<button type="button" class="btn btn-secondary">취소하기</button>
 				<button type="button" class="btn btn-primary"
-					onclick="postInsert(this.form);">수정하기</button>
+					onclick="postModify(this.form);">수정하기</button>
 			</div>
 		</form>
 	</div>
 
 	<script>
+	/* 기존 이미지 화면에서 삭제처리 ( 화면에서 만 안보이고 데이터가 수정되는건 아님) */
+	document.querySelectorAll('input[name="delete_image"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+        if (this.checked) {
+            // 체크되면 해당 col을 제거
+            this.closest('.col-4').remove();
+        }
+	    });
+	});
+	
+	
+	/* 선택한 이미지 미리보기 ------------------------ */
+document.getElementById('post_images').addEventListener('change', function(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('image-preview');
+    
+    // 이전 미리보기 초기화
+    previewContainer.innerHTML = "";
 
+    // 파일 이름 표시
+    const fileNameDisplay = document.querySelector('.file-name');
+    if (files.length === 1) {
+        fileNameDisplay.textContent = files[0].name;
+    } else if (files.length > 1) {
+        fileNameDisplay.textContent = files.length + "개의 파일 선택됨";
+    } else {
+        fileNameDisplay.textContent = "선택된 파일 없음";
+    }
+
+    // 이미지 미리보기 생성
+    Array.from(files).forEach(file => {
+        if (!file.type.startsWith("image/")) return; // 이미지 파일만
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const col = document.createElement("div");
+            col.className = "col-4 mb-3 text-center"; // text-center 추가
+
+            // 이미지 감싸는 div (정사각형 유지)
+            const wrapper = document.createElement("div");
+            wrapper.style.width = "100%";
+            wrapper.style.paddingTop = "100%"; // 높이 비율 1:1
+            wrapper.style.position = "relative";
+            wrapper.style.borderRadius = "6px";
+            wrapper.style.overflow = "hidden";
+            wrapper.style.border = "1px solid #ddd";
+
+            // 이미지
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.position = "absolute";
+            img.style.top = "0";
+            img.style.left = "0";
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "cover"; // 이미지 비율 유지
+
+            wrapper.appendChild(img);
+            col.appendChild(wrapper);
+            previewContainer.appendChild(col);
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+	/* end : 선택한 이미지 미리보기 ------------------------ */
 		
         // 게시판 유형에 따른 필드 표시/숨김
         document.getElementById('post_category').addEventListener('change', function() {
@@ -553,10 +672,6 @@ function postInsert(f) {
         	document.getElementById('post_images').click();
         })
         
-        // 스킨 에디터 미리보기 기능
-        //document.getElementById('skin-html').addEventListener('input', updatePreview);
-        //document.getElementById('skin-css').addEventListener('input', updatePreview);
-        //document.getElementById('skin-js').addEventListener('input', updatePreview);
         
         function updatePreview() {
             const htmlCode = document.getElementById('skin-html').value;

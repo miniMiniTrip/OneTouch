@@ -35,7 +35,7 @@ public class ProductController {
     ProductService productService;
 
     // 상품 리스트 페이지
-    @RequestMapping("/product/list.do")
+    @RequestMapping("/product/list")
     public String productList(
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "category", required = false) String category,
@@ -113,13 +113,13 @@ public class ProductController {
     
     // 상품 상세 페이지
     @GetMapping("/product/detail")
-    public String productDetail(@RequestParam("id") int productIdx, Model model) {
-        System.out.printf("=== [ProductController] 상품 상세 조회: %d ===\n", productIdx);
+    public String productDetail(@RequestParam("id") int product_idx, Model model) {
+        System.out.printf("=== [ProductController] 상품 상세 조회: %d ===\n", product_idx);
         
-        ProductVo product = product_dao.selectOne(productIdx);
+        ProductVo product = product_dao.selectOne(product_idx);
         if (product == null) {
             System.out.println("[ProductController] 상품을 찾을 수 없음 - 목록으로 리다이렉트");
-            return "redirect:/product/list.do";
+            return "redirect:/product/list";
         }
         
         model.addAttribute("product", product);

@@ -12,11 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.dao.PostDao;
 import com.onetouch.vo.LikeVo;
-import com.onetouch.vo.MemVo;
+import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -57,7 +56,7 @@ public class PostServiceImpl implements PostService {
 	public int postInsert(PostVo postVo) throws Exception {
 		
 		//이미지 등록처리
-		String webPath = "/images/";
+		String webPath = "/images/posts/";
 		String absPath = application.getRealPath(webPath);
 		//System.out.printf("		파일 저장 절대경로:%s\n",absPath);
 		String p_filename="no_file";
@@ -132,6 +131,76 @@ public class PostServiceImpl implements PostService {
 			throw new Exception("like_not");
 		}
 		return map;
+	}
+
+	// post 수정 하기
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updatePostVo(PostVo postVo) throws Exception{
+		System.out.println("기존이미지:"+postVo.getPost_image());
+		for(MultipartFile postVo_image:postVo.getPost_images()) {
+			System.out.println("새로받아온 이미지 :"+postVo_image);
+		}
+		
+		//이미지 등록처리
+		String webPath = "/images/posts/";
+		String absPath = application.getRealPath(webPath);
+		//System.out.printf("		파일 저장 절대경로:%s\n",absPath);
+		String p_filename="no_file";
+		String full_image_name="";
+		StringBuilder sb=new StringBuilder();
+		sb.append(postVo.getPost_image());
+		sb.append("*");
+		if(postVo.getPost_images()!=null) {
+			for(MultipartFile post_image:postVo.getPost_images()){
+				p_filename=post_image.getOriginalFilename(); // 저장할 순수한 파일명
+				
+	            if (p_filename == null || p_filename.trim().isEmpty()) {
+	                // 파일명이 없으면 continue로 건너뛰기
+	                continue;
+	            }
+	            
+				File f = new File(absPath,p_filename); // 저장할 파일 정보(경로,파일이름)
+				if(f.exists()){ // 같은 파일명이 존재하면
+					long tm =System.currentTimeMillis();
+					p_filename=String.format("%d_%s",tm,p_filename);
+					
+					f = new File(absPath,p_filename);
+				}
+				System.out.printf("새로 등록하는 이미지 이름 :%s\n",p_filename);
+				sb.append(p_filename);
+				sb.append("*");
+				
+				post_image.transferTo(f); //MultipartFile에 임시로 저장된 파일을 내가 설정한 경로로 복사
+			}
+		}
+		if(sb.toString().endsWith("*")) {
+			full_image_name=sb.toString().substring(0,sb.toString().length()-1);
+		}
+		postVo.setPost_image(full_image_name);
+
+		//post에 등록된 post_product 삭제 처리 후 다시 등록
+		int res = 1;
+		List<PostProductVo> ppv=postDao.selectPostProductOne(postVo.getPost_idx());
+		if(ppv!=null) {
+			res =res*postDao.deletePostProduct(postVo.getPost_idx());
+			if(res==0) { 
+				throw new Exception("deletePostProduct()_not");
+			}
+		};
+		for(int product_idx:postVo.getProduct_idx_array()) {
+			postVo.setProduct_idx(product_idx);
+			// post_product 목록 테이블에저장
+			res=res * (postDao.postProductInsert(postVo));
+			if(res==0) { 
+				throw new Exception("postProductInsert()_not");
+			}
+		}
+		
+		System.out.printf("		수정할 postVo:%s\n",postVo);
+		res=res*postDao.updatePostVo(postVo);
+		
+		return res;
 	}
 	
 

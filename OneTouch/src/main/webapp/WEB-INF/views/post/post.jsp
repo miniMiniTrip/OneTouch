@@ -692,7 +692,7 @@ body {
                          <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
                             <div class="carousel-item ${status.first ? 'active' : ''}">
                             ${pageContext.request.contextPath }
-                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
+                                <img src="${pageContext.request.contextPath }/images/posts/${img}" alt="${img }" class="post-image d-block w-100">
                             </div>
                          </c:forTokens>
                          
