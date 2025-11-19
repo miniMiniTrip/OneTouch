@@ -178,6 +178,8 @@
                     <i class="lni lni-user"></i> ${sessionScope.user.mem_name}님
                 </div>
                 <ul class="user-login">
+                    
+                    
                     <!-- 마이페이지 드롭다운 - 햄버거 스타일 -->
                     <li class="user-dropdown">
                         <a href="javascript:void(0)" onclick="toggleDropdown('mypage-menu')">
@@ -191,7 +193,7 @@
                         </ul>
                     </li>
                     
-                    <!-- 관리자 드롭다운 (관리자만 표시) - 햄버거 스타일 -->
+                    <!-- 관리자 드롭다운 -->
                     <c:if test="${sessionScope.user.mem_roll == 'admin'}">
                         <li class="user-dropdown">
                             <a href="javascript:void(0)" onclick="toggleDropdown('admin-menu')">
@@ -205,6 +207,7 @@
                             </ul>
                         </li>
                     </c:if>
+                    
                     
                     <li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
                 </ul>
@@ -301,84 +304,6 @@
     </div>
     <!-- End Header Middle -->
 
-<<<<<<< HEAD
-	<!-- Start Header Bottom -->
-	<div class="container">
-		<div class="row align-items-center">
-			<div class="col-lg-8 col-md-6 col-12">
-				<div class="nav-inner">
-					<nav class="navbar navbar-expand-lg">
-						<button class="navbar-toggler mobile-menu-btn" type="button"
-							data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent" aria-expanded="false"
-							aria-label="Toggle navigation">
-							<span class="toggler-icon"></span> <span class="toggler-icon"></span>
-							<span class="toggler-icon"></span>
-						</button>
-						<div class="collapse navbar-collapse sub-menu-bar"
-							id="navbarSupportedContent">
-							<ul id="nav" class="navbar-nav ms-auto">
-								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/">홈</a></li>
-								<li class="nav-item"><a class="dd-menu collapsed"
-									href="javascript:void(0)" data-bs-toggle="collapse"
-									data-bs-target="#submenu-1-1"
-									aria-controls="navbarSupportedContent" aria-expanded="false">카테고리</a>
-									<ul class="sub-menu collapse" id="submenu-1-1">
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/products?category=skincare">스킨케어</a></li>
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/products?category=cleansing">클렌징</a></li>
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/products?category=haircare">헤어케어</a></li>
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/products?category=bodycare">바디케어</a></li>
-									</ul></li>
-								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/product/list">전체 상품</a></li>
-								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/post/list">커뮤니티</a></li>
-								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/skintest">피부 진단</a></li>
-								<li class="nav-item"><a class="dd-menu collapsed"
-									href="javascript:void(0)" data-bs-toggle="collapse"
-									data-bs-target="#submenu-1-2"
-									aria-controls="navbarSupportedContent" aria-expanded="false">마이페이지</a>
-									<ul class="sub-menu collapse" id="submenu-1-2">
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/mypage">내 정보</a></li>
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/cart">장바구니</a></li>
-										<li class="nav-item"><a
-											href="${pageContext.request.contextPath}/wishlist">찜한 상품</a></li>
-									</ul></li>
-							</ul>
-						</div>
-					</nav>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-6 col-12">
-				<div class="nav-social">
-					<h5 class="title">Follow Us:</h5>
-					<ul>
-						<li><a href="javascript:void(0)"><i
-								class="lni lni-facebook-filled"></i></a></li>
-						<li><a href="javascript:void(0)"><i
-								class="lni lni-twitter-original"></i></a></li>
-						<li><a href="javascript:void(0)"><i
-								class="lni lni-instagram"></i></a></li>
-						<li><a href="javascript:void(0)"><i
-								class="lni lni-youtube"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Header Bottom -->
-=======
     <!-- Start Header Bottom -->
     <div class="container">
         <div class="row align-items-center">
@@ -459,7 +384,6 @@
         </div>
     </div>
     <!-- End Header Bottom -->
->>>>>>> branch 'master' of https://github.com/miniMiniTrip/OneTouch.git
 </header>
 <!-- End Header Area -->
 
