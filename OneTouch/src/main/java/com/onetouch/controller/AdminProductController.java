@@ -48,14 +48,7 @@ public class AdminProductController {
     	System.out.println("[AdminController] adminDashboard()");
     	return "/admin/dashboard";  
     }
-    
-    // 재고 페이지 추가
-    @RequestMapping("/remain")
-    public String RemainManagement() {
-    	System.out.println("[AdminController] RemainManagement()");
-    	return "/admin/remain_management";  
-    }
-    
+   
 
  // 상품-> 관리자페이지로  url 변경 products->adminpage
  // 관리자 
@@ -160,7 +153,7 @@ public class AdminProductController {
         int res = productService.insert(productVo);
         System.out.printf("[AdminProductController-insert()] insert 결과: %d\n", res);
 
-        return "redirect:/admin/products"; 
+        return "redirect:/admin/product"; 
     }
 
     // 상품 수정
@@ -192,7 +185,7 @@ public class AdminProductController {
         int res = productService.update(vo);
         System.out.printf("[AdminProductController-update()] update 결과: %d\n", res);
         
-        return "redirect:/admin/products";
+        return "redirect:/admin/product";
     }
 
     // 단일 삭제
@@ -203,7 +196,7 @@ public class AdminProductController {
         int res = productService.delete(product_idx);
         System.out.printf("[AdminProductController-delete()] 삭제 결과: %d\n", res);
         
-        return "redirect:/admin/products";
+        return "redirect:/admin/product";
     }
 
     // 다중 삭제
@@ -214,7 +207,7 @@ public class AdminProductController {
         int res = productService.deleteBatch(product_idx_list);
         System.out.printf("[AdminProductController-deleteBatch()] 삭제 결과: %d\n", res);
         
-        return "redirect:/admin/products";
+        return "redirect:/admin/product";
     }
     
     
