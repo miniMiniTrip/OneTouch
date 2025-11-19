@@ -41,4 +41,9 @@ public interface PostDao {
 
 	List<PostProductVo> selectPostProductOne(int post_idx);
 
+	int updatePostVo(PostVo postVo);
+
+	int deletePostProduct(int post_idx);
+
+
 }

@@ -88,8 +88,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="postInsert" parameterType="PostVo" useGeneratedKeys="true" keyProperty="post_idx">
-		INSERT INTO post (post_idx,mem_idx,post_category,post_title,post_content,post_time,post_update,post_image)
-					VALUES(null,#{mem_idx},#{post_category},#{post_title},#{post_content},now(),now(),#{post_image})
+		INSERT INTO post (post_idx,mem_idx,post_category,post_title,post_content,post_time,post_update,post_image,post_rating)
+					VALUES(null,#{mem_idx},#{post_category},#{post_title},#{post_content},now(),now(),#{post_image},#{post_rating})
 	</insert>
 		
 	<!-- post_product 테이블에 post_idx,product_idx 등록 -->
@@ -106,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	order by product_idx desc
 	</select>
 	
-	<!-- post관련해서 like 테이블에 좋아요 추가 -->
+	<!-- post 관련해서 like 테이블에 좋아요 추가 -->
 	<insert id="insertPostLike" parameterType="map">
 		insert into `like`(like_idx,post_idx,mem_idx,like_time)
 					 values(null,#{post_idx},#{mem_idx},now())
@@ -142,4 +142,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			post_product as pp
 		where pp.post_idx= #{post_idx}
 	</select>
+	
+	<!-- post review 수정 -->
+	<update id="updatePostVo" parameterType="PostVo">
+		update post
+		set 
+		post_title = #{post_title}
+		,post_content = #{post_content}
+		,post_rating=#{post_rating}
+		,post_image=#{post_image}
+		where post_idx=#{post_idx};
+	</update>
+	
+	<!-- post_product 테이블에서 post_idx 기준으로 삭제-->
+	<delete id="deletePostProduct" parameterType="int">
+		delete from post_product where post_idx=#{post_idx}
+	</delete>
+	
 </mapper>
