@@ -378,7 +378,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="${pageContext.request.contextPath}/main"><i class="lni lni-home"></i> 홈</a></li>
                         <li>마이페이지</li>
                         <li>찜 목록</li>
                     </ul>
@@ -396,21 +396,22 @@
 				<div class="sidebar">
 				    
 				    <div class="menu-section">
-				        <div class="menu-item">🛒 장바구니</div>
+				        <div class="menu-item">
+				        	<a href="${pageContext.request.contextPath}/cart/list.do">🛒 장바구니</a>
+				        </div>
 				        <div class="menu-item active">💝 찜</div>
 				        <div class="menu-item">🎯 주문/배송 조회</div>
 				    </div>
 				    
 				    <div class="menu-section">
 				        <div class="menu-title">나의 활동</div>
-				        <div class="menu-item">💬 상품 Q&A</div>
+				        <div class="menu-item">💬 상품 Q&A</div> 
+				        <div class="menu-item">📝 내가 쓴 글</div>
 				    </div>
 				    
 				    <div class="menu-section">
 				        <div class="menu-title">회원 정보</div>
 				        <div class="menu-item">👥 회원정보 수정</div>
-				        <div class="menu-item">🔒 배송지 관리</div>
-						<div class="menu-item">📧 알림톡신청 관리</div>
 					</div>
 	                    
 					<div class="menu-section">
@@ -525,67 +526,75 @@
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
-    <script type="text/javascript">
-    const mem_idx = ${sessionScope.user != null ? sessionScope.user.mem_idx : 'null'};
+<script type="text/javascript">
+const mem_idx = ${sessionScope.user != null ? sessionScope.user.mem_idx : 'null'};
+
+// ⭐ 뒤로가기/앞으로가기 시 페이지 새로고침
+window.addEventListener('pageshow', function(event) {
+    // BFCache에서 복원된 경우 (뒤로가기/앞으로가기)
+    if (event.persisted) {
+        console.log('페이지가 캐시에서 복원됨 - 새로고침 실행');
+        location.reload();
+    }
+});
+
+// 장바구니 추가
+function addToCart(product_idx) {
+    if (!mem_idx || mem_idx === null) {
+        alert('로그인이 필요한 서비스입니다.');
+        location.href = '${pageContext.request.contextPath}/user/login';
+        return;
+    }
     
-    // 장바구니 추가
-    function addToCart(product_idx) {
-        if (!mem_idx || mem_idx === null) {
-            alert('로그인이 필요한 서비스입니다.');
-            location.href = '${pageContext.request.contextPath}/user/login';
-            return;
-        }
-        
-        $.ajax({
-            url: '${pageContext.request.contextPath}/cart/insert.do',
-            type: 'POST',
-            data: {
-                mem_idx: mem_idx,
-                product_idx: product_idx,
-                cart_cnt: 1
-            },
-            success: function(data) {
-                if (data.result === 'success') {
-                    if (confirm('장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
-                        location.href = '${pageContext.request.contextPath}/cart/list.do?mem_idx=' + mem_idx;
-                    }
-                } else if (data.result === 'exist') {
-                    alert('이미 장바구니에 담긴 상품입니다.');
-                } else if (data.result === 'not_login') {
-                    alert('로그인이 필요한 서비스입니다.');
-                    location.href = '${pageContext.request.contextPath}/user/login';
-                } else {
-                    alert('장바구니 추가 중 오류가 발생했습니다.');
+    $.ajax({
+        url: '${pageContext.request.contextPath}/cart/insert.do',
+        type: 'POST',
+        data: {
+            mem_idx: mem_idx,
+            product_idx: product_idx,
+            cart_cnt: 1
+        },
+        success: function(data) {
+            if (data.result === 'success') {
+                if (confirm('장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
+                    location.href = '${pageContext.request.contextPath}/cart/list.do?mem_idx=' + mem_idx;
                 }
-            },
-            error: function() {
+            } else if (data.result === 'exist') {
+                alert('이미 장바구니에 담긴 상품입니다.');
+            } else if (data.result === 'not_login') {
+                alert('로그인이 필요한 서비스입니다.');
+                location.href = '${pageContext.request.contextPath}/user/login';
+            } else {
                 alert('장바구니 추가 중 오류가 발생했습니다.');
             }
-        });
-    }
-    
-    // 찜 삭제
-    function removeWishlist(wishlist_idx) {
-        if (!confirm('찜 목록에서 삭제하시겠습니까?')) {
-            return;
+        },
+        error: function() {
+            alert('장바구니 추가 중 오류가 발생했습니다.');
         }
-        
-        $.ajax({
-            url: '${pageContext.request.contextPath}/wishlist/delete.do',
-            type: 'POST',
-            data: {
-                wishlist_idx: wishlist_idx
-            },
-            success: function() {
-                alert('찜 목록에서 삭제되었습니다.');
-                location.reload();
-            },
-            error: function() {
-                alert('삭제 중 오류가 발생했습니다.');
-            }
-        });
+    });
+}
+
+// 찜 삭제
+function removeWishlist(wishlist_idx) {
+    if (!confirm('찜 목록에서 삭제하시겠습니까?')) {
+        return;
     }
-    </script>
     
+    $.ajax({
+        url: '${pageContext.request.contextPath}/wishlist/delete.do',
+        type: 'POST',
+        data: {
+            wishlist_idx: wishlist_idx
+        },
+        success: function() {
+            alert('찜 목록에서 삭제되었습니다.');
+            location.reload();
+        },
+        error: function() {
+            alert('삭제 중 오류가 발생했습니다.');
+        }
+    });
+}
+</script>
 </body>
 </html>

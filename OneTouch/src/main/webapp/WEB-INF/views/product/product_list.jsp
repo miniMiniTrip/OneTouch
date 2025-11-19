@@ -2,7 +2,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@include file="/WEB-INF/views/common/header.jsp" %>
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">상품 목록</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> Home</a></li>
+                    <li>Products</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
 <style>
+/* ==================== 전체 레이아웃 ==================== */
+.product-grids {
+    padding: 0;
+    background-color: #fff;
+}
+
+.product-container {
+    display: flex;
+    max-width: 100%;
+    margin: 0;
+}
+
+/* ==================== 사이드바 스타일 (wishlist와 동일) ==================== */
 .sidebar {
     width: 250px;
     background: #fafafa;
@@ -61,88 +97,130 @@
     font-weight: 600;
     border-left: 3px solid #5c6bc0;
 }
-</style>
-<%@include file="/WEB-INF/views/common/header.jsp" %>
 
-<!-- Breadcrumbs -->
-<div class="breadcrumbs">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6 col-12">
-                <div class="breadcrumbs-content">
-                    <h1 class="page-title">상품 목록</h1>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-12">
-                <ul class="breadcrumb-nav">
-                    <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> Home</a></li>
-                    <li>Products</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Breadcrumbs -->
+/* 검색 위젯 스타일 */
+.search-widget {
+    padding: 0 30px 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.search-widget h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.search-widget form {
+    position: relative;
+}
+
+.search-widget input[type="text"] {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.search-widget input[type="text"]:focus {
+    outline: none;
+    border-color: #5c6bc0;
+    box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.1);
+}
+
+.search-widget button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.search-widget button:hover {
+    color: #5c6bc0;
+}
+
+/* ==================== 컨텐츠 영역 ==================== */
+.content {
+    flex: 1;
+    padding: 50px 60px;
+    background: #fff;
+}
+
+/* ==================== 반응형 ==================== */
+@media (max-width: 992px) {
+    .product-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        min-height: auto;
+    }
+    
+    .content {
+        padding: 30px 20px;
+    }
+}
+</style>
 
 <!-- Product Grids -->
 <section class="product-grids section">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-12">
-                <!-- Start Product Sidebar -->
-                <div class="sidebar">
-                    <!-- Start Single Widget -->
-                    <div class="single-widget search">
-                        <h3>검색</h3>
-                        <form action="${pageContext.request.contextPath}/product/list.do" method="get">
-                            <input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
-                            <c:if test="${not empty category}">
-                                <input type="hidden" name="category" value="${category}">
-                            </c:if>
-                            <c:if test="${not empty sort}">
-                                <input type="hidden" name="sort" value="${sort}">
-                            </c:if>
-                            <button type="submit"><i class="lni lni-search-alt"></i></button>
-                        </form>
-                    </div>
-                    <!-- End Single Widget -->
-                    
-                    <!-- Start Single Widget -->
-                    <div class="single-widget">
-                        <h3>카테고리</h3>
-                        <ul class="list">
-                            <li>
-                                <a href="${pageContext.request.contextPath}/product/list.do?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
-                                   class="${category eq '1' ? 'active' : ''}">
-                                    스킨케어 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/product/list.do?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
-                                   class="${category eq '2' ? 'active' : ''}">
-                                    메이크업/선케어 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/product/list.do?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
-                                   class="${category eq '3' ? 'active' : ''}">
-                                    클렌징케어 
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${pageContext.request.contextPath}/product/list.do${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
-                                   class="${empty category ? 'active' : ''}">
-                                    전체보기
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- End Single Widget -->
-                </div>
-                <!-- End Product Sidebar -->
-            </div>
+        <div class="product-container">
             
-            <div class="col-lg-9 col-12">
+            <!-- Start Product Sidebar -->
+            <div class="sidebar">
+                <!-- 검색 위젯 -->
+                <div class="search-widget">
+                    <h3>검색</h3>
+                    <form action="${pageContext.request.contextPath}/product/list.do" method="get">
+                        <input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
+                        <c:if test="${not empty category}">
+                            <input type="hidden" name="category" value="${category}">
+                        </c:if>
+                        <c:if test="${not empty sort}">
+                            <input type="hidden" name="sort" value="${sort}">
+                        </c:if>
+                        <button type="submit"><i class="lni lni-search-alt"></i></button>
+                    </form>
+                </div>
+                
+                <!-- 카테고리 메뉴 -->
+                <div class="menu-section">
+                    <div class="menu-title">카테고리</div>
+                    <a href="${pageContext.request.contextPath}/product/list.do${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
+                       class="menu-item ${empty category ? 'active' : ''}">
+                        전체보기
+                    </a>
+                    <a href="${pageContext.request.contextPath}/product/list.do?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                       class="menu-item ${category eq '1' ? 'active' : ''}">
+                        스킨케어
+                    </a>
+                    <a href="${pageContext.request.contextPath}/product/list.do?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                       class="menu-item ${category eq '2' ? 'active' : ''}">
+                        메이크업/선케어
+                    </a>
+                    <a href="${pageContext.request.contextPath}/product/list.do?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                       class="menu-item ${category eq '3' ? 'active' : ''}">
+                        클렌징케어
+                    </a>
+                </div>
+            </div>
+            <!-- End Product Sidebar -->
+            
+            <!-- Start Content -->
+            <div class="content">
                 <div class="product-grids-head">
                     <div class="product-grid-topbar">
                         <div class="row align-items-center">
@@ -158,7 +236,7 @@
                                                 ${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
                                         <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high" 
                                                 ${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
+                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty sort ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
                                                 ${sort eq 'rating' ? 'selected' : ''}>평점순</option>
                                     </select>
                                     <h3 class="total-show-product">총 <span>${totalCount}</span>개 상품</h3>
@@ -178,8 +256,7 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="tab-content" id="nav-tabContent">
+				<div class="tab-content" id="nav-tabContent">
                         <!-- Grid View -->
                         <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                             aria-labelledby="nav-grid-tab">
@@ -213,11 +290,12 @@
                                                                class="btn"><i class="lni lni-cart"></i> 장바구니</a>
                                                         </div>
                                                         <!-- 찜하기 토글 버튼 -->
-                                                        <span class="wishlist-toggle" 
-                                                              onclick="toggleWishlist(${product.product_idx}, this)"
-                                                              data-wishlist="${product.product_wishlist > 0 ? 'true' : 'false'}">
-                                                            <i class="lni ${product.product_wishlist > 0 ? 'lni-heart-filled' : 'lni-heart'}"></i>
-                                                        </span>
+													<span class="wishlist-toggle" 
+													      onclick="toggleWishlist(${product.product_idx}, this)"
+													      data-product-idx="${product.product_idx}"
+													      data-wishlist="false">
+													    <i class="lni lni-heart"></i>
+													</span>
                                                     </div>
                                                     <div class="product-info">
                                                         <span class="category">${product.category_name}</span>
@@ -301,11 +379,12 @@
                                                                 <div class="no-image">이미지 준비중</div>
                                                             </c:otherwise>
                                                         </c:choose>
-                                                        <span class="wishlist-toggle" 
-                                                              onclick="toggleWishlist(${product.product_idx}, this)"
-                                                              data-wishlist="${product.product_wishlist > 0 ? 'true' : 'false'}">
-                                                            <i class="lni ${product.product_wishlist > 0 ? 'lni-heart-filled' : 'lni-heart'}"></i>
-                                                        </span>
+														<span class="wishlist-toggle" 
+														      onclick="toggleWishlist(${product.product_idx}, this)"
+														      data-product-idx="${product.product_idx}"
+														      data-wishlist="false">
+														    <i class="lni lni-heart"></i>
+														</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-12">
@@ -348,11 +427,14 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+                    
+		</div>
+	</div>
+<!-- End Content -->
+
 </section>
 <!-- End Product Grids -->
-
 <style>
 /* 상품 카드 기본 스타일 */
 .single-product {
@@ -396,7 +478,7 @@
     font-size: 14px;
 }
 
-/* 찜하기 버튼 */
+/* 찜 하기 버튼 */
 .wishlist-toggle {
     position: absolute;
     top: 15px;
@@ -405,13 +487,14 @@
     height: 40px;
     background: white;
     border-radius: 50%;
-    display: flex;
+    display: flex !important; 
     align-items: center;
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    z-index: 2;
+    z-index: 10; 
+    opacity: 1;
 }
 
 .wishlist-toggle:hover {
@@ -422,7 +505,18 @@
 .wishlist-toggle i {
     font-size: 20px;
     color: #ff4757;
+    transition: all 0.3s ease;
 }
+
+.wishlist-toggle[data-wishlist="true"] i {
+    color: #ff4757;
+}
+
+/* 찜 안한 상태 (빈 하트) */
+.wishlist-toggle[data-wishlist="false"] i {
+    color: #ff4757;
+}
+
 
 /* 상품 정보 영역 */
 .product-info {
@@ -542,6 +636,82 @@ const mem_idx = ${sessionScope.user != null ? sessionScope.user.mem_idx : 'null'
 
 console.log('현재 로그인 상태:', mem_idx !== null ? '로그인됨 (mem_idx: ' + mem_idx + ')' : '로그인 안 됨');
 
+function getCurrentMemIdx() {
+    return ${sessionScope.user != null ? sessionScope.user.mem_idx : 'null'};
+}
+
+// 페이지 표시 시 (뒤로가기/앞으로가기 포함)
+window.addEventListener('pageshow', function(event) {
+    if (mem_idx && mem_idx !== null) {
+        syncWishlistStatus();
+    } else {
+		resetWishlistIcons();
+    }
+});
+
+// 페이지 로드 시
+document.addEventListener('DOMContentLoaded', function() {
+    if (mem_idx && mem_idx !== null) {
+        syncWishlistStatus();
+    } else {
+		resetWishlistIcons();
+    }
+});
+
+//찜 상태 동기화
+function syncWishlistStatus() {
+    const wishlistButtons = document.querySelectorAll('.wishlist-toggle');
+    
+    if (wishlistButtons.length === 0) return;
+    
+    const productIds = Array.from(wishlistButtons).map(btn => 
+        btn.getAttribute('data-product-idx')
+    );
+
+    fetch('${pageContext.request.contextPath}/wishlist/check_status.do', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_ids: productIds
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result === 'success') {
+            wishlistButtons.forEach(button => {
+                const productIdx = button.getAttribute('data-product-idx');
+                const isWishlisted = data.wishlist_status[productIdx] || false;
+                const icon = button.querySelector('i');
+                
+                if (isWishlisted) {
+                    icon.className = 'lni lni-heart-filled';
+                    button.setAttribute('data-wishlist', 'true');
+                } else {
+                    icon.className = 'lni lni-heart';
+                    button.setAttribute('data-wishlist', 'false');
+                }
+            });
+        } else if (data.result === 'not_login') {
+        	resetWishlistIcons();
+        }
+    })
+    .catch(error => {
+        console.error('찜 상태 동기화 실패:', error);
+    });
+}
+
+//하트 초기화 함수
+function resetWishlistIcons(){
+	const wishlistButtons = document.querySelectorAll('.wishlist-toggle');
+	wishlistButtons.forEach(button=> {
+		const icon = button.querySelector('i');
+		icon.className = 'lni l	ni-heart';
+		button.setAttribute('data-wishlist', 'false');
+	});
+}
+
 // 찜하기 토글 함수
 function toggleWishlist(product_idx, element) {
     if (!mem_idx || mem_idx === null) {
@@ -559,16 +729,13 @@ function toggleWishlist(product_idx, element) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: 'mem_idx=' + mem_idx + '&product_idx=' + product_idx
+        body: 'product_idx=' + product_idx
     })
     .then(response => response.json())
     .then(data => {
         if (data.result === 'success') {
             // UI 업데이트
-            if (isWishlisted) {
-                icon.className = 'lni lni-heart';
-                element.setAttribute('data-wishlist', 'false');
-            } else {
+            if (data.action === 'added') {
                 icon.className = 'lni lni-heart-filled';
                 element.setAttribute('data-wishlist', 'true');
                 
@@ -577,6 +744,9 @@ function toggleWishlist(product_idx, element) {
                 setTimeout(() => {
                     element.style.transform = 'scale(1)';
                 }, 200);
+            } else if (data.action === 'removed') {
+                icon.className = 'lni lni-heart';
+                element.setAttribute('data-wishlist', 'false');
             }
         } else if (data.result === 'not_login') {
             alert('로그인이 필요한 서비스입니다.');
@@ -638,6 +808,5 @@ function buyNow(product_idx) {
     location.href = '${pageContext.request.contextPath}/order/direct_form.do?product_idx=' + product_idx + '&product_cnt=1';
 }
 </script>
-
 
 <%@include file="/WEB-INF/views/common/footer.jsp" %>
