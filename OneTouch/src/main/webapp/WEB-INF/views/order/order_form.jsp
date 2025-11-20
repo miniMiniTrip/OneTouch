@@ -26,6 +26,9 @@
     <!-- Daum 우편번호 API -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
+    <!-- Toss Payment 연동 -->
+    <script src="https://js.tosspayments.com/v2/standard"></script>
+    
     <style>
         .checkout-section {
             padding: 40px 0;
@@ -173,7 +176,7 @@
     <!-- Checkout Section -->
     <section class="checkout-section section">
         <div class="container">
-            <form action="/order/order_insert.do" method="post" id="orderForm">
+            <form id="orderForm">
                 <!-- Hidden fields -->
                 <input type="hidden" name="order_type" value="${order_type}">
                 <c:if test="${order_type eq 'direct'}">
@@ -321,7 +324,7 @@
                             </ul>
                             
                             <div class="button">
-                                <button type="submit" class="btn btn-primary w-100">
+                               <button id="payment-button" class="btn btn-primary w-100">
                                     <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원 결제하기
                                 </button>
                             </div>
@@ -348,73 +351,112 @@
     <script src="/assets/js/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <script>
-        // 다음 우편번호 API
-        function findPostcode() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    var addr = ''; // 주소 변수
-                    
-                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다
-                    if (data.userSelectedType === 'R') { // 도로명 주소
-                        addr = data.roadAddress;
-                    } else { // 지번 주소
-                        addr = data.jibunAddress;
-                    }
-                    
-                    // 우편번호와 주소 정보를 입력
-                    document.getElementById('order_postal').value = data.zonecode;
-                    document.getElementById('order_address').value = addr;
-                    
-                    // 상세주소 입력란으로 포커스 이동
-                    document.getElementById('order_address_more').focus();
+<script>
+    // 토스 키
+    const tossClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+    const totalAmount = ${total_amount};
+    
+    // 다음 우편번호 API
+    function findPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                let addr = '';
+                
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
                 }
-            }).open();
+                
+                document.getElementById('order_postal').value = data.zonecode;
+                document.getElementById('order_address').value = addr;
+                document.getElementById('order_address_more').focus();
+            }
+        }).open();
+    }
+    
+    $('#sameAsOrderer').on('change', function() {
+		//시간 남으면 구현
+    });
+    
+    // 결제수단
+    $('.payment-method').on('click', function() {
+        $('.payment-method').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('input[type="radio"]').prop('checked', true);
+    });
+
+    document.getElementById('payment-button').addEventListener('click', function() {
+        
+        // 유효성 검사
+        let orderName = $('input[name="order_mem_name"]').val();
+        let orderPhone = $('input[name="order_phone"]').val();
+        let postal = $('input[name="order_postal"]').val();
+        let address = $('input[name="order_address"]').val();
+        
+        if (!orderName || !orderPhone || !postal || !address) {
+            alert('필수 정보를 모두 입력해주세요.');
+            return false;
         }
         
-        // 주문자 정보와 동일 체크박스
-        $('#sameAsOrderer').on('change', function() {
-            if ($(this).is(':checked')) {
-                var orderName = $('input[name="order_mem_name"]').val();
-                var orderPhone = $('input[name="order_phone"]').val();
-                // 여기서는 실제로는 회원 정보에서 가져와야 함
-                // 임시로 주문자 정보를 복사
-            }
-        });
+        let phoneRegex = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/;
+        if (!phoneRegex.test(orderPhone.replace(/-/g, ''))) {
+            alert('올바른 전화번호 형식을 입력해주세요.');
+            return false;
+        }
         
-        // 결제 수단 선택
-        $('.payment-method').on('click', function() {
-            $('.payment-method').removeClass('selected');
-            $(this).addClass('selected');
-            $(this).find('input[type="radio"]').prop('checked', true);
-        });
+        if (!confirm('주문을 진행하시겠습니까?')) {
+            return false;
+        }
         
-        // 폼 유효성 검사
-        $('#orderForm').on('submit', function(e) {
-            var orderName = $('input[name="order_mem_name"]').val();
-            var orderPhone = $('input[name="order_phone"]').val();
-            var postal = $('input[name="order_postal"]').val();
-            var address = $('input[name="order_address"]').val();
-            
-            if (!orderName || !orderPhone || !postal || !address) {
-                e.preventDefault();
-                alert('필수 정보를 모두 입력해주세요.');
-                return false;
-            }
-            
-            // 전화번호 형식 검사
-            var phoneRegex = /^01[0-9]-?[0-9]{4}-?[0-9]{4}$/;
-            if (!phoneRegex.test(orderPhone.replace(/-/g, ''))) {
-                e.preventDefault();
-                alert('올바른 전화번호 형식을 입력해주세요.');
-                return false;
-            }
-            
-            if (!confirm('주문을 진행하시겠습니까?')) {
-                e.preventDefault();
-                return false;
+        // 주문 데이터
+        let formData = $('#orderForm').serialize();
+        
+        // 주문 생성
+        $.ajax({
+            url: '/order/create_ready.do',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    requestTossPayment(
+                        response.payment_key,
+                        response.order_name,
+                        response.amount
+                    );
+                } else {
+                    alert('주문 생성 실패: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('주문 생성 중 오류가 발생했습니다.');
             }
         });
-    </script>
+    });
+    
+    //토스 결제창 호출
+    function requestTossPayment(paymentKey, orderName, amount) {
+        
+        let tossPayments = TossPayments(tossClientKey);
+        
+        tossPayments.requestPayment('카드', {
+            amount: amount,
+            orderId: paymentKey,  // payment_key를 orderId로 사용
+            orderName: orderName,
+            customerName: '${user.mem_name}',
+            successUrl: window.location.origin + '/payment/success.do',
+            failUrl: window.location.origin + '/payment/fail.do'
+        })
+        .catch(function(error) {
+            if (error.code === 'USER_CANCEL') {
+                alert('결제를 취소하셨습니다.');
+            } else {
+                alert('결제 중 오류가 발생했습니다: ' + error.message);
+            }
+        });
+    }
+</script>
 </body>
 </html>
