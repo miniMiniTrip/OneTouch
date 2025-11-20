@@ -364,7 +364,28 @@ body {
 }
 
 /* 페이지네이션 */
-.community-pagination {
+.community-pagination-all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+.community-pagination-skin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+.community-pagination-review {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+.community-pagination-free {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1134,16 +1155,6 @@ body {
                 <!-- /커뮤니티 자유게시판 목록 ============================================================= -->
                 
                 
-                <!-- 페이지 기능 -->
-                <div class="community-pagination">
-                    <a href="#" class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
-                    <a href="#" class="pagination-link active">1</a>
-                    <a href="#" class="pagination-link">2</a>
-                    <a href="#" class="pagination-link">3</a>
-                    <a href="#" class="pagination-link">4</a>
-                    <a href="#" class="pagination-link">5</a>
-                    <a href="#" class="pagination-link"><i class="fas fa-angle-double-right"></i></a>
-                </div>
             </div>
         </div>
     </section>
@@ -1414,7 +1425,8 @@ document.addEventListener('click', function(e) {
  document.addEventListener('DOMContentLoaded', function() {
      const tabs = document.querySelectorAll('.community-tab-item');
      const posts = document.querySelectorAll('.community-post');
-
+     let page = 1;
+	 //초기 페이지
      posts.forEach(post => post.style.display = 'none');
 
      const defaultTab = document.querySelector('.community-tab-item[data-tab="all"]');
@@ -1423,6 +1435,7 @@ document.addEventListener('click', function(e) {
          posts.forEach(post => { if (post.dataset.tab === 'all') post.style.display = 'block'; });
      }
 
+     // 탭 클릭 했을때 처리
      tabs.forEach(tab => {
          tab.addEventListener('click', function() {
         	 //alert("탭클릭");
@@ -1431,235 +1444,11 @@ document.addEventListener('click', function(e) {
 				
              //클릭한 tab 타입
              const tabType = this.dataset.tab; 
-        	 alert(tabType);
+        	 //alert(tabType);
         	 
         	 //전체 목록 조회
-        	 //if(tabType=='all'){
-	            $.ajax({
-	           	url : "/post/all_list"
-	           	,data:{"tabType":tabType}
-	           	,success:function(d){
-	           		let loop =1;
-	           		let html = "";
-	           		let postVo_array;
-	           		if(tabType=='all'){
-	           			//alert("전체")
-	           			postVo_array=d.postVo_array;
-	           		}
-	           		if(tabType=='skin'){
-	           			//alert("스킨")
-	           			postVo_array=d.postTip_array;
-	           		}
-	           		if(tabType=='review'){
-	           			postVo_array=d.postReview_array;
-	           		}
-	           		if(tabType=='free'){
-	           			postVo_array=d.postFreeBoard_array;
-	           		}
-	           		for(let postVo of postVo_array){
-	           			
-           			//alert("게시물idx=> "+postVo.post_idx);
-	           			
-	           		//프로필 부분
-	           		html = html+`
-	                    <div class="post-header">
-	                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
-	                        <p class="username">\${postVo.mem_id }</p>
-	                        <div class="post-actions">
-	                        (\${postVo.post_category })
-	                            <button class="follow-btn">
-	                                <i class="fas fa-ellipsis-h"></i>
-	                            </button>
-	                        </div>
-	                    </div>
-	                    `
-	                    
-                    html=html+`
-	                    <div class="image-carousel" id="carousel-1">
-	                        <div class="carousel-inner">
-	                        `
-                    
-                    // post 이미지 영역
-                    const images = `\${postVo.post_image}`.split("*"); // * 기준으로 나눔
-	                for(let i =0; i <images.length;i++){
-                    const img = images[i];
-	                /* alert(`\${img}`); */
-                    html=html+`
-	                            <div class="carousel-item \${i==0 ? 'active' : ''}">
-	                                <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100">
-	                            </div>
-	                            `
-	                }
-                     html=html+`
-	                        </div>
-	                        
-	                        <div class="carousel-control prev" data-carousel="carousel-\${loop}">
-	                            <i class="fas fa-chevron-left"></i>
-	                        </div>
-	                        <div class="carousel-control next" data-carousel="carousel-\${loop}">
-	                            <i class="fas fa-chevron-right"></i>
-	                        </div>
-	                        
-	                        <div class="carousel-indicators" id="indicators-\${loop}">
-	                        `
-	                	   
-	                   for(let s =0; s<images.length;s++){
-                       html=html+`
-								    <div class="indicator \${s==0 ? 'active' : ''}" 
-								         data-slide="\${s}" data-carousel="carousel-\${loop }"></div>
-								         `
-	                   } 
-	                        
-                       html=html+`
-	                        </div>
-	                    </div>
-	                    `
-	                   // 상품 이미지 영역
-	                   if(postVo.productList!=null){
-	                    html=html+`
-	                    <div class="product-section">
-	                    `
-	                    for(let productVo of postVo.productList){
-							html=html+`	                    	
-		                        <div class="product-card">
-		                        	<a href="/product/4" class="product-link">
-					                            <img src="${pageContext.request.contextPath }/images/\${productVo.product_image_url}" alt="제품" class="product-img">
-					                            <p class="product-discount">\${productVo.product_name }</p>
-					                            <p class="product-price">\${productVo.product_price }</p> 
-			                        </a>    
-		                        </div>
-	                     	`
-	                    }
-	                    html=html+`
-	                    </div>
-	                    `
-	                   }
-						html=html+`	                    
-	                    <div class="post-interactions">
-						    <!-- 하트 버튼 -->
-	                    `
-	                    
-	                    let login_mem_idx = "${sessionScope.user.mem_idx}"
-	                    let isLiked = false;
-							
-						html=html+
-						`
-						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
-						`
-						if(postVo.likeList!=null){
-						for(let likeVo of postVo.likeList){
-							if(`\${likeVo.mem_idx}`==`\${login_mem_idx}`){
-								isLiked=true;
-							}
-							
-						}
-						}
-						
-						html=html+`
-							<!-- 좋아요를 누른 경우 -->
-						`
-						//alert(`\${!isLiked}`);
-						if(isLiked){
-							html=html+`
-							    <button class="interaction-btn active" data-post-idx="\${postVo.post_idx}">
-							        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
-							    </button>
-							`
-						}
-						html=html+`
-							<!-- 좋아요를 누르지 않은 경우 -->
-						`
-						if(!isLiked){
-							html=html+`
-							    <button class="interaction-btn" data-post-idx="\${postVo.post_idx}">
-							        <i class="far fa-heart"></i> <!-- 빈 하트 -->
-							    </button>
-							    `
-						}
-						html=html+`
-							<p class="post-likes" data-post-idx="\${postVo.post_idx }">\${postVo.post_like }</p>
-						    <button class="interaction-btn">
-						        <i class="far fa-comment"></i>
-						    </button>
-					<!-- 	    <button class="interaction-btn">
-						        <i class="far fa-share-square"></i>
-						    </button> -->
-						    
-	   						<!-- 채워진 별 -->
-						`
-							
-						    
-						if(postVo.post_rating != 0){
-							
-							html=html+`
-							<button class="interaction-btn star active" data-post-idx="\${postVo.post_idx}">
-							    <i class="fas fa-star"></i>
-							</button>
-							<p>\${postVo.post_rating }</p>  
-							`
-						}						    
-
-						if(postVo.mem_idx==`${user.mem_idx}`){
-						html=html+`
-						    <!-- 추가된 점 3개 버튼 (ellipsis) -->
-						    <button class="interaction-btn more-options">
-						        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
-						    </button>
-						
-						    <!-- 숨겨진 수정/삭제 버튼 -->
-						    <div class="more-options-menu" style="display: none;">
-						        <button class="edit-btn" data-post-idx="\${postVo.post_idx }" data-mem-idx="\${postVo.mem_idx }">수정</button>
-						        <button class="delete-btn" data-post-idx="\${postVo.post_idx }">삭제</button>
-						    </div>
-						`
-						}
-						html=html+
-						`
-						</div>
-	                    
-	                    <div class="post-content">
-	                        
-	                    	<p class="post-title">\${postVo.post_title}</p>
-	                        <p class="post-text">\${postVo.post_content }</p>
-	                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-	                        <p class="post-time">\${postVo.post_time }</p>
-	                    </div>
-	                    
-	                    <div class="comment-input">
-	                        <input type="text" placeholder="댓글을 남겨보세요...">
-	                        <button class="comment-submit">댓글</button>
-	                    </div>
-	                    <br>
-	                    <br>
-						`
-	           			
-	           		loop=loop+1;
-	           		} 
-	           		if(tabType=='all'){
-	           		$("#posts-container-all").html(html);
-	           		}
-	           		if(tabType=='skin'){
-	           		$("#posts-container-skin").html(html);
-	           		}
-	           		if(tabType=='review'){
-	           		$("#posts-container-review").html(html);
-	           		}
-	           		if(tabType=='free'){
-	           		$("#posts-container-free").html(html);
-	           		}
-	           		carousels(); // 이미지 슬라이드
-	           		productSection(); // 상품 슬라이드
-	           		moreButtons(); // 수정 삭제버튼 초기화
-	           		
-	           	}
-	            ,error:function(e){
-	            	
-	            }
-	            
-	            });
-        	 //}
-             
         	 
+        	 listHtml(tabType,page);
         	 
              posts.forEach(post => {
                  post.style.display = (tabType === 'all') 
@@ -1668,7 +1457,269 @@ document.addEventListener('click', function(e) {
              });
          });
      });
+     
+
+			
+     
  });
+ 
+ //ajax를 이용해서 html 영역 가져오는 함수
+ function listHtml(tabType,page){ $.ajax({
+    	url : "/post/all_list"
+    	,data:{"tabType":tabType,"page":page}
+    	,success:function(d){
+    		let loop =1;
+    		let html = "";
+    		let postVo_array;
+    		if(tabType=='all'){
+    			//alert("전체")
+    			postVo_array=d.postVo_array;
+    		}
+    		if(tabType=='skin'){
+    			//alert("스킨")
+    			postVo_array=d.postTip_array;
+    		}
+    		if(tabType=='review'){
+    			postVo_array=d.postReview_array;
+    		}
+    		if(tabType=='free'){
+    			postVo_array=d.postFreeBoard_array;
+    		}
+    		
+    		
+			/* =======================================html 게시물 영역============================================ */	
+    		for(let postVo of postVo_array){
+    			
+			//alert("게시물idx=> "+postVo.post_idx);
+    		
+    		//프로필 부분
+    		html = html+`
+             <div class="post-header">
+                 <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                 <p class="username">\${postVo.mem_id }</p>
+                 <div class="post-actions">
+                 (\${postVo.post_category })
+                     <button class="follow-btn">
+                         <i class="fas fa-ellipsis-h"></i>
+                     </button>
+                 </div>
+             </div>
+             `
+             
+         html=html+`
+             <div class="image-carousel" id="carousel-1">
+                 <div class="carousel-inner">
+                 `
+         
+         // post 이미지 영역
+         const images = `\${postVo.post_image}`.split("*"); // * 기준으로 나눔
+         for(let i =0; i <images.length;i++){
+         const img = images[i];
+         /* alert(`\${img}`); */
+         html=html+`
+                     <div class="carousel-item \${i==0 ? 'active' : ''}">
+                         <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100">
+                     </div>
+                     `
+         }
+          html=html+`
+                 </div>
+                 
+                 <div class="carousel-control prev" data-carousel="carousel-\${loop}">
+                     <i class="fas fa-chevron-left"></i>
+                 </div>
+                 <div class="carousel-control next" data-carousel="carousel-\${loop}">
+                     <i class="fas fa-chevron-right"></i>
+                 </div>
+                 
+                 <div class="carousel-indicators" id="indicators-\${loop}">
+                 `
+         	   
+            for(let s =0; s<images.length;s++){
+            html=html+`
+						    <div class="indicator \${s==0 ? 'active' : ''}" 
+						         data-slide="\${s}" data-carousel="carousel-\${loop }"></div>
+						         `
+            } 
+                 
+            html=html+`
+                 </div>
+             </div>
+             `
+            // 상품 이미지 영역
+            if(postVo.productList!=null){
+             html=html+`
+             <div class="product-section">
+             `
+             for(let productVo of postVo.productList){
+					html=html+`	                    	
+                     <div class="product-card">
+                     	<a href="/product/4" class="product-link">
+			                            <img src="${pageContext.request.contextPath }/images/\${productVo.product_image_url}" alt="제품" class="product-img">
+			                            <p class="product-discount">\${productVo.product_name }</p>
+			                            <p class="product-price">\${productVo.product_price }</p> 
+	                        </a>    
+                     </div>
+              	`
+             }
+             html=html+`
+             </div>
+             `
+            }
+				html=html+`	                    
+             <div class="post-interactions">
+				    <!-- 하트 버튼 -->
+             `
+             
+             let login_mem_idx = "${sessionScope.user.mem_idx}"
+             let isLiked = false;
+					
+				html=html+
+				`
+				<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
+				`
+				if(postVo.likeList!=null){
+				for(let likeVo of postVo.likeList){
+					if(`\${likeVo.mem_idx}`==`\${login_mem_idx}`){
+						isLiked=true;
+					}
+					
+				}
+				}
+				
+				html=html+`
+					<!-- 좋아요를 누른 경우 -->
+				`
+				//alert(`\${!isLiked}`);
+				if(isLiked){
+					html=html+`
+					    <button class="interaction-btn active" data-post-idx="\${postVo.post_idx}">
+					        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
+					    </button>
+					`
+				}
+				html=html+`
+					<!-- 좋아요를 누르지 않은 경우 -->
+				`
+				if(!isLiked){
+					html=html+`
+					    <button class="interaction-btn" data-post-idx="\${postVo.post_idx}">
+					        <i class="far fa-heart"></i> <!-- 빈 하트 -->
+					    </button>
+					    `
+				}
+				html=html+`
+					<p class="post-likes" data-post-idx="\${postVo.post_idx }">\${postVo.post_like }</p>
+				    <button class="interaction-btn">
+				        <i class="far fa-comment"></i>
+				    </button>
+			<!-- 	    <button class="interaction-btn">
+				        <i class="far fa-share-square"></i>
+				    </button> -->
+				    
+					<!-- 채워진 별 -->
+				`
+					
+				    
+				if(postVo.post_rating != 0){
+					
+					html=html+`
+					<button class="interaction-btn star active" data-post-idx="\${postVo.post_idx}">
+					    <i class="fas fa-star"></i>
+					</button>
+					<p>\${postVo.post_rating }</p>  
+					`
+				}						    
+
+				if(postVo.mem_idx==`${user.mem_idx}`){
+				html=html+`
+				    <!-- 추가된 점 3개 버튼 (ellipsis) -->
+				    <button class="interaction-btn more-options">
+				        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
+				    </button>
+				
+				    <!-- 숨겨진 수정/삭제 버튼 -->
+				    <div class="more-options-menu" style="display: none;">
+				        <button class="edit-btn" data-post-idx="\${postVo.post_idx }" data-mem-idx="\${postVo.mem_idx }">수정</button>
+				        <button class="delete-btn" data-post-idx="\${postVo.post_idx }">삭제</button>
+				    </div>
+				`
+				}
+				html=html+
+				`
+				</div>
+             
+             <div class="post-content">
+                 
+             	<p class="post-title">\${postVo.post_title}</p>
+                 <p class="post-text">\${postVo.post_content }</p>
+                 <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                 <p class="post-time">\${postVo.post_time }</p>
+             </div>
+             
+             <div class="comment-input">
+                 <input type="text" placeholder="댓글을 남겨보세요...">
+                 <button class="comment-submit">댓글</button>
+             </div>
+             <br>
+             <br>
+				`
+    			
+    		loop=loop+1;
+    		} 
+    		/* =======================================end html 게시물 영역============================================ */
+    		html=html+d.pagination;
+    		if(tabType=='all'){
+    		$("#posts-container-all").html(html);
+    		}
+    		if(tabType=='skin'){
+    		$("#posts-container-skin").html(html);
+    		}
+    		if(tabType=='review'){
+    		$("#posts-container-review").html(html);
+    		}
+    		if(tabType=='free'){
+    		$("#posts-container-free").html(html);
+    		}
+    		carousels(); // 이미지 슬라이드
+    		productSection(); // 상품 슬라이드
+    		moreButtons(); // 수정 삭제버튼 초기화
+    		
+    		
+    		let pagingtionContainer="";
+    	     // 페이지 클릭 했을때 처리
+    	     if(tabType==='all'){
+    	      pagingtionContainer = document.querySelector('.community-pagination-all');
+    	     }
+    	     if(tabType==='skin'){
+    	      pagingtionContainer = document.querySelector('.community-pagination-skin');
+    	     }
+    	     if(tabType==='review'){
+    	      pagingtionContainer = document.querySelector('.community-pagination-review');
+    	     }
+    	     if(tabType==='free'){
+    	      pagingtionContainer = document.querySelector('.community-pagination-free');
+    	     }
+    	     pagingtionContainer.addEventListener('click',function(e){
+    	    	 if(e.target && e.target.matches('.pagination-link')){
+    	    	 e.preventDefault();
+    				const url=e.target.dataset.url;
+    				const page=e.target.dataset.page;
+    				const tabType=e.target.dataset.category;
+    				//alert(page);
+    				//alert(tabType);
+    				
+    				listHtml(tabType,page);
+    				window.scrollTo(0,420)
+    	    	 }
+    	     });
+    	}
+     ,error:function(e){
+     	
+     }
+     
+     });
+}  
 
  // =========================
  // 4. 상품 스크롤 드래그 기능
@@ -1784,7 +1835,14 @@ document.addEventListener('click', function(e) {
  }
  /* end: 내용에서 수정삭제 머튼 컨트롤 js------------------------------------------------------------------------ */
 
- 
+ /* post 페이지에 처음 들어왔을때 전체보기 1번클릭할수 있게 초기화 */
+ document.addEventListener('DOMContentLoaded', function() {
+    // 원하는 탭을 찾고 자동으로 클릭
+    const defaultTab = document.getElementById('post-all');
+    if (defaultTab) {
+        defaultTab.click(); // 자동으로 클릭 이벤트 발생
+    }
+});
 
 
  

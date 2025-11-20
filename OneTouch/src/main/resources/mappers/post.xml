@@ -212,4 +212,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from post WhERE post_idx=#{post_idx}
 	</delete>
 	
+	<!-- post Total Count (페이지 처리를 위한 sql) -->
+	<select id="selectPostTotalCount" resultType="int" parameterType="map">
+		SELECT (count(p.post_idx)) as postTotalCount
+		FROM post p
+		<if test="post_category!='all'">
+		WHERE p.post_category=#{post_category}
+		</if>
+	</select>
+	
 </mapper>

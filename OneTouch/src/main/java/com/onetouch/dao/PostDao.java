@@ -14,13 +14,14 @@ import com.onetouch.vo.ProductVo;
 @Mapper
 public interface PostDao {
 	List<PostVo> selectPostList(Map<String, Object> map);
-	
+	/** post 총 갯수 카운트 함수*/
+	int selectPostTotalCount(Map<String,Object> map);
 	List<PostVo> selectTipList(Map<String, Object> map);
 	List<PostVo> selectReviewList(Map<String, Object> map);
 	List<PostVo> selectFreeBoard(Map<String, Object> map);
 
 	int postInsert(PostVo postVo);
-
+	
 	int postProductInsert(PostVo postVo);
 
 	List<ProductVo> selectProductList();

@@ -1,7 +1,9 @@
 package com.onetouch.util;
 
 public class PostPaging {
-	public static String getPaging(String pageURL // 경로
+	public static String getPaging(
+			String post_category
+			,String pageURL // 경로
 			, int nowPage // 현재페이지
 			, int rowTotal // 전체페이지
 			, int blockList // 한 화면에 보이는 리스트 갯수
@@ -41,18 +43,19 @@ public class PostPaging {
 			isPrevPage = true;
 
 //HTML코드를 저장할 StringBuffer생성=>코드생성
-		sb = new StringBuffer("<ul class=\"pagination\">");
+		sb = new StringBuffer();
+		sb.append(String.format("<div class=\"community-pagination-%s\">", post_category));
 //-----그룹페이지처리 이전 --------------------------------------------------------------------------------------------		
 		if (isPrevPage) {
 
-			sb.append(String.format("<li ><a href='%s?page=%d' >◀</a></li>", pageURL, startPage - 1));
+			sb.append(String.format("<a class=\"pagination-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-left\"></i></a>", pageURL, startPage - 1,post_category));
 
 //sb.append("<a href ='"+pageURL+"?page=");
 //sb.append(nowPage - blockPage);
 //sb.append("'>◀</a>");
 		} else
 
-			sb.append("<li ><a href='#' >◀</a></li>");
+			sb.append(String.format("<a class=\"pagination-link\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-left\" ></i></a>",post_category));
 //sb.append("◀");
 
 //------페이지 목록 출력 -------------------------------------------------------------------------------------------------
@@ -61,13 +64,13 @@ public class PostPaging {
 			if (i > totalPage)
 				break;
 			if (i == nowPage) { // 현재 있는 페이지
-				sb.append(String.format("<li class='active'><a href='%s?page=%d' >%d</a></li>", pageURL, i, i));
+				sb.append(String.format("<a class=\"pagination-link active\"data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\">%d</a>", pageURL, i,post_category, i));
 
 //sb.append("&nbsp;<b><font color='#91b72f'>");
 //sb.append(i);
 //sb.append("</font></b>");
 			} else {// 현재 페이지가 아니면
-				sb.append(String.format("<li><a href='%s?page=%d' >%d</a></li>", pageURL, i, i));
+				sb.append(String.format("<a class=\"pagination-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\">%d</a>", pageURL, i,post_category, i));
 
 //sb.append("&nbsp;<a href='"+pageURL+"?page=");
 //sb.append(i);
@@ -82,7 +85,7 @@ public class PostPaging {
 //-----그룹페이지처리 다음 ----------------------------------------------------------------------------------------------
 		if (isNextPage) {
 
-			sb.append(String.format("<li ><a href='%s?page=%d' >▶</a></li>", pageURL, endPage + 1));
+			sb.append(String.format("<a class=\"pagination-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-right\"></i></a>", pageURL, endPage + 1,post_category));
 
 //sb.append("<a href='"+pageURL+"?page=");
 //if(nowPage+blockPage > totalPage)nowPage = totalPage;
@@ -91,11 +94,11 @@ public class PostPaging {
 //sb.append(nowPage);
 //sb.append("'>▶</a>");
 		} else
-			sb.append("<li ><a href='#'>▶</a></li>");
+			sb.append(String.format("<a class=\"pagination-link\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-right\"></i></a>",post_category));
 //sb.append("▶");
 //---------------------------------------------------------------------------------------------------------------------	    
 
-		sb.append("</ul>");
+		sb.append("</div>");
 
 		return sb.toString();
 	}

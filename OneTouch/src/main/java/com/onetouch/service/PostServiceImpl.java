@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.common.MyConstant;
 import com.onetouch.dao.PostDao;
+import com.onetouch.util.PostPaging;
 import com.onetouch.vo.LikeVo;
 import com.onetouch.vo.PostPageVo;
 import com.onetouch.vo.PostProductVo;
@@ -27,16 +28,21 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	ServletContext application;
 	
-	
+	//전체 목록 불러오기
 	@Override
 	public Map<String, Object> selectPostList(Map<String, Object> map) {
 		List<PostVo> postVo_array = new ArrayList<PostVo>();
 		map.put("page", ((Integer)map.get("nowPage")-1)*MyConstant.Post.BLOCK_LIST);
 		map.put("block_list", MyConstant.Post.BLOCK_LIST);
-		map.put("post_category","all");
 		List<PostPageVo> postPageVo=postDao.selectPostIdxList(map);
 		map.put("postPageVo",postPageVo);
-		System.out.printf("		[selectPostList]postPageVo =>%s\n",postPageVo);
+		
+		int rowTotal=postDao.selectPostTotalCount(map);
+		System.out.printf("		post 총 갯수 => %d\n",rowTotal);
+		String pagination=PostPaging.getPaging((String)map.get("post_category"),null, (Integer)map.get("nowPage"), rowTotal, MyConstant.Post.BLOCK_LIST, MyConstant.Post.BLOCK_PAGE);
+		System.out.println(pagination);
+		map.put("pagination", pagination);
+		
 		postVo_array=postDao.selectPostList(map);
 		map.put("postVo_array", postVo_array);
 		return map;
@@ -45,11 +51,17 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Map<String, Object> selectTipList(Map<String, Object> map) {
 		List<PostVo> postTip_array =new ArrayList<PostVo>();
-		map.put("page", ((Integer)map.get("nowPage")-1)*10);
+		map.put("page", ((Integer)map.get("nowPage")-1)*MyConstant.Post.BLOCK_LIST);
 		map.put("block_list", MyConstant.Post.BLOCK_LIST);
-		map.put("post_category","skin");
 		List<PostPageVo> postPageVo=postDao.selectPostIdxList(map);
 		map.put("postPageVo",postPageVo);
+		
+		int rowTotal=postDao.selectPostTotalCount(map);
+		System.out.printf("		post 총 갯수 => %d\n",rowTotal);
+		String pagination=PostPaging.getPaging((String)map.get("post_category"),null, (Integer)map.get("nowPage"), rowTotal, MyConstant.Post.BLOCK_LIST, MyConstant.Post.BLOCK_PAGE);
+		System.out.println(pagination);
+		map.put("pagination", pagination);
+		
 		System.out.printf("		[selectTipList]postPageVo =>%s\n",postPageVo);
 		
 		postTip_array=postDao.selectTipList(map);
@@ -60,11 +72,15 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Map<String, Object> selectReviewList(Map<String, Object> map) {
 		List<PostVo> postReview_array=new ArrayList<PostVo>();
-		map.put("page", ((Integer)map.get("nowPage")-1)*10);
+		map.put("page", ((Integer)map.get("nowPage")-1)*MyConstant.Post.BLOCK_LIST);
 		map.put("block_list", MyConstant.Post.BLOCK_LIST);
-		map.put("post_category","review");
 		List<PostPageVo> postPageVo=postDao.selectPostIdxList(map);
 		map.put("postPageVo",postPageVo);
+		int rowTotal=postDao.selectPostTotalCount(map);
+		System.out.printf("		post 총 갯수 => %d\n",rowTotal);
+		String pagination=PostPaging.getPaging((String)map.get("post_category"),null, (Integer)map.get("nowPage"), rowTotal, MyConstant.Post.BLOCK_LIST, MyConstant.Post.BLOCK_PAGE);
+		System.out.println(pagination);
+		map.put("pagination", pagination);
 		System.out.printf("		[selectReviewList]postPageVo =>%s\n",postPageVo);
 		postReview_array=postDao.selectReviewList(map);
 		map.put("postReview_array", postReview_array);
@@ -74,11 +90,15 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Map<String, Object> selectFreeBoard(Map<String, Object> map) {
 		List<PostVo> postFreeBoard_array=new ArrayList<PostVo>();
-		map.put("page", ((Integer)map.get("nowPage")-1)*10);
+		map.put("page", ((Integer)map.get("nowPage")-1)*MyConstant.Post.BLOCK_LIST);
 		map.put("block_list", MyConstant.Post.BLOCK_LIST);
-		map.put("post_category","free");
 		List<PostPageVo> postPageVo=postDao.selectPostIdxList(map);
 		map.put("postPageVo",postPageVo);
+		int rowTotal=postDao.selectPostTotalCount(map);
+		System.out.printf("		post 총 갯수 => %d\n",rowTotal);
+		String pagination=PostPaging.getPaging((String)map.get("post_category"),null, (Integer)map.get("nowPage"), rowTotal, MyConstant.Post.BLOCK_LIST, MyConstant.Post.BLOCK_PAGE);
+		System.out.println(pagination);
+		map.put("pagination", pagination);
 		System.out.printf("		[selectFreeBoard()]postPageVo =>%s\n",postPageVo);
 		postFreeBoard_array=postDao.selectFreeBoard(map);
 		map.put("postFreeBoard_array", postFreeBoard_array);

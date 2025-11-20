@@ -24,7 +24,7 @@ public class MyConstant {
 	
 	//post 목록
 	public static class Post{
-		public static final int BLOCK_LIST = 3;  
-		public static final int BLOCK_PAGE = 5;
+		public static final int BLOCK_LIST = 5;  
+		public static final int BLOCK_PAGE = 10;
 	}
 }

@@ -38,7 +38,7 @@ public class PostController {
 	
 	
 	
-	//커뮤니티 전체목록 열기
+	//커뮤니티 전체목록 열기 (동기로 구현)
 	@RequestMapping("/post/list")
 	public String postFormList(Model model,@RequestParam(name="page",defaultValue="1")int nowPage) {
 		System.out.println("	[PostController] postFormList() ");
@@ -75,15 +75,16 @@ public class PostController {
 		return "/post/post";
 	}
 	
-	//커뮤니티 전체목록 열기
+	//커뮤니티 전체목록 열기(비동기로 구현)
 	@RequestMapping("/post/all_list")
 	@ResponseBody
 	public Map<String,Object> postFormAllList(Model model,@RequestParam(name="page",defaultValue="1")int nowPage
 			,String tabType) {
 		System.out.println("	[PostController-@ResponseBody] postFormList() ");
 		System.out.printf("		카테고리:%s\n",tabType);
+		System.out.printf("		페이지:%s\n",nowPage);
 		Map<String,Object>map =new HashMap<String, Object>();
-		
+		map.put("post_category",tabType);
 		map.put("login_mem_idx", 0);
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		if(memVo!=null) {
@@ -92,25 +93,31 @@ public class PostController {
 		}
 		map.put("nowPage", nowPage);
 		
-		//커뮤니티 리스트 가져오기
-		map=postService.selectPostList(map);
-		List<PostVo> postVo_array=(List<PostVo>) map.get("postVo_array");
-		System.out.printf("			[전체_%d]%s\n",postVo_array.size(),postVo_array);
-				
-				
+
+		if(tabType.equals("all")) {
+			//커뮤니티 리스트 가져오기
+			map=postService.selectPostList(map);
+			List<PostVo> postVo_array=(List<PostVo>) map.get("postVo_array");
+			System.out.printf("			[전체_%d]%s\n",postVo_array.size(),postVo_array);
+			
+		}else if(tabType.equals("skin")) {
+			//스킨에디터 리스트 가져오기
+			map=postService.selectTipList(map);
+			List<PostVo> postTip_array=(List<PostVo>) map.get("postTip_array");
+			System.out.printf("			[스킨에디터_%d]%s\n",postTip_array.size(),postTip_array);
+		}else if(tabType.equals("review")) {
+			//리뷰 리스트 가져오기
+			map=postService.selectReviewList(map);
+			List<PostVo> postReview_array=(List<PostVo>) map.get("postReview_array");
+			System.out.printf("			[리뷰_%d]%s\n",postReview_array.size(),postReview_array);
+		}else if(tabType.equals("free")) {
+			//자유게시판 리스트 가져오기
+			map=postService.selectFreeBoard(map);
+			List<PostVo> postFreeBoard_array=(List<PostVo>) map.get("postFreeBoard_array");
+			System.out.printf("			[자유게시판_%d]%s\n",postFreeBoard_array.size(),postFreeBoard_array);
+			
+		}
 		
-		//스킨에디터 리스트 가져오기
-		map=postService.selectTipList(map);
-		List<PostVo> postTip_array=(List<PostVo>) map.get("postTip_array");
-		System.out.printf("			[스킨에디터_%d]%s\n",postTip_array.size(),postTip_array);
-		//리뷰 리스트 가져오기
-		map=postService.selectReviewList(map);
-		List<PostVo> postReview_array=(List<PostVo>) map.get("postReview_array");
-		System.out.printf("			[리뷰_%d]%s\n",postReview_array.size(),postReview_array);
-		//자유게시판 리스트 가져오기
-		map=postService.selectFreeBoard(map);
-		List<PostVo> postFreeBoard_array=(List<PostVo>) map.get("postFreeBoard_array");
-		System.out.printf("			[자유게시판_%d]%s\n",postFreeBoard_array.size(),postFreeBoard_array);
 		
 		System.out.println("	[PostController] return : map ");
 		System.out.println("");
