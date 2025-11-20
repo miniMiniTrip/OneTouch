@@ -97,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY p.post_idx DESC
 	</select>
 	
+	<!-- 리뷰 목록 -->
 	<select id="selectReviewList" resultType="PostVo">
 		SELECT p.*,m.mem_id 
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
@@ -114,6 +115,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    </if>	
 		ORDER BY p.post_idx DESC
 	</select>
+	
+	<!-- 자유 목록 -->
 	<select id="selectFreeBoard" resultType="PostVo">
 		SELECT p.*,m.mem_id 
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
