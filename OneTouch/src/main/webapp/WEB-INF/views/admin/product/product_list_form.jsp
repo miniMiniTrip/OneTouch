@@ -553,6 +553,152 @@
 			    padding: 12px 20px; /* 세로 12px, 가로 20px */
 			}
 		        
+				       /* 관리 버튼 반응형 개선 */
+		    .manage-buttons {
+		        flex-direction: row;
+		        gap: 3px;
+		        justify-content: center;
+		        flex-wrap: wrap;
+		    }
+		    
+		    .btn-sm {
+		        padding: 4px 8px;
+		        font-size: 10px;
+		        min-width: 45px;
+		    }
+		    
+		    /* 버튼 텍스트 줄임 */
+		    .manage-buttons .btn-success {
+		        /* "재고" 텍스트가 이미 짧아서 그대로 사용 */
+		    }
+		    
+		    /* 재고 모달 반응형 */
+		    .modal-content {
+		        width: 95%;
+		        margin: 5px;
+		        max-height: 95vh;
+		    }
+		    
+		    .modal-header,
+		    .modal-body,
+		    .modal-footer {
+		        padding: 15px;
+		    }
+		    
+		    /* 재고 이력 테이블 반응형 */
+		    .remain-history-table {
+		        font-size: 11px;
+		    }
+		    
+		    .remain-history-table th,
+		    .remain-history-table td {
+		        padding: 6px 4px;
+		    }
+		    
+		    /* 폼 요소들 반응형 */
+		    .form-input,
+		    .form-select,
+		    .form-textarea {
+		        padding: 10px 12px;
+		        font-size: 16px; /* iOS에서 줌 방지 */
+		    }
+		    
+		    /* 헤더 반응형 개선 */
+		    .header {
+		        padding: 15px 20px;
+		        flex-direction: column;
+		        gap: 10px;
+		    }
+		    
+		    .header-right {
+		        gap: 10px;
+		    }
+		    
+		    .logo {
+		        font-size: 24px;
+		    }
+		    
+		    /* 섹션 헤더 반응형 */
+		    .section-header {
+		        flex-direction: column;
+		        gap: 15px;
+		        align-items: stretch;
+		    }
+		    
+		    .section-header > div {
+		        display: flex;
+		        gap: 8px;
+		        justify-content: center;
+		    }
+		    
+		    /* 페이징 반응형 개선 */
+		    .page-link {
+		        padding: 6px 10px;
+		        min-width: 35px;
+		        height: 35px;
+		        font-size: 12px;
+		    }
+		    
+		    /* 검색 컨트롤 개선 */
+		    .search-controls form {
+		        flex-direction: column !important;
+		        gap: 10px !important;
+		    }
+		    
+		    .search-controls .btn {
+		        width: 100%;
+		        justify-content: center;
+		    }
+		}
+		
+		/* 아주 작은 화면 (320px 이하) */
+		@media (max-width: 320px) {
+		    .container {
+		        padding: 0 10px;
+		    }
+		    
+		    .btn-sm {
+		        padding: 3px 6px;
+		        font-size: 9px;
+		        min-width: 35px;
+		    }
+		    
+		    .product-table th,
+		    .product-table td {
+		        padding: 6px 3px;
+		        font-size: 11px;
+		    }
+		    
+		    .product-image {
+		        width: 30px;
+		        height: 30px;
+		    }
+		}
+		
+		/* 태블릿 크기 (769px ~ 1024px) */
+		@media (min-width: 769px) and (max-width: 1024px) {
+		    .container {
+		        padding: 0 30px;
+		    }
+		    
+		    .admin-layout {
+		        grid-template-columns: 200px 1fr;
+		        gap: 20px;
+		    }
+		    
+		    .sidebar {
+		        padding: 20px 0;
+		    }
+		    
+		    .sidebar-menu a {
+		        padding: 12px 20px;
+		        font-size: 14px;
+		    }
+		    
+		        
+		        
+		        
+		        
         
     </style>
 </head>
