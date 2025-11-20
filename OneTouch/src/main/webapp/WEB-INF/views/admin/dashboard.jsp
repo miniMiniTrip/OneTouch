@@ -226,7 +226,8 @@
                             <h2 class="section-title">🚀 빠른 액세스</h2>
                         </div>
                         <div class="quick-access-grid">
-                            <a href="#" onclick="showSection('members'); return false;" class="btn btn-secondary">👥 회원관리</a>
+                            <a href="/admin/admin_members" class="btn btn-secondary">👥 회원관리</a>
+                            <!-- <a href="#" onclick="showSection('members'); return false;" class="btn btn-secondary">👥 회원관리</a> -->
                             <a href="/adminpage/product" class="btn btn-primary">📦 상품관리</a>
                             <a href="/order/management" class="btn btn-secondary">🚚 주문관리</a>
                             <a href="/admin/qna_list" class="btn btn-secondary">💬 Q&A 관리</a>
