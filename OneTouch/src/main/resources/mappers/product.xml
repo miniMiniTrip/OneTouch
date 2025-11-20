@@ -223,7 +223,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </where>
 </select>
-    
+
+
+<!-- 재고 등록 -->
+<insert id="insertRemain" parameterType="product">
+    INSERT INTO product_remain (product_idx, remain_name, remain_cnt, remain_regdate)
+    VALUES (#{product_idx}, #{remain_name}, #{remain_cnt}, NOW())
+</insert>
+
+<!-- 특정 상품의 재고 이력 조회 -->
+<select id="selectRemainListByProduct" parameterType="int" resultType="product">
+    SELECT remain_idx, product_idx, remain_name, remain_cnt, remain_regdate
+    FROM product_remain
+    WHERE product_idx = #{product_idx}
+    ORDER BY remain_regdate DESC
+</select>
+
+<!-- 전체 재고 이력 조회 (페이징) -->
+<select id="selectRemainList" parameterType="map" resultType="product">
+    SELECT remain_idx, product_idx, remain_name, remain_cnt, remain_regdate
+    FROM product_remain
+    <where>
+        <if test="product_idx != null">
+            AND product_idx = #{product_idx}
+        </if>
+    </where>
+    ORDER BY remain_regdate DESC
+    <if test="startRow != null and pageSize != null">
+        LIMIT #{startRow}, #{pageSize}
+    </if>
+</select>
+
+<!-- 재고 이력 총 개수 -->
+<select id="selectRemainCount" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+    FROM product_remain
+    <where>
+        <if test="product_idx != null">
+            AND product_idx = #{product_idx}
+        </if>
+    </where>
+</select>
+
+
     
 
 </mapper>

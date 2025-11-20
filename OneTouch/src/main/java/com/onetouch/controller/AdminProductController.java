@@ -1,6 +1,7 @@
 package com.onetouch.controller;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +50,7 @@ public class AdminProductController {
     	return "/admin/dashboard";  
     }
     
-    // 재고 페이지 추가
-    @RequestMapping("/remain")
-    public String RemainManagement() {
-    	System.out.println("[AdminController] RemainManagement()");
-    	return "/admin/remain_management";  
-    }
+
     
 
  // 상품-> 관리자페이지로  url 변경 products->adminpage
@@ -222,11 +218,73 @@ public class AdminProductController {
         return "redirect:/adminpage/product";
     }
     
-    
-    
-    
-    
-    
+ // 재고용  vo별로도 만들지 않았으니 주의!! 헷갈리지마!!!!
+ // 재고 등록 처리
+    @PostMapping("/product/remain/insert")
+    @ResponseBody
+    public Map<String, Object> insertRemain(@RequestParam int product_idx,
+                                           @RequestParam String remain_name,
+                                           @RequestParam int remain_cnt) {  // remain_regdate 제거
+
+        System.out.printf("[AdminProductController-insertRemain()] product_idx: %d, remain_name: %s, remain_cnt: %d\n",
+                         product_idx, remain_name, remain_cnt);
+
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            // 1. 재고 이력 등록용 ProductVo 생성
+            ProductVo remainVo = new ProductVo(); //재고용
+            remainVo.setProduct_idx(product_idx);
+            remainVo.setRemain_name(remain_name);
+            remainVo.setRemain_cnt(remain_cnt);
+
+            int insertResult = product_dao.insertRemain(remainVo);  // 재고 전용 메서드 사용
+
+            if (insertResult > 0) {
+                // 2. 기존 상품의 재고 수량 업데이트
+                ProductVo productVo = product_dao.selectOne(product_idx);
+                if (productVo != null) {
+                    int newCnt = productVo.getProduct_cnt() + remain_cnt;
+                    productVo.setProduct_cnt(newCnt);
+
+                    int updateResult = productService.update(productVo);
+                    System.out.printf("[AdminProductController-insertRemain()] 상품 재고 업데이트 결과: %d, 새로운 재고: %d\n",
+                                     updateResult, newCnt);
+
+                    result.put("success", true);
+                    result.put("message", "재고가 성공적으로 등록되었습니다.");
+                    result.put("newCnt", newCnt);
+                } else {
+                    result.put("success", false);
+                    result.put("message", "상품 정보를 찾을 수 없습니다.");
+                }
+            } else {
+                result.put("success", false);
+                result.put("message", "재고 등록에 실패했습니다.");
+            }
+
+        } catch (Exception e) {
+            System.out.printf("[AdminProductController-insertRemain()] 오류 발생: %s\n", e.getMessage());
+            result.put("success", false);
+            result.put("message", "재고 등록 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+    // 특정 상품의 재고 이력 조회
+    @GetMapping("/product/remain/list")
+    @ResponseBody
+    public List<ProductVo> getRemainList(@RequestParam int product_idx) {
+        System.out.printf("[AdminProductController-getRemainList()] product_idx: %d\n", product_idx);
+
+        List<ProductVo> list = product_dao.selectRemainListByProduct(product_idx);  
+        System.out.printf("[AdminProductController-getRemainList()] 조회된 재고이력 수: %d\n", list.size());
+
+        return list;
+    }
+	    
+	    
     
     
 }//end controller
