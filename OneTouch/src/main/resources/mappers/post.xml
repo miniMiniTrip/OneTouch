@@ -46,9 +46,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    LEFT JOIN product pr ON pp.product_idx = pr.product_idx
 	    LEFT JOIN product_image pi ON pp.product_idx =pi.product_idx
 	    LEFT JOIN `like` l ON p.post_idx = l.post_idx
+	    <if test="postPageVo !=null and postPageVo.size()>0">
+	    WHERE p.post_idx IN
+	    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
+	    	#{vo.post_idx}
+	    </foreach>
+	    </if>
+	    <if test="postPageVo ==null or postPageVo.size() == 0">
+	    WHERE 1=0
+	    </if>	
 	    ORDER BY p.post_idx DESC
 	</select>
 	
+	<!-- 페이지 처리를 위한 post_idx list 가져오기 -->
+	<select id="selectPostIdxList" parameterType="map" resultType="PostPageVo">
+	SELECT p.post_idx
+	FROM post p
+	<if test="post_category != 'all'">
+	WHERE post_category=#{post_category}
+	</if>
+	ORDER BY p.post_idx DESC
+	LIMIT #{page}, #{block_list};
+	</select>
+	
+	<!-- 스킨 list -->
 	<select id="selectTipList" resultMap="PostResultMap">
 		SELECT
 			p.*,m.mem_id 
@@ -62,7 +83,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    LEFT JOIN product_image pi ON pp.product_idx =pi.product_idx
 	     LEFT JOIN `like` l 
         	ON p.post_idx = l.post_idx
-		WHERE post_category='skin' 	
+		WHERE post_category='skin' 
+		<if test="postPageVo !=null and postPageVo.size()>0">
+		and
+		p.post_idx IN
+	    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
+	    	#{vo.post_idx}
+	    </foreach> 
+	    </if>
+	    <if test="postPageVo ==null or postPageVo.size() == 0">
+	    and 1=0
+	    </if>	
 		ORDER BY p.post_idx DESC
 	</select>
 	
@@ -73,7 +104,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join mem as m
 		ON p.mem_idx=m.mem_idx
 		LEFT JOIN `like` l ON p.post_idx = l.post_idx
-		WHERE post_category='review'	
+		WHERE post_category='review' 
+		<if test="postPageVo !=null and postPageVo.size()>0">
+		and
+		p.post_idx IN
+	    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
+	    	#{vo.post_idx}
+	    </foreach>
+	    </if>	
 		ORDER BY p.post_idx DESC
 	</select>
 	<select id="selectFreeBoard" resultType="PostVo">
@@ -83,7 +121,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join mem as m
 		ON p.mem_idx=m.mem_idx
 		LEFT JOIN `like` l ON p.post_idx = l.post_idx
-		WHERE post_category='free'	
+		WHERE post_category='free' 
+		<if test="postPageVo !=null and postPageVo.size()>0">
+		and
+		p.post_idx IN
+	    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
+	    	#{vo.post_idx}
+	    </foreach>	
+	    </if>
 		ORDER BY p.post_idx DESC
 	</select>
 	
@@ -157,6 +202,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- post_product 테이블에서 post_idx 기준으로 삭제-->
 	<delete id="deletePostProduct" parameterType="int">
 		delete from post_product where post_idx=#{post_idx}
+	</delete>
+	
+	<!-- post 테이블에서 post_idx 기준으로 1개 삭제 -->
+	<delete id="deletePost" parameterType="int">
+		delete from post WhERE post_idx=#{post_idx}
 	</delete>
 	
 </mapper>

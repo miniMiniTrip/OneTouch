@@ -7,13 +7,13 @@ import com.onetouch.vo.PostVo;
 
 public interface PostService {
 
-	List<PostVo> selectPostList();
+	Map<String, Object> selectPostList(Map<String, Object> map);
 
-	List<PostVo> selectTipList();
+	Map<String, Object> selectTipList(Map<String, Object> map);
 
-	List<PostVo> selectReviewList();
+	Map<String, Object> selectReviewList(Map<String, Object> map);
 
-	List<PostVo> selectFreeBoard();
+	Map<String, Object> selectFreeBoard(Map<String, Object> map);
 
 	int postInsert(PostVo postVo) throws Exception;
 

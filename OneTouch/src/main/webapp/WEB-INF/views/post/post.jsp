@@ -623,6 +623,11 @@ body {
 }
 /* end: 점3개버튼 , 수정 삭제 버튼 css --------------------------------------*/
 	
+/* 리뷰 채워진 별(active) 색상 */
+.interaction-btn.star.active i {
+    color: gold; /* 노란색 */
+}
+
     </style>
 </head>
 
@@ -672,7 +677,7 @@ body {
                 </div>
 
                 
-                <!-- 커뮤니티 1개 ============================================================= -->
+                <!-- 커뮤니티 전체 목록 ============================================================= -->
                 
                 <div class="community-post" data-tab="all">
                 <c:forEach var="postVo" items="${postVo_array }" varStatus="loop">
@@ -751,13 +756,24 @@ body {
 						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
 						    </button>
 						</c:if>
+						<p class="post-likes" data-post-idx="${postVo.post_idx }">${postVo.post_like }</p>
 						
 					    <button class="interaction-btn">
 					        <i class="far fa-comment"></i>
 					    </button>
-					    <button class="interaction-btn">
+					    
+				<!-- 	    <button class="interaction-btn">
 					        <i class="far fa-share-square"></i>
-					    </button>
+					    </button> -->
+					    
+   						<!-- 채워진 별 -->
+   						<c:if test="${postVo.post_rating != 0}">
+						<button class="interaction-btn star active" data-post-idx="${postVo.post_idx}">
+						    <i class="fas fa-star"></i>
+						</button>
+						<p>${postVo.post_rating }</p>  
+   						</c:if>
+						
 					    <c:if test="${postVo.mem_idx==user.mem_idx }">
 					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
 					    <button class="interaction-btn more-options">
@@ -773,7 +789,7 @@ body {
 					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
+                        
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -809,7 +825,7 @@ body {
                          <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
                             <div class="carousel-item ${status.first ? 'active' : ''}">
                             ${pageContext.request.contextPath }
-                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
+                                <img src="${pageContext.request.contextPath }/images/posts/${img}" alt="${img }" class="post-image d-block w-100">
                             </div>
                          </c:forTokens>
                          
@@ -868,13 +884,14 @@ body {
 						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
 						    </button>
 						</c:if>
+						<p class="post-likes" data-post-idx="${postVo.post_idx }">${postVo.post_like }</p>
 						
 					    <button class="interaction-btn">
 					        <i class="far fa-comment"></i>
 					    </button>
-					    <button class="interaction-btn">
+					  <!--   <button class="interaction-btn">
 					        <i class="far fa-share-square"></i>
-					    </button>
+					    </button> -->
 					    <c:if test="${postVo.mem_idx==user.mem_idx }">
 					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
 					    <button class="interaction-btn more-options">
@@ -890,7 +907,6 @@ body {
 					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -969,14 +985,22 @@ body {
 						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
 						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
 						    </button>
+						    <p class="post-likes" data-post-idx="${postVo.post_idx }">${postVo.post_like }</p>
 						</c:if>
 						
 					    <button class="interaction-btn">
 					        <i class="far fa-comment"></i>
 					    </button>
-					    <button class="interaction-btn">
+					   <!--  <button class="interaction-btn">
 					        <i class="far fa-share-square"></i>
-					    </button>
+					    </button> -->
+					    
+						<!-- 채워진 별 -->
+						<button class="interaction-btn star active" data-post-idx="${postVo.post_idx}">
+						    <i class="fas fa-star"></i>
+						</button>
+						<p>${postVo.post_rating }</p>  
+						
 					    <c:if test="${postVo.mem_idx==user.mem_idx }">
 					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
 					    <button class="interaction-btn more-options">
@@ -992,7 +1016,7 @@ body {
 					</div>
                     
                     <div class="post-content">
-                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
+                        <%-- <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p> --%>
                     	<p class="post-title">${postVo.post_title}</p>
                         <p class="post-text">${postVo.post_content }</p>
                         <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
@@ -1076,9 +1100,9 @@ body {
 					    <button class="interaction-btn">
 					        <i class="far fa-comment"></i>
 					    </button>
-					    <button class="interaction-btn">
+				<!-- 	    <button class="interaction-btn">
 					        <i class="far fa-share-square"></i>
-					    </button>
+					    </button> -->
 					    <c:if test="${postVo.mem_idx==user.mem_idx }">
 					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
 					    <button class="interaction-btn more-options">
@@ -1110,6 +1134,7 @@ body {
                 <!-- /커뮤니티 자유게시판 목록 ============================================================= -->
                 
                 
+                <!-- 페이지 기능 -->
                 <div class="community-pagination">
                     <a href="#" class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
                     <a href="#" class="pagination-link active">1</a>
@@ -1372,8 +1397,8 @@ document.addEventListener('click', function(e) {
                     }
                 });
                 
-                alert(d.post_like);
-                $(".post-likes[data-post-idx='" + d.post_idx + "']").text("좋아요 " + d.post_like + "개");
+                //alert(d.post_like);
+                $(".post-likes[data-post-idx='" + d.post_idx + "']").text(d.post_like);
             },
             error: function(e) {
                 alert("좋아요 버튼 실패\n관리자에게 문의");
@@ -1399,10 +1424,30 @@ document.addEventListener('click', function(e) {
 
      tabs.forEach(tab => {
          tab.addEventListener('click', function() {
+        	 alert("탭클릭");
              tabs.forEach(t => t.classList.remove('active'));
              this.classList.add('active');
-
-             const tabType = this.dataset.tab;
+				
+             //클릭한 tab 타입
+             const tabType = this.dataset.tab; 
+        	 alert(tabType);
+        	 
+        	 //전체 목록 조회
+        	 if(tabType=='all'){
+	            $.ajax({
+	           	url : "/post/list"
+	           	,success:functino(d){
+	           		
+	           	}
+	            ,error:function(e){
+	            	
+	            }
+	            
+	            });
+        	 }
+             
+        	 
+        	 
              posts.forEach(post => {
                  post.style.display = (tabType === 'all') 
                      ? (post.dataset.tab === 'all' ? 'block' : 'none')
@@ -1483,20 +1528,39 @@ document.addEventListener('click', function(e) {
         }
     });
 
-    // 수정 버튼 클릭 시 처리
+    // 수정 버튼 클릭 시 수정페이지로 이동
     $('.edit-btn').click(function() {
+        // 여기에 수정 처리 로직을 추가하세요
     	
     	
         let post_idx=$(this).data('post-idx');
         location.href="/post/modify?post_idx="+post_idx;
-        // 여기에 수정 처리 로직을 추가하세요
     });
 
     // 삭제 버튼 클릭 시 처리
     $('.delete-btn').click(function() {
-        if (confirm("정말 삭제하시겠습니까?")) {
-            alert("삭제 버튼 클릭!");
             // 여기에 삭제 처리 로직을 추가하세요
+        if (confirm("정말 삭제하시겠습니까?")) {
+            const deleteBtn=document.querySelector('.delete-btn');
+            const postIdx=this.getAttribute('data-post-idx');
+            
+     		$.ajax({
+     			url:"/post/delete"
+     			,data:{"post_idx":postIdx}
+     			,method:"post"
+     			,success:function(d){
+     				if(d.post_delete){
+     				alert("삭제성공");
+     				location.href="/post/list"
+     				};
+     				
+     			}
+     			,error:function(e){
+     				alert("삭제처리 실패");
+     			}
+     			
+     		});
+           	alert(postIdx);
         }
     });
 });

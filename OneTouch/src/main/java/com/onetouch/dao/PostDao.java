@@ -6,17 +6,18 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.onetouch.vo.LikeVo;
+import com.onetouch.vo.PostPageVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
 
 @Mapper
 public interface PostDao {
-	List<PostVo> selectPostList();
+	List<PostVo> selectPostList(Map<String, Object> map);
 	
-	List<PostVo> selectTipList();
-	List<PostVo> selectReviewList();
-	List<PostVo> selectFreeBoard();
+	List<PostVo> selectTipList(Map<String, Object> map);
+	List<PostVo> selectReviewList(Map<String, Object> map);
+	List<PostVo> selectFreeBoard(Map<String, Object> map);
 
 	int postInsert(PostVo postVo);
 
@@ -44,6 +45,10 @@ public interface PostDao {
 	int updatePostVo(PostVo postVo);
 
 	int deletePostProduct(int post_idx);
+
+	int deletePost(Map<String, Object> map);
+
+	List<PostPageVo> selectPostIdxList(Map<String, Object> map);
 
 
 }

@@ -15,6 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
     <style>
+    
         * {
             margin: 0;
             padding: 0;
@@ -512,7 +513,47 @@
             .modal-content {
                 margin: 10px;
             }
-        }
+        
+		         /* 재고모달 */
+		
+			.btn-success {
+			    background: #388e3c;
+			    color: white;
+			}
+			
+			.btn-success:hover {
+			    background: #2e7d32;
+			}
+			
+			/* 재고 이력 테이블 */
+			.remain-history-table {
+			    width: 100%;
+			    border-collapse: collapse;
+			    margin-top: 20px;
+			}
+			
+			.remain-history-table th,
+			.remain-history-table td {
+			    padding: 10px;
+			    border: 1px solid #e0e0e0;
+			    text-align: center;
+			    font-size: 13px;
+			}
+			
+			.remain-history-table th {
+			    background: #f8f9fa;
+			    font-weight: 600;
+			}
+			
+			.remain-history-table tbody tr:nth-child(even) {
+			    background: #f9f9f9;
+			}
+			
+			thead th {
+			    padding: 12px 20px; /* 세로 12px, 가로 20px */
+			}
+		        
+        
     </style>
 </head>
 <body>
@@ -569,7 +610,7 @@
                         <form action="${pageContext.request.contextPath}/adminpage/product" method="get" style="display: flex; gap: 10px; width: 100%;">
                             <input type="text" class="search-input" name="keyword" 
                                    placeholder="상품명으로 검색하세요" value="${param.keyword}">
-                            <button type="submit" class="btn btn-primary">검색</button>
+                            <button type="submit" class="btn btn-primary">통합검색</button>
                         </form>
                     </div>
 
@@ -605,15 +646,17 @@
                                                     <td class="text-left">${product.product_name}</td>
                                                     <td>${product.product_brand}</td>
                                                     <td><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</td>
-                                                    <td>${product.product_cnt}개</td>
+                                                    <td id="remain_${product.product_idx}">${product.product_cnt}개</td>
                                                     <td>
-                                                        <div class="manage-buttons">
-                                                            <button type="button" class="btn btn-primary btn-sm" 
-                                                                    onclick="editProduct(${product.product_idx})">수정</button>
-                                                            <button type="button" class="btn btn-danger btn-sm" 
-                                                                    onclick="deleteSingleProduct(${product.product_idx})">삭제</button>
-                                                        </div>
-                                                    </td>
+													    <div class="manage-buttons">
+													        <button type="button" class="btn btn-primary btn-sm" 
+													                onclick="editProduct(${product.product_idx})">수정</button>
+													        <button type="button" class="btn btn-success btn-sm" 
+													                onclick="openRemainModal(${product.product_idx}, '${product.product_name}')">재고</button>
+													        <button type="button" class="btn btn-danger btn-sm" 
+													                onclick="deleteSingleProduct(${product.product_idx})">삭제</button>
+													    </div>
+													</td>
                                                 </tr>
                                             </c:forEach>
                                         </c:when>
@@ -749,6 +792,56 @@
             </form>
         </div>
     </div>
+    <!-- 재고 등록 모달 -->
+		<div id="remainModal" class="modal">
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <h3 class="modal-title">재고 등록</h3>
+		            <button class="modal-close" onclick="closeRemainModal()">×</button>
+		        </div>
+		        
+		        <div class="modal-body">
+		            <div class="form-group">
+		                <label class="form-label">상품명</label>
+		                <input type="text" id="remain_product_name" class="form-input" readonly>
+		            </div>
+		            
+		            <div class="form-group">
+		                <label class="form-label" for="remain_name">재고명</label>
+		                <input type="text" id="remain_name" class="form-input" placeholder="재고 등록 내역을 입력하세요 (예: 신규입고, 추가주문 등)">
+		            </div>
+		            
+		            <div class="form-group">
+		                <label class="form-label" for="remain_cnt">재고수량</label>
+		                <input type="number" id="remain_cnt" class="form-input" placeholder="추가할 재고수량을 입력하세요" min="1">
+		            </div>
+		            
+		            <!-- 재고 이력 테이블 -->
+		            <div id="remainHistoryDiv">
+		                <h4 style="margin: 20px 0 10px 0; color: #1a237e;">재고 등록 이력</h4>
+		                <table class="remain-history-table" id="remainHistoryTable">
+		                    <thead>
+		                        <tr>
+		                            <th>등록일시</th>
+		                            <th>재고명</th>      
+		                            <th>수량</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody id="remainHistoryBody">
+		                        <!-- 동적으로 생성됨 -->
+		                    </tbody>
+		                </table>
+		            </div>
+		        </div>
+		        
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-secondary" onclick="closeRemainModal()">나가기</button>
+		            <button type="button" class="btn btn-success" onclick="insertRemain()">재고등록</button>
+		        </div>
+		    </div>
+		</div>
+		    
+		    
 
     <script>
         // 모달 관련 변수
@@ -898,6 +991,131 @@
                 }
             });
         });
+        
+     // ====== 재고 관리 기능 추가 ======
+
+     // 현재 선택된 상품 idx 저장
+     var selectedProductIdx = 0;
+
+     // 재고 등록 모달 열기
+     function openRemainModal(product_idx, product_name) {
+         selectedProductIdx = product_idx;
+         
+         // 상품명 설정
+         document.getElementById("remain_product_name").value = product_name;
+         
+         // 입력 필드 초기화
+         document.getElementById("remain_name").value = "";
+         document.getElementById("remain_cnt").value = "";
+         
+         // 재고 이력 불러오기
+         loadRemainHistory(product_idx);
+         
+         // 모달 열기
+         document.getElementById("remainModal").classList.add("active");
+     }
+
+     // 재고 등록 모달 닫기
+     function closeRemainModal() {
+         document.getElementById("remainModal").classList.remove("active");
+     }
+
+     // 재고 이력 불러오기
+     function loadRemainHistory(product_idx) {
+         $.ajax({
+             url: "${pageContext.request.contextPath}/adminpage/product/remain/list",
+             type: "GET",
+             data: { product_idx: product_idx },
+             success: function(data) {
+                 console.log("재고이력 데이터:", data);
+                 
+                 var tbody = $("#remainHistoryBody");
+                 tbody.empty();
+                 
+                 if (data.length > 0) {
+                     $.each(data, function(index, item) {
+                         var regdate = new Date(item.remain_regdate).toLocaleDateString('ko-KR', {
+                             year: 'numeric',
+                             month: '2-digit',
+                             day: '2-digit',
+                             hour: '2-digit',
+                             minute: '2-digit'
+                         });
+                         
+                         var row = "<tr>" +
+                                     "<td>" + regdate + "</td>" +
+                                     "<td>" + item.remain_name + "</td>" +
+                                     "<td>" + item.remain_cnt + "개</td>" +
+                                   "</tr>";
+                         tbody.append(row);
+                     });
+                 } else {
+                     tbody.append("<tr><td colspan='3' style='color:#666; font-style:italic;'>재고 등록 이력이 없습니다.</td></tr>");
+                 }
+             },
+             error: function() {
+                 console.error("재고 이력을 불러오는데 실패했습니다.");
+                 $("#remainHistoryBody").html("<tr><td colspan='3' style='color:#d32f2f;'>재고 이력을 불러오는데 실패했습니다.</td></tr>");
+             }
+         });
+     }
+
+     // 재고 등록 처리
+     function insertRemain() {
+    	 console.log("=== insertRemain 함수 호출됨 ==="); 
+     
+         var remain_name = document.getElementById("remain_name").value.trim();
+         var remain_cnt = document.getElementById("remain_cnt").value;
+         
+         // 입력 검증
+         if (remain_name === "") {
+             alert("재고명을 입력하세요!");
+             document.getElementById("remain_name").focus();
+             return;
+         }
+         
+         if (remain_cnt === "" || remain_cnt <= 0) {
+             alert("재고수량을 올바르게 입력하세요!");
+             document.getElementById("remain_cnt").focus();
+             return;
+         }
+         
+         // AJAX 요청
+         $.ajax({
+             url: "${pageContext.request.contextPath}/adminpage/product/remain/insert",
+             type: "POST",
+             data: {
+                 product_idx: selectedProductIdx,
+                 remain_name: remain_name,
+                 remain_cnt: remain_cnt
+             },
+             success: function(result) {
+                 console.log("재고등록 결과:", result);
+                 
+                 if (result.success) {
+                     alert(result.message);
+                     
+                     // 테이블의 재고수량 업데이트
+                     $("#remain_" + selectedProductIdx).text(result.newCnt + "개");
+                     
+                     // 재고 이력 다시 불러오기
+                     loadRemainHistory(selectedProductIdx);
+                     
+                     // 입력 필드 초기화
+                     document.getElementById("remain_name").value = "";
+                     document.getElementById("remain_cnt").value = "";
+                 } else {
+                     alert(result.message);
+                 }
+             },
+             error: function() {
+                 alert("재고 등록 중 오류가 발생했습니다.");
+             }
+         });
+     }
+        
+        
+        
     </script>
 </body>
 </html>

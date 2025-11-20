@@ -3,613 +3,749 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${product.product_name}-상세페이지</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.svg" />
-    
-    <!-- Web Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${product.product_name}-상세페이지</title>
+<meta name="description" content="" />
+<link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.svg" />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
-           <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        
-        /* 헤더 */
-        .header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-        }
-        
-        .nav-links a:hover {
-            opacity: 0.8;
-        }
-        
-        /* 메인 컨테이너 */
-        .main-container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        
-        /* 브레드크럼 */
-        .breadcrumb {
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .breadcrumb a {
-            color: #2a5298;
-            text-decoration: none;
-        }
-        
-        /* 상품 상세 영역 */
-        .product-detail {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .product-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 40px;
-        }
-        
-        /* 이미지 영역 */
-        .product-image {
-            position: relative;
-        }
-        
-        .main-image {
-            width: 100%;
-            height: 400px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 16px;
-            background-image: url('${product.product_image_url}');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .thumbnail-images {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .thumbnail {
-            width: 80px;
-            height: 80px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-        
-        .thumbnail:hover,
-        .thumbnail.active {
-            border-color: #2a5298;
-        }
-        
-        /* 상품 정보 영역 */
-        .product-details {
-            padding: 20px 0;
-        }
-        
-        .category-brand {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        
-        .product-title {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-        
-        .rating {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .stars {
-            color: #ffc107;
-            font-size: 18px;
-        }
-        
-        .rating-text {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .price-section {
-            margin-bottom: 30px;
-        }
-        
-        .original-price {
-            font-size: 16px;
-            color: #999;
-            text-decoration: line-through;
-            margin-bottom: 5px;
-        }
-        
-        .discount-info {
-            display: flex;
-            align-items: baseline;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-        
-        .discount-rate {
-            font-size: 24px;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-        
-        .sale-price {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .currency {
-            font-size: 18px;
-            color: #666;
-        }
-        
-        /* 수량 선택 */
-        .quantity-section {
-            margin-bottom: 20px;
-        }
-        
-        .quantity-label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .quantity-btn {
-            width: 35px;
-            height: 35px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-        
-        .quantity-btn:hover {
-            background-color: #f0f0f0;
-        }
-        
-        .quantity-input {
-            width: 60px;
-            height: 35px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
-        /* 총 가격 */
-        .total-price {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .total-label {
-            font-size: 16px;
-            color: #666;
-        }
-        
-        .total-amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2a5298;
-        }
-        
-        /* 버튼 영역 */
-        .button-group {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn-wishlist {
-            background: white;
-            border: 2px solid #ddd;
-            color: #666;
-            max-width: 60px;
-        }
-        
-        .btn-wishlist:hover {
-            border-color: #2a5298;
-            color: #2a5298;
-        }
-        
-        .btn-cart {
-            background: white;
-            border: 2px solid #2a5298;
-            color: #2a5298;
-        }
-        
-        .btn-cart:hover {
-            background: #2a5298;
-            color: white;
-        }
-        
-        .btn-buy {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-        }
-        
-        .btn-buy:hover {
-            background: linear-gradient(135deg, #1a3360, #245285);
-        }
-        
-        /* 상품 설명 탭 */
-        .product-tabs {
-            margin-top: 40px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .tab-header {
-            display: flex;
-            justify-content: flex-start;
-            gap: 0;
-            border-bottom: 1px solid #eee;
-            padding-left: 20px;
-        }
-        
-        .tab-btn {
-            padding: 20px 30px;
-            border: none;
-            background: white;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 0;
-            position: relative;
-        }
-        
-        .tab-btn:hover {
-            background: #f8f9fa;
-            color: #2a5298;
-        }
-        
-        .tab-btn.active {
-            background: white;
-            color: #2a5298;
-            border-bottom: 3px solid #2a5298;
-        }
-        
-        /* 모달 스타일 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            animation: slideUp 0.3s ease;
-        }
-        
-        .modal-header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-        
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .modal-body {
-            padding: 30px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-        
-        .modal-body h3 {
-            color: #2a5298;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-        
-        .modal-body p, .modal-body li {
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        
-        /* 리뷰 스타일 */
-        .review-item {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-        }
-        
-        .review-item:last-child {
-            border-bottom: none;
-        }
-        
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .review-rating {
-            color: #ffc107;
-            font-size: 16px;
-        }
-        
-        .review-author {
-            font-weight: 500;
-            color: #333;
-        }
-        
-        .review-date {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .review-text {
-            color: #555;
-            line-height: 1.6;
-        }
-        
-        /* Q&A 스타일 */
-        .qna-item {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-        }
-        
-        .qna-item:last-child {
-            border-bottom: none;
-        }
-        
-        .qna-question {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #2a5298;
-        }
-        
-        .qna-question h4 {
-            color: #2a5298;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .qna-answer {
-            padding: 15px;
-            background: #fff;
-            border-left: 4px solid #28a745;
-            margin-left: 20px;
-        }
-        
-        .qna-answer h4 {
-            color: #28a745;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        /* 애니메이션 */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translate(-50%, -40%);
-            }
-            to { 
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-        
-        .tab-content {
-            padding: 40px;
-            min-height: 300px;
-        }
-        
-        .tab-pane {
-            display: none;
-        }
-        
-        .tab-pane.active {
-            display: block;
-        }
-        
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .feature-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
-            position: relative;
-            padding-left: 25px;
-        }
-        
-        .feature-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #2a5298;
-            font-weight: bold;
-        }
-        
-        /* 반응형 */
-        @media (max-width: 768px) {
-            .product-info {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 20px;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn-wishlist {
-                max-width: none;
-            }
-            
-            .tab-header {
-                flex-direction: column;
-            }
-        }
-    </style>
+<!-- Web Font -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 메인 컨테이너 */
+.main-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* 브레드크럼 */
+.breadcrumb {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.breadcrumb a {
+    color: #2a5298;
+    text-decoration: none;
+}
+
+/* 상품 상세 영역 */
+.product-detail {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.product-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 40px;
+}
+
+/* 이미지 영역 - 반응형 개선 */
+.product-image {
+    position: relative;
+    width: 100%;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 16px;
+    background-image: url('${product.product_image_url}');
+    background-size: contain; /* cover에서 contain으로 변경 - 이미지 짤림 방지 */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.thumbnail-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    flex-shrink: 0;
+}
+
+.thumbnail:hover, .thumbnail.active {
+    border-color: #2a5298;
+}
+
+/* 상품 정보 영역 */
+.product-details {
+    padding: 20px 0;
+}
+
+.category-brand {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.product-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    line-height: 1.3;
+    word-break: keep-all; /* 단어 단위로 줄바꿈 */
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 18px;
+}
+
+.rating-text {
+    color: #666;
+    font-size: 14px;
+}
+
+.price-section {
+    margin-bottom: 30px;
+}
+
+.original-price {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+    margin-bottom: 5px;
+}
+
+.discount-info {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.discount-rate {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.sale-price {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+.currency {
+    font-size: 18px;
+    color: #666;
+}
+
+/* 수량 선택 */
+.quantity-section {
+    margin-bottom: 20px;
+}
+
+.quantity-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.3s;
+    touch-action: manipulation; /* 터치 반응성 개선 */
+}
+
+.quantity-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.quantity-input {
+    width: 70px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 총 가격 */
+.total-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.total-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.total-amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2a5298;
+}
+
+/* 버튼 영역 - 반응형 개선 */
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px; /* 최소 높이 보장 */
+    touch-action: manipulation;
+}
+
+.btn-cart {
+    background: white;
+    border: 2px solid #2a5298;
+    color: #2a5298;
+}
+
+.btn-cart:hover {
+    background: #2a5298;
+    color: white;
+}
+
+.btn-buy {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    transition: all 0.2s;
+}
+
+.btn-buy:hover {
+    background: #2a5298;
+    color: white;
+}
+
+/* 상품 설명 탭 */
+.product-tabs {
+    margin-top: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 20px 30px;
+    border: none;
+    background: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 0;
+    position: relative;
+    flex: 1;
+    min-width: 120px;
+}
+
+.tab-btn:hover {
+    background: #f8f9fa;
+    color: #2a5298;
+}
+
+.tab-btn.active {
+    background: white;
+    color: #2a5298;
+    border-bottom: 3px solid #2a5298;
+}
+
+/* 모달 스타일 - 반응형 개선 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+    padding: 20px;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 100%;
+    max-width: 800px;
+    max-height: 80vh;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+    touch-action: manipulation;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+    padding: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-body h3 {
+    color: #2a5298;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal-body p, .modal-body li {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* 리뷰 스타일 */
+.review-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.review-rating {
+    color: #ffc107;
+    font-size: 16px;
+}
+
+.review-author {
+    font-weight: 500;
+    color: #333;
+}
+
+.review-date {
+    color: #666;
+    font-size: 14px;
+}
+
+.review-text {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Q&A 스타일 */
+.qna-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+}
+
+.qna-item:last-child {
+    border-bottom: none;
+}
+
+.qna-question {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #2a5298;
+}
+
+.qna-question h4 {
+    color: #2a5298;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.qna-answer {
+    padding: 15px;
+    background: #fff;
+    border-left: 4px solid #28a745;
+    margin-left: 20px;
+}
+
+.qna-answer h4 {
+    color: #28a745;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #2a5298;
+    font-weight: bold;
+}
+
+/* ============== 반응형 미디어 쿼리 ============== */
+
+/* 태블릿 (768px 이하) */
+@media (max-width: 768px) {
+    .main-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    
+    .product-info {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 30px 20px;
+    }
+    
+    .main-image {
+        height: 300px; /* 모바일에서 높이 조정 */
+    }
+    
+    .product-title {
+        font-size: 24px;
+    }
+    
+    .discount-rate, .sale-price {
+        font-size: 24px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 18px;
+    }
+    
+    .tab-header {
+        padding: 0;
+    }
+    
+    .tab-btn {
+        padding: 15px 20px;
+        font-size: 14px;
+    }
+    
+    .modal-overlay {
+        padding: 10px;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-title {
+        font-size: 18px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .thumbnail-images {
+        justify-content: center;
+    }
+    
+    .total-price {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+/* 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0 10px;
+    }
+    
+    .product-info {
+        padding: 20px 15px;
+        gap: 20px;
+    }
+    
+    .main-image {
+        height: 250px;
+        margin-bottom: 10px;
+    }
+    
+    .thumbnail {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .product-title {
+        font-size: 20px;
+    }
+    
+    .breadcrumb {
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .discount-info {
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+    
+    .discount-rate {
+        font-size: 20px;
+    }
+    
+    .sale-price {
+        font-size: 22px;
+    }
+    
+    .quantity-btn, .quantity-input {
+        height: 45px;
+    }
+    
+    .quantity-btn {
+        width: 45px;
+        font-size: 20px;
+    }
+    
+    .quantity-input {
+        width: 80px;
+    }
+    
+    .btn {
+        font-size: 15px;
+        padding: 16px;
+    }
+    
+    .tab-btn {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+    
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .modal-content {
+        max-height: 90vh;
+        margin: 5px;
+    }
+    
+    .modal-header {
+        padding: 12px 15px;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .product-tabs {
+        margin-top: 30px;
+    }
+}
+
+/* 큰 모바일 가로 모드 (480px - 768px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .thumbnail-images {
+        gap: 8px;
+    }
+    
+    .thumbnail {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* 아주 작은 화면 (360px 이하) */
+@media (max-width: 360px) {
+    .main-container {
+        padding: 0 8px;
+    }
+    
+    .product-info {
+        padding: 15px 10px;
+    }
+    
+    .main-image {
+        height: 200px;
+    }
+    
+    .product-title {
+        font-size: 18px;
+    }
+    
+    .discount-rate, .sale-price {
+        font-size: 18px;
+    }
+    
+    .total-amount {
+        font-size: 20px;
+    }
+}
+</style>
 </head>
 <body>
-    <!-- 헤더 포함 -->
-    <%@include file="/WEB-INF/views/common/header.jsp" %>
+    <%@include file="/WEB-INF/views/common/header.jsp"%>
 
     <div class="main-container">
         <!-- 브레드크럼 -->
@@ -640,23 +776,23 @@
                     <div class="category-brand">
                         <span>${product.category_name}</span> · <span>${product.product_brand}</span>
                     </div>
-                    
+
                     <h1 class="product-title">${product.product_name}</h1>
-                    
+
                     <div class="rating">
                         <div class="stars">★★★★☆</div>
                         <span class="rating-text">4.8 (234개 후기)</span>
                     </div>
-                    
+
                     <div class="price-section">
                         <div class="original-price">45,000원</div>
                         <div class="discount-info">
-                            <span class="discount-rate">30%</span>
+                            <span class="discount-rate">30%</span> 
                             <span class="sale-price">${product.product_price}</span>
                             <span class="currency">원</span>
                         </div>
                     </div>
-                    
+
                     <div class="quantity-section">
                         <label class="quantity-label">수량</label>
                         <div class="quantity-control">
@@ -665,16 +801,15 @@
                             <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
                         </div>
                     </div>
-                    
+
                     <div class="total-price">
-                        <span class="total-label">총 상품금액</span>
+                        <span class="total-label">총 상품금액</span> 
                         <span class="total-amount" id="totalPrice">${product.product_price}원</span>
                     </div>
-                    
+
                     <div class="button-group">
-                        <button class="btn btn-wishlist" title="찜하기">♡</button>
-                        <button class="btn btn-cart">장바구니</button>
-                        <button class="btn btn-buy">구매하기</button>
+                        <button type="button" id="btnCart" class="btn btn-cart">장바구니</button>
+                        <button type="button" id="btnBuy" class="btn btn-buy">구매하기</button>
                     </div>
                 </div>
             </div>
@@ -690,7 +825,6 @@
         </div>
     </div>
 
-    <!-- 모달창들 -->
     <!-- 상품설명 모달 -->
     <div id="descriptionModal" class="modal-overlay">
         <div class="modal-content">
@@ -699,35 +833,20 @@
                 <button class="modal-close" onclick="closeModal('descriptionModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <h3>💫 ${product.product_name}</h3>
-                <p>${product.product_comment}</p>
-                <br>
-                <p>순수 치아색깔로 그려온 모든 부위 구성이 모두 완성 상태에 있어 리치한 포르가 마침 이들 모든의 세세한 약하이 때문에 인도된 사람들을 위해서.</p>
-                
-                <h3>🌟 제품 특징</h3>
+                <h3>제품 특징</h3>
                 <ul class="feature-list">
-                    <li>순수 치아색깔로 보완한 치아 추출 성분 함유</li>
-                    <li>아침에 바르고 하루 종일 무너짐 없는 지속력</li>
-                    <li>무향, 무알콜 성분으로 민감한 피부도 편안하게</li>
-                    <li>국내 자체생산 원료로 안전성 검증</li>
-                    <li>자연 시멘트 성분, 무독한 밤문 성분으로 구성</li>
+                    <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
+                    <li>민감한 피부에도 안전한 저자극 포뮬러</li>
+                    <li>빠른 흡수력으로 끈적임 없는 사용감</li>
+                    <li>하루 종일 지속되는 보습 효과</li>
+                    <li>피부 트러블 완화 및 진정 효과</li>
                 </ul>
-                
-                <h3>💧 사용 방법</h3>
-                <ol>
-                    <li>세안 후 토너로 피부 결을 정돈해주세요.</li>
-                    <li>적당량을 손들명에 덜어 양 볼부에 발라주세요.</li>
-                    <li>손끝으로도 가볍게 두드려 흡수시켜주세요.</li>
-                    <li>아침과 저녁 기초화장품 마지막 단계에서 사용해주세요.</li>
-                </ol>
-                
-                <h3>⚠️ 주의사항</h3>
-                <p>• 사용 중 붉은 기미, 부어오름, 가려움증, 자극등의 이상이 있을 때는 사용을 중단해 주세요.</p>
-                <p>• 상처가 있는 부위는 피해서 사용해주세요.</p>
-                <p>• 보관 및 취급시의 주의사항:</p>
-                <p>  - 사용한 후에는 반드시 마개를 닫아두세요</p>
-                <p>  - 유아의 손에 닿지 않는 곳에 보관하세요</p>
-                <p>  - 고온 또는 저온의 장소 및 직사광선이 닿는 곳에는 보관하지 마세요</p>
+
+                <h3>사용법</h3>
+                <p>세안 후 적당량을 손에 덜어 얼굴 전체에 부드럽게 발라주세요. 아침, 저녁 하루 2회 사용을 권장합니다.</p>
+
+                <h3>주의사항</h3>
+                <p>사용 중 이상이 있을 경우 즉시 사용을 중단하고 전문의와 상담하세요. 직사광선을 피해 서늘한 곳에 보관해주세요.</p>
             </div>
         </div>
     </div>
@@ -736,52 +855,35 @@
     <div id="reviewsModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">상품 리뷰</h2>
+                <h2 class="modal-title">고객 리뷰</h2>
                 <button class="modal-close" onclick="closeModal('reviewsModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="review-item">
                     <div class="review-header">
-                        <div>
-                            <span class="review-author">김**</span>
-                            <span class="review-rating">★★★★★</span>
-                        </div>
-                        <span class="review-date">2024.11.15</span>
+                        <div class="review-rating">★★★★★</div>
+                        <div class="review-author">김**님</div>
+                        <div class="review-date">2024.11.15</div>
                     </div>
-                    <p class="review-text">정말 좋은 제품이에요! 바르자마자 피부가 촉촉해지는 느낌입니다. 향도 은은하고 자극적이지 않아서 민감한 피부인 저에게 딱 맞네요. 재구매 의사 100%입니다!</p>
+                    <div class="review-text">사용감이 정말 좋네요. 끈적하지 않고 빠르게 흡수되어서 만족합니다. 향도 은은하고 좋아요.</div>
                 </div>
-                
+
                 <div class="review-item">
                     <div class="review-header">
-                        <div>
-                            <span class="review-author">박**</span>
-                            <span class="review-rating">★★★★☆</span>
-                        </div>
-                        <span class="review-date">2024.11.12</span>
+                        <div class="review-rating">★★★★☆</div>
+                        <div class="review-author">박**님</div>
+                        <div class="review-date">2024.11.10</div>
                     </div>
-                    <p class="review-text">효과는 좋은데 가격이 조금 비싼 편인 것 같아요. 그래도 품질이 좋아서 계속 사용할 예정입니다. 포장도 깔끔하게 잘 왔어요.</p>
+                    <div class="review-text">피부가 민감한 편인데 자극 없이 잘 맞네요. 보습력도 충분합니다.</div>
                 </div>
-                
+
                 <div class="review-item">
                     <div class="review-header">
-                        <div>
-                            <span class="review-author">이**</span>
-                            <span class="review-rating">★★★★★</span>
-                        </div>
-                        <span class="review-date">2024.11.10</span>
+                        <div class="review-rating">★★★★★</div>
+                        <div class="review-author">이**님</div>
+                        <div class="review-date">2024.11.05</div>
                     </div>
-                    <p class="review-text">남자친구가 추천해줘서 구매했는데 정말 만족스럽네요. 발림성도 좋고 흡수도 빨라서 끈적임 없이 사용하기 좋습니다. 친구들에게도 추천할게요!</p>
-                </div>
-                
-                <div class="review-item">
-                    <div class="review-header">
-                        <div>
-                            <span class="review-author">최**</span>
-                            <span class="review-rating">★★★★☆</span>
-                        </div>
-                        <span class="review-date">2024.11.08</span>
-                    </div>
-                    <p class="review-text">처음 사용해보는 브랜드였는데 괜찮네요. 특별히 자극적이지도 않고 촉촉함이 오래 지속되는 편입니다. 다음에 다른 제품도 써보고 싶어요.</p>
+                    <div class="review-text">배송도 빠르고 제품 퀄리티도 만족스럽습니다. 재주문 예정이에요.</div>
                 </div>
             </div>
         </div>
@@ -798,50 +900,29 @@
                 <div class="qna-item">
                     <div class="qna-question">
                         <h4>Q. 민감성 피부도 사용 가능한가요?</h4>
-                        <p>피부가 예민한 편인데, 이 제품을 사용해도 될까요?</p>
+                        <p>저자극 제품을 찾고 있는데, 민감성 피부에도 괜찮을까요?</p>
                     </div>
                     <div class="qna-answer">
-                        <h4>A. 네, 가능합니다.</h4>
-                        <p>본 제품은 무향, 무알콜 성분으로 민감한 피부도 편안하게 사용하실 수 있습니다. 단, 개인차가 있을 수 있으니 처음 사용 시 소량으로 테스트해보시기 바랍니다.</p>
+                        <h4>A. 네, 사용 가능합니다.</h4>
+                        <p>저자극 포뮬러로 제작되어 민감성 피부에도 안전하게 사용하실 수 있습니다. 다만 개인차가 있을 수 있으니 처음 사용 시 소량으로 테스트해보시기 바랍니다.</p>
                     </div>
                 </div>
-                
+
                 <div class="qna-item">
                     <div class="qna-question">
-                        <h4>Q. 하루에 몇 번 사용하면 되나요?</h4>
-                        <p>사용 횟수와 적정 사용량이 궁금합니다.</p>
+                        <h4>Q. 하루에 몇 번 사용해야 하나요?</h4>
+                        <p>효과적인 사용법이 궁금합니다.</p>
                     </div>
                     <div class="qna-answer">
                         <h4>A. 하루 2회 사용을 권장합니다.</h4>
-                        <p>아침과 저녁, 기초화장품의 마지막 단계에서 사용하시면 됩니다. 1회 사용량은 동전 크기 정도가 적당합니다.</p>
-                    </div>
-                </div>
-                
-                <div class="qna-item">
-                    <div class="qna-question">
-                        <h4>Q. 다른 화장품과 함께 사용해도 되나요?</h4>
-                        <p>현재 사용 중인 스킨케어 제품들과 함께 써도 괜찮을까요?</p>
-                    </div>
-                    <div class="qna-answer">
-                        <h4>A. 네, 문제없습니다.</h4>
-                        <p>대부분의 화장품과 함께 사용 가능합니다. 다만, 레티놀이나 강한 산성 성분의 제품과는 시간 간격을 두고 사용하시기를 권장합니다.</p>
-                    </div>
-                </div>
-                
-                <div class="qna-item">
-                    <div class="qna-question">
-                        <h4>Q. 배송은 얼마나 걸리나요?</h4>
-                        <p>주문 후 언제 받을 수 있는지 궁금합니다.</p>
-                    </div>
-                    <div class="qna-answer">
-                        <h4>A. 평균 2-3일 소요됩니다.</h4>
-                        <p>주문 확인 후 1-2일 내 발송되며, 배송까지 총 2-3일 정도 소요됩니다. 주말 및 공휴일은 배송이 지연될 수 있습니다.</p>
+                        <p>아침, 저녁 세안 후 사용하시면 최적의 효과를 얻으실 수 있습니다.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
         // 수량 변경
         function changeQuantity(change) {
@@ -851,7 +932,7 @@
             quantityInput.value = newQuantity;
             updateTotalPrice();
         }
-        
+
         // 총 가격 업데이트
         function updateTotalPrice() {
             const quantity = parseInt(document.getElementById('quantity').value);
@@ -859,72 +940,94 @@
             const totalPrice = quantity * unitPrice;
             document.getElementById('totalPrice').textContent = totalPrice.toLocaleString() + '원';
         }
-        
+
         // 모달 열기
         function openModal(type) {
             let modalId;
             switch(type) {
-                case 'description':
-                    modalId = 'descriptionModal';
-                    break;
-                case 'reviews':
-                    modalId = 'reviewsModal';
-                    break;
-                case 'qna':
-                    modalId = 'qnaModal';
-                    break;
-                default:
-                    return;
+                case 'description': modalId = 'descriptionModal'; break;
+                case 'reviews': modalId = 'reviewsModal'; break;
+                case 'qna': modalId = 'qnaModal'; break;
+                default: return;
             }
-            
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+                document.body.style.overflow = 'hidden';
             }
         }
-        
+
         // 모달 닫기
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = 'none';
-                document.body.style.overflow = 'auto'; // 배경 스크롤 복원
+                document.body.style.overflow = 'auto';
             }
         }
-        
+
         // 모달 외부 클릭 시 닫기
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal-overlay')) {
                 closeModal(e.target.id);
             }
         });
-        
+
         // ESC 키로 모달 닫기
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                const modals = document.querySelectorAll('.modal-overlay');
-                modals.forEach(modal => {
-                    if (modal.style.display === 'block') {
-                        closeModal(modal.id);
-                    }
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    if (modal.style.display === 'block') closeModal(modal.id);
                 });
             }
         });
-        
-        // 썸네일 이미지 클릭
+
+        // 썸네일 클릭
         document.querySelectorAll('.thumbnail').forEach(thumb => {
             thumb.addEventListener('click', function() {
                 document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
             });
         });
+        
+        // SweetAlert 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            // 장바구니 버튼
+            document.getElementById('btnCart').addEventListener('click', function() {
+                Swal.fire({
+                    title: '장바구니에 담으시겠습니까?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: '예',
+                    cancelButtonText: '아니오',
+                    confirmButtonColor: '#2a5298',
+                    cancelButtonColor: '#d33'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('완료!', '장바구니에 추가되었습니다.', 'success');
+                    }
+                });
+            });
+            
+            // 구매하기 버튼
+            document.getElementById('btnBuy').addEventListener('click', function() {
+                Swal.fire({
+                    title: '구매하시겠습니까?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: '예',
+                    cancelButtonText: '아니오',
+                    confirmButtonColor: '#1e3c72',
+                    cancelButtonColor: '#d33'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('완료!', '주문이 접수되었습니다.', 'success');
+                    }
+                });
+            });
+        });
     </script>
-  <!-- 푸터 포함 -->
-    <%@include file="/WEB-INF/views/common/footer.jsp" %>
+
+    <%@include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 </html>
-
-       
-   
- 

@@ -10,10 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.common.MyConstant;
 import com.onetouch.dao.PostDao;
 import com.onetouch.service.PostService;
+import com.onetouch.util.Paging;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
@@ -37,19 +40,30 @@ public class PostController {
 	
 	//커뮤니티 전체목록 열기
 	@RequestMapping("/post/list")
-	public String postFormList(Model model) {
+	public String postFormList(Model model,@RequestParam(name="page",defaultValue="1")int nowPage) {
 		System.out.println("	[PostController] postFormList() ");
+		
+		Map<String,Object>map =new HashMap<String, Object>();
+		map.put("nowPage", nowPage);
+		
 		//커뮤니티 리스트 가져오기
-		List<PostVo> postVo_array=postService.selectPostList();
+		map=postService.selectPostList(map);
+		List<PostVo> postVo_array=(List<PostVo>) map.get("postVo_array");
 		System.out.printf("			[전체_%d]%s\n",postVo_array.size(),postVo_array);
+				
+				
+		
 		//스킨에디터 리스트 가져오기
-		List<PostVo> postTip_array=postService.selectTipList();
+		map=postService.selectTipList(map);
+		List<PostVo> postTip_array=(List<PostVo>) map.get("postTip_array");
 		System.out.printf("			[스킨에디터_%d]%s\n",postTip_array.size(),postTip_array);
 		//리뷰 리스트 가져오기
-		List<PostVo> postReview_array=postService.selectReviewList();
+		map=postService.selectReviewList(map);
+		List<PostVo> postReview_array=(List<PostVo>) map.get("postReview_array");
 		System.out.printf("			[리뷰_%d]%s\n",postReview_array.size(),postReview_array);
 		//자유게시판 리스트 가져오기
-		List<PostVo> postFreeBoard_array=postService.selectFreeBoard();
+		map=postService.selectFreeBoard(map);
+		List<PostVo> postFreeBoard_array=(List<PostVo>) map.get("postFreeBoard_array");
 		System.out.printf("			[자유게시판_%d]%s\n",postFreeBoard_array.size(),postFreeBoard_array);
 		model.addAttribute("postVo_array",postVo_array);
 		model.addAttribute("postSkin_array",postTip_array);
@@ -122,8 +136,10 @@ public class PostController {
 	@GetMapping("/post/modify")
 	public String postModifyForm(int post_idx,Model model) {
 		System.out.printf("	[PostController] postModifyForm(post_idx=%d)\n",post_idx);
-		
+		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		PostVo postVo=postDao.selectPostOne(post_idx);
+		if(postVo.getMem_idx()==memVo.getMem_idx()) {
+			
 		postVo.setPost_content(postVo.getPost_content().replaceAll("<br>", "\n"));
 		System.out.printf("		postVo => %s\n",postVo);
 		List<PostProductVo> postProductVo=postDao.selectPostProductOne(post_idx);
@@ -137,6 +153,9 @@ public class PostController {
 		model.addAttribute("product_list_array", product_list_array);
 		model.addAttribute("postVo", postVo);
 		model.addAttribute("postProductVo", postProductVo);
+		}else {
+			return"redirect:/post/list";
+		}
 		
 		
 		
@@ -145,7 +164,7 @@ public class PostController {
 		return"/post/post_modify";
 	}
 	
-	//post modify 버튼 클릭
+	//post modify 버튼 클릭시 수정처리
 	@PostMapping("/post/modify")
 	public String postModify(PostVo postVo) throws Exception {
 		System.out.printf("	[PostController] postModify()\n");
@@ -156,6 +175,18 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	
+	//post delete 버튼클릭시 삭제처리
+	@RequestMapping("/post/delete")
+	@ResponseBody
+	public Map<String,Object>  postDeleteOne(int post_idx) {
+		System.out.printf("	[PostController] postDeleteOne()\n");
+		Map<String,Object> map =new HashMap<String, Object>();
+		map.put("post_idx", post_idx);
+		int res = postDao.deletePost(map);
+		map.put("post_delete",res==1);
+		System.out.printf("	[PostController] return : map(post_idx,post_delete)\n");
+		return map;
+	}
 	
 	
 	
