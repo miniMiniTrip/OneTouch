@@ -14,11 +14,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.CartDao;
 import com.onetouch.dao.OrderDao;
+import com.onetouch.dao.OrderItemDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.OrderService;
 import com.onetouch.service.PaymentService;
 import com.onetouch.vo.CartVo;
 import com.onetouch.vo.MemVo;
+import com.onetouch.vo.OrderItemVo;
 import com.onetouch.vo.OrderVo;
 import com.onetouch.vo.PaymentVo;
 import com.onetouch.vo.ProductVo;
@@ -37,6 +39,9 @@ public class OrderController {
 	
 	@Autowired
 	ProductDao product_dao;
+	
+	@Autowired
+	OrderItemDao order_item_dao;
 	
 	@Autowired
 	HttpSession session;
@@ -230,5 +235,24 @@ public class OrderController {
 			result.put("message", "오류" + e.getMessage());
 		}	
 		return result;
+	}
+	
+	@RequestMapping("/order/complete.do")
+	public String orderComplete(@RequestParam int order_id, Model model) {
+	    
+	    // order 조회
+	    OrderVo order = order_dao.selectOneByOrderId(order_id);
+	    
+	    // order_item 조회
+	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+	    
+	    // payment 조회 (영수증 URL 등)
+	    PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
+	    
+	    model.addAttribute("order", order);
+	    model.addAttribute("order_items", order_items);
+	    model.addAttribute("payment", payment);
+	    
+	    return "order/order_complete";
 	}
 }
