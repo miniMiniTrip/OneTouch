@@ -22,65 +22,6 @@
             color: #333;
         }
 
-        /* 헤더 */
-        .header {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 20px 40px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1a237e;
-            letter-spacing: -1px;
-            cursor: pointer;
-        }
-        
-        .logo span {
-            color: #3949ab;
-        }
-
-        .admin-badge {
-            background: #d32f2f;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-left: 12px;
-        }
-
-        .header-right {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .header-user {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .btn-logout {
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s;
-        }
-
-        .btn-logout:hover {
-            border-color: #1a237e;
-            color: #1a237e;
-        }
-
         /* 컨테이너 */
         .container {
             max-width: 1600px;
@@ -93,56 +34,6 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 30px;
-        }
-
-        /* 사이드바 */
-        .sidebar {
-            background: white;
-            border-radius: 12px;
-            padding: 30px 0;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .sidebar-section {
-            margin-bottom: 30px;
-        }
-
-        .sidebar-title {
-            padding: 0 24px 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu a {
-            display: block;
-            padding: 14px 24px;
-            color: #666;
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar-menu a:hover {
-            background: #f5f7fa;
-            color: #1a237e;
-        }
-
-        .sidebar-menu a.active {
-            background: #e8eaf6;
-            color: #1a237e;
-            font-weight: 600;
-            border-left-color: #1a237e;
         }
 
         /* 메인 컨텐츠 */
@@ -195,6 +86,12 @@
             padding: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-left: 4px solid #1a237e;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .stat-label {
@@ -217,7 +114,7 @@
 
         /* 버튼 */
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
             font-size: 14px;
@@ -236,6 +133,7 @@
         .btn-primary:hover {
             background: #0d47a1;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
         }
 
         .btn-secondary {
@@ -245,12 +143,23 @@
         }
 
         .btn-secondary:hover {
-            background: #f5f7fa;
+            background: #1a237e;
+            color: white;
+        }
+
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
         /* 반응형 */
         @media (max-width: 1200px) {
             .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-access-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -264,11 +173,11 @@
                 grid-template-columns: 1fr;
             }
 
-            .sidebar {
-                position: static;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
 
-            .stats-grid {
+            .quick-access-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -276,51 +185,13 @@
 </head>
 <body>
     <!-- 헤더 -->
-    <header class="header">
-        <div>
-            <span class="logo" onclick="goToHome()">One<span>Touch</span></span>
-            <span class="admin-badge">관리자</span>
-        </div>
-        <div class="header-right">
-            <span class="header-user">관리자님</span>
-            <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
-        </div>
-    </header>
+    <%@ include file="admin_header.jsp" %>
 
     <!-- 메인 컨테이너 -->
     <div class="container">
         <div class="admin-layout">
             <!-- 사이드바 -->
-            <aside class="sidebar">
-                <div class="sidebar-section">
-                    <div class="sidebar-title">대시보드</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" class="active" onclick="showSection('dashboard'); return false;">📊 통계 대시보드</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-title">관리</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#" onclick="showSection('members'); return false;">👥 회원관리</a></li>
-                        <li><a href="/adminpage/product">📦 상품관리</a></li>
-                        <li><a href="/order/management">🚚 주문관리</a></li>
-
-                        <li><a href="/ddminpage/remain">📋 Q&A</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    
-                    
-                </div>
-
-                        <li><a href="#">💬 게시판 관리</a></li>
-                    </ul>
-                </div>
-                
-
-            </aside>
+            <%@ include file="admin_side.jsp"%>
 
             <!-- 메인 컨텐츠 -->
             <main class="main-content">
@@ -354,11 +225,12 @@
                         <div class="section-header">
                             <h2 class="section-title">🚀 빠른 액세스</h2>
                         </div>
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <a href="#" class="btn btn-secondary">회원관리</a>
-                            <a href="/adminpage/product" class="btn btn-primary">상품관리</a>
-                            <a href="/order/management" class="btn btn-secondary">주문관리</a>
-                            <a href="#" class="btn btn-secondary">💬 게시판 관리</a>
+                        <div class="quick-access-grid">
+                            <a href="/admin/admin_members" class="btn btn-secondary">👥 회원관리</a>
+                            <!-- <a href="#" onclick="showSection('members'); return false;" class="btn btn-secondary">👥 회원관리</a> -->
+                            <a href="/adminpage/product" class="btn btn-primary">📦 상품관리</a>
+                            <a href="/order/management" class="btn btn-secondary">🚚 주문관리</a>
+                            <a href="/admin/qna_list" class="btn btn-secondary">💬 Q&A 관리</a>
                         </div>
                     </div>
                 </section>
@@ -369,27 +241,7 @@
                         <div class="section-header">
                             <h2 class="section-title">👥 회원관리</h2>
                         </div>
-                        <p>회원관리 기능이 곧 추가될 예정입니다.</p>
-                    </div>
-                </section>
-
-                <!-- 재고관리 -->
-                <section id="remainSection" class="content-section">
-                    <div class="section-card">
-                        <div class="section-header">
-                            <h2 class="section-title">📦 상품관리</h2>
-                        </div>
-                        <p>상품관리 기능이 곧 추가될 예정입니다.</p>
-                    </div>
-                </section>
-
-                <!-- 주문관리 -->
-                <section id="ordersSection" class="content-section">
-                    <div class="section-card">
-                        <div class="section-header">
-                            <h2 class="section-title">🚚 주문관리</h2>
-                        </div>
-                        <p>주문관리 기능이 곧 추가될 예정입니다.</p>
+                        <p style="color: #666; line-height: 1.6;">회원관리 기능이 곧 추가될 예정입니다.</p>
                     </div>
                 </section>
 
@@ -397,9 +249,9 @@
                 <section id="boardSection" class="content-section">
                     <div class="section-card">
                         <div class="section-header">
-                            <h2 class="section-title">💬 Q&A FAQ 게시판</h2>
+                            <h2 class="section-title">📋 게시판 관리</h2>
                         </div>
-                        <p>게시판 관리 기능이 곧 추가될 예정입니다.</p>
+                        <p style="color: #666; line-height: 1.6;">게시판 관리 기능이 곧 추가될 예정입니다.</p>
                     </div>
                 </section>
             </main>
@@ -409,23 +261,33 @@
     <script>
         // 섹션 표시
         function showSection(sectionName) {
+            // 모든 섹션 숨기기
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
+            
+            // 모든 메뉴 active 제거
             document.querySelectorAll('.sidebar-menu a').forEach(link => {
                 link.classList.remove('active');
             });
 
+            // 섹션 매핑
             const sections = {
                 'dashboard': 'dashboardSection',
                 'members': 'membersSection',
-                'remain': 'remainSection',
-                'order': 'ordersSection',
                 'board': 'boardSection'
             };
 
-            document.getElementById(sections[sectionName]).classList.add('active');
-            event.target.classList.add('active');
+            // 선택된 섹션 표시
+            const targetSection = document.getElementById(sections[sectionName]);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // 클릭된 메뉴 active 추가
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
         function goToHome() {

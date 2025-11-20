@@ -495,4 +495,11 @@ CREATE TABLE product_remain (
 -- CREATE INDEX idx_product_remain_product ON product_remain(product_idx);
 -- CREATE INDEX idx_product_remain_regdate ON product_remain(remain_regdate DESC);
 
+-- 테이블 존재 확인
+SHOW TABLES LIKE 'product_remain';
 
+-- 테이블 구조 확인  
+DESC product_remain;
+
+-- 데이터 확인
+SELECT * FROM product_remain;

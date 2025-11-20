@@ -2,18 +2,22 @@ package com.onetouch.dao;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
 import com.onetouch.vo.ProductVo;
 
 @Mapper
 public interface ProductDao {
+	
     
     // 카테고리별 목록조회
     List<ProductVo> selectList(@Param("category_idx") int category_idx, @Param("keyword") String keyword);
     List<ProductVo> selectList(Map<String, Object> map);
     List<ProductVo> selectListAdmin(Map<String, Object> map);
-    
+    List<ProductVo> selectRemainListByProduct(int product_idx); //재고조회
+    List<ProductVo> selectRemainList(Map<String, Object> map);// 전체재고 이력조회
     // 단일상품조회
     ProductVo selectOne(int product_idx);
     
@@ -39,6 +43,13 @@ public interface ProductDao {
     int selectCount(Map<String, Object> map);
     
     public int selectCountAdmin(Map<String,Object>map);
+    
+    // 재고 등록
+    int insertRemain(ProductVo vo);
+    
+    // 재고 이력 총 개수 조회
+    int selectRemainCount(Map<String, Object> map);
+    
     
     
 }

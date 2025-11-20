@@ -1,5 +1,7 @@
 package com.onetouch.vo;
 
+import java.time.LocalDate;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
@@ -27,6 +29,11 @@ public class ProductVo{
     private int product_image_idx;
     private String product_image_url;
     private int product_image_level;
+    
+    private int remain_idx;          // 재고번호 (재고이력 조회시에만 사용)
+    private String remain_name;      // 재고명 (재고등록 내역)
+    private int remain_cnt;          // 재고수량 (추가된 수량)
+    private LocalDate remain_regdate;     // 재고등록일자
     
 
 
