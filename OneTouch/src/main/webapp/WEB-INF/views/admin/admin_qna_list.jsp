@@ -11,12 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
 
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     
     <style>
         * {
@@ -35,7 +29,7 @@
         .container {
             max-width: 1600px;
             margin: 40px auto;
-            padding: 0 40px;
+            padding: 0 48px;
         }
 
         /* 레이아웃 */
@@ -57,6 +51,8 @@
             padding: 30px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             min-height: 600px;
+            
+           
         }
         
         .admin-qna-content-header {
