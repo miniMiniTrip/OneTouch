@@ -1,7 +1,6 @@
 package com.onetouch.controller;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,7 +223,7 @@ public class AdminProductController {
     
  // 재고용  vo별로도 만들지 않았으니 주의!! 헷갈리지마!!!!
  // 재고 등록 처리
-    @PostMapping("/product/remain/insert")
+    @PostMapping("/product/remain/insert") //(form 없음 ajax 목적지)
     @ResponseBody
     public Map<String, Object> insertRemain(@RequestParam int product_idx,
                                            @RequestParam String remain_name,
@@ -277,7 +276,7 @@ public class AdminProductController {
     }
 
     // 특정 상품의 재고 이력 조회
-    @GetMapping("/product/remain/list")
+    @GetMapping("/product/remain/list")//(form 없음 ajax 목적지)
     @ResponseBody
     public List<ProductVo> getRemainList(@RequestParam int product_idx) {
         System.out.printf("[AdminProductController-getRemainList()] product_idx: %d\n", product_idx);
