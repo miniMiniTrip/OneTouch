@@ -10,12 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
 
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     
     <style>
         /* 컨테이너 */
@@ -242,7 +236,7 @@
                             </div>
                         </div>
                         
-                        <form class="admin-qna-write-form" method="post" action="${pageContext.request.contextPath}/qna/write">
+                        <form class="admin-qna-write-form" method="post" action="${pageContext.request.contextPath}/admin/qna_write">
                             <!-- 카테고리 -->
                             <div class="admin-qna-write-form-group">
                                 <label class="admin-qna-write-form-label">문의 유형<span class="required">*</span></label>
@@ -303,12 +297,12 @@
         <i class="lni lni-chevron-up"></i>
     </a>
 
-    <!-- ========================= JS here ========================= -->
+    <%-- <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-    
+     --%>
     <script>
         function updateCharCount(textarea) {
             const count = textarea.value.length;
