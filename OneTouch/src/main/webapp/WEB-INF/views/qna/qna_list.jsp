@@ -1,4 +1,4 @@
-a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
@@ -19,21 +19,24 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
     
     <style>
         .qna-section {
-            padding: 60px 0;
-            background-color: #f5f5f5;
+            padding: 0;
+    background-color: #fff;
+    min-height: calc(100vh - 400px);
         }
         
         .qna-container {
             display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+    max-width: 100%;
+    margin: 0;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+    }
         
-        .sidebar {
+        /* 사이드바 */
+        
+        /* .sidebar {
             width: 200px;
             background: #fafafa;
             border-right: 1px solid #e0e0e0;
@@ -73,7 +76,6 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
             align-items: center;
             transition: background 0.2s;
         }
-        
         .menu-item:hover {
             background: #f0f0f0;
         }
@@ -84,7 +86,10 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
             font-weight: 600;
             border-left: 3px solid #5c6bc0;
         }
+         */
         
+        
+        /* 컨텐츠 부분.  */
         .content {
             flex: 1;
             padding: 40px;
@@ -235,7 +240,8 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
     </div>
     <!-- /End Preloader -->
 
-    <!-- Start Header Area -->
+    <!-- 헤더부분-->
+  
     <c:import url="../common/header.jsp" />
     <!-- End Header Area -->
 
@@ -264,7 +270,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
     <section class="qna-section">
         <div class="container">
             <div class="qna-container">
-                <div class="sidebar">
+                <!-- <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
                     <div class="sidebar-subtitle">user01님 환영합니다</div>
                     
@@ -290,31 +296,18 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
                     <div class="menu-section">
                         <div class="menu-item">📝 로그아웃</div>
                     </div>
-                </div>
+                </div> -->
                 
+                
+                <!-- 사이드바 인크루드 -->
+                 <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
                 <div class="content">
                     <div class="content-header">
                         <h2>💬 상품 Q&A</h2>
                        
                       <!-- 로그인한 사용자만 Q&A 쓰기 버튼 표시 -->
 <!-- 로그인 여부에 따라 버튼 하나만 출력 -->
-<%-- <c:choose>
-    <!-- 로그인한 경우 -->
-    <c:when test="${sessionScope.loginUserId != null}">
-        <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
-            Q&A 쓰기
-        </button>
-    </c:when>
-
-    <!-- 로그인하지 않은 경우 -->
-    <c:otherwise>
-        <button class="btn-write" onclick="alert('로그인 후 이용해주세요.');">
-            Q&A 쓰기
-        </button>
-    </c:otherwise>
-</c:choose>
-
-           --%>             
+           
                         <!-- 글이 있을 때만 버튼 표시 -->
                         <c:if test="${not empty qna_list}">
                             <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'">
@@ -343,9 +336,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
                                         
                                         <!-- 상세보기로 가는 버튼 -->
                                         <td class="title">
-										    <a href="${pageContext.request.contextPath}/qna/detail?qna_idx=${qna.qna_idx}">
-										        ${qna.qna_title}
-										    </a>
+										    <a href="${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}">${qna.qna_title}</a>
 										</td>
                                         
                                         <!-- 멤버id -->
@@ -356,7 +347,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
                                        
                                         
                                         <!-- 답변완료 / 대기상태 -->                                        
-                                         <%-- <td>${qna.qna_answered}</td> --%>
+                                         
       <!-- ------------------------------------------------------------------------ --------------> 
                                         <td>
 									    <c:choose>
@@ -397,7 +388,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
         </div>
     </section>
     <!-- End Q&A Section -->
-
+   <%@include file="/WEB-INF/views/common/footer.jsp" %>
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
