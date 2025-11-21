@@ -225,8 +225,9 @@
                             <ul class="user-dropdown-menu" id="admin-menu" style="display: none;">
                                 <li><a href="${pageContext.request.contextPath}/adminpage/dashboard">대시보드</a></li>
                                 <li><a href="${pageContext.request.contextPath}/adminpage/product">상품 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/user">회원 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/order">주문 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/admin_members">회원 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/order/management">주문 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/qna_list">Q&A 관리</a></li>
                             </ul>
                         </li>
                     </c:if>
