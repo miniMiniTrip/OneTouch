@@ -186,6 +186,12 @@
                                 <label>결제상태</label>
                                 <span class="badge badge-success">${order.order_status}</span>
                             </div>
+                            <c:if test="${payment != null && payment.receipt_url != null}">
+							    <div class="order-info-item">
+							        <label>영수증</label>
+							        <span><a href="${payment.receipt_url}" target="_blank" class="btn btn-sm btn-outline-primary">영수증 보기</a></span>
+							    </div>
+							</c:if>
                         </div>
                         
                         <!-- 주문 상품 목록 -->

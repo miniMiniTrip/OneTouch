@@ -148,13 +148,13 @@ public class OrderController {
 	}
 	
 	//결제대기 (토스)
-	@RequestMapping("create_ready.do")
+	@RequestMapping("/order/create_ready.do")
 	@ResponseBody
 	public Map<String, Object> createOrderReady(
 				HttpServletRequest request,
 				@RequestParam Map<String, Object> params){
 		Map<String, Object> result = new HashMap<>();
-		
+		System.out.println("진입");
 		try {	
 			session = request.getSession();
 			MemVo user = (MemVo) session.getAttribute("user");
@@ -210,15 +210,22 @@ public class OrderController {
 			order.setTotal_amount(totalAmount);
 			order.setOrder_name(orderName);
 			order.setOrder_no("OT" + System.currentTimeMillis());
+			order.setOrder_status("결제대기"); 
+			
+			System.out.println(order.getOrder_no());
+			
+			order_service.insert(order);
+			System.out.println("생성된 order_id: " + order.getOrder_id());
 			
 			String payment_key = "OTPAY" + System.currentTimeMillis();
 			PaymentVo payment = new PaymentVo();
 			payment.setPayment_key(payment_key);
 			payment.setOrder_id(order.getOrder_id());
-			payment.setAmount(totalAmount); //
+			payment.setAmount(totalAmount); 
 			payment.setMethod("카드");
 			
 			//결제대기로 내용 전송
+			System.out.println(payment);
 			payment_service.createPaymentReady(payment);
 			
 			session.setAttribute("order_id", order.getOrder_id());
@@ -228,7 +235,7 @@ public class OrderController {
 			result.put("payment_key", payment_key);
 			result.put("order_name", orderName);
 			result.put("amount", totalAmount);
-		
+			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("success", false);
@@ -237,22 +244,22 @@ public class OrderController {
 		return result;
 	}
 	
-//	@RequestMapping("/order/complete.do")
-//	public String orderComplete(@RequestParam int order_id, Model model) {
-//	    
-//	    // order 조회
-//	    OrderVo order = order_dao.selectOneByOrderId(order_id);
-//	    
-//	    // order_item 조회
-//	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
-//	    
-//	    // payment 조회 (영수증 URL 등)
-//	    PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
-//	    
-//	    model.addAttribute("order", order);
-//	    model.addAttribute("order_items", order_items);
-//	    model.addAttribute("payment", payment);
-//	    
-//	    return "order/order_complete";
-//	}
+	@RequestMapping("/order/complete.do")
+	public String orderComplete(@RequestParam int order_id, Model model) {
+	    
+	    // order 조회
+	    OrderVo order = order_dao.selectOneByOrderId(order_id);
+	    
+	    // order_item 조회
+	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+	    
+	    // payment 조회 (영수증 URL 등)
+	    PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
+	    
+	    model.addAttribute("order", order);
+	    model.addAttribute("order_items", order_items);
+	    model.addAttribute("payment", payment);
+	    
+	    return "order/order_complete";
+	}
 }
