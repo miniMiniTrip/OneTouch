@@ -9,21 +9,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.CartDao;
 import com.onetouch.dao.OrderDao;
+import com.onetouch.dao.OrderItemDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.OrderService;
+import com.onetouch.service.PaymentService;
 import com.onetouch.vo.CartVo;
 import com.onetouch.vo.MemVo;
+import com.onetouch.vo.OrderItemVo;
 import com.onetouch.vo.OrderVo;
+import com.onetouch.vo.PaymentVo;
 import com.onetouch.vo.ProductVo;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/order")
 public class OrderController {
 	
 	@Autowired
@@ -36,13 +41,19 @@ public class OrderController {
 	ProductDao product_dao;
 	
 	@Autowired
+	OrderItemDao order_item_dao;
+	
+	@Autowired
 	HttpSession session;
 	
 	@Autowired
 	OrderService order_service;
 	
-	//단건 구매
-	@RequestMapping("/direct_form.do")
+	@Autowired
+	PaymentService payment_service;
+
+	//단건 구매(무통장 입금)
+	@RequestMapping("/order/direct_form.do")
 	public String order_direct_form(
 				@RequestParam int product_idx,
 				@RequestParam int product_cnt,
@@ -68,8 +79,8 @@ public class OrderController {
 		return "order/order_form";
 	}
 	
-	//장바구니 구매
-	@RequestMapping("/cart_form.do")
+	//장바구니 구매(무통장 입금)
+	@RequestMapping("/order/cart_form.do")
 	public String order_cart_form(
 				@RequestParam("cart_id") String[] cart_ids,
 				Model model) {
@@ -103,7 +114,7 @@ public class OrderController {
 	}
 
 	//주문
-	@RequestMapping("/order_insert.do")
+	@RequestMapping("/order/order_insert.do")
 	public String order(OrderVo vo,
 				@RequestParam(name="order_type") String order_type,
 		        @RequestParam(name="cart_id", required=false) String[] cart_ids,
@@ -136,4 +147,112 @@ public class OrderController {
 		return "redirect:/order/complete.do";
 	}
 	
+	//결제대기 (토스)
+	@RequestMapping("create_ready.do")
+	@ResponseBody
+	public Map<String, Object> createOrderReady(
+				HttpServletRequest request,
+				@RequestParam Map<String, Object> params){
+		Map<String, Object> result = new HashMap<>();
+		
+		try {	
+			session = request.getSession();
+			MemVo user = (MemVo) session.getAttribute("user");
+			
+			if(user==null) {
+				result.put("success", false);
+				result.put("message", "로그인이 필요합니다.");
+				return result;
+			}
+			//파라미터값 받기
+			OrderVo order = new OrderVo();
+			order.setMem_idx(user.getMem_idx());
+			order.setOrder_mem_name((String)params.get("order_mem_name"));
+			order.setOrder_phone((String)params.get("order_phone"));		
+			order.setOrder_postal((String)params.get("order_postal"));
+			order.setOrder_address((String)params.get("order_address"));
+			order.setOrder_address_more((String)params.get("order_address_more"));
+			
+			int totalAmount = 0;
+			String orderName = "";
+			String orderType = (String)params.get("order_type");
+			
+			//단건
+			if("direct".equals(orderType)) {
+				int product_idx = Integer.parseInt((String)params.get("product_idx"));
+				int product_cnt = Integer.parseInt((String)params.get("product_cnt"));
+				
+				ProductVo vo = product_dao.selectOne(product_idx);
+				totalAmount = vo.getProduct_price() * product_cnt;
+				orderName = vo.getProduct_name();
+				
+				session.setAttribute("orderType", "direct");
+				session.setAttribute("product_idx", product_idx);
+				session.setAttribute("product_cnt", product_cnt);
+				
+			} else if ("cart".equals(orderType)){
+				//장바구니
+				String[] cart_id_array = request.getParameterValues("cart_id");
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("cart_id_array", cart_id_array);
+				List<CartVo> cartList = cart_dao.selectPaymentList(map);
+				totalAmount = cart_dao.selectPaymentTotalAmount(map);
+				
+				orderName = cartList.get(0).getProduct_name();
+				if(cartList.size() > 1) {
+					orderName += "외" + (cartList.size() - 1) + "건";  
+				}
+				
+				session.setAttribute("orderType", "cart");
+				session.setAttribute("cart_ids", cart_id_array);
+			}
+			
+			order.setTotal_amount(totalAmount);
+			order.setOrder_name(orderName);
+			order.setOrder_no("OT" + System.currentTimeMillis());
+			
+			String payment_key = "OTPAY" + System.currentTimeMillis();
+			PaymentVo payment = new PaymentVo();
+			payment.setPayment_key(payment_key);
+			payment.setOrder_id(order.getOrder_id());
+			payment.setAmount(totalAmount); //
+			payment.setMethod("카드");
+			
+			//결제대기로 내용 전송
+			payment_service.createPaymentReady(payment);
+			
+			session.setAttribute("order_id", order.getOrder_id());
+			
+			//결제 성공
+			result.put("success", true);
+			result.put("payment_key", payment_key);
+			result.put("order_name", orderName);
+			result.put("amount", totalAmount);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("success", false);
+			result.put("message", "오류" + e.getMessage());
+		}	
+		return result;
+	}
+	
+	@RequestMapping("/order/complete.do")
+	public String orderComplete(@RequestParam int order_id, Model model) {
+	    
+	    // order 조회
+	    OrderVo order = order_dao.selectOneByOrderId(order_id);
+	    
+	    // order_item 조회
+	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+	    
+	    // payment 조회 (영수증 URL 등)
+	    PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
+	    
+	    model.addAttribute("order", order);
+	    model.addAttribute("order_items", order_items);
+	    model.addAttribute("payment", payment);
+	    
+	    return "order/order_complete";
+	}
 }
