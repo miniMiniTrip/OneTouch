@@ -70,4 +70,7 @@ public class PostVo {
 	
 	/**좋아요 테이블*/
 	List<LikeVo> likeList;
+	
+	/** DB에서 post_idx 기준으로 댓글 List 가져올때 사용*/
+	List<ReplyVo> replyList;
 }
