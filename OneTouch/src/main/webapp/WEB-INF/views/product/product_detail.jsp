@@ -23,6 +23,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
+
+
 * {
     margin: 0;
     padding: 0;
@@ -79,19 +81,10 @@ body {
 .main-image {
     width: 100%;
     height: 400px;
-    background: #f0f0f0;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 16px;
-    background-image: url('${product.product_image_url}');
+    background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');
     background-size: contain; /* cover에서 contain으로 변경 - 이미지 짤림 방지 */
     background-repeat: no-repeat;
     background-position: center;
-    position: relative;
-    overflow: hidden;
 }
 
 .thumbnail-images {
@@ -757,15 +750,15 @@ body {
         <div class="product-detail">
             <div class="product-info">
                 <!-- 이미지 영역 -->
-                <div class="product-image">
-                    <div class="main-image">
+                <div class="product-image" >
+                    <div class="main-image"style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');">
                         <c:if test="${empty product.product_image_url}">
                             상품 이미지
                         </c:if>
                     </div>
                     <div class="thumbnail-images">
-                        <div class="thumbnail active"></div>
-                        <div class="thumbnail"></div>
+                     <div class="thumbnail active"></div>
+                     <div class="thumbnail"></div> 
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
                     </div>
@@ -829,7 +822,7 @@ body {
     <div id="descriptionModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">상품설명</h2>
+                <h2 class="modal-title">상품상세정보</h2>
                 <button class="modal-close" onclick="closeModal('descriptionModal')">&times;</button>
             </div>
             <div class="modal-body">

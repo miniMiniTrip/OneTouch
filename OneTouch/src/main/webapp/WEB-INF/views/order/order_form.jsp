@@ -2,461 +2,375 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+<!-- 테스트용으로 템플릿 빼고 재작업했습니다. -->
     <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>주문서 작성 - OneTouch</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문/결제 - OneTouch</title>
     
-    <!-- Web Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/LineIcons.2.0.css" />
-    <link rel="stylesheet" href="/assets/css/animate.css" />
-    <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
-    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Daum 우편번호 API -->
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    
-    <!-- Toss Payment 연동 -->
+    <!-- ⭐ TossPayments SDK v2 -->
     <script src="https://js.tosspayments.com/v2/standard"></script>
     
     <style>
-        .checkout-section {
-            padding: 40px 0;
-        }
-        .checkout-form-list {
-            background: #fff;
-            padding: 30px;
-            border: 1px solid #e9e9e9;
-            border-radius: 5px;
-            margin-bottom: 30px;
-        }
-        .checkout-form-list h3 {
-            font-size: 20px;
+        .order-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9e9e9;
-        }
-        .order-summary {
-            background: #f7f7f7;
-            padding: 30px;
-            border-radius: 5px;
-            position: sticky;
-            top: 20px;
-        }
-        .order-summary h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
         }
         .product-item {
-            display: flex;
-            align-items: center;
+            border-bottom: 1px solid #dee2e6;
             padding: 15px 0;
-            border-bottom: 1px solid #eee;
         }
-        .product-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-        .product-info {
-            flex: 1;
-        }
-        .product-info h6 {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        .product-info span {
-            color: #666;
-            font-size: 13px;
-        }
-        .price-info {
-            text-align: right;
-        }
-        .price-info .price {
-            font-weight: 600;
-            color: #333;
-        }
-        .summary-list {
-            margin: 20px 0;
-        }
-        .summary-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .summary-list li.total {
+        .product-item:last-child {
             border-bottom: none;
-            margin-top: 10px;
-            padding-top: 20px;
-            border-top: 2px solid #333;
-            font-size: 18px;
-            font-weight: 600;
         }
-        .form-group label {
-            font-weight: 500;
-            margin-bottom: 8px;
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #dc3545;
         }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .address-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .address-group input:first-child {
-            flex: 0 0 120px;
-        }
-        .address-group button {
-            flex: 0 0 100px;
-        }
-        .payment-method {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .payment-method:hover {
-            border-color: #5830E0;
-        }
-        .payment-method.selected {
-            border-color: #5830E0;
-            background: #f8f8ff;
-        }
-        .payment-method input[type="radio"] {
-            margin-right: 10px;
+        .btn-payment {
+            font-size: 1.2rem;
+            padding: 15px 50px;
         }
     </style>
 </head>
 <body>
-    <!-- 헤더 포함 -->
-    <%@include file="/WEB-INF/views/common/header.jsp" %>
-    
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="breadcrumbs-content">
-                        <h1 class="page-title">주문서 작성</h1>
+    <div class="container mt-5 mb-5">
+        <h2 class="mb-4">주문/결제</h2>
+        
+        <!-- 주문 상품 정보 -->
+        <div class="order-section">
+            <h4>주문 상품</h4>
+            
+            <c:choose>
+                <%-- 장바구니 결제 --%>
+                <c:when test="${order_type == 'cart'}">
+                    <c:forEach var="cart" items="${cart_list}">
+                        <div class="product-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <strong>${cart.product_name}</strong>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    수량: ${cart.cart_cnt}개
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <fmt:formatNumber value="${cart.total_amount}" pattern="#,###"/>원
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="cart_id" value="${cart.cart_id}">
+                    </c:forEach>
+                </c:when>
+                
+                <%-- 단건 결제 --%>
+                <c:otherwise>
+                    <div class="product-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <strong>${product.product_name}</strong>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                수량: ${param.product_cnt}개
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원
+                            </div>
+                        </div>
                     </div>
+                    <input type="hidden" name="product_idx" value="${product.product_idx}">
+                    <input type="hidden" name="product_cnt" value="${param.product_cnt}">
+                </c:otherwise>
+            </c:choose>
+            
+            <hr>
+            <div class="text-end">
+                <span class="total-amount">
+                    총 결제금액: <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원
+                </span>
+            </div>
+        </div>
+        
+        <!-- 주문자 정보 -->
+        <div class="order-section">
+            <h4>주문자 정보</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">주문자명 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="order_mem_name" 
+                           value="${user.mem_name}" required>
                 </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-nav">
-                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="/cart/list.do">장바구니</a></li>
-                        <li>주문서 작성</li>
-                    </ul>
+                <div class="col-md-6">
+                    <label class="form-label">연락처 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="order_phone" 
+                           value="${user.mem_phone}" placeholder="010-1234-5678" required>
                 </div>
             </div>
         </div>
+        
+        <!-- 배송지 정보 -->
+        <div class="order-section">
+            <h4>배송지 정보</h4>
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label">우편번호 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="order_postal" 
+                           placeholder="우편번호" readonly required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="button" class="btn btn-secondary w-100" 
+                            onclick="searchAddress()">우편번호 검색</button>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">주소 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="order_address" 
+                           placeholder="주소" readonly required>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">상세주소</label>
+                    <input type="text" class="form-control" name="order_address_more" 
+                           placeholder="상세주소를 입력하세요">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 결제 수단 -->
+        <div class="order-section">
+            <h4>결제 수단</h4>
+            <select class="form-select" name="payment_method">
+                <option value="CARD">신용카드</option>
+                <option value="TRANSFER">계좌이체</option>
+                <option value="VIRTUAL_ACCOUNT">가상계좌</option>
+                <option value="MOBILE_PHONE">휴대폰 결제</option>
+            </select>
+        </div>
+        
+        <!-- 결제 버튼 -->
+        <div class="text-center mt-4">
+            <button type="button" id="paymentBtn" class="btn btn-primary btn-payment" 
+                    onclick="requestPayment()">
+                <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원 결제하기
+            </button>
+        </div>
     </div>
     
-    <!-- Checkout Section -->
-    <section class="checkout-section section">
-        <div class="container">
-            <form id="orderForm">
-                <!-- Hidden fields -->
-                <input type="hidden" name="order_type" value="${order_type}">
-                <c:if test="${order_type eq 'direct'}">
-                    <input type="hidden" name="product_idx" value="${product.product_idx}">
-                    <input type="hidden" name="product_cnt" value="${param.product_cnt}">
-                </c:if>
-                <c:if test="${order_type eq 'cart'}">
-                    <c:forEach var="cart_id" items="${cart_ids}">
-                        <input type="hidden" name="cart_id" value="${cart_id}">
-                    </c:forEach>
-                </c:if>
-                
-                <div class="row">
-                    <div class="col-lg-8 col-md-12 col-12">
-                        <!-- 주문자 정보 -->
-                        <div class="checkout-form-list">
-                            <h3>주문자 정보</h3>
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>주문자명 <span>*</span></label>
-                                        <input type="text" name="order_mem_name" placeholder="주문자명을 입력하세요" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>연락처 <span>*</span></label>
-                                        <input type="tel" name="order_phone" placeholder="010-0000-0000" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 배송 정보 -->
-                        <div class="checkout-form-list">
-                            <h3>배송 정보</h3>
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="sameAsOrderer">
-                                    <label class="custom-control-label" for="sameAsOrderer">주문자 정보와 동일</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>우편번호 <span>*</span></label>
-                                        <div class="address-group">
-                                            <input type="text" name="order_postal" id="order_postal" placeholder="우편번호" readonly required>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="findPostcode()">주소찾기</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>주소 <span>*</span></label>
-                                        <input type="text" name="order_address" id="order_address" placeholder="기본주소" readonly required>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>상세주소</label>
-                                        <input type="text" name="order_address_more" id="order_address_more" placeholder="상세주소를 입력하세요">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 결제 수단 -->
-                        <div class="checkout-form-list">
-                            <h3>결제 수단</h3>
-                            <div class="payment-method selected">
-                                <label>
-                                    <input type="radio" name="payment_method" value="tosspay" checked>
-                                    <strong>토스페이</strong>
-                                    <small class="text-muted ml-2">간편하게 결제하세요</small>
-                                </label>
-                            </div>
-<!--                   		<div class="payment-method">
-                                <label>
-                                    <input type="radio" name="payment_method" value="card">
-                                    <strong>신용카드</strong>
-                                </label>
-                            </div>
-                            <div class="payment-method">
-                                <label>
-                                    <input type="radio" name="payment_method" value="bank">
-                                    <strong>실시간 계좌이체</strong>
-                                </label>
-                        	</div> -->
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4 col-md-12 col-12">
-                        <!-- 주문 요약 -->
-                        <div class="order-summary">
-                            <h4>주문 상품</h4>
-                            
-                            <!-- 단건 구매 -->
-                            <c:if test="${order_type eq 'direct'}">
-                                <div class="product-item">
-                                    <img src="${pageContext.request.contextPath}/images/${product.product_image_url}"  alt="${product.product_name}">
-                                    <div class="product-info">
-                                        <h6>${product.product_name}</h6>
-                                        <span>수량: ${param.product_cnt}개</span>
-                                    </div>
-                                    <div class="price-info">
-                                        <div class="price">
-                                            <fmt:formatNumber value="${product.product_price * param.product_cnt}" pattern="#,###"/>원
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:if>
-                            
-                            <!-- 장바구니 구매 -->
-                            <c:if test="${order_type eq 'cart'}">
-                                <c:forEach var="item" items="${cart_list}">
-                                    <div class="product-item">
-                                        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="${item.product_name}">
-                                        <div class="product-info">
-                                            <h6>${item.product_name}</h6>
-                                            <span>수량: ${item.cart_cnt}개</span>
-                                        </div>
-                                        <div class="price-info">
-                                            <div class="price">
-                                                <fmt:formatNumber value="${item.total_amount}" pattern="#,###"/>원
-                                            </div>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </c:if>
-                            
-                            <ul class="summary-list">
-                                <li>
-                                    <span>상품 합계</span>
-                                    <span><fmt:formatNumber value="${total_amount}" pattern="#,###"/>원</span>
-                                </li>
-                                <li>
-                                    <span>배송비</span>
-                                    <span>무료</span>
-                                </li>
-                                <li class="total">
-                                    <span>총 결제금액</span>
-                                    <span class="text-primary"><fmt:formatNumber value="${total_amount}" pattern="#,###"/>원</span>
-                                </li>
-                            </ul>
-                            
-                            <div class="button">
-                               <button id="payment-button" class="btn btn-primary w-100">
-                                    <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원 결제하기
-                                </button>
-                            </div>
-                            
-                            <div class="mt-3 text-center">
-                                <small class="text-muted">
-                                    결제 진행 시 <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </section>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
-    <!-- 푸터 포함 -->
-    <%@include file="/WEB-INF/views/common/footer.jsp" %>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- JavaScript -->
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/tiny-slider.js"></script>
-    <script src="/assets/js/glightbox.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Daum 우편번호 API -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
-<script>
-    // 토스 키
-    const tossClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-    const totalAmount = ${total_amount};
-    
-    // 다음 우편번호 API
-    function findPostcode() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                let addr = '';
-                
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                } else {
-                    addr = data.jibunAddress;
-                }
-                
-                document.getElementById('order_postal').value = data.zonecode;
-                document.getElementById('order_address').value = addr;
-                document.getElementById('order_address_more').focus();
-            }
-        }).open();
-    }
-    
-    $('#sameAsOrderer').on('change', function() {
-		//시간 남으면 구현
-    });
-    
-    // 결제수단
-    $('.payment-method').on('click', function() {
-        $('.payment-method').removeClass('selected');
-        $(this).addClass('selected');
-        $(this).find('input[type="radio"]').prop('checked', true);
-    });
+    <script>
 
-    document.getElementById('payment-button').addEventListener('click', function() {
+        // 클라이언트 키로 TossPayments 초기화
+        const clientKey = "test_ck_AQ92ymxN34R7WM667J94rajRKXvd";
         
-        // 유효성 검사
-        let orderName = $('input[name="order_mem_name"]').val();
-        let orderPhone = $('input[name="order_phone"]').val();
-        let postal = $('input[name="order_postal"]').val();
-        let address = $('input[name="order_address"]').val();
+        // mem_idx를 사용하여 고유한 customerKey 생성
+        const customerKey = "CUSTOMER_${user.mem_idx}";
         
-        if (!orderName || !orderPhone || !postal || !address) {
-            alert('필수 정보를 모두 입력해주세요.');
-            return false;
-        }
+        console.log("========================================");
+        console.log("TossPayments 초기화 시작");
+        console.log("clientKey:", clientKey);
+        console.log("customerKey:", customerKey);
+        console.log("========================================");
         
-        let phoneRegex = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/;
-        if (!phoneRegex.test(orderPhone.replace(/-/g, ''))) {
-            alert('올바른 전화번호 형식을 입력해주세요.');
-            return false;
-        }
+        // TossPayments 객체 생성
+        const tossPayments = TossPayments(clientKey);
         
-        if (!confirm('주문을 진행하시겠습니까?')) {
-            return false;
-        }
+        // 회원 결제
+        const payment = tossPayments.payment({ customerKey });
         
-        // 주문 데이터
-        let formData = $('#orderForm').serialize();
+        console.log("TossPayments 초기화 완료");
+        console.log("tossPayments:", tossPayments);
+        console.log("payment:", payment);
+        console.log("========================================");
         
-        // 주문 생성
-        $.ajax({
-            url: '/order/create_ready.do',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    requestTossPayment(
-                        response.payment_key,
-                        response.order_name,
-                        response.amount
-                    );
-                } else {
-                    alert('주문 생성 실패: ' + response.message);
+        // 우편번호 검색
+        function searchAddress() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    $('input[name="order_postal"]').val(data.zonecode);
+                    $('input[name="order_address"]').val(data.address);
+                    $('input[name="order_address_more"]').focus();
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('주문 생성 중 오류가 발생했습니다.');
+            }).open();
+        }
+        
+        // 폼 유효성 검사
+        function validateForm() {
+            const requiredFields = [
+                { name: 'order_mem_name', label: '주문자명' },
+                { name: 'order_phone', label: '연락처' },
+                { name: 'order_postal', label: '우편번호' },
+                { name: 'order_address', label: '주소' }
+            ];
+            
+            for (let field of requiredFields) {
+                const value = $('input[name="' + field.name + '"]').val();
+                if (!value || value.trim() === '') {
+                    alert(field.label + '을(를) 입력해주세요.');
+                    $('input[name="' + field.name + '"]').focus();
+                    return false;
+                }
             }
-        });
-    });
-    
-    //토스 결제창 호출
-    function requestTossPayment(paymentKey, orderName, amount) {
+            
+            // 연락처 형식 검사
+            const phone = $('input[name="order_phone"]').val();
+            const phonePattern = /^\d{2,3}-\d{3,4}-\d{4}$/;
+            if (!phonePattern.test(phone)) {
+                alert('연락처를 올바른 형식으로 입력해주세요. (예: 010-1234-5678)');
+                $('input[name="order_phone"]').focus();
+                return false;
+            }
+            
+            return true;
+        }
         
-        let tossPayments = TossPayments(tossClientKey);
-        
-        tossPayments.requestPayment('카드', {
-            amount: amount,
-            orderId: paymentKey,  // payment_key를 orderId로 사용
-            orderName: orderName,
-            customerName: '${user.mem_name}',
-            successUrl: window.location.origin + '/payment/success.do',
-            failUrl: window.location.origin + '/payment/fail.do'
-        })
-        .catch(function(error) {
-            if (error.code === 'USER_CANCEL') {
-                alert('결제를 취소하셨습니다.');
+        // 결제 요청 메인 함수
+        async function requestPayment() {
+            console.log("========================================");
+            console.log("결제 요청 시작");
+            console.log("========================================");
+            
+            // 폼 유효성 검사
+            if (!validateForm()) {
+                return;
+            }
+
+            // 중복 클릭 방지
+            $('#paymentBtn').prop('disabled', true).text('처리 중...');
+            
+            // 주문 데이터 수집
+            const orderData = {
+                order_type: '${order_type}',
+                order_mem_name: $('input[name="order_mem_name"]').val().trim(),
+                order_phone: $('input[name="order_phone"]').val().trim(),
+                order_postal: $('input[name="order_postal"]').val().trim(),
+                order_address: $('input[name="order_address"]').val().trim(),
+                order_address_more: $('input[name="order_address_more"]').val().trim(),
+                payment_method: $('select[name="payment_method"]').val()
+            };
+            
+            // 주문 타입에 따른 데이터 추가
+            if ('${order_type}' === 'cart') {
+                const cartIds = [];
+                $('input[name="cart_id"]').each(function() {
+                    cartIds.push($(this).val());
+                });
+                orderData.cart_id = cartIds;
+                console.log("장바구니 결제 - cart_ids:", cartIds);
             } else {
-                alert('결제 중 오류가 발생했습니다: ' + error.message);
+                orderData.product_idx = $('input[name="product_idx"]').val();
+                orderData.product_cnt = $('input[name="product_cnt"]').val();
+                console.log("단건 결제 - product_idx:", orderData.product_idx);
             }
-        });
-    }
-</script>
+            
+            console.log("서버 전송 데이터:", orderData);
+            
+            // 서버에 주문 생성 요청
+            try {
+                const response = await $.ajax({
+                    url: '${pageContext.request.contextPath}/order/create_ready.do',
+                    type: 'POST',
+                    data: orderData,
+                    traditional: true,
+                    dataType: 'json'
+                });
+                
+                console.log("========================================");
+                console.log("서버 응답 성공");
+                console.log("========================================");
+                console.log("응답 데이터:", response);
+                
+                if (response.success) {
+                    // TossPayments 결제창 호출
+                    await callTossPayments(response);
+                } else {
+                    console.error("서버 오류:", response.message);
+                    alert('주문 생성 실패: ' + (response.message || '알 수 없는 오류'));
+                    $('#paymentBtn').prop('disabled', false).text('${total_amount}원 결제하기');
+                }
+            } catch (error) {
+                console.error("========================================");
+                console.error("서버 요청 실패");
+                console.error("========================================");
+                console.error("Error:", error);
+                alert('서버 요청 중 오류가 발생했습니다.');
+                $('#paymentBtn').prop('disabled', false).text('${total_amount}원 결제하기');
+            }
+        }
+        
+        // ========================================
+        // TossPayments 결제창 호출 - 공식 문서 방식
+        // ========================================
+        async function callTossPayments(orderData) {
+            console.log("========================================");
+            console.log("TossPayments 결제창 호출");
+            console.log("========================================");
+            console.log("payment_key:", orderData.payment_key);
+            console.log("order_name:", orderData.order_name);
+            console.log("amount:", orderData.amount);
+            
+            const paymentMethod = $('select[name="payment_method"]').val();
+            const customerName = $('input[name="order_mem_name"]').val();
+            const customerPhone = $('input[name="order_phone"]').val().replace(/-/g, '');
+            
+            console.log("method:", paymentMethod);
+            console.log("customer:", customerName, customerPhone);
+            
+            try {
+                // payment.requestPayment()
+                await payment.requestPayment({
+                    method: paymentMethod, // "CARD", "TRANSFER", "VIRTUAL_ACCOUNT" 등
+                    amount: {
+                        currency: "KRW",
+                        value: orderData.amount
+                    },
+                    orderId: orderData.payment_key,
+                    orderName: orderData.order_name, 
+                    successUrl: window.location.origin + '${pageContext.request.contextPath}/payment/success.do',
+                    failUrl: window.location.origin + '${pageContext.request.contextPath}/payment/fail.do',
+                    customerEmail: "${user.mem_email}",
+                    customerName: customerName,
+                    customerMobilePhone: customerPhone,
+                    // 카드 결제 옵션 (필요시)
+                    card: {
+                        useEscrow: false,
+                        flowMode: "DEFAULT",
+                        useCardPoint: false,
+                        useAppCardOnly: false
+                    }
+                });
+                
+                console.log("결제 요청 완료");
+                
+            } catch (error) {
+                console.error("TossPayments 에러");
+                console.error("Error:", error);
+                console.error("Error code:", error.code);
+                console.error("Error message:", error.message);
+                
+                if (error.code === 'USER_CANCEL') {
+                    alert('결제를 취소하셨습니다.');
+                } else if (error.code === 'INVALID_CARD_COMPANY') {
+                    alert('유효하지 않은 카드사입니다.');
+                } else {
+                    alert('결제 중 오류가 발생했습니다: ' + (error.message || '알 수 없는 오류'));
+                }
+                
+                $('#paymentBtn').prop('disabled', false).text('${total_amount}원 결제하기');
+            }
+        }
+    </script>
 </body>
 </html>

@@ -241,6 +241,28 @@ public class PostController {
 		return map;
 	}
 	
+	// post 댓글 목록 가져오기
+	@RequestMapping("/post/reply_list")
+	@ResponseBody
+	public Map<String, Object> postReplyList(){
+		System.out.printf("		[PostController-@ResponseBody] postReplyList()\n");
+		Map<String,Object> map = new HashMap<String, Object>();
+		List<Map<String,Object>> postReplyList= replyDao.selectReplyList();
+		ReplyVo replyVo;
+		for(Map<String,Object> row:postReplyList) {
+			Integer post_idx=(Integer)row.get("post_idx");
+			String replyList= (String)row.get("replyList");
+			
+			//map.put(post_idx, replyList);
+			System.out.println(post_idx);
+			System.out.println(replyList);
+		}
+		
+		
+		System.out.printf("		[PostController-@ResponseBody] return : map\n");
+		System.out.printf("\n");
+		return map;
+	}
 	
 	//post 댓글 등록 처리
 	@RequestMapping("/post/reply")
@@ -260,15 +282,32 @@ public class PostController {
 		replyDao.insertPostReply(replyVo);
 		
 		System.out.printf("	[PostController] return : map");
+		System.out.printf("\n");
 		return map;
 	}
 	
+	//댓글 수정 버튼 클릭
 	@RequestMapping("/post/reply_modify")
 	@ResponseBody
 	public Map<String,Object> postReplyModify(ReplyVo replyVo){
+		System.out.printf("	[PostController-@ResponseBody] postReplyModify()\n");
+		System.out.printf("		reply_idx => %d\n",replyVo.getReply_idx());
+		System.out.printf("		reply_content => %s\n",replyVo.getReply_content());
+		
 		Map<String,Object> map = new HashMap<String, Object>();
+		int res=replyDao.updatePostReply(replyVo);
+		map.put("res", res==1);
+		System.out.printf("	[PostController-@ResponseBody] return map \n");
+		System.out.printf("	\n");
 		return map;
 		
+	}
+	
+	
+	//댓글 테스트화면
+	@RequestMapping("tt")
+	public String tt() {
+		return "/post/comments";
 	}
 	
 	
