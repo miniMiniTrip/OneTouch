@@ -214,7 +214,7 @@ margin-left: -20px;
                             마이페이지 <i class="lni lni-chevron-down"></i>
                         </a>
                         <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
-                            <li><a href="${pageContext.request.contextPath}/wishlist/list.do">내 정보</a></li>
+                            <li><a href="${pageContext.request.contextPath}/cart/list.do">내 정보</a></li>
                             <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
                             <li><a href="${pageContext.request.contextPath}/cart">장바구니</a></li>
                             <li><a href="${pageContext.request.contextPath}/wishlist">찜한 상품</a></li>
