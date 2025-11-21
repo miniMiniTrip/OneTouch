@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.common.MyConstant;
 import com.onetouch.dao.PostDao;
+import com.onetouch.dao.ReplyDao;
 import com.onetouch.service.PostService;
-import com.onetouch.util.Paging;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
+import com.onetouch.vo.ReplyVo;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,6 +35,10 @@ public class PostController {
 	
 	@Autowired
 	PostDao postDao;
+	
+
+	@Autowired
+	ReplyDao replyDao;
 	
 	
 	
@@ -238,6 +242,34 @@ public class PostController {
 	}
 	
 	
+	//post 댓글 등록 처리
+	@RequestMapping("/post/reply")
+	@ResponseBody
+	public Map<String,Object> postReplyInsert(ReplyVo replyVo){
+		System.out.printf("	[PostController-@ResponseBody] postReplyInsert()\n");
+		Map<String,Object> map = new HashMap<String, Object>();
+		int post_idx=replyVo.getPost_idx();
+		System.out.printf("		post_idx=>%d\n",post_idx);
+		int login_mem_idx=replyVo.getMem_idx();
+		System.out.printf("		login_mem_idx=>%d\n",login_mem_idx);
+		String reply_content=replyVo.getReply_content();
+		System.out.printf("		reply_content=>%s\n",reply_content);
+		//map.put("post_idx", post_idx);
+		//map.put("login_mem_idx",login_mem_idx);
+		//map.put("reply_content",reply_content);
+		replyDao.insertPostReply(replyVo);
+		
+		System.out.printf("	[PostController] return : map");
+		return map;
+	}
+	
+	@RequestMapping("/post/reply_modify")
+	@ResponseBody
+	public Map<String,Object> postReplyModify(ReplyVo replyVo){
+		Map<String,Object> map = new HashMap<String, Object>();
+		return map;
+		
+	}
 	
 	
 }

@@ -1658,9 +1658,28 @@ document.addEventListener('click', function(e) {
              </div>
              
              <div class="comment-input">
-                 <input type="text" placeholder="댓글을 남겨보세요...">
-                 <button class="comment-submit">댓글</button>
+                 <input type="text" class="post-comment" id="reply_content"  placeholder="댓글을 남겨보세요...">
+                 <button class="comment-submit" data-postidx="\${postVo.post_idx}" onclick="replyInsert(this);">댓글</button>
              </div>
+                 `
+                 if(postVo.replyList && postVo.replyList.length>0){
+	                 for(let replys of postVo.replyList){
+	                	 html=html+`
+	                	 <div>
+	                	 <p>\${replys.mem_id}</p> 
+	                	 <p>\${replys.reply_content}</p>
+	                	 <p>\${replys.reply_time}</p>
+	                	 </div>
+	                	 <div>
+	                	 <input type="button" value="-"/>
+	                	 <input type="button" value="수정"/ data-replyidx="\${replys.reply_idx}" onclick="replyModify(this);">
+	                	 </div>
+	                	 <div>
+	                	 </div>
+	                	 `
+	                 }
+                 }
+             html=html+`
              <br>
              <br>
 				`
@@ -1668,6 +1687,8 @@ document.addEventListener('click', function(e) {
     		loop=loop+1;
     		} 
     		/* =======================================end html 게시물 영역============================================ */
+    		
+    		/* 페이지처리 영역 */
     		html=html+d.pagination;
     		if(tabType=='all'){
     		$("#posts-container-all").html(html);
@@ -1713,6 +1734,12 @@ document.addEventListener('click', function(e) {
     				window.scrollTo(0,420)
     	    	 }
     	     });
+    	     
+    	     /* end: 페이지 처리 영역 */
+    	     
+    	     
+
+    	     
     	}
      ,error:function(e){
      	
@@ -1721,6 +1748,60 @@ document.addEventListener('click', function(e) {
      });
 }  
 
+ // =========================
+ // 		 댓글 등록
+ // =========================
+ /* ------------------------댓글 등록 함수--------------------------- */
+ function replyInsert(btn){
+ 	let postIdx=btn.dataset.postidx;  
+ 	let replyContent=document.getElementById("reply_content").value;
+ 	
+	//alert(postIdx);
+	//alert(replyContent); // 댓글 내용
+	let login_mem_idx="${user.mem_idx}";
+	//로그인 유저 체크 하고 있으면 댓글달기 실행
+	if(login_mem_idx>0){
+		//alert(login_mem_idx); // 로그인 유저 idx
+			$.ajax({
+	 		url:"/post/reply"
+	 		,data:{"post_idx":postIdx,"mem_idx":login_mem_idx,"reply_content":replyContent}
+	 		,success:function(d){
+	 			alert("성공");
+	 		}
+	 		,error:function(e){
+	 			
+	 			alert("댓글 달기 실패 관리자에게 문의");
+	 		}
+	 	});//end 댓글달기 ajax 
+	}else{
+		alert("로그인이 필요합니다.");
+	}
+   	    	    /*  document.addEventListener("click", function(e) {
+   	    	    	alert() 
+   	    	     } */
+   	    	     //let postComments = document.querySelectorAll('.comment-input'); // .을 추가하여 클래스를 선택하도록 수정
+   	    	     //postComments.forEach(function(comment) {
+   	    	     //    comment.addEventListener('click', function(e) {
+   	    	     //        alert(e.target.dataset.postIdx); // data-post-idx는 data-postIdx로 변경해야 함
+   	    	     //    });
+   	    	     //});
+     }
+ /* ------------------------end:댓글 등록 함수--------------------------- */
+ 
+ 
+ 
+ /* ------------------------댓글 수정 함수--------------------------- */
+ 	function replyModify(data){
+	 
+     let reply_idx=data.dataset.replyidx;
+     alert(reply_idx);
+     
+ }
+ /* ------------------------end:댓글 수정 함수--------------------------- */
+ 
+ 
+ 
+ 
  // =========================
  // 4. 상품 스크롤 드래그 기능
  // =========================
@@ -1818,7 +1899,7 @@ document.addEventListener('click', function(e) {
      			,method:"post"
      			,success:function(d){
      				if(d.post_delete){
-     				alert("삭제성공");
+     				//alert("삭제성공");
      				location.href="/post/list"
      				};
      				
@@ -1828,12 +1909,14 @@ document.addEventListener('click', function(e) {
      			}
      			
      		});
-           	alert(postIdx);
+           	//alert(postIdx);
         }
     });
 });
  }
  /* end: 내용에서 수정삭제 머튼 컨트롤 js------------------------------------------------------------------------ */
+
+
 
  /* post 페이지에 처음 들어왔을때 전체보기 1번클릭할수 있게 초기화 */
  document.addEventListener('DOMContentLoaded', function() {

@@ -16,14 +16,15 @@
             </div>
             <div class="col-lg-6 col-md-6 col-12">
                 <ul class="breadcrumb-nav">
-                    <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> Home</a></li>
-                    <li>Products</li>
+                    <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i>Home</a></li>
+                    <li>Product</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 <!-- End Breadcrumbs -->
+
 <style>
 /* ==================== 전체 레이아웃 ==================== */
 .product-grids {
@@ -183,7 +184,7 @@
                 <!-- 검색 위젯 -->
                 <div class="search-widget">
                     <h3>검색</h3>
-                    <form action="${pageContext.request.contextPath}/product/list.do" method="get">
+                    <form action="${pageContext.request.contextPath}/product/list" method="get">
                         <input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
                         <c:if test="${not empty category}">
                             <input type="hidden" name="category" value="${category}">
@@ -198,19 +199,19 @@
                 <!-- 카테고리 메뉴 -->
                 <div class="menu-section">
                     <div class="menu-title">카테고리</div>
-                    <a href="${pageContext.request.contextPath}/product/list.do${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
                        class="menu-item ${empty category ? 'active' : ''}">
                         전체보기
                     </a>
-                    <a href="${pageContext.request.contextPath}/product/list.do?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
                        class="menu-item ${category eq '1' ? 'active' : ''}">
                         스킨케어
                     </a>
-                    <a href="${pageContext.request.contextPath}/product/list.do?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
                        class="menu-item ${category eq '2' ? 'active' : ''}">
                         메이크업/선케어
                     </a>
-                    <a href="${pageContext.request.contextPath}/product/list.do?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
                        class="menu-item ${category eq '3' ? 'active' : ''}">
                         클렌징케어
                     </a>
@@ -227,15 +228,15 @@
                                 <div class="product-sorting">
                                     <label for="sorting">정렬:</label>
                                     <select class="form-control" id="sorting" onchange="location.href=this.value;">
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=popular" 
+                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=popular" 
                                                 ${sort eq 'popular' or empty sort ? 'selected' : ''}>인기순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=newest" 
+                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=newest" 
                                                 ${sort eq 'newest' ? 'selected' : ''}>최신순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-low" 
+                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-low" 
                                                 ${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high" 
+                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high" 
                                                 ${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty sort ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
+                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
                                                 ${sort eq 'rating' ? 'selected' : ''}>평점순</option>
                                     </select>
                                     <h3 class="total-show-product">총 <span>${totalCount}</span>개 상품</h3>
@@ -331,7 +332,7 @@
                                             <ul class="pagination-list">
                                                 <c:if test="${startPage > 1}">
                                                     <li>
-                                                        <a href="${pageContext.request.contextPath}/product/list.do?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+                                                        <a href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
                                                             <i class="lni lni-chevron-left"></i>
                                                         </a>
                                                     </li>
@@ -339,7 +340,7 @@
                                                 
                                                 <c:forEach var="i" begin="${startPage}" end="${endPage}">
                                                     <li class="${i eq currentPage ? 'active' : ''}">
-                                                        <a href="${pageContext.request.contextPath}/product/list.do?page=${i}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+                                                        <a href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
                                                             ${i}
                                                         </a>
                                                     </li>
@@ -347,7 +348,9 @@
                                                 
                                                 <c:if test="${endPage < totalPage}">
                                                     <li>
-                                                        <a href="${pageContext.request.contextPath}/product/list.do?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+                                                        <a href="${pageContext.request.contextPath}/product/list
+                                                        
+                                                        ?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
                                                             <i class="lni lni-chevron-right"></i>
                                                         </a>
                                                     </li>
@@ -706,7 +709,7 @@ function resetWishlistIcons(){
 	const wishlistButtons = document.querySelectorAll('.wishlist-toggle');
 	wishlistButtons.forEach(button=> {
 		const icon = button.querySelector('i');
-		icon.className = 'lni l	ni-heart';
+		icon.className = 'lni lni-heart';
 		button.setAttribute('data-wishlist', 'false');
 	});
 }
@@ -806,6 +809,11 @@ function buyNow(product_idx) {
     // 즉시구매는 수량을 1로 고정하여 주문서 페이지로 이동
     location.href = '${pageContext.request.contextPath}/order/direct_form.do?product_idx=' + product_idx + '&product_cnt=1';
 }
+
+
+
+
+
 </script>
 
 <%@include file="/WEB-INF/views/common/footer.jsp" %>
