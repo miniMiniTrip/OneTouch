@@ -706,7 +706,7 @@ function resetWishlistIcons(){
 	const wishlistButtons = document.querySelectorAll('.wishlist-toggle');
 	wishlistButtons.forEach(button=> {
 		const icon = button.querySelector('i');
-		icon.className = 'lni l	ni-heart';
+		icon.className = 'lni lni-heart';
 		button.setAttribute('data-wishlist', 'false');
 	});
 }
