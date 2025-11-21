@@ -92,7 +92,7 @@
         .container {
             max-width: 1600px;
             margin: 40px auto;
-            padding: 0 40px;
+            padding: 0 48px;
         }
 
         /* 레이아웃 */
@@ -703,42 +703,16 @@
     </style>
 </head>
 <body>
-    <!-- 헤더 -->
-    <header class="header">
-        <div>
-            <a href="/" class="logo">One<span>Touch</span></a>
-            <span class="admin-badge">관리자</span>
-        </div>
-        <div class="header-right">
-            <span class="header-user">관리자님</span>
-            <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
-        </div>
-    </header>
+  <!-- 헤더 -->
+    <%@ include file="../admin_header.jsp" %>
+    
 
     <!-- 메인 컨테이너 -->
     <div class="container">
         <div class="admin-layout">
-            <!-- 사이드바 -->
-            <aside class="sidebar">
-                <div class="sidebar-section">
-                    <div class="sidebar-title">대시보드</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="/adminpage/dashboard">📊 통계 대시보드</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-title">관리</div>
-                    <ul class="sidebar-menu">
-                        <li><a href="#">👥 회원관리</a></li>
-                        <li><a href="/adminpage/product" class="active">📦 상품관리</a></li>
-                        <li><a href="/order/management">🚚 주문관리</a></li>
-                        <li><a href="#">💬 Q&A관리</a></li>
-                    </ul>
-                </div>
-
-              
-            </aside>
+            
+              <!-- 사이드바 -->
+        <%@ include file="../admin_side.jsp"%>
 
             <!-- 메인 컨텐츠 -->
             <main class="main-content">
