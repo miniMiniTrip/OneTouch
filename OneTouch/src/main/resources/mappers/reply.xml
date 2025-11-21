@@ -3,6 +3,29 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.ReplyDao">
+
+<!-- 댓글 그룹화로 조회 -->
+	<select id="selectReplyList" resultType="map">
+	SELECT
+    p.post_idx,
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'reply_idx', r.reply_idx,
+            'mem_idx', r.mem_idx,
+            'mem_id', m.mem_id,           -- member 테이블에서 가져온 ID
+            'reply_content', r.reply_content,
+            'reply_time', r.reply_time,
+            'reply_update', r.reply_update
+        )
+    ) AS replyList
+	FROM post p
+	LEFT JOIN reply r ON p.post_idx = r.post_idx
+	LEFT JOIN mem m ON r.mem_idx = m.mem_idx
+	GROUP BY p.post_idx
+	ORDER BY p.post_idx;
+	</select>
+	
+	<!-- post 댓글 추가 -->
 	<insert id="insertPostReply" parameterType="ReplyVo">
 		INSERT INTO reply(
 							reply_idx
@@ -19,4 +42,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							,0
 							)
 	</insert>
+	
+	<update id="updatePostReply" parameterType="ReplyVo">
+		update reply 
+		set 
+			reply_content=#{reply_content} , reply_update=now()
+		where
+			reply_idx=#{reply_idx}
+			 
+	</update>
 </mapper>

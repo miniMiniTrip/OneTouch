@@ -649,6 +649,357 @@ body {
     color: gold; /* 노란색 */
 }
 
+
+
+
+/* ------------------	댓글 css		------------------ */
+/* 댓글 섹션 - 기존 스타일과 동일한 패턴 */
+.comments-section {
+    padding: 0 15px 15px;
+    background-color: #fff;
+}
+
+/* 댓글 아이템 - post-header와 동일한 구조 */
+.comment-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* 댓글 헤더 - post-header와 동일 */
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-username {
+    font-weight: 600;
+    font-size: 13px;
+    margin: 0;
+    color: #333;
+}
+
+.comment-actions {
+    margin-left: auto;
+    position: relative;
+}
+
+.comment-more-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+}
+
+/* 점3개 메뉴 - 기존 more-options-menu와 동일 */
+.comment-more-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    padding: 10px;
+    z-index: 100;
+    min-width: 80px;
+}
+
+.comment-more-menu button {
+    background: none;
+    border: none;
+    padding: 8px 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+}
+
+.comment-more-menu button:hover {
+    background-color: #f0f0f0;
+}
+
+/* 댓글 내용 */
+.comment-content-wrapper {
+    padding-left: 42px;
+}
+
+.comment-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.comment-time {
+    color: #999;
+    font-size: 12px;
+}
+
+.edited-mark {
+    font-style: italic;
+    margin-left: 5px;
+}
+
+/* 댓글 수정시 저장 버튼 취소버튼 */
+/* OneTouch 댓글 저장/취소 버튼 CSS */
+
+.comment-edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 8px;
+}
+
+.comment-save-btn,
+.comment-cancel-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    letter-spacing: 0.5px;
+    min-width: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 저장 버튼 - OneTouch 메인 컬러 */
+.comment-save-btn {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3366cc 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(30, 60, 114, 0.4);
+}
+
+.comment-save-btn:hover {
+    background: linear-gradient(135deg, #1a3360 0%, #245285 50%, #2952b3 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 60, 114, 0.6);
+}
+
+.comment-save-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(30, 60, 114, 0.3);
+}
+
+/* 저장 버튼 빛나는 효과 */
+.comment-save-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.comment-save-btn:hover::before {
+    left: 100%;
+}
+
+/* 취소 버튼 - 부드러운 회색 */
+.comment-cancel-btn {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.15);
+}
+
+.comment-cancel-btn:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    color: #495057;
+    border-color: #ced4da;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.25);
+}
+
+.comment-cancel-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(108, 117, 125, 0.2);
+}
+
+/* 포커스 상태 */
+.comment-save-btn:focus,
+.comment-cancel-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.25);
+}
+
+/* 로딩 상태 (선택사항) */
+.comment-save-btn.loading {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.comment-save-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 버튼 그룹 애니메이션 */
+.comment-edit-buttons {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 성공 상태 애니메이션 */
+.comment-save-btn.success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    animation: successPulse 0.6s ease;
+}
+
+@keyframes successPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* 반응형 */
+@media (max-width: 767px) {
+    .comment-save-btn,
+    .comment-cancel-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+        min-width: 50px;
+    }
+    
+    .comment-edit-buttons {
+        gap: 6px;
+        margin-top: 10px;
+    }
+}
+
+/* 다크모드 대응 (선택사항) */
+@media (prefers-color-scheme: dark) {
+    .comment-cancel-btn {
+        background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+        color: #adb5bd;
+        border-color: #495057;
+    }
+    
+    .comment-cancel-btn:hover {
+        background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+        color: #f8f9fa;
+        border-color: #6c757d;
+    }
+}
+
+/* 고대비 접근성 */
+@media (prefers-contrast: high) {
+    .comment-save-btn {
+        background: #000033;
+        border: 2px solid white;
+    }
+    
+    .comment-cancel-btn {
+        background: white;
+        color: #000033;
+        border: 2px solid #000033;
+    }
+}
+
+/* 추가: 버튼 상태별 텍스트 변경 */
+.comment-save-btn[data-state="saving"]::after {
+    content: "저장 중...";
+}
+
+.comment-save-btn[data-state="success"]::after {
+    content: "✓ 저장됨";
+}
+
+/* 예쁜 리플 효과 */
+.comment-save-btn,
+.comment-cancel-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.comment-save-btn::after,
+.comment-cancel-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.comment-save-btn:active::after,
+.comment-cancel-btn:active::after {
+    width: 200px;
+    height: 200px;
+}
+/* end 댓글 수정시 저장 취소 버튼 */
+
+/* 반응형 - 기존과 동일 */
+@media (max-width: 767px) {
+    .comment-profile-img {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .comment-content-wrapper {
+        padding-left: 38px;
+    }
+    
+    .comment-text {
+        font-size: 13px;
+    }
+}
+/* ------------------	end : 댓글 css		------------------ */
+
+
+
+
     </style>
 </head>
 
@@ -701,456 +1052,26 @@ body {
                 <!-- 커뮤니티 전체 목록 ============================================================= -->
                 
                 <div class="community-post" id="posts-container-all" data-tab="all">
-                <%-- 	<c:forEach var="postVo" items="${postVo_array }" varStatus="loop">
-                    <div class="post-header">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
-                        <p class="username">${postVo.mem_id }</p>
-                        <div class="post-actions">
-                        (${postVo.post_category })
-                            <button class="follow-btn">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="image-carousel" id="carousel-1">
-                        <div class="carousel-inner">
-                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
-                            <div class="carousel-item ${status.first ? 'active' : ''}">
-                            ${pageContext.request.contextPath }
-                                <img src="${pageContext.request.contextPath }/images/posts/${img}" alt="${img }" class="post-image d-block w-100">
-                            </div>
-                         </c:forTokens>
-                         
-                        </div>
-                        
-                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                        
-                        <div class="carousel-indicators" id="indicators-${loop.index }">
-                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
-							    <div class="indicator ${s.first ? 'active' : ''}" 
-							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
-							  </c:forTokens>
-                        </div>
-                    </div>
-                    
-                    <div class="product-section">
-                    	<c:forEach var="productVo" items="${postVo.productList }">
-	                        <div class="product-card">
-	                        	<a href="/product/4" class="product-link">
-				                            <img src="${pageContext.request.contextPath }/images/${productVo.product_image_url}" alt="제품" class="product-img">
-				                            <p class="product-discount">${productVo.product_name }</p>
-				                            <p class="product-price">${productVo.product_price }</p> 
-		                        </a>    
-	                        </div>
-                     	</c:forEach>
-                    </div>
-                    
-                    
-                    <div class="post-interactions">
-					    <!-- 하트 버튼 -->
-						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
-						<c:set var="isLiked" value="false" />
-						
-						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
-						<c:forEach var="likeVo" items="${postVo.likeList}">
-						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
-						        <c:set var="isLiked" value="true" />
-						    </c:if>
-						</c:forEach>
-						
-						<!-- 좋아요를 누른 경우 -->
-						<c:if test="${isLiked}">
-						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
-						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
-						    </button>
-						</c:if>
-						
-						<!-- 좋아요를 누르지 않은 경우 -->
-						<c:if test="${!isLiked}">
-						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
-						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
-						    </button>
-						</c:if>
-						<p class="post-likes" data-post-idx="${postVo.post_idx }">${postVo.post_like }</p>
-						
-					    <button class="interaction-btn">
-					        <i class="far fa-comment"></i>
-					    </button>
-					    
-				<!-- 	    <button class="interaction-btn">
-					        <i class="far fa-share-square"></i>
-					    </button> -->
-					    
-   						<!-- 채워진 별 -->
-   						<c:if test="${postVo.post_rating != 0}">
-						<button class="interaction-btn star active" data-post-idx="${postVo.post_idx}">
-						    <i class="fas fa-star"></i>
-						</button>
-						<p>${postVo.post_rating }</p>  
-   						</c:if>
-						
-					    <c:if test="${postVo.mem_idx==user.mem_idx }">
-					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
-					    <button class="interaction-btn more-options">
-					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
-					    </button>
-					
-					    <!-- 숨겨진 수정/삭제 버튼 -->
-					    <div class="more-options-menu" style="display: none;">
-					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
-					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
-					    </div>
-					    </c:if>
-					</div>
-                    
-                    <div class="post-content">
-                        
-                    	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">${postVo.post_content }</p>
-                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">${postVo.post_time }</p>
-                    </div>
-                    
-                    <div class="comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                        <button class="comment-submit">댓글</button>
-                    </div>
-                    <br>
-                    <br>
-                </c:forEach> --%>
+                
                 </div>
                 <!-- /커뮤니티 전체 목록 ============================================================= -->
 
 
                 <!-- 커뮤니티 스킨 목록 ============================================================= -->
                 <div class="community-post" id="posts-container-skin" data-tab="skin">
-                <%-- <c:forEach var="postVo" items="${postSkin_array }" varStatus="loop">
-                    <div class="post-header">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
-                        <p class="username">${postVo.mem_id }</p>
-                        <div class="post-actions">
-                            <button class="follow-btn">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="image-carousel" id="carousel-1">
-                        <div class="carousel-inner">
-                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
-                            <div class="carousel-item ${status.first ? 'active' : ''}">
-                            ${pageContext.request.contextPath }
-                                <img src="${pageContext.request.contextPath }/images/posts/${img}" alt="${img }" class="post-image d-block w-100">
-                            </div>
-                         </c:forTokens>
-                         
-                        </div>
-                        
-                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                        
-                        <div class="carousel-indicators" id="indicators-${loop.index }">
-                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
-							    <div class="indicator ${s.first ? 'active' : ''}" 
-							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
-							  </c:forTokens>
-                        </div>
-                    </div>
-                    
-                  	<div class="product-section">
-                    	<c:forEach var="productVo" items="${postVo.productList }">
-	                        <div class="product-card">
-	                        	<a href="/product/4" class="product-link">
-				                            <img src="${pageContext.request.contextPath }/images/${productVo.product_image_url}" alt="제품" class="product-img">
-				                            <p class="product-discount">${productVo.product_name }</p>
-				                            <p class="product-price">${productVo.product_price }</p> 
-		                        </a>    
-	                        </div>
-                     	</c:forEach>
-                    </div>
-                    
-                    
-                    <div class="post-interactions">
-					    <!-- 하트 버튼 -->
-						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
-						<c:set var="isLiked" value="false" />
-						
-						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
-						<c:forEach var="likeVo" items="${postVo.likeList}">
-						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
-						        <c:set var="isLiked" value="true" />
-						    </c:if>
-						</c:forEach>
-						
-						<!-- 좋아요를 누른 경우 -->
-						<c:if test="${isLiked}">
-						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
-						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
-						    </button>
-						</c:if>
-						
-						<!-- 좋아요를 누르지 않은 경우 -->
-						<c:if test="${!isLiked}">
-						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
-						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
-						    </button>
-						</c:if>
-						<p class="post-likes" data-post-idx="${postVo.post_idx }">${postVo.post_like }</p>
-						
-					    <button class="interaction-btn">
-					        <i class="far fa-comment"></i>
-					    </button>
-					  <!--   <button class="interaction-btn">
-					        <i class="far fa-share-square"></i>
-					    </button> -->
-					    <c:if test="${postVo.mem_idx==user.mem_idx }">
-					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
-					    <button class="interaction-btn more-options">
-					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
-					    </button>
-					
-					    <!-- 숨겨진 수정/삭제 버튼 -->
-					    <div class="more-options-menu" style="display: none;">
-					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
-					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
-					    </div>
-					    </c:if>
-					</div>
-                    
-                    <div class="post-content">
-                    	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">${postVo.post_content }</p>
-                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">${postVo.post_time }</p>
-                    </div>
-                    
-                    <div class="comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                        <button class="comment-submit">댓글</button>
-                    </div>
-                </c:forEach> --%>
+                
                 </div>
                 <!-- /커뮤니티 스킨 목록 ============================================================= -->
                 
                 <!-- 커뮤니티 리뷰 목록 ============================================================= -->
                 <div class="community-post" id="posts-container-review" data-tab="review">
-                <%-- <c:forEach var="postVo" items="${postReview_array }" varStatus="loop">
-                    <div class="post-header">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
-                        <p class="username">${postVo.mem_id }</p>
-                        <div class="post-actions">
-                            <button class="follow-btn">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="image-carousel" id="carousel-1">
-                        <div class="carousel-inner">
-                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
-                            <div class="carousel-item ${status.first ? 'active' : ''}">
-                            ${pageContext.request.contextPath }
-                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
-                            </div>
-                         </c:forTokens>
-                         
-                        </div>
-                        
-                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                        
-                        <div class="carousel-indicators" id="indicators-${loop.index }">
-                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
-							    <div class="indicator ${s.first ? 'active' : ''}" 
-							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
-							  </c:forTokens>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="post-interactions">
-					    <!-- 하트 버튼 -->
-						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
-						<c:set var="isLiked" value="false" />
-						
-						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
-						<c:forEach var="likeVo" items="${postVo.likeList}">
-						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
-						        <c:set var="isLiked" value="true" />
-						    </c:if>
-						</c:forEach>
-						
-						<!-- 좋아요를 누른 경우 -->
-						<c:if test="${isLiked}">
-						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
-						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
-						    </button>
-						</c:if>
-						
-						<!-- 좋아요를 누르지 않은 경우 -->
-						<c:if test="${!isLiked}">
-						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
-						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
-						    </button>
-						    <p class="post-likes" data-post-idx="${postVo.post_idx }">${postVo.post_like }</p>
-						</c:if>
-						
-					    <button class="interaction-btn">
-					        <i class="far fa-comment"></i>
-					    </button>
-					   <!--  <button class="interaction-btn">
-					        <i class="far fa-share-square"></i>
-					    </button> -->
-					    
-						<!-- 채워진 별 -->
-						<button class="interaction-btn star active" data-post-idx="${postVo.post_idx}">
-						    <i class="fas fa-star"></i>
-						</button>
-						<p>${postVo.post_rating }</p>  
-						
-					    <c:if test="${postVo.mem_idx==user.mem_idx }">
-					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
-					    <button class="interaction-btn more-options">
-					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
-					    </button>
-					
-					    <!-- 숨겨진 수정/삭제 버튼 -->
-					    <div class="more-options-menu" style="display: none;">
-					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
-					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
-					    </div>
-					    </c:if>
-					</div>
-                    
-                    <div class="post-content">
-                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
-                    	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">${postVo.post_content }</p>
-                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">${postVo.post_time }</p>
-                    </div>
-                    
-                    <div class="comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                        <button class="comment-submit">댓글</button>
-                    </div>
-                </c:forEach> --%>
+                
                 </div>
                 <!-- /커뮤니티 리뷰 목록 ============================================================= -->
 
                 <!-- 커뮤니티 자유게시판 목록 ============================================================= -->
                 <div class="community-post" id="posts-container-free" data-tab="free">
-               	  <%--  <c:forEach var="postVo" items="${postFree_array }" varStatus="loop">
-                    <div class="post-header">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
-                        <p class="username">${postVo.mem_id }</p>
-                        <div class="post-actions">
-                            <button class="follow-btn">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="image-carousel" id="carousel-1">
-                        <div class="carousel-inner">
-                         <c:forTokens items="${postVo.post_image }" delims="*" var="img" varStatus="status">
-                            <div class="carousel-item ${status.first ? 'active' : ''}">
-                            ${pageContext.request.contextPath }
-                                <img src="${pageContext.request.contextPath }/images/${img}" alt="${img }" class="post-image d-block w-100">
-                            </div>
-                         </c:forTokens>
-                         
-                        </div>
-                        
-                        <div class="carousel-control prev" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="carousel-control next" data-carousel="carousel-${loop.index }">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                        
-                        <div class="carousel-indicators" id="indicators-${loop.index }">
-                              <c:forTokens items="${postVo.post_image}" delims="*" var="img" varStatus="s">
-							    <div class="indicator ${s.first ? 'active' : ''}" 
-							         data-slide="${s.index}" data-carousel="carousel-${loop.index }"></div>
-							  </c:forTokens>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="post-interactions">
-					    <!-- 하트 버튼 -->
-						<c:set var="login_mem_idx" value="${sessionScope.user.mem_idx}" />
-						<c:set var="isLiked" value="false" />
-						
-						<!-- 배열 순회하여 로그인된 유저의 like 상태 확인 -->
-						<c:forEach var="likeVo" items="${postVo.likeList}">
-						    <c:if test="${likeVo.mem_idx == login_mem_idx}">
-						        <c:set var="isLiked" value="true" />
-						    </c:if>
-						</c:forEach>
-						
-						<!-- 좋아요를 누른 경우 -->
-						<c:if test="${isLiked}">
-						    <button class="interaction-btn active" data-post-idx="${postVo.post_idx}">
-						        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
-						    </button>
-						</c:if>
-						
-						<!-- 좋아요를 누르지 않은 경우 -->
-						<c:if test="${!isLiked}">
-						    <button class="interaction-btn" data-post-idx="${postVo.post_idx}">
-						        <i class="far fa-heart"></i> <!-- 빈 하트 -->
-						    </button>
-						</c:if>
-						
-					    <button class="interaction-btn">
-					        <i class="far fa-comment"></i>
-					    </button>
-				<!-- 	    <button class="interaction-btn">
-					        <i class="far fa-share-square"></i>
-					    </button> -->
-					    <c:if test="${postVo.mem_idx==user.mem_idx }">
-					    <!-- 추가된 점 3개 버튼 (ellipsis) -->
-					    <button class="interaction-btn more-options">
-					        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
-					    </button>
-					
-					    <!-- 숨겨진 수정/삭제 버튼 -->
-					    <div class="more-options-menu" style="display: none;">
-					        <button class="edit-btn" data-post-idx="${postVo.post_idx }" data-mem-idx="${postVo.mem_idx }">수정</button>
-					        <button class="delete-btn" data-post-idx="${postVo.post_idx }">삭제</button>
-					    </div>
-					    </c:if>
-					</div>
-                    
-                    <div class="post-content">
-                        <p class="post-likes" data-post-idx="${postVo.post_idx }">좋아요 ${postVo.post_like }개</p>
-                    	<p class="post-title">${postVo.post_title}</p>
-                        <p class="post-text">${postVo.post_content }</p>
-                        <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
-                        <p class="post-time">${postVo.post_time }</p>
-                    </div>
-                    
-                    <div class="comment-input">
-                        <input type="text" placeholder="댓글을 남겨보세요...">
-                        <button class="comment-submit">댓글</button>
-                    </div>
-              	  </c:forEach> --%>
+               	 
                 </div>
                 <!-- /커뮤니티 자유게시판 목록 ============================================================= -->
                 
@@ -1487,7 +1408,7 @@ document.addEventListener('click', function(e) {
     		}
     		
     		
-			/* =======================================html 게시물 영역============================================ */	
+			/* =======================================for() html 게시물 영역============================================ */	
     		for(let postVo of postVo_array){
     			
 			//alert("게시물idx=> "+postVo.post_idx);
@@ -1619,8 +1540,6 @@ document.addEventListener('click', function(e) {
 				    
 					<!-- 채워진 별 -->
 				`
-					
-				    
 				if(postVo.post_rating != 0){
 					
 					html=html+`
@@ -1630,7 +1549,7 @@ document.addEventListener('click', function(e) {
 					<p>\${postVo.post_rating }</p>  
 					`
 				}						    
-
+				//post 수정 삭제 부분
 				if(postVo.mem_idx==`${user.mem_idx}`){
 				html=html+`
 				    <!-- 추가된 점 3개 버튼 (ellipsis) -->
@@ -1661,32 +1580,69 @@ document.addEventListener('click', function(e) {
                  <input type="text" class="post-comment" id="reply_content"  placeholder="댓글을 남겨보세요...">
                  <button class="comment-submit" data-postidx="\${postVo.post_idx}" onclick="replyInsert(this);">댓글</button>
              </div>
-                 `
-                 if(postVo.replyList && postVo.replyList.length>0){
-	                 for(let replys of postVo.replyList){
-	                	 html=html+`
-	                	 <div>
-	                	 <p>\${replys.mem_id}</p> 
-	                	 <p>\${replys.reply_content}</p>
-	                	 <p>\${replys.reply_time}</p>
-	                	 </div>
-	                	 <div>
-	                	 <input type="button" value="-"/>
-	                	 <input type="button" value="수정"/ data-replyidx="\${replys.reply_idx}" onclick="replyModify(this);">
-	                	 </div>
-	                	 <div>
-	                	 </div>
-	                	 `
-	                 }
-                 }
+             <br>
+             <!-- 댓글 섹션 -->
+             `
+             //댓글부분
+             if(postVo.replyList && postVo.replyList.length>0){
+            	 for(let replys of postVo.replyList){
+            		 if(replys.reply_content!=null){
+            			 
+            		
+             html=html+`
+             <div class="comments-section">
+                 <!-- 댓글 목록 -->
+                             <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
+                                 <div class="comment-header">
+                                     <img src="https://randomuser.me/api/portraits/men/${(replyVo.mem_idx % 99) + 1}.jpg" 
+                                          alt="프로필" class="comment-profile-img">
+                                     <p class="comment-username">\${replys.mem_id}</p>
+                                     
+                                     <!-- 본인 댓글일 때만 점3개 버튼 -->
+                                         <div class="comment-actions">
+                                             <button class="comment-more-btn">
+                                                 <i class="fas fa-ellipsis-h"></i>
+                                             </button>
+                                             <div class="comment-more-menu" style="display: none;">
+                                                 <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
+                                                 <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}">삭제</button>
+                                             </div>
+                                         </div>
+                                 </div>
+                                 
+                                 <div class="comment-content-wrapper">
+                                     <div class="comment-text">\${replys.reply_content}</div>
+                                     <div class="comment-time">
+                                     `
+                                     	  	 html=html+`
+                                             <span class="edited-mark">등록일:\${replys.reply_time}</span>
+                                             `
+                                             if(replys.reply_update||replys.reply_update!=null){
+                                             html=html+`
+                                             <span class="edited-mark">수정일:\${replys.reply_update}</span>
+                                             `
+                                             }
+                                             
+                                             html=html+`
+                                     </div>
+                                 </div>
+                             </div>
+             </div>
+             `
+            	 	}
+            	 } 
+           	}
+             
              html=html+`
              <br>
              <br>
+             
+             <div class="reply-list" data-post-idx=\${postVo.post_idx}>
 				`
     			
     		loop=loop+1;
     		} 
-    		/* =======================================end html 게시물 영역============================================ */
+    		/* =======================================end : for() html 게시물 영역============================================ */
     		
     		/* 페이지처리 영역 */
     		html=html+d.pagination;
@@ -1738,9 +1694,155 @@ document.addEventListener('click', function(e) {
     	     /* end: 페이지 처리 영역 */
     	     
     	     
+    	     
+    	     // 댓글 점3개 메뉴 토글 - 기존 패턴과 동일
+    	     document.addEventListener('click', function(e) {
+   	    	    // 1) 점3개 버튼 클릭
+   	    	    const moreBtn = e.target.closest('.comment-more-btn');
+   	    	    if(moreBtn){
+   	    	        e.preventDefault();
+
+   	    	        const menu = moreBtn.nextElementSibling; // 현재 메뉴
+
+   	    	        // 2) 다른 메뉴 닫기
+   	    	        document.querySelectorAll('.comment-more-menu').forEach(m=>{
+   	    	            if(m !== menu) m.style.display = 'none';
+   	    	        });
+
+   	    	        // 3) 다른 댓글 수정창 닫기
+  	    	            document.querySelectorAll('.comment-edit-box').forEach(box=>{
+	    	            const commentItem = box.closest('.comment-item');
+
+  	    	            // 원래 댓글 내용 가져오기
+  	    	            const originalText = commentItem.dataset.originalContent || '';
+
+  	    	            const textDiv = document.createElement('div');
+  	    	            textDiv.className = 'comment-text';
+  	    	            textDiv.innerText = originalText;
+
+  	    	            box.replaceWith(textDiv); // 수정창 → 원래 댓글로 복원
+				    });
+
+   	    	        // 4) 현재 메뉴 토글
+   	    	        menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+   	    	    }
+    	         
+    	         // 댓글 점3개 수정 버튼
+    	         if (e.target.matches('.comment-edit-btn')) {
+    	        	 const menu = e.target.closest('.comment-more-menu');
+    	        	 if (menu) menu.style.display = 'none';
+    	             const reply_idx = e.target.dataset.replyIdx; //댓글번호
+    	             const commentItem=e.target.closest('.comment-item'); 
+    	             const textDiv = commentItem.querySelector('.comment-text');
+    	             // 원본 댓글 내용 저장 (한 번만)
+    	             if (!commentItem.dataset.originalContent) {
+    	                 commentItem.dataset.originalContent = textDiv.innerText;
+    	             }
+    	             const originalText=textDiv.innerText; //댓글 원본 내용
+    	             if(commentItem.querySelector('.comment-edit-input'))return;
+    	             
+    	             //수정폼으로 교체
+    	            let editHTML=`
+    	             <div class="comment-edit-box">
+    	            	<div class="comment-input">
+      	            	 <input type="text" class="post-comment post-comment-content" value="\${originalText}">
+    	                 <button class="comment-save-btn" data-reply-idx="\${reply_idx}">저장</button>
+    	                 <button class="comment-cancel-btn">취소</button>
+      	            	 </div
+    	             </div>
+    	             `
+    	             
+   	                 // comment-text → textarea + 버튼으로 교체
+				    const temp = document.createElement("div");
+				    temp.innerHTML = editHTML;
+				    
+				    textDiv.replaceWith(temp);
+				    
+    	             //alert('댓글 수정 기능 - reply_content: ' + reply_content);
+    	             //alert('댓글 수정 기능 - reply_idx: ' + reply_idx);
+    	             
+    	  
+    	          
+    	         }//end : if 댓글 수정버튼 클릭
+    	         
+    	         // 댓글 저장버튼
+    	         if(e.target.matches('.comment-save-btn')){
+    	        	 //alert("저장버튼");
+    	        	 const reply_idx = e.target.dataset.replyIdx; //댓글번호
+    	             const commentItem=e.target.closest('.comment-item');
+    	        	 const input=commentItem.querySelector('.post-comment-content'); //수정입력창
+    	             const reply_content=input.value.trim();
+    	        	 
+    	             //alert('댓글 수정 기능 - reply_content: ' + reply_content);
+    	             //alert('댓글 수정 기능 - reply_idx: ' + reply_idx);
+    	             // 댓글 수정처리
+    	             
+    	             $.ajax({
+    	            	 url:"/post/reply_modify"
+    	            	,data:{"reply_idx":reply_idx,"reply_content":reply_content}
+    	             	,success:function(d){
+    	             		if(d.res){
+    	             				
+    	             		    
+    	                        // ★ 화면 업데이트 ★
+    	                        const newTextDiv = document.createElement("div");
+    	                        newTextDiv.className = "comment-text";
+    	                        newTextDiv.innerText = reply_content;
+
+    	                        // input + 버튼 wrapper를 comment-text로 교체
+    	                        const editWrapper = commentItem.querySelector('.comment-edit-box');
+    	                        if(editWrapper){
+    	                            editWrapper.replaceWith(newTextDiv);
+    	                        }
+    	             			setTimeout(function(){
+    	             			alert("수정되었습니다.");
+    	             				
+    	             			},1)
+    	             		}
+    	             	}//success
+    	             	,error:function(e){
+    	             		alert("수정실패 관리자에게 문의");
+    	             	}
+    	             });//end 수정 ajax
+    	             
+    	         }//end : if 댓글 저장버튼
+    	             
+    	         //댓글 취소버튼
+    	         if(e.target.matches('.comment-cancel-btn')){
+   	        	    const commentItem = e.target.closest('.comment-item'); // 댓글 전체
+   	        	    const editBox = commentItem.querySelector('.comment-edit-box'); // 수정창
+   	        	    const originalText = commentItem.dataset.originalContent || ''; // 저장된 원본 내용
+
+   	        	    // 수정창을 원래 댓글 div로 교체
+   	        	    const textDiv = document.createElement('div');
+   	        	    textDiv.className = 'comment-text';
+   	        	    textDiv.innerText = originalText;
+
+   	        	    if(editBox){
+   	        	        editBox.replaceWith(textDiv);
+   	        	    }
+    	         }//end : 댓글 취소버튼
+    	             
+    	         
+    	         // 댓글 삭제 버튼
+    	         if (e.target.matches('.comment-delete-btn')) {
+    	             const replyIdx = e.target.dataset.replyIdx;
+    	             if (confirm('댓글을 삭제하시겠습니까?')) {
+    	                 alert('댓글 삭제 기능 - reply_idx: ' + replyIdx);
+    	                 // 여기에 삭제 로직 추가
+    	             }
+    	         }
+    	         
+    	         // 외부 클릭 시 메뉴 닫기
+    	         if (!e.target.closest('.comment-actions')) {
+    	             document.querySelectorAll('.comment-more-menu').forEach(menu => {
+    	                 menu.style.display = 'none';
+    	             });
+    	         }
+    	     });
 
     	     
-    	}
+    	}//end : success
      ,error:function(e){
      	
      }
@@ -1789,15 +1891,6 @@ document.addEventListener('click', function(e) {
  /* ------------------------end:댓글 등록 함수--------------------------- */
  
  
- 
- /* ------------------------댓글 수정 함수--------------------------- */
- 	function replyModify(data){
-	 
-     let reply_idx=data.dataset.replyidx;
-     alert(reply_idx);
-     
- }
- /* ------------------------end:댓글 수정 함수--------------------------- */
  
  
  
@@ -1880,7 +1973,6 @@ document.addEventListener('click', function(e) {
     // 수정 버튼 클릭 시 수정페이지로 이동
     $('.edit-btn').click(function() {
         // 여기에 수정 처리 로직을 추가하세요
-    	
     	
         let post_idx=$(this).data('post-idx');
         location.href="/post/modify?post_idx="+post_idx;
