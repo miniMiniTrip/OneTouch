@@ -1818,7 +1818,7 @@ document.addEventListener('click', function(e) {
      			,method:"post"
      			,success:function(d){
      				if(d.post_delete){
-     				alert("삭제성공");
+     				//alert("삭제성공");
      				location.href="/post/list"
      				};
      				
@@ -1828,7 +1828,7 @@ document.addEventListener('click', function(e) {
      			}
      			
      		});
-           	alert(postIdx);
+           	//alert(postIdx);
         }
     });
 });
