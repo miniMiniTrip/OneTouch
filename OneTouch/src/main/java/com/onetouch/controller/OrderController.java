@@ -237,22 +237,22 @@ public class OrderController {
 		return result;
 	}
 	
-	@RequestMapping("/order/complete.do")
-	public String orderComplete(@RequestParam int order_id, Model model) {
-	    
-	    // order 조회
-	    OrderVo order = order_dao.selectOneByOrderId(order_id);
-	    
-	    // order_item 조회
-	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
-	    
-	    // payment 조회 (영수증 URL 등)
-	    PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
-	    
-	    model.addAttribute("order", order);
-	    model.addAttribute("order_items", order_items);
-	    model.addAttribute("payment", payment);
-	    
-	    return "order/order_complete";
-	}
+//	@RequestMapping("/order/complete.do")
+//	public String orderComplete(@RequestParam int order_id, Model model) {
+//	    
+//	    // order 조회
+//	    OrderVo order = order_dao.selectOneByOrderId(order_id);
+//	    
+//	    // order_item 조회
+//	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+//	    
+//	    // payment 조회 (영수증 URL 등)
+//	    PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
+//	    
+//	    model.addAttribute("order", order);
+//	    model.addAttribute("order_items", order_items);
+//	    model.addAttribute("payment", payment);
+//	    
+//	    return "order/order_complete";
+//	}
 }

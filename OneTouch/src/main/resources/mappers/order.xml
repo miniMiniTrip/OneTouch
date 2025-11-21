@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.OrderDao">
 <insert id="insert" parameterType="order" useGeneratedKeys="true" keyProperty="order_id">
-	insert into 'order'(
+	insert into `order`(
 		mem_idx,
 		order_no,
 		order_status,
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </insert>
 
 <!-- 단건 주문 조회 -->
-<select id="selectOne" parameterType="int">
+<select id="selectOne" parameterType="int" resultType="order">
 	select * from order where order_id = #{order_id}
 </select>
 
@@ -49,9 +49,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where o.order_no = #{order_no}
 </select>
 
+<!-- 상품ID로 조회 -->
+<select id="selectOneByOrderId" parameterType="string" resultType="order">
+	select * from order o
+		left join mem m on o.mem_idx = m.mem_idx
+	where o.order_id = #{order_id}
+</select>
+
 <!-- 주문 내용 수정 -->
 <update id="update" parameterType="order">
-	update order set
+	update `order` set
 		order_mem_name = #{order_mem_name},
 		order_phone = #{order_phone},
 		order_postal = #{order_postal},
@@ -63,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 주문 상태 수정 -->
 <update id="updateStatus" parameterType="order">
-	update order set 
+	update `order` set 
 		order_status = #{order_status},
 		order_update = now()
 	where order_id = #{order_id}
