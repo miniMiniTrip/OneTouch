@@ -412,10 +412,10 @@
 
 
 <!-- ========================= JS here ========================= -->
-<%-- <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/main.js"></script> --%>
+<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 
 <script type="text/javascript">
     // 프리로더 제거
@@ -443,10 +443,6 @@ function performSearch() {
         location.href = contextPath+"/products?search=" + encodeURIComponent(keyword);
     }
 }
-
-
-
-
 
 /* function updateHeaderCartCount() {
     const contextPath = '${pageContext.request.contextPath}';
