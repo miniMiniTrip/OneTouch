@@ -317,7 +317,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
            --%>             
                         <!-- 글이 있을 때만 버튼 표시 -->
                         <c:if test="${not empty qna_list}">
-                            <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/qna/write'">
+                            <button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'">
                                 Q&A 쓰기
                             </button>
                         </c:if>
