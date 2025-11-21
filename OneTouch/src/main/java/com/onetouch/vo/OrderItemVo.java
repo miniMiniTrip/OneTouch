@@ -17,4 +17,5 @@ public class OrderItemVo {
 	int product_amount;
 	int total_amount;
 	Timestamp order_time; 
+	String product_image_url;
 }
