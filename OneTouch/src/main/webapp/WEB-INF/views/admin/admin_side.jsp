@@ -15,16 +15,15 @@
     } */
 
     /* 사이드바 */
-    .sidebar {
-        background: white;
-        border-radius: 12px;
-        padding: 30px 0;
-        height: fit-content;
-        position: sticky;
-        top: 20px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        margin-left: px;
-    }
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 0;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
     .sidebar-section {
         margin-bottom: 30px;
@@ -74,6 +73,8 @@
         font-weight: 600 !important;
         border-left-color: #1a237e !important;
     }
+
+}
 </style>
 
 <aside class="sidebar">
@@ -93,8 +94,8 @@
         <div class="sidebar-title">관리</div>
         <ul class="sidebar-menu">
             <li>
-                <a href="${pageContext.request.contextPath}/adminpage/members"
-                   class="${pageContext.request.requestURI.contains('/members') ? 'active' : ''}">
+                <a href="${pageContext.request.contextPath}/admin/admin_members"
+                   class="${pageContext.request.requestURI.contains('/admin_members') ? 'active' : ''}">
                     👥 회원관리
                 </a>
             </li>
@@ -106,15 +107,21 @@
             </li>
             
             <li>
+         <script type="text/javascript">
+                  //alert('${ pageContext.request.requestURI }');
+                </script> 
                 <a href="${pageContext.request.contextPath}/order/management"
-                   class="${pageContext.request.requestURI.contains('/orders') ? 'active' : ''}">
+                   class="${pageContext.request.requestURI.contains('/order_management') ? 'active' : ''}">
                     🚚 주문관리
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/ddminpage/remain"
-                   class="${pageContext.request.requestURI.contains('/qna') ? 'active' : ''}">
-                    📋 Q&A
+                 <!-- <script type="text/javascript">
+                  alert('${ pageContext.request.requestURI }');
+                </script> --> 
+                <a href="${pageContext.request.contextPath}/admin/qna_list"
+                   class="${pageContext.request.requestURI.contains('/admin_qna_list') ? 'active' : ''}">
+                    📋 Q&A관리
                 </a>
             </li>
             

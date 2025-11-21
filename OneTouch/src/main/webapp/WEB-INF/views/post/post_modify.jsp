@@ -345,7 +345,7 @@ function postModify(f) {
     let postImageInput = f.querySelector('input[name="post_image"]');
     if (!postImageInput) {
         postImageInput = document.createElement('input');
-        postImageInput.type = 'hidden';ㄱ
+        postImageInput.type = 'hidden';
         postImageInput.name = 'post_image';
         f.appendChild(postImageInput);
     }
@@ -552,7 +552,7 @@ function postModify(f) {
 </c:if>
 
 			<div class="button-group">
-				<button type="button" class="btn btn-secondary">취소하기</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/post/list'">취소하기</button>
 				<button type="button" class="btn btn-primary"
 					onclick="postModify(this.form);">수정하기</button>
 			</div>

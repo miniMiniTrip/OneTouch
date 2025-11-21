@@ -32,8 +32,8 @@ public class QnaController {
     
    
     
-    // 1️⃣ Q&A 목록 페이지
-    @GetMapping("/qna/list")
+    // 1️ 관리자 Q&A 목록 페이지
+    @GetMapping("/admin/qna_list")
     public String list(Model model) {
     	System.out.println("	[QnaController] list() ");
     	
@@ -62,17 +62,21 @@ public class QnaController {
         
         System.out.println("	[QnaController] return : qna/qna_list.jsp ");
         System.out.println("");
-        return "qna/qna_list";
+        return "admin/admin_qna_list";
     }
     
-    // 2️⃣ Q&A 상세 페이지
-    @GetMapping("/qna/detail")
+  
+    
+    
+    
+    // 2️⃣ 관리자 Q&A 상세 페이지
+    @GetMapping("/admin/qna/detail")
     public String detail(@RequestParam int qna_idx, Model model, RedirectAttributes redirectAttributes) {
         // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
         
         if (user == null) {
-            return "redirect:/qna/list";
+            return "redirect:admin/qna_list";
         }
         
         // Q&A 정보 조회
@@ -87,29 +91,36 @@ public class QnaController {
         if (qna == null || (qna.getMem_idx() != user.getMem_idx() && !"admin".equals(user.getMem_roll()))) {
             System.out.println("접근 권한 없음 - 작성자: " + (qna != null ? qna.getMem_idx() : "null") + ", 현재 사용자: " + user.getMem_idx());
             redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-            return "redirect:/qna/list";
+            return "redirect:admin/qna_list";
         }
         
         model.addAttribute("qna", qna);
-        return "qna/qna_detail";
+        return "/admin/admin_qna_detail";
     }
     
-    // 3️⃣ Q&A 작성 폼 이동
-    @GetMapping("/qna/write")
-    public String writeForm() {
-        // 로그인 체크
+   
+    
+    
+ // 관리자 Q&A 답변 작성 폼 이동
+    @GetMapping("/admin/qna/write")
+    public String adminQnaWrite(HttpSession session) {
+
+    	 // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
         
         if (user == null) {
-            return "redirect:/qna/list";
+            return "redirect:/admin/qna_list";
         }
         
-        System.out.println("qna/write");
-        return "qna/qna_write";
+        
+        return "admin/admin_qna_write"; // 관리자용 글쓰기 / 답변 폼
     }
     
-    // Q&A 작성 처리
-    @PostMapping("/qna/write")
+    
+    
+    
+    // 관리자 Q&A 작성 처리
+    @PostMapping("/admin/qna_write")
     public String insertQna(QnaVo vo) {
         // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
@@ -124,8 +135,10 @@ public class QnaController {
         System.out.printf("qna추가 vo:%s\n", vo);
         qnaDao.insertQna(vo);
         
-        return "redirect:/qna/list";
+        return "redirect:/admin/qna_list";
     }
+   
+    
     
     // 4️⃣ 수정 폼 보기
     @GetMapping("/qna/modify")
@@ -155,7 +168,65 @@ public class QnaController {
         return "qna/qna_modify";
     }
 
-    // 수정 처리
+  
+    
+    
+    
+    //    관리자 폼에서 답변 등록 처리
+    @PostMapping("/admin/qna_answer")
+    public String answerQna(
+            @RequestParam("qna_idx") int qna_idx,
+            @RequestParam("qna_answer_content") String qna_answer_content,
+            RedirectAttributes redirectAttributes) {
+        
+        try {
+            int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
+            
+            if (result > 0) {
+                redirectAttributes.addFlashAttribute("message", "답변이 등록되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "답변 등록에 실패했습니다.");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "답변 등록 중 오류가 발생했습니다.");
+        }
+        
+        return "redirect:/admin/qna/detail?qna_idx=" + qna_idx;
+    }
+
+
+    
+    // 관리자 Q&A 답변 삭제
+    @GetMapping("/admin/qna/deleteAnswer")
+    public String deleteAnswer(@RequestParam("qna_idx") int qna_idx,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            int result = qnaService.deleteAnswer(qna_idx);
+            if (result > 0) {
+                redirectAttributes.addFlashAttribute("message", "답변이 삭제되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "삭제에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
+        }
+
+        return "redirect:/admin/qna/detail?qna_idx=" + qna_idx;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // 유저  수정 처리
     @PostMapping("/qna/modify")
     public String modify(QnaVo vo, RedirectAttributes redirectAttributes) {
         // 로그인 체크
@@ -177,33 +248,27 @@ public class QnaController {
         return "redirect:/qna/detail?qna_idx=" + vo.getQna_idx();
     }
     
-    // 삭제 처리
-    @GetMapping("/qna/delete")
-    public String delete(@RequestParam int qna_idx, RedirectAttributes redirectAttributes) {
-        // 로그인 체크
-        MemVo user = (MemVo) session.getAttribute("user");
-        
-        if (user == null) {
-            return "redirect:/qna/list";
-        }
-        
-        // 본인의 글인지 확인
-        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
-        
-        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-            return "redirect:/qna/list";
-        }
-        
-        System.out.println("=== QnA 삭제 ===");
-        System.out.println("삭제할 번호: " + qna_idx);
-        
-        qnaDao.deleteQna(qna_idx);
-        return "redirect:/qna/list";
-    }
     
-
-        
+    
+//  
+//  // 3️⃣ Q&A 작성 폼 이동
+//  @GetMapping("/qna/write")
+//  public String writeForm() {
+//      // 로그인 체크
+//      MemVo user = (MemVo) session.getAttribute("user");
+//      
+//      if (user == null) {
+//          return "redirect:/qna/list";
+//      }
+//      
+//      System.out.println("qna/write");
+//      return "qna/qna_write";
+//  }
+  
+  
+//    // 마이페이지 삭제 처리
+//    @GetMapping("/qna/delete")
+//    public String delete(@RequestParam int qna_idx, RedirectAttributes redirectAttributes) {
 //        // 로그인 체크
 //        MemVo user = (MemVo) session.getAttribute("user");
 //        
@@ -211,141 +276,116 @@ public class QnaController {
 //            return "redirect:/qna/list";
 //        }
 //        
-//        // 관리자 권한 체크
-//        if (!"ADMIN".equals(user.getMem_role())) {
-//            redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
-//            return "redirect:/qna/detail?qna_idx=" + qna_idx;
+//        // 본인의 글인지 확인
+//        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+//        
+//        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+//            return "redirect:/qna/list";
 //        }
-        
-//        try {
-//            System.out.println("=== 답변 등록 ===");
-//            System.out.println("QnA 번호: " + qna_idx);
-//            System.out.println("답변 내용: " + qna_answer_content);
-//            
-//            // 답변 등록
-//           //int result = qnaDao.updateAnswer(qna_idx, qna_answer_content);
-//            
-//            if (result > 0) {
-//                System.out.println("답변 등록 성공");
-//                redirectAttributes.addFlashAttribute("successMessage", "답변이 등록되었습니다.");
-//            } else {
-//                System.out.println("답변 등록 실패 - 업데이트된 행 없음");
-//                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
-//            }
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
-//        }
-        
-//        return "redirect:/qna/detail?qna_idx=" + qna_idx;
+//        
+//        System.out.println("=== QnA 삭제 ===");
+//        System.out.println("삭제할 번호: " + qna_idx);
+//        
+//        qnaDao.deleteQna(qna_idx);
+//        return "redirect:/qna/list";
 //    }
-    
-// // 답변 등록 처리 (관리자 전용)
+//    
+
+        
+
+//    // 마이페이지 답변 등록 처리
 //    @PostMapping("/qna/answer")
-//    public String registerAnswer(
+//    public String answerQna(
 //            @RequestParam("qna_idx") int qna_idx,
 //            @RequestParam("qna_answer_content") String qna_answer_content,
 //            RedirectAttributes redirectAttributes) {
 //        
-//        // 로그인 체크
-//        MemVo user = (MemVo) session.getAttribute("user");
-//        
-//        if (user == null) {
-//            return "redirect:/qna/list";
-//        }
-//        
-//        // 관리자 권한 체크
-//        if (!"ADMIN".equals(user.getMem_roll())) {
-//            redirectAttributes.addFlashAttribute("errorMessage", "관리자만 답변을 작성할 수 있습니다.");
-//            return "redirect:/qna/detail?qna_idx=" + qna_idx;
-//        }
-//        
 //        try {
+//            // 디버깅용 로그 (개발 완료 후 제거)
+//            System.out.println("=== 답변 등록 요청 ===");
+//            System.out.println("qna_idx: " + qna_idx);
+//            System.out.println("qna_answer_content: " + qna_answer_content);
+//            
+//            // 답변 등록
 //            int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
 //            
 //            if (result > 0) {
-//                redirectAttributes.addFlashAttribute("successMessage", "답변이 등록되었습니다.");
+//                redirectAttributes.addFlashAttribute("message", "답변이 등록되었습니다.");
 //            } else {
-//                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
+//                redirectAttributes.addFlashAttribute("error", "답변 등록에 실패했습니다.");
 //            }
 //            
 //        } catch (Exception e) {
 //            e.printStackTrace();
-//            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
+//            redirectAttributes.addFlashAttribute("error", "답변 등록 중 오류가 발생했습니다.");
 //        }
 //        
+//        // 상세 페이지로 리다이렉트
 //        return "redirect:/qna/detail?qna_idx=" + qna_idx;
- //   }
-    // 답변 등록 처리
-    @PostMapping("/qna/answer")
-    public String answerQna(
-            @RequestParam("qna_idx") int qna_idx,
-            @RequestParam("qna_answer_content") String qna_answer_content,
-            RedirectAttributes redirectAttributes) {
-        
-        try {
-            // 디버깅용 로그 (개발 완료 후 제거)
-            System.out.println("=== 답변 등록 요청 ===");
-            System.out.println("qna_idx: " + qna_idx);
-            System.out.println("qna_answer_content: " + qna_answer_content);
-            
-            // 답변 등록
-            int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
-            
-            if (result > 0) {
-                redirectAttributes.addFlashAttribute("message", "답변이 등록되었습니다.");
-            } else {
-                redirectAttributes.addFlashAttribute("error", "답변 등록에 실패했습니다.");
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "답변 등록 중 오류가 발생했습니다.");
-        }
-        
-        // 상세 페이지로 리다이렉트
-        return "redirect:/qna/detail?qna_idx=" + qna_idx;
-    }
-    
+//    }
 
+    
+ 
 
     
     
     
     
-    //________ 관리자 일 경우 썻던 답변 삭제 하기 삭제 한 후 공백으로 만드는)
+    //________ 마이페이지 .~!!관리자 일 경우 썻던 답변 삭제 하기 삭제 한 후 공백으로 만드는)
+//    
+// // Controller에 추가
+//    @GetMapping("/qna/deleteAnswer")
+//    public String deleteAnswer(
+//        @RequestParam("qna_idx") int qnaIdx,
+//        HttpSession session,
+//        RedirectAttributes redirectAttributes) {
+//        
+//        try {
+//            // 관리자 권한 확인
+//            MemVo user = (MemVo) session.getAttribute("user");
+//            if (user == null || !"admin".equals(user.getMem_roll())) {
+//                redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
+//                return "redirect:/qna/detail?qna_idx=" + qnaIdx;
+//            }
+//            
+//            int result = qnaService.deleteAnswer(qnaIdx);
+//            
+//            if(result > 0) {
+//                redirectAttributes.addFlashAttribute("message", "답변이 삭제되었습니다.");
+//            } else {
+//                redirectAttributes.addFlashAttribute("error", "답변 삭제에 실패했습니다.");
+//            }
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            redirectAttributes.addFlashAttribute("error", "답변 삭제 중 오류가 발생했습니다.");
+//        }
+//        
+//        return "redirect:/qna/detail?qna_idx=" + qnaIdx;
+//    }
     
- // Controller에 추가
-    @GetMapping("/qna/deleteAnswer")
-    public String deleteAnswer(
-        @RequestParam("qna_idx") int qnaIdx,
-        HttpSession session,
-        RedirectAttributes redirectAttributes) {
-        
-        try {
-            // 관리자 권한 확인
-            MemVo user = (MemVo) session.getAttribute("user");
-            if (user == null || !"admin".equals(user.getMem_roll())) {
-                redirectAttributes.addFlashAttribute("error", "권한이 없습니다.");
-                return "redirect:/qna/detail?qna_idx=" + qnaIdx;
-            }
-            
-            int result = qnaService.deleteAnswer(qnaIdx);
-            
-            if(result > 0) {
-                redirectAttributes.addFlashAttribute("message", "답변이 삭제되었습니다.");
-            } else {
-                redirectAttributes.addFlashAttribute("error", "답변 삭제에 실패했습니다.");
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "답변 삭제 중 오류가 발생했습니다.");
-        }
-        
-        return "redirect:/qna/detail?qna_idx=" + qnaIdx;
-    }
+
+
+
+//    // 관리자 Q&A 글 삭제
+//    @GetMapping("/admin/qna/delete")
+//    public String deleteQna(@RequestParam("qna_idx") int qna_idx,
+//                            RedirectAttributes redirectAttributes) {
+//        try {
+//            int result = qnaService.deleteQna(qna_idx);
+//            if (result > 0) {
+//                redirectAttributes.addFlashAttribute("message", "글이 삭제되었습니다.");
+//            } else {
+//                redirectAttributes.addFlashAttribute("error", "삭제에 실패했습니다.");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            redirectAttributes.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
+//        }
+//
+//        return "redirect:/admin/qna_list";
+//    }
 
     
     
@@ -354,6 +394,19 @@ public class QnaController {
     
     
     
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+ 
+ 
     
 }
     
