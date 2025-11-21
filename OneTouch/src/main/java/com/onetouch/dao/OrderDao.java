@@ -31,5 +31,5 @@ public interface OrderDao {
 	OrderVo selectOneByOrderNo(String order_no);
 	
 	//아이디로 검색
-//	selectOneByOrderId
-}
+	OrderVo selectOneByOrderId(int order_id);
+}	

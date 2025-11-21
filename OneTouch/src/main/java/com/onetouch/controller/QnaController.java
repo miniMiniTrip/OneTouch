@@ -43,7 +43,8 @@ public class QnaController {
         // ✅ 로그인하지 않은 경우 - 로그인 안내만 표시
         if (user == null) {
             model.addAttribute("needLogin", true);
-            return "qna/qna_list";
+            //return "/admin/qna_list";
+            return "redirect:/user/login ";
         }
         
         // 로그인한 사용자의 글만 조회

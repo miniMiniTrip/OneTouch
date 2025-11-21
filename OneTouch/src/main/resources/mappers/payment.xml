@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -6,65 +5,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 결제정보 생성(토스페이먼츠) -->
 	<insert id="insertPayment" parameterType="payment">
-		insert into payment (payment_key,
-								order_id,
-								amount,
-								method,
-								status
-			 				) values (
-			 					#{payment_key},
-								#{order_id},
-								#{amount},
-								#{method},
-								#{status}
-			 				)
+		insert into payment (
+			payment_key,
+			order_id,
+			amount,
+			method,
+			status
+		) values (
+			#{payment_key},
+			#{order_id},
+			#{amount},
+			#{method},
+			#{status}
+		)
 	</insert>
 	
-	<!-- payment 키로 조회 -->
+	<!-- payment_key로 조회 -->
 	<select id="selectPaymentByKey" parameterType="String" resultType="payment">
-		select  payment_id,
-				payment_key,
-				order_id,
-				amount,
-				method,
-				status,
-				approved_at,
-				failed_reason,
-				cancel_reason,
-				receipt_url,
-				order_time,
-				order_update
-		from payment where payment_key = #{payment_key}
+		select 
+			payment_id,
+			payment_key,
+			order_id,
+			amount,
+			method,
+			status,
+			approved_at,
+			failed_reason,
+			cancel_reason,
+			receipt_url,
+			order_time,
+			order_update
+		from payment 
+		where payment_key = #{payment_key}
 	</select>
 	
-	<!-- OrderId로 조회 -->
-	<select id="selectPaymentByOrderId" parameterType="String" resultType="payment">
-		select  payment_id,
-				payment_key,
-				order_id,
-				amount,
-				method,
-				status,
-				approved_at,
-				failed_reason,
-				cancel_reason,
-				receipt_url,
-				order_time,
-				order_update
-		from payment where payment_id = #{payment_id}
+	<!-- order_id로 조회 -->
+	<!-- ✅ 수정: payment_id → order_id -->
+	<select id="selectPaymentByOrderId" parameterType="int" resultType="payment">
+		select 
+			payment_id,
+			payment_key,
+			order_id,
+			amount,
+			method,
+			status,
+			approved_at,
+			failed_reason,
+			cancel_reason,
+			receipt_url,
+			order_time,
+			order_update
+		from payment 
+		where order_id = #{order_id}
 	</select>
 	
-	<!-- 결제승인처리 -->
+	<!-- 결제 승인 처리 -->
 	<update id="updatePaymentApproved" parameterType="payment">
 		update payment set
-				status = 'DONE',
-				approved_at = #{approved_at},
-				receipt_url = #{receipt_url},
-				method = #{method}
+			status = 'DONE',
+			approved_at = #{approved_at},
+			receipt_url = #{receipt_url},
+			method = #{method}
 		where payment_key = #{payment_key} 
 	</update>
 
-	<!-- 결제실패처리 -->
+	<!-- 결제 실패 처리 -->
 	<update id="updatePaymentFailed" parameterType="payment">
         update payment set 
             status = 'FAILED',
@@ -72,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where payment_key = #{payment_key}
     </update>
     
-    <!-- 결제취소처리 -->
+    <!-- 결제 취소 처리 -->
     <update id="updatePaymentCanceled" parameterType="payment">
         update payment set
             status = 'CANCELED',
@@ -80,4 +85,3 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where payment_key = #{payment_key}
     </update>
 </mapper>
-

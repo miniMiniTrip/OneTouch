@@ -175,12 +175,15 @@ CREATE TABLE cart (
     FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
         ON DELETE CASCADE ON UPDATE CASCADE,
     
---    CONSTRAINT chk_cart_cnt CHECK (cart_cnt > 0),
+
     
     UNIQUE KEY uk_cart_member_product (mem_idx, product_idx)
 ) COMMENT '장바구니';
-
--- CREATE INDEX idx_cart_member ON cart(mem_idx);
+-- 테이블 조건 추가
+	CREATE INDEX idx_cart_member ON cart(mem_idx);
+	
+	ALTER TABLE cart
+		ADD CONSTRAINT chk_cart_cnt CHECK (cart_cnt > 0)
 
 -- ========================================
 -- 9. 찜 테이블
@@ -225,12 +228,14 @@ CREATE TABLE `order` (
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
     
---    ,CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0)
-) COMMENT '주문';
 
--- CREATE INDEX idx_order_member ON `order`(mem_idx);
--- CREATE INDEX idx_order_status ON `order`(order_status);
--- CREATE INDEX idx_order_time ON `order`(order_time DESC);
+) COMMENT '주문';
+-- 테이블 조건 추가
+ALTER TABLE `order`
+		ADD CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0) 
+ CREATE INDEX idx_order_member ON `order`(mem_idx);
+ CREATE INDEX idx_order_status ON `order`(order_status);
+ CREATE INDEX idx_order_time ON `order`(order_time DESC);
 
 -- ========================================
 -- 11. 주문 상세 테이블
@@ -248,13 +253,17 @@ CREATE TABLE order_item (
     
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
         ON DELETE CASCADE ON UPDATE CASCADE
-    
---    ,CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0),
---    CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0),
---    CONSTRAINT chk_order_item_total CHECK (total_amount >= 0)
-) COMMENT '주문상세';
 
--- CREATE INDEX idx_order_item_order ON order_item(order_id);
+) COMMENT '주문상세';
+-- 테이블 조건 추가
+ALTER TABLE order_item
+		ADD CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0)
+ALTER TABLE order_item
+		ADD CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0)
+ALTER TABLE order_item
+		ADD CONSTRAINT chk_order_item_total CHECK (total_amount >= 0)
+
+CREATE INDEX idx_order_item_order ON order_item(order_id);
 
 -- ========================================
 -- 12. 결제 테이블
@@ -277,11 +286,14 @@ CREATE TABLE payment (
     FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
         ON DELETE CASCADE ON UPDATE CASCADE
     
---    ,CONSTRAINT chk_payment_amount CHECK (amount >= 0)
-) COMMENT '결제';
 
--- CREATE INDEX idx_payment_order ON payment(order_id);
--- CREATE INDEX idx_payment_status ON payment(status);
+) COMMENT '결제';
+-- 테이블 조건 추가
+ALTER TABLE payment
+		ADD CONSTRAINT chk_payment_amount CHECK (amount >= 0)
+
+CREATE INDEX idx_payment_order ON payment(order_id);
+CREATE INDEX idx_payment_status ON payment(status);
 
 -- ========================================
 -- 13. 게시글 테이블

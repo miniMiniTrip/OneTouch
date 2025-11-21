@@ -103,6 +103,11 @@
 .user-dropdown.active > a {
     color: #2a5298 !important;
 }
+/* /* 이미지 로고 */
+ .navbar-brand {
+margin-left: -20px;
+
+}  
 </style>
 
 <script type="text/javascript">
@@ -178,20 +183,20 @@
             <div class="row align-items-center">
                 <div class="col-lg-4 col-md-4 col-12">
                     <div class="top-left">
-                        <ul class="menu-top-link">
+                        <%-- <ul class="menu-top-link">
                             <li><a href="${pageContext.request.contextPath}/about">소개</a></li>
                             <li><a href="${pageContext.request.contextPath}/qna/list">문의</a></li>
-                        </ul>
+                        </ul> --%>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-12">
-                    <div class="top-middle">
+                    <%-- <div class="top-middle">
                         <ul class="useful-links">
                             <li><a href="${pageContext.request.contextPath}/">홈</a></li>
                             <li><a href="${pageContext.request.contextPath}/admin/product">상품</a></li>
                             <li><a href="${pageContext.request.contextPath}/community">커뮤니티</a></li>
                         </ul>
-                    </div>
+                    </div> --%>
                 </div>
                 <div class="col-lg-4 col-md-4 col-12">
     <div class="top-end">
@@ -209,7 +214,7 @@
                             마이페이지 <i class="lni lni-chevron-down"></i>
                         </a>
                         <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
-                            <li><a href="${pageContext.request.contextPath}/mypage">내 정보</a></li>
+                            <li><a href="${pageContext.request.contextPath}/wishlist/list.do">내 정보</a></li>
                             <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
                             <li><a href="${pageContext.request.contextPath}/cart">장바구니</a></li>
                             <li><a href="${pageContext.request.contextPath}/wishlist">찜한 상품</a></li>
@@ -225,8 +230,9 @@
                             <ul class="user-dropdown-menu" id="admin-menu" style="display: none;">
                                 <li><a href="${pageContext.request.contextPath}/adminpage/dashboard">대시보드</a></li>
                                 <li><a href="${pageContext.request.contextPath}/adminpage/product">상품 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/user">회원 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/order">주문 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/admin_members">회원 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/order/management">주문 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/qna_list">Q&A 관리</a></li>
                             </ul>
                         </li>
                     </c:if>
@@ -258,7 +264,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-3 col-md-3 col-7">
                     <a class="navbar-brand" href="${pageContext.request.contextPath}/">
-                        <img src="${pageContext.request.contextPath}/assets/images/logo/logo.svg" alt="OneTouch">
+                        <img 
+                        src="${pageContext.request.contextPath}/assets/images/logo/onetouch_logo.png" 
+                        alt="OneTouch" style="width: 90px; height: auto;">
                     </a>
                 </div>
                 <div class="col-lg-5 col-md-7 d-xs-none">

@@ -1696,6 +1696,7 @@ top: -1px;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: end;
+  margin-right: 20px;
 }
 
 .header .navbar-cart .wishlist {
@@ -2512,7 +2513,7 @@ top: 2px;
 }
 
 .header .navbar-brand {
-  margin: 0;
+  margin-left: 35px ;
 }
 
 @media (max-width: 767px) {

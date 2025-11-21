@@ -309,7 +309,7 @@
                                                         </div>
                                                         <div class="product-stats">
                                                             <span class="stat-item">
-                                                                <i class="lni lni-shopping-basket"></i> 판매 ${product.product_cnt}
+                                                                <i class="lni lni-shopping-basket"></i> 구매가능수량 ${product.product_cnt}
                                                             </span>
                                                             <span class="stat-item">
                                                                 <i class="lni lni-heart"></i> 찜 ${product.product_wishlist}
@@ -403,7 +403,7 @@
                                                         </div>
                                                         <div class="product-stats">
                                                             <span class="stat-item">
-                                                                <i class="lni lni-shopping-basket"></i> 판매 ${product.product_cnt}
+                                                                <i class="lni lni-shopping-basket"></i> 구매가능수량 ${product.product_cnt}
                                                             </span>
                                                             <span class="stat-item">
                                                                 <i class="lni lni-heart"></i> 찜 ${product.product_wishlist}
