@@ -29,4 +29,7 @@ public interface OrderDao {
 	
 	//주문번호로 검색
 	OrderVo selectOneByOrderNo(String order_no);
+	
+	//아이디로 검색
+//	selectOneByOrderId
 }
