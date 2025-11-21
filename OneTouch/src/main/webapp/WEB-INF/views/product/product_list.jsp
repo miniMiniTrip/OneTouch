@@ -184,7 +184,7 @@
                 <!-- 검색 위젯 -->
                 <div class="search-widget">
                     <h3>검색</h3>
-                    <form action="${pageContext.request.contextPath}/product/list.do" method="get">
+                    <form action="${pageContext.request.contextPath}/product/list" method="get">
                         <input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
                         <c:if test="${not empty category}">
                             <input type="hidden" name="category" value="${category}">
@@ -199,19 +199,19 @@
                 <!-- 카테고리 메뉴 -->
                 <div class="menu-section">
                     <div class="menu-title">카테고리</div>
-                    <a href="${pageContext.request.contextPath}/product/list.do${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
                        class="menu-item ${empty category ? 'active' : ''}">
                         전체보기
                     </a>
-                    <a href="${pageContext.request.contextPath}/product/list.do?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
                        class="menu-item ${category eq '1' ? 'active' : ''}">
                         스킨케어
                     </a>
-                    <a href="${pageContext.request.contextPath}/product/list.do?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
                        class="menu-item ${category eq '2' ? 'active' : ''}">
                         메이크업/선케어
                     </a>
-                    <a href="${pageContext.request.contextPath}/product/list.do?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
+                    <a href="${pageContext.request.contextPath}/product/list?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
                        class="menu-item ${category eq '3' ? 'active' : ''}">
                         클렌징케어
                     </a>
