@@ -13,6 +13,8 @@ public interface CartDao {
 	//장바구니 상품 조회
 	List<CartVo> selectList(int mem_idx);
 	int selectCartTotalAmount(int mem_idx);
+	//select문에 필요
+	CartVo selectOne(int cart_id);
 	
 	//중복체크
 	CartVo selectCartIdByProduct(CartVo vo);
