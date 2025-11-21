@@ -265,7 +265,7 @@ margin-left: -20px;
                 <div class="col-lg-3 col-md-3 col-7">
                     <a class="navbar-brand" href="${pageContext.request.contextPath}/">
                         <img 
-                        src="${pageContext.request.contextPath}/assets/images/logo/onetouch3.png" 
+                        src="${pageContext.request.contextPath}/assets/images/logo/onetouch_logo.png" 
                         alt="OneTouch" style="width: 90px; height: auto;">
                     </a>
                 </div>
