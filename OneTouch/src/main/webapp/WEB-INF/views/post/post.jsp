@@ -1577,13 +1577,13 @@ document.addEventListener('click', function(e) {
              </div>
              
              <div class="comment-input">
-                 <input type="text" class="post-comment" id="reply_content"  placeholder="댓글을 남겨보세요...">
-                 <button class="comment-submit" data-postidx="\${postVo.post_idx}" onclick="replyInsert(this);">댓글</button>
+                 <input type="text" class="post-comment" id="reply_content" data-post-idx="\${postVo.post_idx}"  placeholder="댓글을 남겨보세요...">
+                 <button class="comment-submit" data-postidx="\${postVo.post_idx}" data-now-page="\${d.nowPage}" data-post-category="\${d.post_category}" onclick="replyInsert(this);">댓글</button>
              </div>
              <br>
              <!-- 댓글 섹션 -->
              `
-             //댓글부분
+             //댓글부분 List
              if(postVo.replyList && postVo.replyList.length>0){
             	 for(let replys of postVo.replyList){
             		 if(replys.reply_content!=null){
@@ -1856,8 +1856,25 @@ document.addEventListener('click', function(e) {
  /* ------------------------댓글 등록 함수--------------------------- */
  function replyInsert(btn){
  	let postIdx=btn.dataset.postidx;  
+ 	let nowPage=btn.dataset.nowPage;  
+ 	let postCategory=btn.dataset.postCategory;  
  	let replyContent=document.getElementById("reply_content").value;
- 	
+ 	//댓글 유효성 검사 (댓글이 써져있는지)
+ 	const input = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"]`);
+    if(!input) {
+        alert("댓글 입력창을 찾을 수 없습니다.");
+        return;
+    }
+
+    const content = input.value.trim(); // 앞뒤 공백 제거
+    if(content === "") {
+        alert("댓글 내용을 입력해주세요.");
+        input.focus();
+        return;
+    }
+    //end 댓글유효성
+	alert(nowPage);
+	alert(postCategory);
 	//alert(postIdx);
 	//alert(replyContent); // 댓글 내용
 	let login_mem_idx="${user.mem_idx}";
@@ -1869,6 +1886,7 @@ document.addEventListener('click', function(e) {
 	 		,data:{"post_idx":postIdx,"mem_idx":login_mem_idx,"reply_content":replyContent}
 	 		,success:function(d){
 	 			alert("성공");
+	 			listHtml(postCategory,nowPage);
 	 		}
 	 		,error:function(e){
 	 			
