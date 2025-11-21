@@ -236,11 +236,7 @@
                                                 ${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
                                         <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high" 
                                                 ${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
-<<<<<<< HEAD
-                                        <option value="${pageContext.request.contextPath}/product/list.do?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty sort ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
-=======
                                         <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
->>>>>>> branch 'master' of https://github.com/miniMiniTrip/OneTouch.git
                                                 ${sort eq 'rating' ? 'selected' : ''}>평점순</option>
                                     </select>
                                     <h3 class="total-show-product">총 <span>${totalCount}</span>개 상품</h3>
