@@ -115,14 +115,29 @@ public class ProductController {
     @GetMapping("/product/detail")
     public String productDetail(@RequestParam("id") int product_idx, Model model) {
         System.out.printf("=== [ProductController] 상품 상세 조회: %d ===\n", product_idx);
-        
+
         ProductVo product = product_dao.selectOne(product_idx);
-        if (product == null) {
-            System.out.println("[ProductController] 상품을 찾을 수 없음 - 목록으로 리다이렉트");
-            return "redirect:/product/list";
-        }
+        //이미지 강제로 조회
         
+        String imageUrl = product_dao.selectMainImage(product_idx);
+        product.setProduct_image_url(imageUrl);
+        
+        System.out.println("강제 설정한 이미지: " + imageUrl);
+      
+        // 정상 조회된 경우 로그 출력 (여기로 이동)
+        System.out.println("조회된 상품: " + product.getProduct_name());
+        System.out.println("이미지 URL: " + product.getProduct_image_url());
+        
+        List<String> detailImages = product_dao.selectDetailImages(product_idx);
+        System.out.println("디테일 이미지 개수: " + detailImages.size());
+	
+	
+	
         model.addAttribute("product", product);
+        model.addAttribute("detailImages", detailImages); 
         return "product/product_detail";
-    }
-}
+   }
+
+    
+    
+}//end

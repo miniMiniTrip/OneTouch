@@ -35,6 +35,7 @@ public class ProductVo{
     private int remain_cnt;          // 재고수량 (추가된 수량)
     private LocalDate remain_regdate;     // 재고등록일자
     
-
-
+    private String main_image_url;      // level 1 (메인 이미지)
+    private String detail_image_url;    // level 2 (상세 이미지)
+    
 }//end: ProductVo 

@@ -716,7 +716,7 @@ body {
 					<div class="product-image">
 					    <c:if test="${not empty product.product_image_url}">
 					        <div class="main-image" 
-					             style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');">
+					              style="background-image: url('/images/${product.product_image_url}');">
 					        </div>
 					        <div class="thumbnail-images">
 					            <div class="thumbnail active" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
@@ -736,6 +736,7 @@ body {
 					        </div>
 					    </c:if>
 					</div>
+
 
 
 
@@ -807,20 +808,19 @@ body {
                 <!-- 상품설명 내용 -->
                 <div id="description-content" class="tab-panel active">
                     <h3>제품 특징</h3>
-                    <ul class="feature-list">
-                        <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
-                        <li>민감한 피부에도 안전한 저자극 포뮬러</li>
-                        <li>빠른 흡수력으로 끈적임 없는 사용감</li>
-                        <li>하루 종일 지속되는 보습 효과</li>
-                        <li>피부 트러블 완화 및 진정 효과</li>
-                    </ul>
-
-                    <h3>사용법</h3>
-                    <p>세안 후 적당량을 손에 덜어 얼굴 전체에 부드럽게 발라주세요. 아침, 저녁 하루 2회 사용을 권장합니다.</p>
-
-                    <h3>주의사항</h3>
-                    <p>사용 중 이상이 있을 경우 즉시 사용을 중단하고 전문의와 상담하세요. 직사광선을 피해 서늘한 곳에 보관해주세요.</p>
-                </div>
+                    
+                     <!-- 상품 상세 이미지 추가 -->
+				    <div class="product-detail-image">
+				        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="상품 상세 이미지" />
+				    </div>
+				    <p>디버그: ${product.product_image_url}</p>
+				    
+				    <ul class="feature-list">
+				        <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
+				        <!-- ... 기존 내용 ... -->
+				    </ul>
+				    <!-- ... 나머지 내용 ... -->
+				</div>
 
     <!-- 리뷰 내용 -->
                 <div id="reviews-content" class="tab-panel">
