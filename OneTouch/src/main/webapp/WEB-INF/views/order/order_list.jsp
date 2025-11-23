@@ -216,9 +216,16 @@
         <div class="container">
             <div class="row">
                 <!-- Sidebar -->
-                <div class="col-lg-3">
-                    <jsp:include page="/WEB-INF/views/common/mypage_sidebar.jsp" />
-                </div>
+                <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="${pageContext.request.contextPath}/mypage/cart" class="active">장바구니</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/wishlist">찜 목록</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/orders">주문내역</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/reviews">내 리뷰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/qna">문의내역</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/profile">회원정보</a></li>
+                </ul>
+            </aside>
                 
                 <!-- Content -->
                 <div class="col-lg-9">
