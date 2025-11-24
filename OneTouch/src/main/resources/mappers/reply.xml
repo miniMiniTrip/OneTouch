@@ -51,4 +51,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			reply_idx=#{reply_idx}
 			 
 	</update>
+	
+	<delete id="deletePostReply" parameterType="int">
+		delete from reply where reply_idx=#{reply_idx}
+	</delete>
 </mapper>

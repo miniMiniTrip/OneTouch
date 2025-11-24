@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    <if test="postPageVo ==null or postPageVo.size() == 0">
 	    WHERE 1=0
 	    </if>	
-	    ORDER BY p.post_idx DESC
+	    ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
 	<!-- 페이지 처리를 위한 post_idx list 가져오기 -->
@@ -108,11 +108,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    <if test="postPageVo ==null or postPageVo.size() == 0">
 	    and 1=0
 	    </if>	
-		ORDER BY p.post_idx DESC
+		ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
 	<!-- 리뷰 목록 -->
-	<select id="selectReviewList" resultType="PostVo">
+	<select id="selectReviewList" resultMap="PostResultMap">
 		SELECT p.*,m.mem_id 
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 		, r.*
@@ -129,11 +129,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	#{vo.post_idx}
 	    </foreach>
 	    </if>	
-		ORDER BY p.post_idx DESC
+		ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
 	<!-- 자유 목록 -->
-	<select id="selectFreeBoard" resultType="PostVo">
+	<select id="selectFreeBoard" resultMap="PostResultMap">
 		SELECT p.*,m.mem_id 
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 		, r.*
@@ -150,7 +150,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	#{vo.post_idx}
 	    </foreach>	
 	    </if>
-		ORDER BY p.post_idx DESC
+		ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
 	<insert id="postInsert" parameterType="PostVo" useGeneratedKeys="true" keyProperty="post_idx">
