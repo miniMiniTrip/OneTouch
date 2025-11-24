@@ -85,9 +85,18 @@
 				        	<a href="${pageContext.request.contextPath}/wishlist/list.do">💝 찜</a>
 				        </div>
 				       
-				       
-				        <div class="menu-item">🎯 주문/배송 조회</div>
-				    </div>
+				        <div class="menu-item">
+				      	  <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}">🎯 주문/배송 조회</a>
+                        </div>
+                        
+                        <div class="menu-item"> 
+                          <a href="${pageContext.request.contextPath}/mypage/skinprofile.do"> 🔬 피부 프로필 </a>
+                        </div>
+                        
+                        <div class="menu-item"> 
+                          <a href="${pageContext.request.contextPath}/skin/form.do"> 🔬 피부 진단 </a>
+                        </div>
+				   	</div>
 				    
 				    <div class="menu-section">
 				        <div class="menu-title">나의 활동</div>

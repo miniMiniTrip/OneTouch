@@ -56,31 +56,31 @@ public class SkinProfileController {
 		List<Integer> list = new ArrayList<>();
 
 		switch(skin1)
-		{case 1 : list.add(0); break; 
-		 case 2 : list.add(1); break;
-		 case 3 : list.add(2); break;
+		{case 1 : list.add(1); break; 
+		 case 2 : list.add(2); break;
+		 case 3 : list.add(3); break;
 		}
 	
 		switch(skin2)
-		{case 1 : list.add(3); break;
-		 case 2 : list.add(4); break;
+		{case 1 : list.add(4); break;
+		 case 2 : list.add(5); break;
 		}
 
 		switch(skin3)
-		{case 1 : list.add(5); break;
+		{case 1 : list.add(6); break;
 		 case 2 : 
-		 case 3 : list.add(6); break;
+		 case 3 : list.add(7); break;
 		}
 		
 		switch(skin4)
-		{case 1 : list.add(7); break;
-		case 2 : list.add(8);  break; 
+		{case 1 : list.add(8); break;
+		case 2 : list.add(9);  break; 
 		}
 		
 		switch(skin5)
-		{case 1 : list.add(9);  break;
-		 case 2 : list.add(10); break;
-		 case 3 : list.add(11); break;
+		{case 1 : list.add(10);  break;
+		 case 2 : list.add(11); break;
+		 case 3 : list.add(12); break;
 		}
 		
 		List<HashtagVo> hashtag_list = new ArrayList<>();

@@ -3,639 +3,875 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html class="no-js" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OneTouch - 주문 상세</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>주문 상세 - OneTouch</title>
+    <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tiny-slider.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* ==================== 전체 레이아웃 ==================== */
+.mypage-section {
+    padding: 0;
+    background-color: #fff;
+    min-height: calc(100vh - 400px);
+}
 
-        body {
-            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-            background: #f5f7fa;
-            color: #333;
-        }
+.mypage-container {
+    display: flex;
+    max-width: 100%;
+    margin: 0;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+}
 
-        .container {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 40px;
-        }
+/* ==================== 사이드바 스타일 ==================== */
+.sidebar {
+    width: 250px;
+    background: #fafafa;
+    border-right: 1px solid #e0e0e0;
+    padding: 30px 0;
+    min-height: calc(100vh - 400px);
+}
 
-        .page-title {
-            font-size: 32px;
-            font-weight: bold;
-            color: #1a237e;
-            margin-bottom: 10px;
-        }
+.sidebar-header {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
 
-        .page-subtitle {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 40px;
-        }
+.sidebar-subtitle {
+    padding: 5px 30px 20px;
+    font-size: 13px;
+    color: #999;
+}
 
-        .mypage-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 30px;
-        }
+.menu-section {
+    margin: 25px 0;
+}
 
-        /* 사이드바 */
-        .sidebar {
-            background: white;
-            border-radius: 12px;
-            padding: 30px 0;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+.menu-title {
+    padding: 10px 30px;
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        .sidebar-menu {
-            list-style: none;
-        }
+.menu-item {
+    padding: 14px 30px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
 
-        .sidebar-menu a {
-            display: block;
-            padding: 14px 24px;
-            color: #666;
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
+.menu-item:hover {
+    background: #f0f0f0;
+    padding-left: 35px;
+    color: #333;
+}
 
-        .sidebar-menu a:hover {
-            background: #f5f7fa;
-            color: #1a237e;
-        }
+.menu-item.active {
+    background: #e8eaf6;
+    color: #5c6bc0;
+    font-weight: 600;
+    border-left: 3px solid #5c6bc0;
+}
 
-        .sidebar-menu a.active {
-            background: #e8eaf6;
-            color: #1a237e;
-            font-weight: 600;
-            border-left-color: #1a237e;
-        }
+/* ==================== 컨텐츠 영역 ==================== */
+.content {
+    flex: 1;
+    padding: 50px 60px;
+    background: #fff;
+}
 
-        /* 섹션 카드 */
-        .section-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+.content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #5c6bc0;
+}
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #1a237e;
-            margin-bottom: 24px;
-        }
+.content-header h2 {
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+    margin: 0;
+}
 
-        .section-header h2 {
-            font-size: 24px;
-            color: #1a237e;
-            margin: 0;
-        }
+/* ==================== 주문 상태 배지 ==================== */
+.order-status-badge {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
 
-        .order-status-badge {
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 14px;
-        }
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
 
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
+.status-paid {
+    background: #d4edda;
+    color: #155724;
+}
 
-        .status-paid {
-            background: #d4edda;
-            color: #155724;
-        }
+.status-shipping {
+    background: #d1ecf1;
+    color: #0c5460;
+}
 
-        .status-shipping {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
 
-        .status-completed {
-            background: #d4edda;
-            color: #155724;
-        }
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
 
-        /* 정보 테이블 */
-        .info-table {
-            width: 100%;
-            margin-bottom: 24px;
-        }
+/* ==================== 섹션 카드 ==================== */
+.section-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
 
-        .info-table tr {
-            border-bottom: 1px solid #f0f0f0;
-        }
+.section-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
 
-        .info-table tr:last-child {
-            border-bottom: none;
-        }
+.section-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #5c6bc0 0%, #7e8fd4 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+}
 
-        .info-table td {
-            padding: 14px 0;
-            vertical-align: top;
-        }
+.section-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
 
-        .info-table td:first-child {
-            width: 140px;
-            color: #666;
-            font-size: 14px;
-        }
+/* ==================== 정보 테이블 ==================== */
+.info-table {
+    width: 100%;
+}
 
-        .info-table td:last-child {
-            color: #333;
-            font-weight: 500;
-        }
+.info-table tr {
+    border-bottom: 1px solid #f0f0f0;
+}
 
-        /* 상품 리스트 */
-        .product-list {
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 16px;
-        }
+.info-table tr:last-child {
+    border-bottom: none;
+}
 
-        .product-header {
-            background: #f8f9fa;
-            padding: 16px 20px;
-            font-weight: 600;
-            border-bottom: 1px solid #e0e0e0;
-        }
+.info-table td {
+    padding: 14px 0;
+    vertical-align: top;
+}
 
-        .product-item {
-            display: flex;
-            gap: 20px;
-            padding: 24px;
-            border-bottom: 1px solid #f0f0f0;
-        }
+.info-table td:first-child {
+    width: 140px;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
 
-        .product-item:last-child {
-            border-bottom: none;
-        }
+.info-table td:last-child {
+    color: #333;
+    font-size: 14px;
+}
 
-        .product-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 8px;
-            overflow: hidden;
-            flex-shrink: 0;
-            background: #f5f7fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* ==================== 상품 리스트 ==================== */
+.product-list {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.product-header {
+    background: #f8f9fa;
+    padding: 16px 20px;
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
 
-        .product-image.no-image {
-            color: #999;
-            font-size: 12px;
-        }
+.product-item {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s;
+}
 
-        .product-info {
-            flex: 1;
-        }
+.product-item:last-child {
+    border-bottom: none;
+}
 
-        .product-name {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+.product-item:hover {
+    background: #f8f9fa;
+}
 
-        .product-name a {
-            color: #333;
-            text-decoration: none;
-        }
+.product-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .product-name a:hover {
-            color: #1a237e;
-        }
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .product-detail {
-            color: #666;
-            font-size: 14px;
-        }
+.product-image.no-image {
+    color: #999;
+    font-size: 12px;
+}
 
-        .product-price {
-            text-align: right;
-            min-width: 120px;
-        }
+.product-info {
+    flex: 1;
+}
 
-        .product-price .price {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a237e;
-        }
+.product-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
 
-        .product-price .qty {
-            font-size: 14px;
-            color: #666;
-            margin-top: 4px;
-        }
+.product-name a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
 
-        /* 결제 요약 */
-        .payment-summary {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 24px;
-        }
+.product-name a:hover {
+    color: #5c6bc0;
+}
 
-        .payment-summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            font-size: 15px;
-        }
+.product-detail {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
 
-        .payment-summary-item.total {
-            margin-top: 12px;
-            padding-top: 16px;
-            border-top: 2px solid #dee2e6;
-            font-size: 18px;
-            font-weight: 600;
-        }
+.product-price {
+    text-align: right;
+    min-width: 120px;
+}
 
-        /* 배송 추적 */
-        .tracking-info {
-            background: #e3f2fd;
-            padding: 16px;
-            border-radius: 8px;
-            margin-top: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.product-price .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #5c6bc0;
+    margin-bottom: 4px;
+}
 
-        .tracking-info svg {
-            width: 24px;
-            height: 24px;
-            stroke: #1976d2;
-        }
+.product-price .qty {
+    font-size: 14px;
+    color: #666;
+}
 
-        /* 액션 버튼 */
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 24px;
-        }
+/* ==================== 결제 요약 ==================== */
+.payment-summary {
+    background: #f8f9fa;
+    padding: 24px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
+.payment-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 15px;
+    color: #666;
+}
 
-        .btn-outline-secondary {
-            background: white;
-            color: #666;
-            border: 1px solid #ddd;
-        }
+.payment-summary-item:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+}
 
-        .btn-outline-secondary:hover {
-            background: #f5f7fa;
-        }
+.payment-summary-item.total {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    padding-top: 16px;
+    margin-top: 8px;
+    border-top: 2px solid #5c6bc0;
+}
 
-        .btn-primary {
-            background: #1a237e;
-            color: white;
-        }
+.payment-summary-item.total span:last-child {
+    color: #5c6bc0;
+    font-size: 22px;
+}
 
-        .btn-primary:hover {
-            background: #3949ab;
-        }
+/* ==================== 액션 버튼 ==================== */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
 
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
+.btn-primary-custom {
+    background: #5c6bc0;
+    color: white;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
 
-        .btn-danger:hover {
-            background: #c82333;
-        }
+.btn-primary-custom:hover {
+    background: #4a5aaf;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+}
 
-        .btn-outline-danger {
-            background: white;
-            color: #dc3545;
-            border: 1px solid #dc3545;
-        }
+.btn-secondary-custom {
+    background: #fff;
+    color: #666;
+    padding: 12px 28px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
 
-        .btn-outline-danger:hover {
-            background: #dc3545;
-            color: white;
-        }
+.btn-secondary-custom:hover {
+    background: #f8f9fa;
+    border-color: #999;
+    color: #333;
+}
 
-        .btn-outline-primary {
-            background: white;
-            color: #1a237e;
-            border: 1px solid #1a237e;
-        }
+.btn-danger-custom {
+    background: #dc3545;
+    color: white;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
 
-        .btn-outline-primary:hover {
-            background: #1a237e;
-            color: white;
-        }
+.btn-danger-custom:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.btn-outline-danger-custom {
+    background: transparent;
+    color: #dc3545;
+    padding: 12px 28px;
+    border: 2px solid #dc3545;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-outline-danger-custom:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* ==================== 영수증 버튼 ==================== */
+.btn-receipt {
+    background: transparent;
+    color: #5c6bc0;
+    padding: 6px 16px;
+    border: 1px solid #5c6bc0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.btn-receipt:hover {
+    background: #5c6bc0;
+    color: white;
+}
+
+/* ==================== 반응형 ==================== */
+@media (max-width: 1200px) {
+    .content {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 992px) {
+    .mypage-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .content {
+        padding: 30px 20px;
+    }
+    
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-card {
+        padding: 20px;
+    }
+    
+    .product-item {
+        flex-direction: column;
+    }
+    
+    .product-image {
+        width: 100%;
+        height: 200px;
+    }
+    
+    .product-price {
+        text-align: left;
+        width: 100%;
+    }
+    
+    .info-table td:first-child {
+        width: 100px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-primary-custom,
+    .btn-secondary-custom,
+    .btn-danger-custom,
+    .btn-outline-danger-custom {
+        width: 100%;
+        text-align: center;
+    }
+}
     </style>
 </head>
 <body>
-   <!-- Start Header Area -->
-   <c:import url="../common/header.jsp" />
-   <!-- End Header Area -->
-    
-   <!-- Start Breadcrumbs -->
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- /End Preloader -->
+
+    <!-- Start Header Area -->
+    <c:import url="../common/header.jsp" />
+    <!-- End Header Area -->
+
+    <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">장바구니</h1>
+                        <h1 class="page-title">주문 상세</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
                         <li>마이페이지</li>
-                        <li>장바구니</li>
+                        <li>주문 상세</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
     <!-- End Breadcrumbs -->
-    <section class="cart-section">
+
+    <!-- Start Mypage Section -->
+    <section class="mypage-section">
         <div class="container">
-            <div class="cart-container">
-                <!-- Sidebar -->
+            <div class="mypage-container">
+                
+                <!-- ==================== Sidebar ==================== -->
                 <div class="sidebar">
+                    <div class="sidebar-header">마이페이지</div>
+                    <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
                     
+                    <!-- 쇼핑 메뉴 -->
                     <div class="menu-section">
-                        <div class="menu-item active">🛒 장바구니</div>
-                        <div class="menu-item">💝 찜</div>
-                        <div class="menu-item">🎯 주문/배송 조회</div>
+                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item">
+                            🛒 장바구니
+                        </a>
+                        
+                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item">
+                            💝 찜
+                        </a>
+                        
+                        <!-- 주문/배송 조회 - 현재 페이지 -->
+                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item active">
+                            🎯 주문/배송 조회
+                        </a>
                     </div>
                     
+                    <!-- 나의 활동 -->
                     <div class="menu-section">
                         <div class="menu-title">나의 활동</div>
-                        <div class="menu-item">💬 상품 Q&A</div>
+                        
+                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.mem_idx}" 
+                           class="menu-item">
+                            💬 상품 Q&A
+                        </a>
                     </div>
                     
+                    <!-- 회원 정보 -->
                     <div class="menu-section">
                         <div class="menu-title">회원 정보</div>
-                        <div class="menu-item">👥 회원정보 수정</div>
-                        <div class="menu-item">🔒 배송지 관리</div>
-                        <div class="menu-item">📧 알림톡신청 관리</div>
+                        
+                        <a href="${pageContext.request.contextPath}/member/modify.do" 
+                           class="menu-item">
+                            👥 회원정보 수정
+                        </a>
+                        
+                        <a href="${pageContext.request.contextPath}/member/address.do" 
+                           class="menu-item">
+                            🔒 배송지 관리
+                        </a>
+                        
+                        <a href="${pageContext.request.contextPath}/member/notification.do" 
+                           class="menu-item">
+                            📧 알림톡신청 관리
+                        </a>
                     </div>
                     
+                    <!-- 로그아웃 -->
                     <div class="menu-section">
-                        <div class="menu-item">📝 로그아웃</div>
+                        <a href="${pageContext.request.contextPath}/member/logout.do" 
+                           class="menu-item"
+                           onclick="return confirm('로그아웃 하시겠습니까?');">
+                            📝 로그아웃
+                        </a>
                     </div>
                 </div>
-
-
-            <!-- 메인 컨텐츠 -->
-            <main class="main-content">
-                <!-- 주문 정보 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2>주문 정보</h2>
+                
+                <!-- ==================== Content ==================== -->
+                <div class="content">
+                    
+                    <!-- Content Header -->
+                    <div class="content-header">
+                        <h2>주문 상세 정보</h2>
                         <span class="order-status-badge 
                             <c:choose>
-                                <c:when test="${order.order_status == '결제대기'}">status-pending</c:when>
-                                <c:when test="${order.order_status == '결제완료'}">status-paid</c:when>
-                                <c:when test="${order.order_status == '배송중'}">status-shipping</c:when>
-                                <c:when test="${order.order_status == '배송완료'}">status-completed</c:when>
+                                <c:when test='${order.order_status == "결제대기"}'>status-pending</c:when>
+                                <c:when test='${order.order_status == "결제완료"}'>status-paid</c:when>
+                                <c:when test='${order.order_status == "배송중"}'>status-shipping</c:when>
+                                <c:when test='${order.order_status == "배송완료"}'>status-completed</c:when>
+                                <c:when test='${order.order_status == "취소"}'>status-cancelled</c:when>
                             </c:choose>
                         ">
                             ${order.order_status}
                         </span>
                     </div>
                     
-                    <table class="info-table">
-                        <tr>
-                            <td>주문번호</td>
-                            <td>${order.order_no}</td>
-                        </tr>
-                        <tr>
-                            <td>주문일시</td>
-                            <td><fmt:formatDate value="${order.order_time}" pattern="yyyy년 MM월 dd일 HH:mm"/></td>
-                        </tr>
-                        <tr>
-                            <td>주문자명</td>
-                            <td>${order.order_mem_name}</td>
-                        </tr>
-                        <tr>
-                            <td>연락처</td>
-                            <td>${order.order_phone}</td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <!-- 배송 정보 -->
-                <div class="section-card">
-                    <h3 class="mb-3" style="font-size: 18px; font-weight: 600;">배송 정보</h3>
-                    
-                    <table class="info-table">
-                        <tr>
-                            <td>받는 분</td>
-                            <td>${order.order_mem_name}</td>
-                        </tr>
-                        <tr>
-                            <td>연락처</td>
-                            <td>${order.order_phone}</td>
-                        </tr>
-                        <tr>
-                            <td>배송지</td>
-                            <td>
-                                (${order.order_postal}) ${order.order_address}
-                                <c:if test="${not empty order.order_address_more}">
-                                    <br>${order.order_address_more}
-                                </c:if>
-                            </td>
-                        </tr>
-                    </table>
-                    
-                    <c:if test="${order.order_status == '배송중' || order.order_status == '배송완료'}">
-                        <div class="tracking-info">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-11.25c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <strong>배송 추적:</strong>
-                            <span>CJ대한통운 123456789</span>
-                            <button class="btn btn-outline-primary btn-sm" style="margin-left: auto; padding: 6px 12px;">배송조회</button>
-                        </div>
-                    </c:if>
-                </div>
-                
-                <!-- 주문 상품 -->
-                <div class="section-card">
-                    <h3 class="mb-3" style="font-size: 18px; font-weight: 600;">주문 상품</h3>
-                    
-                    <div class="product-list">
-                        <div class="product-header">
-                            총 ${fn:length(order_items)}개 상품
-                        </div>
-                        
-                        <c:forEach var="item" items="${order_items}">
-                            <div class="product-item">
-                                <c:choose>
-                                    <c:when test="${not empty item.product_image_url}">
-                                        <div class="product-image">
-                                            <img src="${pageContext.request.contextPath}/images/${item.product_image_url}" 
-                                                 alt="${item.product_name}">
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="product-image no-image">
-                                            이미지 없음
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                                
-                                <div class="product-info">
-                                    <div class="product-name">
-                                        <a href="${pageContext.request.contextPath}/product/detail.do?product_idx=${item.product_idx}">
-                                            ${item.product_name}
-                                        </a>
-                                    </div>
-                                    <div class="product-detail">
-                                        단가: <fmt:formatNumber value="${item.product_amount}" pattern="#,###"/>원
-                                    </div>
-                                </div>
-                                
-                                <div class="product-price">
-                                    <div class="price">
-                                        <fmt:formatNumber value="${item.total_amount}" pattern="#,###"/>원
-                                    </div>
-                                    <div class="qty">수량: ${item.product_cnt}개</div>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                    
-                    <!-- 결제 요약 -->
-                    <div class="payment-summary">
-                        <div class="payment-summary-item">
-                            <span>상품 합계</span>
-                            <span><fmt:formatNumber value="${order.total_amount}" pattern="#,###"/>원</span>
-                        </div>
-                        <div class="payment-summary-item">
-                            <span>배송비</span>
-                            <span>무료</span>
-                        </div>
-                        <div class="payment-summary-item">
-                            <span>할인 금액</span>
-                            <span class="text-danger">-0원</span>
-                        </div>
-                        <div class="payment-summary-item total">
-                            <span>총 결제금액</span>
-                            <span style="color: #1a237e;">
-                                <fmt:formatNumber value="${order.total_amount}" pattern="#,###"/>원
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 결제 정보 -->
-                <c:if test="${not empty payment}">
+                    <!-- 주문 정보 -->
                     <div class="section-card">
-                        <h3 class="mb-3" style="font-size: 18px; font-weight: 600;">결제 정보</h3>
+                        <div class="section-card-header">
+                            <div class="section-icon">📋</div>
+                            <h3>주문 정보</h3>
+                        </div>
                         
                         <table class="info-table">
                             <tr>
-                                <td>결제수단</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${payment.method == 'card' || payment.method == '카드'}">신용카드</c:when>
-                                        <c:when test="${payment.method == 'bank'}">계좌이체</c:when>
-                                        <c:when test="${payment.method == 'tosspay'}">토스페이</c:when>
-                                        <c:otherwise>${payment.method}</c:otherwise>
-                                    </c:choose>
-                                </td>
+                                <td>주문번호</td>
+                                <td><strong>${order.order_no}</strong></td>
                             </tr>
                             <tr>
-                                <td>결제금액</td>
-                                <td><fmt:formatNumber value="${payment.amount}" pattern="#,###"/>원</td>
+                                <td>주문일시</td>
+                                <td><fmt:formatDate value="${order.order_time}" pattern="yyyy년 MM월 dd일 HH:mm"/></td>
                             </tr>
-                            <c:if test="${not empty payment.approved_at}">
+                            <tr>
+                                <td>주문자명</td>
+                                <td>${sessionScope.user.mem_name}</td>
+                            </tr>
+                            <tr>
+                                <td>연락처</td>
+                                <td>${order.order_phone}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- 배송 정보 -->
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <div class="section-icon">🚚</div>
+                            <h3>배송 정보</h3>
+                        </div>
+                        
+                        <table class="info-table">
+                            <tr>
+                                <td>받는 분</td>
+                                <td>${order.order_mem_name}</td>
+                            </tr>
+                            <tr>
+                                <td>연락처</td>
+                                <td>${order.order_phone}</td>
+                            </tr>
+                            <tr>
+                                <td>배송지</td>
+                                <td>
+                                    ${order.order_address}
+                                    <c:if test="${not empty order.order_address_more}">
+                                        <br>${order.order_address_more}
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <c:if test="${not empty order.order_postal}">
                                 <tr>
-                                    <td>결제일시</td>
-                                    <td><fmt:formatDate value="${payment.approved_at}" pattern="yyyy년 MM월 dd일 HH:mm:ss"/></td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${not empty payment.receipt_url}">
-                                <tr>
-                                    <td>영수증</td>
-                                    <td>
-                                        <a href="${payment.receipt_url}" target="_blank" class="btn btn-outline-primary btn-sm" style="padding: 6px 12px;">
-                                            영수증 보기
-                                        </a>
-                                    </td>
+                                    <td>우편번호</td>
+                                    <td>${order.order_postal}</td>
                                 </tr>
                             </c:if>
                         </table>
                     </div>
-                </c:if>
-                
-                <!-- 액션 버튼 -->
-                <div class="action-buttons">
-                    <a href="${pageContext.request.contextPath}/order/list.do" class="btn btn-outline-secondary">목록으로</a>
                     
-                    <c:choose>
-                        <c:when test="${order.order_status == '결제대기'}">
-                            <button class="btn btn-primary" onclick="payOrder(${order.order_id})">결제하기</button>
-                            <button class="btn btn-danger" onclick="cancelOrder(${order.order_id})">주문취소</button>
-                        </c:when>
-                        <c:when test="${order.order_status == '결제완료'}">
-                            <button class="btn btn-outline-danger" onclick="requestRefund(${order.order_id})">환불요청</button>
-                        </c:when>
-                        <c:when test="${order.order_status == '배송완료'}">
-                            <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" class="btn btn-primary">리뷰작성</a>
-                            <button class="btn btn-outline-secondary" onclick="requestReturn(${order.order_id})">반품요청</button>
-                        </c:when>
-                    </c:choose>
+                    <!-- 주문 상품 -->
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <div class="section-icon">📦</div>
+                            <h3>주문 상품</h3>
+                        </div>
+                        
+                        <div class="product-list">
+                            <div class="product-header">
+                                상품 정보
+                            </div>
+                            
+                            <c:forEach var="item" items="${orderItems}">
+                                <div class="product-item">
+                                    <div class="product-image ${empty item.product_image ? 'no-image' : ''}">
+                                        <c:choose>
+                                            <c:when test="${not empty item.product_image}">
+                                                <img src="${pageContext.request.contextPath}${item.product_image}" 
+                                                     alt="${item.product_name}">
+                                            </c:when>
+                                            <c:otherwise>
+                                                이미지 없음
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="product-name">
+                                            <a href="${pageContext.request.contextPath}/product/detail.do?product_idx=${item.product_idx}">
+                                                ${item.product_name}
+                                            </a>
+                                        </div>
+                                        <div class="product-detail">
+                                            브랜드: ${item.product_brand}<br>
+                                            수량: ${item.product_cnt}개
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <div class="price">
+                                            <fmt:formatNumber value="${item.total_amount}" pattern="#,###"/>원
+                                        </div>
+                                        <div class="qty">수량: ${item.product_cnt}개</div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                        
+                        <!-- 결제 요약 -->
+                        <div class="payment-summary">
+                            <div class="payment-summary-item">
+                                <span>상품 합계</span>
+                                <span><fmt:formatNumber value="${order.total_amount}" pattern="#,###"/>원</span>
+                            </div>
+                            <div class="payment-summary-item">
+                                <span>배송비</span>
+                                <span>무료</span>
+                            </div>
+                            <div class="payment-summary-item">
+                                <span>할인 금액</span>
+                                <span style="color: #dc3545;">-0원</span>
+                            </div>
+                            <div class="payment-summary-item total">
+                                <span>총 결제금액</span>
+                                <span>
+                                    <fmt:formatNumber value="${order.total_amount}" pattern="#,###"/>원
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 결제 정보 -->
+                    <c:if test="${not empty payment}">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <div class="section-icon">💳</div>
+                                <h3>결제 정보</h3>
+                            </div>
+                            
+                            <table class="info-table">
+                                <tr>
+                                    <td>결제수단</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${payment.method == 'card' || payment.method == '카드'}">신용카드</c:when>
+                                            <c:when test="${payment.method == 'bank'}">계좌이체</c:when>
+                                            <c:when test="${payment.method == 'tosspay'}">토스페이</c:when>
+                                            <c:otherwise>${payment.method}</c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>결제금액</td>
+                                    <td><fmt:formatNumber value="${payment.amount}" pattern="#,###"/>원</td>
+                                </tr>
+                                <c:if test="${not empty payment.approved_at}">
+                                    <tr>
+                                        <td>결제일시</td>
+                                        <td><fmt:formatDate value="${payment.approved_at}" pattern="yyyy년 MM월 dd일 HH:mm:ss"/></td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="${not empty payment.receipt_url}">
+                                    <tr>
+                                        <td>영수증</td>
+                                        <td>
+                                            <a href="${payment.receipt_url}" target="_blank" class="btn-receipt">
+                                                영수증 보기
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                            </table>
+                        </div>
+                    </c:if>
+                    
+                    <!-- 액션 버튼 -->
+                    <div class="action-buttons">
+                        <a href="${pageContext.request.contextPath}/order/list.do" class="btn-secondary-custom">
+                            목록으로
+                        </a>
+                        
+                        <c:choose>
+                            <c:when test="${order.order_status == '결제대기'}">
+                                <button class="btn-primary-custom" onclick="payOrder(${order.order_id})">
+                                    결제하기
+                                </button>
+                                <button class="btn-danger-custom" onclick="cancelOrder(${order.order_id})">
+                                    주문취소
+                                </button>
+                            </c:when>
+                            <c:when test="${order.order_status == '결제완료'}">
+                                <button class="btn-outline-danger-custom" onclick="requestRefund(${order.order_id})">
+                                    환불요청
+                                </button>
+                            </c:when>
+                            <c:when test="${order.order_status == '배송완료'}">
+                                <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" 
+                                   class="btn-primary-custom">
+                                    리뷰작성
+                                </a>
+                                <button class="btn-outline-danger-custom" onclick="requestReturn(${order.order_id})">
+                                    반품요청
+                                </button>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                    
                 </div>
-            </main>
+            </div>
         </div>
-    </div>
-</section>
-    <!-- Footer Include -->
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    </section>
+    <!-- End Mypage Section -->
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <!-- Start Footer Area -->
+    <c:import url="../common/footer.jsp" />
+    <!-- End Footer Area -->
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <!-- ========================= JS here ========================= -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
@@ -643,152 +879,95 @@
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
-    // 전체 선택/해제
-    $('#checkAll').on('change', function() {
-        $('.cart-check').prop('checked', $(this).prop('checked'));
-        updateTotalAmount();
-    });
-    
-    // 개별 체크박스 변경
-    $('.cart-check').on('change', function() {
-        updateTotalAmount();
-    });
-    
-    // 수량 증가
-    $('.qty-increase').on('click', function() {
-        let cartId = $(this).data('cart-id');
-        let input = $('.qty-input[data-cart-id="' + cartId + '"]');
-        let currentVal = parseInt(input.val());
-        if (currentVal < 99) {
-            input.val(currentVal + 1);
-            updateCart(cartId, currentVal + 1);
+    // 프리로더 제거
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
         }
     });
     
-    // 수량 감소
-    $('.qty-decrease').on('click', function() {
-        let cartId = $(this).data('cart-id');
-        let input = $('.qty-input[data-cart-id="' + cartId + '"]');
-        let currentVal = parseInt(input.val());
-        if (currentVal > 1) {
-            input.val(currentVal - 1);
-            updateCart(cartId, currentVal - 1);
-        }
-    });
-    
-    // 수량 직접 입력
-    $('.qty-input').on('change', function() {
-        let cartId = $(this).data('cart-id');
-        let qty = parseInt($(this).val());
-        if (qty < 1) qty = 1;
-        if (qty > 99) qty = 99;
-        $(this).val(qty);
-        updateCart(cartId, qty);
-    });
-    
-    // 장바구니 수량 업데이트
-    function updateCart(cartId, qty) {
-        let memIdx = $('.qty-input[data-cart-id="' + cartId + '"]').data('mem-idx');
-        
-        $.ajax({
-            url: '/cart/modify.do',
-            type: 'POST',
-            data: {
-                cart_id: cartId,
-                cart_cnt: qty,
-                mem_idx: memIdx
-            },
-            success: function(response) {
-                location.reload();
-            }
-        });
+    // 결제하기
+    function payOrder(orderId) {
+        location.href = '${pageContext.request.contextPath}/order/payment.do?order_id=' + orderId;
     }
     
-    // 개별 삭제
-    $('.remove-item').on('click', function() {
-        if (confirm('상품을 삭제하시겠습니까?')) {
-            let cartId = $(this).data('cart-id');
-            let memIdx = $(this).data('mem-idx');
-            
-            $.ajax({
-                url: '/cart/delete.do',
-                type: 'POST',
-                data: {
-                    cart_id: cartId,
-                    mem_idx: memIdx
+    // 주문 취소
+    function cancelOrder(orderId) {
+        if (confirm('주문을 취소하시겠습니까?')) {
+            fetch('${pageContext.request.contextPath}/order/cancel.do', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                success: function() {
+                body: 'order_id=' + orderId
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    alert('주문이 취소되었습니다.');
                     location.reload();
+                } else {
+                    alert('주문 취소에 실패했습니다.');
                 }
+            })
+            .catch(error => {
+                alert('주문 취소 중 오류가 발생했습니다.');
             });
-        }
-    });
-    
-    // 선택 삭제
-    function deleteSelected() {
-        let selected = $('.cart-check:checked');
-        if (selected.length === 0) {
-            alert('삭제할 상품을 선택해주세요.');
-            return;
-        }
-        
-        if (confirm('선택한 상품을 삭제하시겠습니까?')) {
-            selected.each(function() {
-                let cartId = $(this).val();
-                let memIdx = $('.qty-input[data-cart-id="' + cartId + '"]').data('mem-idx');
-                
-                $.ajax({
-                    url: '/cart/delete.do',
-                    type: 'POST',
-                    data: {
-                        cart_id: cartId,
-                        mem_idx: memIdx
-                    }
-                });
-            });
-            
-            setTimeout(function() {
-                location.reload();
-            }, 500);
         }
     }
     
-    // 총 금액 업데이트
-    function updateTotalAmount() {
-        let total = 0;
-        $('.cart-check:checked').each(function() {
-            let cartId = $(this).val();
-            let subtotal = parseInt($('.subtotal[data-cart-id="' + cartId + '"]').text().replace(/[^0-9]/g, ''));
-            total += subtotal;
-        });
-        
-        $('#subtotal-amount').text(total.toLocaleString() + '원');
-        $('#total-amount').text(total.toLocaleString() + '원');
+    // 환불 요청
+    function requestRefund(orderId) {
+        if (confirm('환불을 요청하시겠습니까?')) {
+            fetch('${pageContext.request.contextPath}/order/refund.do', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'order_id=' + orderId
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    alert('환불 요청이 완료되었습니다.');
+                    location.reload();
+                } else {
+                    alert('환불 요청에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                alert('환불 요청 중 오류가 발생했습니다.');
+            });
+        }
     }
     
-    // 주문하기
-	function proceedToCheckout() {
-	    let selected = $('.cart-check:checked');
-	    if (selected.length === 0) {
-	        alert('주문할 상품을 선택해주세요.');
-	        return;
-	    }
-
-	    console.log("Selected items:", selected.length);
-	    selected.each(function() {
-	        console.log("cart_id:", $(this).val());
-	    });
-	    
-	    $('#cartForm').submit(); 
-	}
-    
-/* 	function payOrder(orderId) {
-	    location.href = '${pageContext.request.contextPath}/order/repay_form.do?order_id=' + orderId;
-	} */
+    // 반품 요청
+    function requestReturn(orderId) {
+        if (confirm('반품을 요청하시겠습니까?')) {
+            fetch('${pageContext.request.contextPath}/order/return.do', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'order_id=' + orderId
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    alert('반품 요청이 완료되었습니다.');
+                    location.reload();
+                } else {
+                    alert('반품 요청에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                alert('반품 요청 중 오류가 발생했습니다.');
+            });
+        }
+    }
     </script>
     
-</body>
-</html>
-
 </body>
 </html>
