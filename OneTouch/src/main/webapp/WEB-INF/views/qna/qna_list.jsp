@@ -314,6 +314,46 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
     </c:otherwise>
 </c:choose>
 
+<<<<<<< HEAD
+				<!-- 사이드바 인크루드 -->
+				<%@include file="/WEB-INF/views/common/mypage_side_bar.jsp"%>
+				<div class="content">
+					<div class="content-header">
+						<h2>상품 Q&A</h2>
+
+						<!-- 로그인한 사용자만 Q&A 쓰기 버튼 표시 -->
+						<!-- 로그인 여부에 따라 버튼 하나만 출력 -->
+
+						<!-- 글이 있을 때만 버튼 표시 -->
+						<c:if test="${not empty qna_list}">
+							<button class="btn-write"
+								onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'">
+								Q&A 쓰기</button>
+						</c:if>
+					</div>
+
+					<!-- 글이 있는 경우 -->
+					<c:if test="${not empty qna_list}">
+						<table class="qna-table">
+							<thead>
+								<tr>
+									<th style="width: 80px;">번호</th>
+									<th>제목</th>
+									<th style="width: 100px;">작성자</th>
+									<th style="width: 120px;">작성일</th>
+									<th style="width: 100px;">답변상태</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="qna" items="${qna_list}" varStatus="status">
+									<tr>
+										<td>${qna.qna_idx}</td>
+
+
+										<!-- 상세보기로 가는 버튼 -->
+										<td class="title"><a
+											href="${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}">${qna.qna_title}</a>
+=======
            --%>             
                         <!-- 글이 있을 때만 버튼 표시 -->
                         <c:if test="${not empty qna_list}">
@@ -346,6 +386,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 										    <a href="${pageContext.request.contextPath}/qna/detail?qna_idx=${qna.qna_idx}">
 										        ${qna.qna_title}
 										    </a>
+>>>>>>> origin/master
 										</td>
                                         
                                         <!-- 멤버id -->
