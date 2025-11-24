@@ -1,5 +1,7 @@
 package com.onetouch.vo;
 
+import java.sql.Timestamp;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
@@ -14,6 +16,6 @@ public class SkinProfileVo {
 	String sp_wrinkle;
 	String sp_skin_tone;
 	String hashtag_ids;
-	String sp_time;
-	String sp_update;
+	Timestamp sp_time;
+	Timestamp sp_update;
 }

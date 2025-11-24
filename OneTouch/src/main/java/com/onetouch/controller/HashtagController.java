@@ -57,7 +57,7 @@ public class HashtagController {
 	};
 
 	@RequestMapping("/hashtag/search.do")
-    public String searchProductsByHashtag(@RequestParam("int hashtag_idx") int hashtag_idx, 
+    public String searchProductsByHashtag(@RequestParam("hashtag_idx") int hashtag_idx, 
             Model model) {
 		HashtagVo hashtag = hashtag_dao.selectOne(hashtag_idx);
 		

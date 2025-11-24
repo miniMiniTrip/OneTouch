@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.dao.SkinProfileDao">
+<!--  회원의 피부 프로필 조회  -->
+<select id="selectOne" parameterType="int" resultType="skin_profile"> 
+	select 	mem_idx, 
+			sp_skin_type, 
+			sp_trouble, 
+			sp_color_change, 
+			sp_wrinkle, 
+			sp_skin_tone, 
+			hashtag_ids, 
+			sp_time, 
+			sp_update 
+	from skin_profile where mem_idx = #{mem_idx}
+</select>
+<!--  신규 프로필 저장 (최초 문진)  -->
+<insert id="insert" parameterType="skin_profile"> 
+	insert into skin_profile ( mem_idx, sp_skin_type, sp_trouble, sp_color_change, sp_wrinkle, sp_skin_tone, hashtag_ids ) VALUES ( #{mem_idx}, #{sp_skin_type}, #{sp_trouble}, #{sp_color_change}, #{sp_wrinkle}, #{sp_skin_tone}, #{hashtag_ids} ) 
+</insert>
+<!--  기존 프로필 업데이트 (재문진)  -->
+<update id="update" parameterType="skin_profile"> 
+	update skin_profile set sp_skin_type = #{sp_skin_type}, sp_trouble = #{sp_trouble}, sp_color_change = #{sp_color_change}, sp_wrinkle = #{sp_wrinkle}, sp_skin_tone = #{sp_skin_tone}, hashtag_ids = #{hashtag_ids} where mem_idx = #{mem_idx} 
+</update>
+<!--  프로필 삭제  -->
+<delete id="delete" parameterType="int">
+	delete from skin_profile where mem_idx = #{mem_idx}
+</delete>
+</mapper>
