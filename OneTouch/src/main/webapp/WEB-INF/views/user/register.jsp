@@ -317,7 +317,7 @@
         <div class="container">
             <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
                 <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-12">
-        <form action="${pageContext.request.contextPath}/user/insert" method="post" id="registerForm" onsubmit="return validateForm()">
+        <form action="${pageContext.request.contextPath}/user/insert" method="post" id="registerForm" enctype="multipart/form-data" onsubmit="return validateForm()">
 
                             <!-- 에러 메시지 -->
                             <c:if test="${not empty errorMessage}">
@@ -471,7 +471,13 @@
                             placeholder="상세 주소 (예: 101동 1001호)" required>
                  </div>
              </div>
-
+             
+             <div class="file-upload">
+				<input type="file" id="mem_image" name="mem_image" > <span class="file-name">
+				<!-- 선택된 파일 없음 -->
+				</span>
+			</div>
+			<br>
             <!-- 약관 동의 -->
             <div class="checkbox-group">
                 <div class="checkbox-item">
