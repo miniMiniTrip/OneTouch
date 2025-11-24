@@ -1,5 +1,7 @@
 package com.onetouch.vo;
 
+import java.util.List;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
@@ -16,12 +18,9 @@ public class ReplyVo {
 	int reply_delete;
 	String reply_time;
 	String reply_update;
-<<<<<<< HEAD
 	
 	/** 댓글 그룹화로 조회해온 결과 list*/
 	List<ReplyVo> replyList;
 	
 	
-=======
->>>>>>> 4449e6b8f0c1c6a293c456ca10b73466f341cc51
 }

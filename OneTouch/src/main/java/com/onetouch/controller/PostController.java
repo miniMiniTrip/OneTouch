@@ -247,7 +247,6 @@ public class PostController {
 		return map;
 	}
 	
-<<<<<<< HEAD
 	// post 댓글 목록 가져오기
 	@RequestMapping("/post/reply_list")
 	@ResponseBody
@@ -265,8 +264,6 @@ public class PostController {
 		System.out.printf("\n");
 		return map;
 	}
-=======
->>>>>>> 4449e6b8f0c1c6a293c456ca10b73466f341cc51
 	
 	//post 댓글 등록 처리
 	@RequestMapping("/post/reply")
