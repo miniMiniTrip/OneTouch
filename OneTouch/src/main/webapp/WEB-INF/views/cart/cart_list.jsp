@@ -693,6 +693,7 @@
         </div>
     </section>
     <!-- End Cart Section -->
+    <c:import url="../common/footer.jsp" />
 
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">

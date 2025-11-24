@@ -50,6 +50,6 @@ public interface ProductDao {
     // 재고 이력 총 개수 조회
     int selectRemainCount(Map<String, Object> map);
     
-    
-    
+    //해시태그 검색용
+    List<ProductVo> selectByIds(@Param("list") List<Integer> product_idx_list);
 }
