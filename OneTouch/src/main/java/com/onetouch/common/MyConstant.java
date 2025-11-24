@@ -27,4 +27,10 @@ public class MyConstant {
 		public static final int BLOCK_LIST = 5;  
 		public static final int BLOCK_PAGE = 10;
 	}
+	
+	//댓글 목록
+	public static class Reply{
+		public static final int BLOCK_LIST = 3;  
+		public static final int BLOCK_PAGE = 2;
+	}
 }

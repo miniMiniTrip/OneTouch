@@ -1588,62 +1588,16 @@ document.addEventListener('click', function(e) {
              </div>
              <br>
              <!-- 댓글 섹션 -->
-             `
-             //댓글부분 List
-             if(postVo.replyList && postVo.replyList.length>0){
-            	 for(let replys of postVo.replyList){
-            		 if(replys.reply_content!=null){
-            			 
-            		
-             html=html+`
-             <div class="comments-section">
-                 <!-- 댓글 목록 -->
-                             <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
-                                 <div class="comment-header">
-                                     <img src="https://randomuser.me/api/portraits/men/${(replys.mem_idx % 99) + 1}.jpg" 
-                                          alt="프로필" class="comment-profile-img">
-                                     <p class="comment-username">\${replys.mem_id}</p>
-                                     
-                                     <!-- 본인 댓글일 때만 점3개 버튼 -->
-                                         <div class="comment-actions">
-                                             <button class="comment-more-btn">
-                                                 <i class="fas fa-ellipsis-h"></i>
-                                             </button>
-                                             <div class="comment-more-menu" style="display: none;">
-                                                 <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
-                                                 <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}" data-now-page="\${d.nowPage}" data-post-category="\${d.post_category}">삭제</button>
-                                             </div>
-                                         </div>
-                                 </div>
-                                 
-                                 <div class="comment-content-wrapper">
-                                     <div class="comment-text">\${replys.reply_content}</div>
-                                     <div class="comment-time">
-                                     `
-                                     	  	 html=html+`
-                                             <span class="edited-mark">등록일:\${replys.reply_time}</span>
-                                             `
-                                             if(replys.reply_update||replys.reply_update!=null){
-                                             html=html+`
-                                             <span class="edited-mark">수정일:\${replys.reply_update}</span>
-                                             `
-                                             }
-                                             
-                                             html=html+`
-                                     </div>
-                                 </div>
-                             </div>
+             <div class="reply-list" data-post-idx=\${postVo.post_idx}>
              </div>
              `
-            	 	}
-            	 } 
-           	}
+       		 //replyHtml(postVo.post_idx,d.post_category,d.nowReplyPage);		
+            
              
              html=html+`
              <br>
              <br>
              
-             <div class="reply-list" data-post-idx=\${postVo.post_idx}>
 				`
     			
     		loop=loop+1;
@@ -1664,6 +1618,9 @@ document.addEventListener('click', function(e) {
     		if(tabType=='free'){
     		$("#posts-container-free").html(html);
     		}
+    		
+
+    		
     		carousels(); // 이미지 슬라이드
     		productSection(); // 상품 슬라이드
     		moreButtons(); // 수정 삭제버튼 초기화
@@ -1700,7 +1657,10 @@ document.addEventListener('click', function(e) {
     	     /* end: 페이지 처리 영역 */
     	     
     	     
-    	     
+     		//댓글list보여주는 처리 함수
+     		for(let postVo of postVo_array){
+     		    replyHtml(postVo.post_idx, d.post_category, d.nowReplyPage);
+     		}
     	    
 
     	     
@@ -1713,8 +1673,98 @@ document.addEventListener('click', function(e) {
 }  
 
  // =========================
- // 		 댓글 등록
+ // 		 댓글
  // =========================
+	 
+ /* --- 댓글 List 출력 함수 ---*/
+ function replyHtml(post_idx,post_category,nowReplyPage){
+	 //alert("댓글영역");
+	 //alert(post_idx);
+	 //alert(post_category);
+	
+	 if(!nowReplyPage){
+	 nowReplyPage=1;
+	 //alert(nowReplyPage);
+	 }
+	 
+	 $.ajax({
+		 url:"/post/reply_list"
+		 ,data:{"post_idx":post_idx,"post_category":post_category,"nowReplyPage":nowReplyPage}
+		 ,success:function(d){
+			 //alert("댓글list 성공");
+			 //댓글부분 List
+		    let html=""
+		     if(d.replyList && d.replyList.length>0){
+		    	 for(let replys of d.replyList){
+			// alert(replys.reply_idx);
+			 
+		    		 if(replys.reply_content!=null){
+		    			 
+		    html=html+`
+		     <div class="comments-section">
+		         <!-- 댓글 목록 -->
+		                     <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
+		                         <div class="comment-header">
+		                             <img src="https://randomuser.me/api/portraits/men/z.jpg" 
+		                                  alt="프로필" class="comment-profile-img">
+		                             <p class="comment-username">\${replys.mem_id}</p>
+		                             
+		                             <!-- 본인 댓글일 때만 점3개 버튼 -->
+		                                 <div class="comment-actions">
+		                                     <button class="comment-more-btn">
+		                                         <i class="fas fa-ellipsis-h"></i>
+		                                     </button>
+		                                     <div class="comment-more-menu" style="display: none;">
+		                                         <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
+		                                         <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}" data-now-page="\${d.nowReplyPage}" data-post-category="\${d.post_category}">삭제</button>
+		                                     </div>
+		                                 </div>
+		                         </div>
+		                         
+		                         <div class="comment-content-wrapper">
+		                             <div class="comment-text">\${replys.reply_content}</div>
+		                             <div class="comment-time">
+		                             `
+		                             	  	 html=html+`
+		                                     <span class="edited-mark">등록일:\${replys.reply_time}</span>
+		                                     `
+		                                     if(replys.reply_update||replys.reply_update!=null){
+		                                     html=html+`
+		                                     <span class="edited-mark">수정일:\${replys.reply_update}</span>
+		                                     `
+		                                     }
+		                                     
+		                                     html=html+`
+		                             </div>
+		                         </div>
+		                     </div>
+		     </div>
+		     `
+		    	 	}
+		    	 } //end : for
+		    	 d.ReplyPagingation;
+		    	 
+		   	}
+			 //alert(`"\${post_idx}"`);
+		  let replyDivList=document.querySelectorAll(`.reply-list[data-post-idx="\${post_idx}"]`);
+			 if(replyDivList){
+			//alert(replyDiv);
+				 replyDivList.forEach(div => {
+					    div.innerHTML = html;
+					});
+			 } 
+		 }//end succes
+	 	,error:function(e){
+	 		alert("댓글list 실패\n관리자문의");
+	 	}
+	 });//end : ajax 통신 댓글리스트
+		 
+		 
+ }//end 댓글 list 함수종료
+ 
+ /* --- end: 댓글 List 출력 함수 ---*/
+ 
+ 
  /* ------------------------댓글 등록 함수--------------------------- */
  function replyInsert(btn){
  	let postIdx=btn.dataset.postidx;  
