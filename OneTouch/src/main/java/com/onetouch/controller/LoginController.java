@@ -188,13 +188,29 @@ public class LoginController {
 		return"redirect:/";
 	}
 	
+
+	//-------------------------------------------------------------------------------------
+
+	
 	//회원 수정 페이지 열기 
-	@RequestMapping("/user/modify")
+	@RequestMapping("/user/user_modify")
 	public String userModufy() {
 		System.out.println("	[LoginController] userModufy ");
-		System.out.println("	[LoginController] return :  ");
-		return"";
+		System.out.println("	[LoginController] return :user/modify  ");
+		return"user/user_modify";
 	}
+	
+	
+	 //비밀번호 확인 폼 열기
+	@RequestMapping("/user/check_password")
+	public String checkPassword() {
+		System.out.println("	[LoginController]  checkPassword ");
+		System.out.println("	[LoginController] return : checkPassword  ");
+		return"user/check_password";
+		
+	}
+	
+	
 	
 	
 }
