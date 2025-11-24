@@ -1837,12 +1837,7 @@ document.addEventListener('click', function(e) {
 		    	 //댓글 페이지 처리
 		    	 html=html+d.ReplyPagingation;
 		    	 
-		    	 document.addEventListener("click",function(e){
-		    		 if(e.target && e.target.matches('.comment-page-link')){
-		    		 alert(e.target.dataset.postIdx);
-		    		 }
-		    			 
-		    	 });
+	
 		   	}
 			 //alert(`"\${post_idx}"`);
 		  let replyDivList=document.querySelectorAll(`.reply-list[data-post-idx="\${post_idx}"]`);
@@ -1863,6 +1858,19 @@ document.addEventListener('click', function(e) {
  
  /* --- end: 댓글 List 출력 함수 ---*/
  
+ 	//댓글 페이지 선택시 댓글 새로 뿌려주기
+	 document.addEventListener("click",function(e){
+		 if(e.target && e.target.matches('.comment-page-link')){
+		 let post_idx=e.target.dataset.postIdx;
+		 let post_category=e.target.dataset.category;
+		 let nowReplyPage=e.target.dataset.page;
+		 //alert(post_idx);
+		 //alert(post_category);
+		 alert(nowReplyPage);
+		 replyHtml(post_idx,post_category,nowReplyPage);		 
+		 }
+			 
+	 });
  
  /* ------------------------댓글 등록 함수--------------------------- */
  function replyInsert(btn){
