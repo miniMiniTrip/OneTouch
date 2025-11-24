@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 댓글 그룹화로 조회 -->
 	<select id="selectReplyList" parameterType="map" resultType="ReplyVo">
-		select r.*,m.mem_id from reply as r 
+		select r.*,m.mem_id,m.mem_image_url from reply as r 
 		Join mem as m on r.mem_idx =m.mem_idx
 		<if test="postReplyIdxPageList !=null and postReplyIdxPageList.size()>0">
 		WHERE r.reply_idx IN

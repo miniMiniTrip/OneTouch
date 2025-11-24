@@ -1796,7 +1796,7 @@ document.addEventListener('click', function(e) {
 		         <!-- 댓글 목록 -->
 		                     <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
 		                         <div class="comment-header">
-		                             <img src="https://randomuser.me/api/portraits/men/z.jpg" 
+		                             <img src="${pageContext.request.contextPath}/images/mem/\${replys.mem_image_url}" 
 		                                  alt="프로필" class="comment-profile-img">
 		                             <p class="comment-username">\${replys.mem_id}</p>
 		                             
@@ -1866,7 +1866,7 @@ document.addEventListener('click', function(e) {
 		 let nowReplyPage=e.target.dataset.page;
 		 //alert(post_idx);
 		 //alert(post_category);
-		 alert(nowReplyPage);
+		 //alert(nowReplyPage);
 		 replyHtml(post_idx,post_category,nowReplyPage);		 
 		 }
 			 
