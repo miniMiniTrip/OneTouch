@@ -51,4 +51,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							,0
 							)
 	</insert>
+	
+	<update id="updatePostReply" parameterType="ReplyVo">
+		update reply 
+		set 
+			reply_content=#{reply_content} , reply_update=now()
+		where
+			reply_idx=#{reply_idx}
+			 
+	</update>
+	
+	<delete id="deletePostReply" parameterType="int">
+		delete from reply where reply_idx=#{reply_idx}
+	</delete>
 </mapper>

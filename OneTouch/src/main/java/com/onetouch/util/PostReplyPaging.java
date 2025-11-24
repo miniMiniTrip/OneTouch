@@ -1,5 +1,7 @@
 package com.onetouch.util;
 
+import java.util.Map;
+
 public class PostReplyPaging {
 	public static String getPaging(
 			String post_category
@@ -7,7 +9,8 @@ public class PostReplyPaging {
 			, int nowPage // 현재페이지
 			, int rowTotal // 전체페이지
 			, int blockList // 한 화면에 보이는 리스트 갯수
-			, int blockPage) { // 페이지 갯수
+			, int blockPage
+			, Map<String, Object>map) { // 페이지 갯수
 
 		int totalPage/* 전체페이지수 */, startPage/* 시작페이지번호 */, endPage;/* 마지막페이지번호 */
 
@@ -44,18 +47,18 @@ public class PostReplyPaging {
 
 //HTML코드를 저장할 StringBuffer생성=>코드생성
 		sb = new StringBuffer();
-		sb.append(String.format("<div class=\"community-pagination-%s\">", post_category));
+		sb.append(String.format("<div class=\"comment-pagination-%s\">", post_category));
 //-----그룹페이지처리 이전 --------------------------------------------------------------------------------------------		
 		if (isPrevPage) {
 
-			sb.append(String.format("<a class=\"pagination-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-left\"></i></a>", pageURL, startPage - 1,post_category));
+			sb.append(String.format("<a class=\"comment-page-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\" data-post-idx=\"%d\"><i class=\"fas fa-angle-double-left\"></i></a>", pageURL, startPage - 1,post_category,map.get("post_idx")));
 
 //sb.append("<a href ='"+pageURL+"?page=");
 //sb.append(nowPage - blockPage);
 //sb.append("'>◀</a>");
 		} else
 
-			sb.append(String.format("<a class=\"pagination-link\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-left\" ></i></a>",post_category));
+			sb.append(String.format("<a class=\"comment-page-link\" data-category=\"%s\" style=\"cursor:pointer;\" data-post-idx=\"%d\"><i class=\"fas fa-angle-double-left\" ></i></a>",post_category,map.get("post_idx")));
 //sb.append("◀");
 
 //------페이지 목록 출력 -------------------------------------------------------------------------------------------------
@@ -64,13 +67,13 @@ public class PostReplyPaging {
 			if (i > totalPage)
 				break;
 			if (i == nowPage) { // 현재 있는 페이지
-				sb.append(String.format("<a class=\"pagination-link active\"data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\">%d</a>", pageURL, i,post_category, i));
+				sb.append(String.format("<a class=\"comment-page-link active\"data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" data-post-idx=\"%d\" style=\"cursor:pointer;\">%d</a>", pageURL, i,post_category,map.get("post_idx"), i));
 
 //sb.append("&nbsp;<b><font color='#91b72f'>");
 //sb.append(i);
 //sb.append("</font></b>");
 			} else {// 현재 페이지가 아니면
-				sb.append(String.format("<a class=\"pagination-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\">%d</a>", pageURL, i,post_category, i));
+				sb.append(String.format("<a class=\"comment-page-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" data-post-idx=\"%d\" style=\"cursor:pointer;\">%d</a>", pageURL, i,post_category,map.get("post_idx"),i));
 
 //sb.append("&nbsp;<a href='"+pageURL+"?page=");
 //sb.append(i);
@@ -85,7 +88,7 @@ public class PostReplyPaging {
 //-----그룹페이지처리 다음 ----------------------------------------------------------------------------------------------
 		if (isNextPage) {
 
-			sb.append(String.format("<a class=\"pagination-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-right\"></i></a>", pageURL, endPage + 1,post_category));
+			sb.append(String.format("<a class=\"comment-page-link\" data-url=\"%s\" data-page=\"%d\" data-category=\"%s\" style=\"cursor:pointer;\" data-post-idx=\"%d\"><i class=\"fas fa-angle-double-right\"></i></a>", pageURL, endPage + 1,post_category,map.get("post_idx")));
 
 //sb.append("<a href='"+pageURL+"?page=");
 //if(nowPage+blockPage > totalPage)nowPage = totalPage;
@@ -94,7 +97,7 @@ public class PostReplyPaging {
 //sb.append(nowPage);
 //sb.append("'>▶</a>");
 		} else
-			sb.append(String.format("<a class=\"pagination-link\" data-category=\"%s\" style=\"cursor:pointer;\"><i class=\"fas fa-angle-double-right\"></i></a>",post_category));
+			sb.append(String.format("<a class=\"comment-page-link\" data-category=\"%s\" style=\"cursor:pointer;\" data-post-idx=\"%d\"><i class=\"fas fa-angle-double-right\"></i></a>",post_category,map.get("post_idx")));
 //sb.append("▶");
 //---------------------------------------------------------------------------------------------------------------------	    
 
