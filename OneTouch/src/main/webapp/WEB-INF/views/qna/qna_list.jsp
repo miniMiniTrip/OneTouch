@@ -307,7 +307,7 @@
 				<%@include file="/WEB-INF/views/common/mypage_side_bar.jsp"%>
 				<div class="content">
 					<div class="content-header">
-						<h2>💬 상품 Q&A</h2>
+						<h2>상품 Q&A</h2>
 
 						<!-- 로그인한 사용자만 Q&A 쓰기 버튼 표시 -->
 						<!-- 로그인 여부에 따라 버튼 하나만 출력 -->
