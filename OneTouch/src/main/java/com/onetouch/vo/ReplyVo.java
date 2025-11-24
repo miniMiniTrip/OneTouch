@@ -21,5 +21,5 @@ public class ReplyVo {
 	
 	/** 댓글 그룹화로 조회해온 결과 list*/
 	List<ReplyVo> replyList;
-	
+
 }
