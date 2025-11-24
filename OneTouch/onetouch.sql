@@ -515,3 +515,15 @@ DESC product_remain;
 
 -- 데이터 확인
 SELECT * FROM product_remain;
+
+
+SELECT * FROM product_image WHERE product_idx = 30;
+
+SELECT 
+    p.product_idx,
+    p.product_name,
+    pi.product_image_url,
+    pi.product_image_level
+FROM product p
+LEFT JOIN product_image pi ON p.product_idx = pi.product_idx AND pi.product_image_level = 1
+WHERE p.product_idx = 30;

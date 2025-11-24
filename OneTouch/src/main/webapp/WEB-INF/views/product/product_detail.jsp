@@ -32,6 +32,95 @@
     box-sizing: border-box;
 }
 
+/* 관리자 이미지 관리 */
+.admin-image-controls {
+    background: linear-gradient(135deg, #1e3c72, #3366cc);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.btn-upload, .btn-save {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 10px 5px;
+}
+
+/* 기존 .image-item 스타일을 이걸로 교체 */
+.image-item {
+    position: relative; /* 중요! 버튼 위치를 위해 필수 */
+    margin: 20px 0;
+    text-align: center; /* 이미지 가운데 정렬 */
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 이미지 스타일은 별도로 */
+.image-item img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 버튼 표시 수정 */
+.image-actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    opacity: 0; /* 평상시 숨김 */
+    transition: opacity 0.3s ease;
+    z-index: 10; /* 위에 표시 */
+}
+
+.image-item:hover .image-actions {
+    opacity: 1; !important; /* 호버시 표시 */
+}
+
+.image-actions button {
+    background: #1e3c72 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 15px !important;
+    margin: 3px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+}
+
+.image-actions button:hover {
+    background: #2a5298 !important;
+}
+
+/* 모바일에서는 항상 버튼 표시 */
+@media (max-width: 768px) {
+    .image-actions {
+        position: static;
+        opacity: 1;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .image-actions button {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+}
+
+
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
@@ -86,6 +175,7 @@ body {
     background-size: contain; /* cover에서 contain으로 변경 - 이미지 짤림 방지 */
     background-repeat: no-repeat;
     background-position: center;
+    transition: opacity 0.3s ease;
 }
 
 .thumbnail-images {
@@ -98,12 +188,13 @@ body {
 .thumbnail {
     width: 80px;
     height: 80px;
-    background: #f0f0f0;  /* 기본 네모박스 색 */
+    background: none;  /* 기본 네모박스 색 */
     border-radius: 8px;
    /*  border: 2px solid #ddd;  */
     cursor: pointer;
     transition: border-color 0.3s;
 }
+
 .thumbnail:hover, .thumbnail.active {
     border-color: #2a5298;
 }
@@ -712,31 +803,30 @@ body {
         <div class="product-detail">
             <div class="product-info">
             
-                <!-- 이미지 영역 -->
-					<div class="product-image">
-					    <c:if test="${not empty product.product_image_url}">
-					        <div class="main-image" 
-					              style="background-image: url('/images/${product.product_image_url}');">
-					        </div>
-					        <div class="thumbnail-images">
-					            <div class="thumbnail active" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
-					            <div class="thumbnail" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
-					            <div class="thumbnail" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
-					        </div>
-					    </c:if>
-					
-					    <c:if test="${empty product.product_image_url}">
-					        <div class="main-image placeholder">
-					            <span class="placeholder-text">상품 이미지 없음</span>
-					        </div>
-					        <div class="thumbnail-images">
-					            <div class="thumbnail placeholder"></div>
-					            <div class="thumbnail placeholder"></div>
-					            <div class="thumbnail placeholder"></div>
-					        </div>
-					    </c:if>
-					</div>
-
+                <!-- 이미지 영역 수정 -->
+						<div class="product-image">
+						    <c:if test="${not empty product.product_image_url}">
+						        <div class="main-image" 
+						              id="mainImage"
+						              style="background-image: url('/images/${product.product_image_url}');">
+						        </div>
+						        <div class="thumbnail-images">
+						            <!-- 첫 번째 썸네일은 메인 이미지와 동일하게 -->
+						            <div class="thumbnail active" 
+						                 style="background-image: url('/images/${product.product_image_url}'); background-size: cover;"
+						                 data-image="/images/${product.product_image_url}">
+						            </div>
+						            
+						            <!-- 나머지 상세 이미지들 -->
+						            <c:forEach var="detailImage" items="${detailImages}">
+						                <div class="thumbnail" 
+						                     style="background-image: url('/images/${detailImage}'); background-size: cover;"
+						                     data-image="/images/${detailImage}">
+						                </div>
+						            </c:forEach>
+						        </div>
+						    </c:if>
+						</div>
 
 
 
@@ -806,23 +896,73 @@ body {
    <!-- 탭 내용 -->
             <div class="tab-content">
                 <!-- 상품설명 내용 -->
+                
                 <div id="description-content" class="tab-panel active">
-                    <h3>제품 특징</h3>
-                    
-                     <!-- 상품 상세 이미지 추가 -->
-				    <div class="product-detail-image">
-				        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="상품 상세 이미지" />
-				    </div>
-				    <p>디버그: ${product.product_image_url}</p>
-				    
-				    <ul class="feature-list">
-				        <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
-				        <!-- ... 기존 내용 ... -->
-				    </ul>
-				    <!-- ... 나머지 내용 ... -->
-				</div>
+    <h3>제품 특징</h3>
+    
+    <!-- 관리자 전용 이미지 관리 영역 -->
+    <%-- <c:if test="${sessionScope.user_role == 'admin'}"> --%>
+        <div class="admin-image-controls">
+            <h4>📷 이미지 관리</h4>
+            <form id="imageUploadForm" enctype="multipart/form-data">
+                <input type="hidden" name="product_idx" value="${product.product_idx}" />
+                <input type="file" id="imageInput" name="updateMainProductImage" accept="image/*" multiple style="display: none;">
+                <button type="button" class="btn-upload" onclick="document.getElementById('imageInput').click()">
+                    이미지 추가
+                </button>
+                <div id="previewContainer"></div>
+                <button type="button" id="saveImages" class="btn-save" style="display: none;">저장</button>
+            </form>
+        </div>
+   <%--  </c:if> --%>
 
-    <!-- 리뷰 내용 -->
+    <!-- 상품 상세 이미지 출력 -->
+    <div class="product-detail-images">
+        <!-- 메인 이미지 -->
+        <c:if test="${not empty product.product_image_url}">
+            <div class="image-item">
+                <img src="/images/${product.product_image_url}" alt="메인 상품 이미지" />
+                <c:if test="${sessionScope.user_role == 'admin'}">
+                    <div class="image-actions">
+                        <button onclick="updateProductImageByIdx('${detailImage}')">수정</button>
+						<button onclick="deleteProductImageByIdx('${detailImage}')">삭제</button>
+                    </div>
+                </c:if>
+            </div>
+        </c:if>
+     </div>  
+        <!-- 디버그용 - 임시로 추가해서 확인 -->
+		<p style="background: red; color: white; padding: 10px;">
+		    디버그: user_role = "${sessionScope.user_role}"
+		    <br>
+		    세션 확인: <c:if test="${sessionScope.user_role == 'admin'}">관리자임</c:if>
+		    <c:if test="${sessionScope.user_role != 'admin'}">관리자아님</c:if>
+		</p>
+        
+        
+        <!-- 상세 이미지들 -->
+		<c:forEach var="detailImage" items="${detailImages}" varStatus="status">
+		    <div class="image-item">
+		        <img src="${pageContext.request.contextPath}/images/${detailImage}" alt="상품 상세 이미지" />
+		        <c:if test="${sessionScope.user_role == 'admin'}">
+		            <div class="image-actions">
+		                <button onclick="updateProductImageByIdx('${detailImage}')">수정</button>
+		                <button onclick="deleteProductImageByIdx('${detailImage}')">삭제</button>
+		            </div>
+		        </c:if>
+		    </div>
+		</c:forEach>
+    </div>
+
+    <!-- 제품 특징 (기존 내용) -->
+    <ul class="feature-list">
+        <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
+        <li>빠른 흡수력과 끈적하지 않는 사용감</li>
+        <li>민감성 피부도 안심하고 사용 가능</li>
+    </ul>
+</div>
+
+   				 <!-- 리뷰 내용 -->
                 <div id="reviews-content" class="tab-panel">
                     <div class="review-item">
                         <div class="review-header">
@@ -876,7 +1016,7 @@ body {
                         </div>
                     </div>
                 </div>
-     </div>
+
     
     <!-- JavaScript -->
     <script>
@@ -917,12 +1057,43 @@ body {
         }
 
         // 썸네일 클릭
-        document.querySelectorAll('.thumbnail').forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+   
+
+// 썸네일 클릭 시 메인 이미지 변경
+document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+    thumb.addEventListener('click', function() {
+        // 모든 썸네일에서 active 클래스 제거
+        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+        
+        // 클릭한 썸네일에 active 클래스 추가
+        this.classList.add('active');
+        
+        // 메인 이미지 변경
+        const mainImage = document.querySelector('.main-image');
+        const thumbBackground = window.getComputedStyle(this).backgroundImage;
+        
+        if (thumbBackground && thumbBackground !== 'none') {
+            mainImage.style.backgroundImage = thumbBackground;
+            
+            // 부드러운 페이드 효과
+            mainImage.style.opacity = '0';
+            setTimeout(() => {
+                mainImage.style.opacity = '1';
+            }, 150);
+        }
+    });
+});
+			
+			// 첫 번째 썸네일을 기본 active로 설정
+			document.addEventListener('DOMContentLoaded', function() {
+			    const firstThumbnail = document.querySelector('.thumbnail');
+			    if (firstThumbnail) {
+			        firstThumbnail.classList.add('active');
+			    }
+			});
+         
+
+        
         
         // SweetAlert 기능
         document.addEventListener('DOMContentLoaded', function() {
@@ -960,6 +1131,158 @@ body {
                 });
             });
         });
+        
+     // 이미지 업로드 관련
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.getElementById('imageInput');
+            const saveButton = document.getElementById('saveImages');
+            
+            if (imageInput) {
+                imageInput.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        saveButton.style.display = 'block';
+                    }
+                });
+            }
+            
+            if (saveButton) {
+                saveButton.addEventListener('click', function() {
+                    const formData = new FormData();
+                    const files = imageInput.files;
+                    formData.append('product_idx', '${product.product_idx}');
+                    
+                    for (let file of files) {
+                        formData.append('productImages', file);
+                    }
+                    
+                    fetch('/adminpage/uploadImages', {  // 경로 수정
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('성공!', '이미지가 업로드되었습니다.', 'success')
+                            .then(() => location.reload());
+                        } else {
+                            Swal.fire('오류', data.message, 'error');
+                        }
+                    });
+                });
+            }
+        });
+
+     // 이미지 업로드
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.getElementById('imageInput');
+            const saveButton = document.getElementById('saveImages');
+            const uploadUrl = '${pageContext.request.contextPath}/adminpage/uploadImages'; // context path 포함
+
+            if (imageInput) {
+                imageInput.addEventListener('change', function() {
+                    if (this.files.length > 0) saveButton.style.display = 'block';
+                });
+            }
+
+            if (saveButton) {
+                saveButton.addEventListener('click', function() {
+                    const formData = new FormData();
+                    formData.append('product_idx', '${product.product_idx}');
+                    const files = imageInput.files;
+                    for (let file of files) formData.append('productImages', file);
+
+                    fetch(uploadUrl, { method: 'POST', body: formData })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) Swal.fire('성공!', '이미지가 업로드되었습니다.', 'success')
+                                .then(() => location.reload());
+                            else Swal.fire('오류', data.message, 'error');
+                        });
+                });
+            }
+        });
+
+        // 메인 이미지 수정
+        function editMainImage() {
+            Swal.fire({
+                title: '메인 이미지 수정',
+                html: '<input type="file" id="newMainImage" accept="image/*">',
+                showCancelButton: true,
+                confirmButtonText: '수정',
+                preConfirm: () => {
+                    const file = document.getElementById('newMainImage').files[0];
+                    if (!file) Swal.showValidationMessage('새 이미지를 선택하세요.');
+                    return file;
+                }
+            }).then(result => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('product_idx', '${product.product_idx}');
+                    formData.append('newImage', result.value);
+
+                    fetch('${pageContext.request.contextPath}/adminpage/updateMainImage', { method: 'POST', body: formData })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) Swal.fire('완료!', '메인 이미지가 수정되었습니다.', 'success')
+                                .then(() => location.reload());
+                        });
+                }
+            });
+        }
+
+        // 상세 이미지 수정
+        function editDetailImageByIdx(product_image_idx) {
+            Swal.fire({
+                title: '상세 이미지 수정',
+                html: '<input type="file" id="newDetailImage" accept="image/*">',
+                showCancelButton: true,
+                confirmButtonText: '수정',
+                preConfirm: () => {
+                    const file = document.getElementById('newDetailImage').files[0];
+                    if (!file) Swal.showValidationMessage('새 이미지를 선택하세요.');
+                    return file;
+                }
+            }).then(result => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('product_image_idx', product_image_idx);
+                    formData.append('newImage', result.value);
+
+                    fetch('${pageContext.request.contextPath}/adminpage/updateDetailImage', { method: 'POST', body: formData })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) Swal.fire('완료!', '상세 이미지가 수정되었습니다.', 'success')
+                                .then(() => location.reload());
+                        });
+                }
+            });
+        }
+
+        // 상세 이미지 삭제
+        function deleteDetailImageByIdx(product_image_idx) {
+            Swal.fire({
+                title: '이미지를 삭제하시겠습니까?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '삭제',
+                confirmButtonColor: '#dc3545'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    fetch('${pageContext.request.contextPath}/adminpage/deleteImage', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ product_image_idx })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) Swal.fire('완료!', '이미지가 삭제되었습니다.', 'success')
+                            .then(() => location.reload());
+                    });
+                }
+            });
+        }
+        
+        
     </script>
 
     <%@include file="/WEB-INF/views/common/footer.jsp"%>

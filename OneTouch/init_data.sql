@@ -162,3 +162,75 @@ C3_P9_아벤느_클렌징폼_건성보습.jpg
 C3_P10_이니스프리_화산송이_모공흡착.jpg
 
 
+--==상세페이지 dummy data ==
+
+INSERT INTO product_image (product_idx, product_image_url, product_image_level) VALUES
+-- C1 상세 이미지
+(1, '01_C1_COSRX_detail_1.jpg', 2),
+(2, '02_C1_조선미녀_detail_1.jpg', 2),
+(3, '03_C1_APLB_detail_01.jpg', 2),
+(4, '04_C1_우르오스_detail_1.jpg', 2),
+(5, '05_C1_비오템_detail_1.jpg', 2),
+(5, '05_C1_비오템_detail_2.jpg', 3),
+(6, '06_C1_포엘리에_detail_01.jpg', 2),
+(7, '07_C1_라네즈옴므_detail_1.jpg', 2),
+(8, '08_C1_라로슈포제_detail_1.jpg', 2),
+(9, '09_C1_스킨푸드_detail_1.jpg', 2),
+(10, '10_C1_더마비_detail_1.jpg', 2),
+(10, '10_C1_더마비_detail_2.jpg', 3),
+
+-- C2 상세 이미지
+(11, '01_C2_닥터지_detail_1.jpg', 2),
+(11, '01_C2_닥터지_detail_2.jpg', 3),
+(11, '01_C2_닥터지_detail_3.jpg', 4),
+(11, '01_C2_닥터지_detail_4.jpg', 5),
+(12, '02_C2_라운드랩_detail_1.jpg', 2),
+(13, '03_C2_듀이트리_detail_1.jpg', 2),
+(14, '04_C2_유이크_detail_1.jpg', 2),
+(14, '04_C2_유이크_detail_2.jpg', 3),
+(15, '05_C2_아이디얼포맨_detail_1.jpg', 2),
+(15, '05_C2_아이디얼포맨_detail_2.jpg', 3),
+(16, '06_C2_다슈_detail_1.jpg', 2),
+(17, '07_C2_오브제_detail_1.jpg', 2),
+(18, '08_C2_비레디_detail_1.jpg', 2),
+(18, '08_C2_비레디_detail_2.jpg', 3),
+(18, '08_C2_비레디_detail_3.jpg', 4),
+(18, '08_C2_비레디_detail_4.jpg', 5),
+(18, '08_C2_비레디_detail_5.jpg', 6),
+(18, '08_C2_비레디_detail_6.jpg', 7),
+(19, '09_C2_블랙쿠션_detail_1.jpg', 2),
+(19, '09_C2_블랙쿠션_detail_2.jpg', 3),
+(19, '09_C2_블랙쿠션_detail_3.jpg', 4),
+(20, '10_C2_메이크프렘_detail_1.jpg', 2),
+(20, '10_C2_메이크프렘_detail_2.jpg', 3),
+
+-- C3 상세 이미지
+(21, '01_C3_센카_detail_1.jpg', 2),
+(21, '01_C3_센카_detail_2.jpg', 3),
+(22, '02_C3_이니스프리_detail_1.jpg', 2),
+(23, '03_C3_해피바스_detail_1.jpg', 2),
+(24, '04_C3_바이오더마_detail_1.jpg', 2),
+(25, '05_C3_아크네스_detail_1.jpg', 2),
+(25, '05_C3_아크네스_detail_2.jpg', 3),
+(26, '06_C3_라로슈포제_detail_1.jpg', 2),
+(27, '07_C3_식물나라_detail_1.jpg', 2),
+(28, '08_C3_프리메라_detail_1.jpg', 2),
+(28, '08_C3_프리메라_detail_2.jpg', 3),
+(28, '08_C3_프리메라_detail_3.jpg', 4),
+(28, '08_C3_프리메라_detail_4.jpg', 5),
+(28, '08_C3_프리메라_detail_5.jpg', 6),
+(29, '09_C3_아벤느_detail_1.jpg', 2),
+(30, '10_C3_이니스프리_detail_1.jpg', 2);
+
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+SELECT * FROM product_image 
+WHERE product_idx = #{id} 
+ORDER BY product_image_level ASC;
+
+
+SELECT * FROM product_image 
+WHERE product_idx = 28
+ORDER BY product_image_level ASC;

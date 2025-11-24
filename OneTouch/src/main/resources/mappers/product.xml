@@ -5,40 +5,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.onetouch.dao.ProductDao">
    
     <select id="selectListAdmin" parameterType="map" resultType="product">
-        SELECT
-            product.*,
-            category.category_name,
-            product_image.product_image_url
-        FROM product
-        LEFT JOIN category ON product.category_idx = category.category_idx
-        LEFT JOIN product_image ON product.product_idx = product_image.product_idx
-        <where>
-            <if test="keyword != null and keyword != ''">
-                AND (
-                    <!-- 상품 정보 -->
-                    product.product_name LIKE CONCAT('%', #{keyword}, '%')
-                    OR product.product_brand LIKE CONCAT('%', #{keyword}, '%')
-                    OR product.product_comment LIKE CONCAT('%', #{keyword}, '%')
-                    
-                    <!-- 카테고리명 -->
-                    OR category.category_name LIKE CONCAT('%', #{keyword}, '%')
-                    
-                    <!-- 숫자 필드들 (문자열로 변환하여 검색) -->
-                    OR CAST(product.product_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.category_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.product_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    OR CAST(product.product_cnt AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                    
-                    <!-- 이미지 URL -->
-                    OR product_image.product_image_url LIKE CONCAT('%', #{keyword}, '%')
-                )
-            </if>
-        </where>
-        ORDER BY product.product_idx DESC
-        <if test="startRow != null and pageSize != null">
-            LIMIT #{startRow}, #{pageSize}
+    SELECT
+        p.*,
+        c.category_name,
+        (
+            SELECT pi.product_image_url
+            FROM product_image pi
+            WHERE pi.product_idx = p.product_idx
+            ORDER BY pi.product_image_idx ASC
+            LIMIT 1
+        ) AS product_image_url
+    FROM product p
+    LEFT JOIN category c ON p.category_idx = c.category_idx
+    <where>
+        <if test="keyword != null and keyword != ''">
+            AND (
+                p.product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR p.product_brand LIKE CONCAT('%', #{keyword}, '%')
+                OR p.product_comment LIKE CONCAT('%', #{keyword}, '%')
+                OR c.category_name LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(p.product_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(p.category_idx AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(p.product_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                OR CAST(p.product_cnt AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+            )
         </if>
-    </select>
+    </where>
+    ORDER BY p.product_idx DESC
+    <if test="startRow != null and pageSize != null">
+        LIMIT #{startRow}, #{pageSize}
+    </if>
+</select>
    
     <!-- 🔥 고객용 상품 목록 조회 (정렬 기능 포함) -->
     <select id="selectList" parameterType="map" resultType="product">
@@ -121,14 +118,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     LEFT JOIN category c ON p.category_idx = c.category_idx
     WHERE p.product_idx = #{product_idx}
 </select>
+
 <!-- detail 이미지들 조회 -->
-			<select id="selectDetailImages" parameterType="int" resultType="string">
-			    SELECT product_image_url
-			    FROM product_image
-			    WHERE product_idx = #{product_idx} 
-			    AND product_image_level >= 2
-			    ORDER BY product_image_level
-			</select>
+<select id="selectDetailImages" parameterType="int" resultType="String">
+    SELECT product_image_url
+    FROM product_image
+    WHERE product_idx = #{product_idx} 
+    AND product_image_level >= 2
+    ORDER BY product_image_level
+</select>
 
 
     <!-- 상품 등록 -->
@@ -277,6 +275,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </where>
 </select>
+
+	<!-- 상품 이미지 추가 -->
+	<insert id="insertProductImage" parameterType="com.onetouch.vo.ProductVo">
+	    INSERT INTO product_image (
+	        product_image_url,
+	        product_image_level
+	    ) VALUES (
+	        #{product_image_url},
+	        #{product_image_level}
+	    )
+	</insert>
+	
+	<!-- 메인 상품 이미지 업데이트 -->
+	<update id="updateMainProductImage" parameterType="map">
+	    UPDATE product
+	    SET product_image_url = #{product_image_url},
+	        product_update = NOW()
+	    WHERE product_idx = #{product_idx}
+	</update>
+	
+	<!-- 상세 이미지 업데이트 -->
+	<update id="updateProductImageByIdx" parameterType="map">
+	    UPDATE product_image
+	    SET product_image_url = #{product_image_url}
+	    WHERE product_image_idx = #{product_image_idx}
+	</update>
+	
+	<!-- 상세 이미지 삭제 -->
+	<delete id="deleteProductImageByIdx" parameterType="int">
+	    DELETE FROM product_image
+	    WHERE product_image_idx = #{product_image_idx}
+	</delete>
 
     
 
