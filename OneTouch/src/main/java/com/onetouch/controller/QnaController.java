@@ -20,7 +20,7 @@ import com.onetouch.vo.QnaVo;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-public class AdminQnaController {
+public class QnaController {
 
    
 	@Autowired

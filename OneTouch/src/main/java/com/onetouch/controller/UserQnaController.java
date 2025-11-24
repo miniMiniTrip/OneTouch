@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.QnaDao;
 import com.onetouch.service.QnaService;
@@ -22,7 +20,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class UserQnaController {
 
-
 	   
 		@Autowired
 	    private QnaDao qnaDao;
@@ -30,8 +27,6 @@ public class UserQnaController {
 	    private HttpSession session;
 	    @Autowired
 	    private QnaService qnaService;
-
-   
 	    
 	    // 1️ 관리자 Q&A 목록 페이지
 	    @GetMapping("mypage/qna_list")
@@ -85,7 +80,7 @@ public class UserQnaController {
 	    
 	    
 	    
-	 // mypage Q&A 작성 처리
+	 // 관리자 Q&A 작성 처리
 	    @PostMapping("/mypage/qna_write")
 	    public String insertQna(QnaVo vo) {
 	        // 로그인 체크
@@ -101,100 +96,14 @@ public class UserQnaController {
 	        System.out.printf("qna추가 vo:%s\n", vo);
 	        qnaDao.insertQna(vo);
 	        
-	        return "redirect:/mypage/qna_list";
+	        return "redirect:/qna/qna_list";
 	    }
 	   
 	    
-	    //// mypage Q&A 상세 페이지
-	    @GetMapping("/mypage/detail")
-	    public String detail(@RequestParam int qna_idx, Model model, RedirectAttributes redirectAttributes) {
-	    	System.out.println("   [UserQnaController]detail()");
-	        // 로그인 체크
-	        MemVo user = (MemVo) session.getAttribute("user");
-	        
-	        if (user == null) {
-	            return "redirect:/user/login"; 
-	        }
-	        
-	        // Q&A 정보 조회
-	        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
-	        
-	        System.out.println("=== QnA 상세 조회 ===");
-	        System.out.println("번호: " + qna_idx);
-	        System.out.println("데이터: " + qna);
-	        
-	        // 본인의 글인지 확인
-	        System.out.println(!user.getMem_roll().equals("admin"));
-	        if (qna == null || (qna.getMem_idx() != user.getMem_idx() && !"admin".equals(user.getMem_roll()))) {
-	            System.out.println("접근 권한 없음 - 작성자: " + (qna != null ? qna.getMem_idx() : "null") + ", 현재 사용자: " + user.getMem_idx());
-	            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-	            System.out.println("   [UserQnaController] redirect:mypage/qna_list (본인글 아닐때)");
-		        System.out.println("");
-	            return "redirect:mypage/qna_list";
-	        }
-	        
-	        model.addAttribute("qna", qna);
-	        System.out.println("   [UserQnaController] return : /qna/qna_detail.jsp ");
-	        System.out.println("");
-	        return "/qna/qna_detail";
-	    }
 	    
-	   
-	 
 	    
-//	   마이페이지  폼에서 답변 등록 처리
 	    
-	    @PostMapping("/mypage/qna_answer")
-	    public String answerQna(
-	            @RequestParam("qna_idx") int qna_idx,
-	            @RequestParam("qna_answer_content") String qna_answer_content,
-	            RedirectAttributes redirectAttributes) {
-	        System.out.println("   [UserQnaController]answerQna()");
-	        // 로그인 체크
-	        MemVo user = (MemVo) session.getAttribute("user");
-	        
-	        if (user == null) {
-	            return "redirect:/user/login"; 
-	        }
-	        try {
-	            int result = qnaService.updateAnswer(qna_idx, qna_answer_content);
-	            
-	            if (result > 0) {
-	                redirectAttributes.addFlashAttribute("message", "답변이 등록되었습니다.");
-	            } else {
-	                redirectAttributes.addFlashAttribute("error", "답변 등록에 실패했습니다.");
-	            }
-	            
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            redirectAttributes.addFlashAttribute("error", "답변 등록 중 오류가 발생했습니다.");
-	       
-	        }
-	       
-	        System.out.println("   [UserQnaController] redirect:/mypage/detail?qna_idx=\" + qna_idx ");
-	        System.out.println("");
-	        return "redirect:/mypage/detail?qna_idx=" + qna_idx;
-	    }
 	    
-	 // 관리자 Q&A 답변 삭제
-	    @GetMapping("/mypage/qna_deleteAnswer")
-	    public String deleteAnswer(@RequestParam("qna_idx") int qna_idx,
-	                               RedirectAttributes redirectAttributes) {
-	        
-	        try {
-	            int result = qnaService.deleteAnswer(qna_idx);
-	            if (result > 0) {
-	                redirectAttributes.addFlashAttribute("message", "답변이 삭제되었습니다.");
-	            } else {
-	                redirectAttributes.addFlashAttribute("error", "삭제에 실패했습니다.");
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            redirectAttributes.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
-	        }
-
-	        return "redirect:/mypage/detail?qna_idx=" + qna_idx;  // ★ 수정된 부분
-	    }
 	
 	    
 	

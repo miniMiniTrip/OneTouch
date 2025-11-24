@@ -19,25 +19,21 @@
     
     <style>
         .qna-section {
-           .qna-section {
-            padding: 0;
-    background-color: #fff;
-    min-height: calc(100vh - 400px);
+            padding: 60px 0;
+            background-color: #f5f5f5;
         }
         
         .qna-container {
-           display: flex;
-    max-width: 100%;
-    margin: 0;
-    background: transparent;
-    border-radius: 0;
-    overflow: visible;
-    box-shadow: none;
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        
-        /* 사이드바 css */
-        /* .sidebar {
+        .sidebar {
             width: 200px;
             background: #fafafa;
             border-right: 1px solid #e0e0e0;
@@ -85,10 +81,8 @@
             color: #5c6bc0;
             font-weight: 600;
             border-left: 3px solid #5c6bc0;
-        } */
+        }
         
-        
-        /* 컨텐츠 영역 */
         .content {
             flex: 1;
             padding: 40px;
@@ -365,9 +359,7 @@
     <section class="qna-section">
         <div class="container">
             <div class="qna-container">
-                
-                <!-- 사이드 바  -->
-               <%--  <div class="sidebar">
+                <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
                     <div class="sidebar-subtitle">${mem.mem_name }님 환영합니다</div>
                     
@@ -393,18 +385,12 @@
                     <div class="menu-section">
                         <div class="menu-item">📝 로그아웃</div>
                     </div>
-                </div> --%>
-                
-                
-                <!-- 사이드바 인크루드 -->
-                 <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
-                
-                
+                </div>
                 
                 <div class="content">
                     <div class="content-header">
                         <h2>✎ Q&A 작성하기</h2>
-                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/mypage/qna_list'">목록으로</button>
+                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/list'">목록으로</button>
                     </div>
                     
                     <div class="form-notice">
@@ -416,7 +402,7 @@
                         </div>
                     </div>
                     
-                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/mypage/qna_write">
+                    <form class="write-form" method="post" action="${pageContext.request.contextPath}/qna/write">
     <!-- 카테고리 -->
     <div class="form-group">
         <label class="form-label">문의 유형<span class="required">*</span></label>
@@ -463,8 +449,7 @@
 
     <div class="btn-group">
         <button type="submit" class="btn btn-submit">등록하기</button>
-       <button type="button" class="btn btn-cancel"
-        onclick="location.href='${pageContext.request.contextPath}/mypage/qna_list'">취소</button>
+        <button type="button" class="btn btn-cancel" onclick="location.href='${pageContext.request.contextPath}/qna/list'">취소</button>
     </div>
 </form>
 
@@ -519,7 +504,7 @@
     </script>
 
     <!-- Start Footer Area -->
- <%@include file="/WEB-INF/views/common/footer.jsp" %> 
+    <c:import url="../common/footer.jsp" />
     <!-- End Footer Area -->
 </body>
 </html>

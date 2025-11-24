@@ -1,9 +1,8 @@
 package com.onetouch.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onetouch.dao.HashtagDao;
 import com.onetouch.dao.ProductDao;
+import com.onetouch.dao.SkinProfileDao;
 import com.onetouch.vo.HashtagVo;
-import com.onetouch.vo.ProductVo;
+import com.onetouch.vo.MemVo;
+import com.onetouch.vo.SkinProfileVo;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class SkinProfileController {
@@ -25,6 +28,12 @@ public class SkinProfileController {
 	
 	@Autowired
 	ProductDao product_dao;
+	
+	@Autowired
+	SkinProfileDao skin_profile_dao; 
+	
+	@Autowired
+	HttpSession session;
 	
 	@RequestMapping("/skinprofile/form.do")
 	public String SkinProfileForm() {
@@ -38,6 +47,10 @@ public class SkinProfileController {
 									@RequestParam("skin4") int skin4,
 									@RequestParam("skin5") int skin5,
 									Model model){
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		
+		if(memVo==null) {return "redirect:/user/login";}
 		
 		List<Integer> list = new ArrayList<>();
 
@@ -77,23 +90,28 @@ public class SkinProfileController {
 			}
 		} 
 		
-		/*
-		 * Map<String, Object> params = new HashMap<>(); params.put("hashtag_list",
-		 * list); params.put("min_match", 2); // 최소 2개 이상 매칭 params.put("limit", 10);
-		 * 
-		 * List<Integer> product_idx_list =
-		 * hashtag_dao.selectProductsByHashtags(params);
-		 * 
-		 * List<ProductVo> product_list = new ArrayList<>(); if (product_idx_list !=
-		 * null && !product_idx_list.isEmpty()) { product_list =
-		 * product_dao.selectByIds(product_idx_list); }
-		 */
-
+		SkinProfileVo spVo = new SkinProfileVo();
+		spVo.setMem_idx(memVo.getMem_idx());
 		
+		spVo.setSp_skin_type(hashtag_list.get(0).getHashtag_name());
+	    spVo.setSp_trouble(hashtag_list.get(1).getHashtag_name());
+	    spVo.setSp_color_change(hashtag_list.get(2).getHashtag_name());
+	    spVo.setSp_wrinkle(hashtag_list.get(3).getHashtag_name());
+	    spVo.setSp_skin_tone(hashtag_list.get(4).getHashtag_name());
+		
+	    //Json화
+	    String hashtagIds = list.stream()
+	    						.map(String::valueOf)
+	    						.collect(Collectors.joining(",", "[", "]"));
+		
+	    spVo.setHashtag_ids(hashtagIds);
+	    
+	    //DB insert
+		/* SkinProfileVo insertProfile = skin_profile_dao. */
+	    
 		model.addAttribute("list",list);
 		model.addAttribute("hashtag_list",hashtag_list);
-		/* model.addAttribute("product_list", product_list); */
-		
+
 		return "skinprofile/view"; 
 	}
 }

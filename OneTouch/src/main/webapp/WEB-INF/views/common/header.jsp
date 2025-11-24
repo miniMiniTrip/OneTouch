@@ -214,7 +214,7 @@ margin-left: -20px;
                             마이페이지 <i class="lni lni-chevron-down"></i>
                         </a>
                         <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
-                            <li><a href="${pageContext.request.contextPath}/cart/list.do">내 정보</a></li>
+                            <li><a href="${pageContext.request.contextPath}/wishlist/list.do">내 정보</a></li>
                             <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
                             <li><a href="${pageContext.request.contextPath}/cart">장바구니</a></li>
                             <li><a href="${pageContext.request.contextPath}/wishlist">찜한 상품</a></li>
@@ -246,16 +246,8 @@ margin-left: -20px;
                     <i class="lni lni-user"></i> 환영합니다
                 </div>
                 <ul class="user-login">
-                
-                    <li><a href="${pageContext.request.contextPath}/user/login?url=" id="loginBtn">로그인</a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/register">회원가입</a></li>
-					<!-- 로그인 버튼 클릭전 페이지로 돌아간다. -->
-					<script>
-						const loginBtn = document.getElementById('loginBtn');
-						const currentUrl = window.location.href;
-						//alert(loginBtn);
-						loginBtn.href = loginBtn.href + currentUrl;
-					</script>
                 </ul>
             </c:otherwise>
         </c:choose>

@@ -170,20 +170,13 @@ public class PostController {
 	@RequestMapping("/post/postLike")
 	@ResponseBody
 	public Map<String, Object> postLikeUpdate(String post_idx){
-		System.out.println("	[PostController-@ResponseBody] postLikeUpdate() ");
+		System.out.println("	[PostController] postLikeUpdate() ");
+		System.out.println("		[@ResponseBody] ");
 		Map<String, Object> map = new HashMap<String, Object>();
 		System.out.printf("		post_idx:%s\n",post_idx);
 		map.put("post_idx", post_idx);
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		System.out.printf("		memVo:%s\n",memVo);
-		
-		if(memVo==null) {
-			System.out.println("memVo가 null 입니다.");
-			map.put("bMemVo", false);
-			return map;
-		}else {
-			map.put("bMemVo",true);
-		}
 		int mem_idx=memVo.getMem_idx();
 		map.put("mem_idx", mem_idx);
 		try {
@@ -193,7 +186,7 @@ public class PostController {
 			e.printStackTrace();
 			map.put("error",e.getMessage() );
 		}
-		System.out.println("	[PostController-@ResponseBody] return : map");
+		System.out.println("	[PostController] return : map");
 		System.out.println("");
 		return map;
 	}
@@ -254,6 +247,7 @@ public class PostController {
 		return map;
 	}
 	
+<<<<<<< HEAD
 	// post 댓글 목록 가져오기
 	@RequestMapping("/post/reply_list")
 	@ResponseBody
@@ -271,6 +265,8 @@ public class PostController {
 		System.out.printf("\n");
 		return map;
 	}
+=======
+>>>>>>> 4449e6b8f0c1c6a293c456ca10b73466f341cc51
 	
 	//post 댓글 등록 처리
 	@RequestMapping("/post/reply")
@@ -290,48 +286,15 @@ public class PostController {
 		replyDao.insertPostReply(replyVo);
 		
 		System.out.printf("	[PostController] return : map");
-		System.out.printf("\n");
 		return map;
 	}
 	
-	//댓글 수정 버튼 클릭
 	@RequestMapping("/post/reply_modify")
 	@ResponseBody
 	public Map<String,Object> postReplyModify(ReplyVo replyVo){
-		System.out.printf("	[PostController-@ResponseBody] postReplyModify()\n");
-		System.out.printf("		reply_idx => %d\n",replyVo.getReply_idx());
-		System.out.printf("		reply_content => %s\n",replyVo.getReply_content());
-		
 		Map<String,Object> map = new HashMap<String, Object>();
-		int res=replyDao.updatePostReply(replyVo);
-		map.put("res", res==1);
-		System.out.printf("	[PostController-@ResponseBody] return map \n");
-		System.out.printf("	\n");
 		return map;
 		
-	}
-
-	//댓글 삭제 버튼 클릭
-	@RequestMapping("/post/reply_delete")
-	@ResponseBody
-	public Map<String,Object> postReplyDelete(int reply_idx){
-		System.out.printf("	[PostController-@ResponseBody] postReplyDelete()\n");
-		System.out.printf("		reply_idx => %d\n",reply_idx);
-		
-		Map<String,Object> map = new HashMap<String, Object>();
-		int res=replyDao.deletePostReply(reply_idx);
-		map.put("res", res==1);
-		System.out.printf("	[PostController-@ResponseBody] return map \n");
-		System.out.printf("	\n");
-		return map;
-		
-	}
-	
-	
-	//댓글 테스트화면
-	@RequestMapping("tt")
-	public String tt() {
-		return "/post/comments";
 	}
 	
 	

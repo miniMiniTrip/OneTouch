@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,12 +107,20 @@
             align-items: center;
             margin-bottom: 15px;
         }
-        .order-product-image {
+        .order-product-icon {
             width: 80px;
             height: 80px;
-            object-fit: cover;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-right: 15px;
             border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+        .order-product-icon i {
+            font-size: 32px;
+            color: #5830E0;
         }
         .order-product-info {
             flex: 1;
@@ -120,6 +129,7 @@
             font-size: 15px;
             margin-bottom: 5px;
             color: #333;
+            font-weight: 500;
         }
         .order-product-detail {
             font-size: 13px;
@@ -187,7 +197,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">마이페이지</h1>
+                        <h1 class="page-title">주문내역</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -202,13 +212,20 @@
     </div>
     
     <!-- MyPage Section -->
-    <section class="mypage-section">
+    <section class="mypage-section section">
         <div class="container">
             <div class="row">
                 <!-- Sidebar -->
-                <div class="col-lg-3">
-                    <jsp:include page="/WEB-INF/views/common/mypage_sidebar.jsp" />
-                </div>
+                <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="${pageContext.request.contextPath}/mypage/cart" class="active">장바구니</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/wishlist">찜 목록</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/orders">주문내역</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/reviews">내 리뷰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/qna">문의내역</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mypage/profile">회원정보</a></li>
+                </ul>
+            </aside>
                 
                 <!-- Content -->
                 <div class="col-lg-9">
@@ -261,26 +278,15 @@
                                         </span>
                                     </div>
                                     
-                                    <!-- 주문 상품 -->
+                                    <!-- 주문 상품 (✅ order_items 제거, 아이콘으로 대체) -->
                                     <div class="order-products">
-                                        <c:if test="${not empty order.order_items}">
-                                            <img src="${order.order_items[0].product_image_url}" 
-                                                 alt="${order.order_items[0].product_name}" 
-                                                 class="order-product-image">
-                                        </c:if>
+                                        <div class="order-product-icon">
+                                            <i class="lni lni-package"></i>
+                                        </div>
                                         <div class="order-product-info">
                                             <div class="order-product-name">${order.order_name}</div>
                                             <div class="order-product-detail">
-                                                <c:if test="${not empty order.order_items}">
-                                                    <c:choose>
-                                                        <c:when test="${fn:length(order.order_items) == 1}">
-                                                            수량 ${order.order_items[0].product_cnt}개
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            총 ${fn:length(order.order_items)}개 상품
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:if>
+                                                주문일시: <fmt:formatDate value="${order.order_time}" pattern="yyyy.MM.dd HH:mm"/>
                                             </div>
                                         </div>
                                         <div class="order-amount">
@@ -372,6 +378,9 @@
                         } else {
                             alert('주문 취소에 실패했습니다.');
                         }
+                    },
+                    error: function() {
+                        alert('주문 취소 중 오류가 발생했습니다.');
                     }
                 });
             }

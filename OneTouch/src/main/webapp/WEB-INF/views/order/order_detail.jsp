@@ -294,7 +294,19 @@
                         </div>
                         <c:forEach var="item" items="${order_items}">
                             <div class="product-item">
-                                <img src="${item.product_image_url}" alt="${item.product_name}" class="product-image">
+                                <%-- ✅ 이미지 경로 수정 & null 처리 --%>
+                                <c:choose>
+                                    <c:when test="${not empty item.product_image_url}">
+                                        <img src="${pageContext.request.contextPath}/images/${item.product_image_url}" 
+                                             alt="${item.product_name}" class="product-image">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="product-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">
+                                            이미지 없음
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                
                                 <div class="product-info">
                                     <div class="product-name">
                                         <a href="/product/detail.do?product_idx=${item.product_idx}">

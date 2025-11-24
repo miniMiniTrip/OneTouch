@@ -3,6 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.ReplyDao">
+<<<<<<< HEAD
 
 <!-- 댓글 그룹화로 조회 -->
 	<select id="selectReplyList" parameterType="map" resultType="ReplyVo">
@@ -35,6 +36,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- post 댓글 추가 -->
+=======
+>>>>>>> 4449e6b8f0c1c6a293c456ca10b73466f341cc51
 	<insert id="insertPostReply" parameterType="ReplyVo">
 		INSERT INTO reply(
 							reply_idx
@@ -51,17 +54,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							,0
 							)
 	</insert>
-	
-	<update id="updatePostReply" parameterType="ReplyVo">
-		update reply 
-		set 
-			reply_content=#{reply_content} , reply_update=now()
-		where
-			reply_idx=#{reply_idx}
-			 
-	</update>
-	
-	<delete id="deletePostReply" parameterType="int">
-		delete from reply where reply_idx=#{reply_idx}
-	</delete>
 </mapper>

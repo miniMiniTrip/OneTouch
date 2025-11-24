@@ -37,7 +37,7 @@
 }
 
 /* ==================== 사이드바 스타일 ==================== */
-/* .sidebar {
+.sidebar {
     width: 250px;
     background: #fafafa;
     border-right: 1px solid #e0e0e0;
@@ -92,7 +92,7 @@
     color: #5c6bc0;
     font-weight: 600;
     border-left: 3px solid #5c6bc0;
-} */
+}
 
 /* ==================== 컨텐츠 영역 ==================== */
 .content {
@@ -514,7 +514,7 @@
         <div class="container">
             <div class="cart-container">
                 <!-- Sidebar -->
-                <!-- <div class="sidebar">
+                <div class="sidebar">
                     
                     <div class="menu-section">
                         <div class="menu-item active">🛒 장바구니</div>
@@ -537,9 +537,7 @@
                     <div class="menu-section">
                         <div class="menu-item">📝 로그아웃</div>
                     </div>
-                </div> -->
-                 <!-- 사이드바 인크루드 -->
-                  <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
+                </div>
                 
                 <!-- Content -->
                 <div class="content">
@@ -684,7 +682,7 @@
                             <i class="lni lni-cart"></i>
                             <h4>장바구니가 비어있습니다</h4>
                             <p>원하시는 상품을 장바구니에 담아보세요!</p>
-                            <button class="btn" onclick="location.href='/product/list'">
+                            <button class="btn" onclick="location.href='/product/list.do'">
                                 쇼핑 계속하기
                             </button>
                         </div>
@@ -695,8 +693,8 @@
         </div>
     </section>
     <!-- End Cart Section -->
+    <c:import url="../common/footer.jsp" />
 
-    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
