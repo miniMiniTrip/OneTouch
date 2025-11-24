@@ -104,7 +104,7 @@
 				    
 				    <div class="menu-section">
 				        <div class="menu-title">회원 정보</div>
-				        <div class="menu-item">👥 회원정보 수정</div>
+				        <div class="menu-item" onclick="location.href='${pageContext.request.contextPath}/user/check_password'">👥 회원정보 수정</div>
 					</div>
 	                    
 					<div class="menu-section">

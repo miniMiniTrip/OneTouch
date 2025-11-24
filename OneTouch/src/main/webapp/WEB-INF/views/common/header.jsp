@@ -216,8 +216,8 @@ margin-left: -20px;
                         <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
                             <li><a href="${pageContext.request.contextPath}/cart/list.do">내 정보</a></li>
                             <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
-                            <li><a href="${pageContext.request.contextPath}/cart">장바구니</a></li>
-                            <li><a href="${pageContext.request.contextPath}/wishlist">찜한 상품</a></li>
+                            <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
+                            <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품</a></li>
                         </ul>
                     </li>
                     
@@ -253,7 +253,7 @@ margin-left: -20px;
 					<script>
 						const loginBtn = document.getElementById('loginBtn');
 						const currentUrl = window.location.href;
-						alert(loginBtn);
+						//alert(loginBtn);
 						loginBtn.href = loginBtn.href + currentUrl;
 					</script>
                 </ul>

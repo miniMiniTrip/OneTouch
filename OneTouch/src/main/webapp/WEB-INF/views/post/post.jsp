@@ -1295,6 +1295,7 @@ document.addEventListener('click', function(e) {
         // 로그인 체크
         if (!'${user}') {
             alert("로그인이 필요합니다.");
+            location.href="${pageContext.request.contextPath}/user/login?url="+window.location.href;
             return;
         }
         // 클릭한 버튼이 어느 게시글인지 확인
@@ -1306,6 +1307,11 @@ document.addEventListener('click', function(e) {
             type: "post",
             data: { "post_idx": post_idx },
             success: function(d) {
+            	if(d.memVo==false){
+            		alert("로그인이 필요합니다1.");
+            		location.href="${pageContext.request.contextPath}/user/login?url="+window.location.href;
+            		return;
+            	}
                 // 서버 성공 시 하트 토글
                 const isLiked = btn.classList.toggle('active');
                 if (isLiked) { //하트 표시
@@ -1577,67 +1583,21 @@ document.addEventListener('click', function(e) {
              </div>
              
              <div class="comment-input">
-                 <input type="text" class="post-comment" id="reply_content" data-post-idx="\${postVo.post_idx}"  placeholder="댓글을 남겨보세요...">
+                 <input type="text" class="post-comment" data-post-idx="\${postVo.post_idx}" data-post-category="\${d.post_category}"  placeholder="댓글을 남겨보세요...">
                  <button class="comment-submit" data-postidx="\${postVo.post_idx}" data-now-page="\${d.nowPage}" data-post-category="\${d.post_category}" onclick="replyInsert(this);">댓글</button>
              </div>
              <br>
              <!-- 댓글 섹션 -->
-             `
-             //댓글부분 List
-             if(postVo.replyList && postVo.replyList.length>0){
-            	 for(let replys of postVo.replyList){
-            		 if(replys.reply_content!=null){
-            			 
-            		
-             html=html+`
-             <div class="comments-section">
-                 <!-- 댓글 목록 -->
-                             <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
-                                 <div class="comment-header">
-                                     <img src="https://randomuser.me/api/portraits/men/${(replyVo.mem_idx % 99) + 1}.jpg" 
-                                          alt="프로필" class="comment-profile-img">
-                                     <p class="comment-username">\${replys.mem_id}</p>
-                                     
-                                     <!-- 본인 댓글일 때만 점3개 버튼 -->
-                                         <div class="comment-actions">
-                                             <button class="comment-more-btn">
-                                                 <i class="fas fa-ellipsis-h"></i>
-                                             </button>
-                                             <div class="comment-more-menu" style="display: none;">
-                                                 <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
-                                                 <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}">삭제</button>
-                                             </div>
-                                         </div>
-                                 </div>
-                                 
-                                 <div class="comment-content-wrapper">
-                                     <div class="comment-text">\${replys.reply_content}</div>
-                                     <div class="comment-time">
-                                     `
-                                     	  	 html=html+`
-                                             <span class="edited-mark">등록일:\${replys.reply_time}</span>
-                                             `
-                                             if(replys.reply_update||replys.reply_update!=null){
-                                             html=html+`
-                                             <span class="edited-mark">수정일:\${replys.reply_update}</span>
-                                             `
-                                             }
-                                             
-                                             html=html+`
-                                     </div>
-                                 </div>
-                             </div>
+             <div class="reply-list" data-post-idx=\${postVo.post_idx}>
              </div>
              `
-            	 	}
-            	 } 
-           	}
+       		 //replyHtml(postVo.post_idx,d.post_category,d.nowReplyPage);		
+            
              
              html=html+`
              <br>
              <br>
              
-             <div class="reply-list" data-post-idx=\${postVo.post_idx}>
 				`
     			
     		loop=loop+1;
@@ -1658,6 +1618,9 @@ document.addEventListener('click', function(e) {
     		if(tabType=='free'){
     		$("#posts-container-free").html(html);
     		}
+    		
+
+    		
     		carousels(); // 이미지 슬라이드
     		productSection(); // 상품 슬라이드
     		moreButtons(); // 수정 삭제버튼 초기화
@@ -1694,8 +1657,180 @@ document.addEventListener('click', function(e) {
     	     /* end: 페이지 처리 영역 */
     	     
     	     
+     		//댓글list보여주는 처리 함수
+     		for(let postVo of postVo_array){
+     		    replyHtml(postVo.post_idx, d.post_category, d.nowReplyPage);
+     		}
+    	    
+
     	     
-    	     // 댓글 점3개 메뉴 토글 - 기존 패턴과 동일
+    	}//end : success
+     ,error:function(e){
+     	
+     }
+     
+     });
+}  
+
+ // =========================
+ // 		 댓글
+ // =========================
+	 
+ /* --- 댓글 List 출력 함수 ---*/
+ function replyHtml(post_idx,post_category,nowReplyPage){
+	 //alert("댓글영역");
+	 //alert(post_idx);
+	 //alert(post_category);
+	
+	 if(!nowReplyPage){
+	 nowReplyPage=1;
+	 //alert(nowReplyPage);
+	 }
+	 
+	 $.ajax({
+		 url:"/post/reply_list"
+		 ,data:{"post_idx":post_idx,"post_category":post_category,"nowReplyPage":nowReplyPage}
+		 ,success:function(d){
+			 //alert("댓글list 성공");
+			 //댓글부분 List
+		    let html=""
+		     if(d.replyList && d.replyList.length>0){
+		    	 for(let replys of d.replyList){
+			// alert(replys.reply_idx);
+			 
+		    		 if(replys.reply_content!=null){
+		    			 
+		    html=html+`
+		     <div class="comments-section">
+		         <!-- 댓글 목록 -->
+		                     <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
+		                         <div class="comment-header">
+		                             <img src="https://randomuser.me/api/portraits/men/z.jpg" 
+		                                  alt="프로필" class="comment-profile-img">
+		                             <p class="comment-username">\${replys.mem_id}</p>
+		                             
+		                             <!-- 본인 댓글일 때만 점3개 버튼 -->
+		                                 <div class="comment-actions">
+		                                     <button class="comment-more-btn">
+		                                         <i class="fas fa-ellipsis-h"></i>
+		                                     </button>
+		                                     <div class="comment-more-menu" style="display: none;">
+		                                         <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
+		                                         <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}" data-now-page="\${d.nowReplyPage}" data-post-category="\${d.post_category}">삭제</button>
+		                                     </div>
+		                                 </div>
+		                         </div>
+		                         
+		                         <div class="comment-content-wrapper">
+		                             <div class="comment-text">\${replys.reply_content}</div>
+		                             <div class="comment-time">
+		                             `
+		                             	  	 html=html+`
+		                                     <span class="edited-mark">등록일:\${replys.reply_time}</span>
+		                                     `
+		                                     if(replys.reply_update||replys.reply_update!=null){
+		                                     html=html+`
+		                                     <span class="edited-mark">수정일:\${replys.reply_update}</span>
+		                                     `
+		                                     }
+		                                     
+		                                     html=html+`
+		                             </div>
+		                         </div>
+		                     </div>
+		     </div>
+		     `
+		    	 	}
+		    	 } //end : for
+		    	 d.ReplyPagingation;
+		    	 
+		   	}
+			 //alert(`"\${post_idx}"`);
+		  let replyDivList=document.querySelectorAll(`.reply-list[data-post-idx="\${post_idx}"]`);
+			 if(replyDivList){
+			//alert(replyDiv);
+				 replyDivList.forEach(div => {
+					    div.innerHTML = html;
+					});
+			 } 
+		 }//end succes
+	 	,error:function(e){
+	 		alert("댓글list 실패\n관리자문의");
+	 	}
+	 });//end : ajax 통신 댓글리스트
+		 
+		 
+ }//end 댓글 list 함수종료
+ 
+ /* --- end: 댓글 List 출력 함수 ---*/
+ 
+ 
+ /* ------------------------댓글 등록 함수--------------------------- */
+ function replyInsert(btn){
+ 	let postIdx=btn.dataset.postidx;  
+ 	let nowPage=btn.dataset.nowPage;  
+ 	let postCategory=btn.dataset.postCategory;  
+ 	let replyInput = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"][data-post-category="\${postCategory}"]`);
+ 	alert("1862번라인 : "+replyInput);
+ 	let replyContent=replyInput.value.trim();
+    //end 댓글유효성
+	alert(nowPage);
+	alert(postCategory);
+	//alert(postIdx);
+	//alert(replyContent); // 댓글 내용
+	//로그인 유저 체크 하고 있으면 댓글달기 실행
+	let login_mem_idx="${user.mem_idx}";
+	if(login_mem_idx>0){
+		
+ 	//댓글 유효성 검사 (댓글이 써져있는지)
+ 	const input = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"][data-post-category="\${postCategory}"]`);
+    	alert(input);
+    if(!input) {
+        alert("댓글 입력창을 찾을 수 없습니다.");
+        return;
+    }
+
+    const content = input.value.trim(); // 앞뒤 공백 제거
+    if(content === "") {
+        alert("댓글 내용을 입력해주세요.");
+        input.focus();
+        return;
+    }
+		//alert(login_mem_idx); // 로그인 유저 idx
+			$.ajax({
+	 		url:"/post/reply"
+	 		,data:{"post_idx":postIdx,"mem_idx":login_mem_idx,"reply_content":replyContent}
+	 		,success:function(d){
+	 			alert("성공");
+	 			listHtml(postCategory,nowPage);
+	 		}
+	 		,error:function(e){
+	 			
+	 			alert("댓글 달기 실패 관리자에게 문의");
+	 		}
+	 	});//end 댓글달기 ajax 
+	}else{
+		alert("로그인이 필요합니다.");
+		location.href="${pageContext.request.contextPath}/user/login?url="+window.location.href;
+	}
+   	    	    /*  document.addEventListener("click", function(e) {
+   	    	    	alert() 
+   	    	     } */
+   	    	     //let postComments = document.querySelectorAll('.comment-input'); // .을 추가하여 클래스를 선택하도록 수정
+   	    	     //postComments.forEach(function(comment) {
+   	    	     //    comment.addEventListener('click', function(e) {
+   	    	     //        alert(e.target.dataset.postIdx); // data-post-idx는 data-postIdx로 변경해야 함
+   	    	     //    });
+   	    	     //});
+     }
+ /* ------------------------end:댓글 등록 함수--------------------------- */
+ 
+ 
+ 
+ // =====================
+ //  댓글 수정버튼	 
+ // =====================
+  // 댓글 점3개 메뉴 토글 - 기존 패턴과 동일
     	     document.addEventListener('click', function(e) {
    	    	    // 1) 점3개 버튼 클릭
    	    	    const moreBtn = e.target.closest('.comment-more-btn');
@@ -1827,8 +1962,22 @@ document.addEventListener('click', function(e) {
     	         // 댓글 삭제 버튼
     	         if (e.target.matches('.comment-delete-btn')) {
     	             const replyIdx = e.target.dataset.replyIdx;
+    	             const nowPage = e.target.dataset.nowPage;
+    	             const postCategory=e.target.dataset.postCategory;
     	             if (confirm('댓글을 삭제하시겠습니까?')) {
-    	                 alert('댓글 삭제 기능 - reply_idx: ' + replyIdx);
+    	                 //alert('댓글 삭제 기능 - reply_idx: ' + replyIdx);
+    	                 $.ajax({
+    	                	 url:"/post/reply_delete"
+    	                	,data:{"reply_idx":replyIdx}
+    	                 	,success:function(d){
+    	                 		//alert("댓글삭제 : "+d.res);
+    	                 		listHtml(postCategory,nowPage);
+    	                 	}//end success
+    	                 	,error:function(e){
+    	                 		alert("댓글삭제 실패 /n관리자에게 문의하세요");
+    	                 	}
+    	                 });//end : ajax 댓글삭제버튼
+    	                 
     	                 // 여기에 삭제 로직 추가
     	             }
     	         }
@@ -1840,75 +1989,7 @@ document.addEventListener('click', function(e) {
     	             });
     	         }
     	     });
-
-    	     
-    	}//end : success
-     ,error:function(e){
-     	
-     }
-     
-     });
-}  
-
- // =========================
- // 		 댓글 등록
- // =========================
- /* ------------------------댓글 등록 함수--------------------------- */
- function replyInsert(btn){
- 	let postIdx=btn.dataset.postidx;  
- 	let nowPage=btn.dataset.nowPage;  
- 	let postCategory=btn.dataset.postCategory;  
- 	let replyContent=document.getElementById("reply_content").value;
- 	//댓글 유효성 검사 (댓글이 써져있는지)
- 	const input = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"]`);
-    if(!input) {
-        alert("댓글 입력창을 찾을 수 없습니다.");
-        return;
-    }
-
-    const content = input.value.trim(); // 앞뒤 공백 제거
-    if(content === "") {
-        alert("댓글 내용을 입력해주세요.");
-        input.focus();
-        return;
-    }
-    //end 댓글유효성
-	alert(nowPage);
-	alert(postCategory);
-	//alert(postIdx);
-	//alert(replyContent); // 댓글 내용
-	let login_mem_idx="${user.mem_idx}";
-	//로그인 유저 체크 하고 있으면 댓글달기 실행
-	if(login_mem_idx>0){
-		//alert(login_mem_idx); // 로그인 유저 idx
-			$.ajax({
-	 		url:"/post/reply"
-	 		,data:{"post_idx":postIdx,"mem_idx":login_mem_idx,"reply_content":replyContent}
-	 		,success:function(d){
-	 			alert("성공");
-	 			listHtml(postCategory,nowPage);
-	 		}
-	 		,error:function(e){
-	 			
-	 			alert("댓글 달기 실패 관리자에게 문의");
-	 		}
-	 	});//end 댓글달기 ajax 
-	}else{
-		alert("로그인이 필요합니다.");
-	}
-   	    	    /*  document.addEventListener("click", function(e) {
-   	    	    	alert() 
-   	    	     } */
-   	    	     //let postComments = document.querySelectorAll('.comment-input'); // .을 추가하여 클래스를 선택하도록 수정
-   	    	     //postComments.forEach(function(comment) {
-   	    	     //    comment.addEventListener('click', function(e) {
-   	    	     //        alert(e.target.dataset.postIdx); // data-post-idx는 data-postIdx로 변경해야 함
-   	    	     //    });
-   	    	     //});
-     }
- /* ------------------------end:댓글 등록 함수--------------------------- */
- 
- 
+ //============================================
  
  
  

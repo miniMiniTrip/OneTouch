@@ -39,7 +39,7 @@
                 <h4 class="card-title">🎯 피부 진단 결과</h4>
                 <p class="card-text">
                     당신의 피부는 
-                    <c:forEach var="vo" items="${hash_list}">
+                    <c:forEach var="vo" items="${hashtag_list}">
                         <span class="hashtag-badge">#${vo.hashtag_name}</span>
                     </c:forEach>
                     입니다.

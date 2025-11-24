@@ -5,24 +5,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.onetouch.dao.ReplyDao">
 
 <!-- 댓글 그룹화로 조회 -->
-	<select id="selectReplyList" resultType="map">
-	SELECT
-    p.post_idx,
-    JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'reply_idx', r.reply_idx,
-            'mem_idx', r.mem_idx,
-            'mem_id', m.mem_id,           -- member 테이블에서 가져온 ID
-            'reply_content', r.reply_content,
-            'reply_time', r.reply_time,
-            'reply_update', r.reply_update
-        )
-    ) AS replyList
-	FROM post p
-	LEFT JOIN reply r ON p.post_idx = r.post_idx
-	LEFT JOIN mem m ON r.mem_idx = m.mem_idx
-	GROUP BY p.post_idx
-	ORDER BY p.post_idx;
+	<select id="selectReplyList" parameterType="map" resultType="ReplyVo">
+		select r.*,m.mem_id from reply as r 
+		Join mem as m on r.mem_idx =m.mem_idx
+		<if test="postReplyIdxPageList !=null and postReplyIdxPageList.size()>0">
+		WHERE r.reply_idx IN
+		<foreach collection="postReplyIdxPageList" item="vo" open="(" separator="," close=")">
+			#{vo.reply_idx}
+		</foreach>
+		</if>
+		<if test="postReplyIdxPageList ==null or postReplyIdxPageList.size() == 0">
+	    WHERE 1=0
+	    </if>	
+		ORDER BY r.reply_idx DESC
+	</select>
+	
+	<!-- 댓글 페이지 처리를 위한 post_idx 기준의 reply_idx list 가져오기 -->
+	<select id="selectReplyIdxPageList" parameterType="map" resultType="ReplyPageVo">
+	SELECT reply_idx 
+	FROM otdb.reply 
+	WHERE post_idx=#{post_idx}
+	ORDER BY reply_idx DESC 
+	LIMIT #{page}, #{block_list};
+	
+	</select>
+	
+	<select id="selectPostIdxReplyTotalCount" parameterType="map">
+		SELECT count(*) FROM reply WHERE post_idx=#{post_idx};
 	</select>
 	
 	<!-- post 댓글 추가 -->
@@ -42,13 +51,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							,0
 							)
 	</insert>
-	
-	<update id="updatePostReply" parameterType="ReplyVo">
-		update reply 
-		set 
-			reply_content=#{reply_content} , reply_update=now()
-		where
-			reply_idx=#{reply_idx}
-			 
-	</update>
 </mapper>

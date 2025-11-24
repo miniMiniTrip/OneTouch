@@ -1,6 +1,7 @@
 package com.onetouch.vo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -37,5 +38,7 @@ public class ProductVo{
     
     private String main_image_url;      // level 1 (메인 이미지)
     private String detail_image_url;    // level 2 (상세 이미지)
-    
+
+    private List<HashtagVo> hashtag_list; // 해시태그Vo 리스트
+
 }//end: ProductVo 

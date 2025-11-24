@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
 
+
     <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/LineIcons.3.0.css">
@@ -37,7 +38,7 @@
 }
 
 /* ==================== 사이드바 스타일 ==================== */
-/* .sidebar {
+ .sidebar {
     width: 250px;
     background: #fafafa;
     border-right: 1px solid #e0e0e0;
@@ -92,7 +93,7 @@
     color: #5c6bc0;
     font-weight: 600;
     border-left: 3px solid #5c6bc0;
-} */
+}
 
 /* ==================== 컨텐츠 영역 ==================== */
 .content {
@@ -514,7 +515,7 @@
         <div class="container">
             <div class="cart-container">
                 <!-- Sidebar -->
-                <!-- <div class="sidebar">
+                <div class="sidebar">
                     
                     <div class="menu-section">
                         <div class="menu-item active">🛒 장바구니</div>
@@ -537,10 +538,10 @@
                     <div class="menu-section">
                         <div class="menu-item">📝 로그아웃</div>
                     </div>
-                </div> -->
+                </div>
                  <!-- 사이드바 인크루드 -->
-                  <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
-                
+<%--                   <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
+                 --%>
                 <!-- Content -->
                 <div class="content">
                     
@@ -695,6 +696,7 @@
         </div>
     </section>
     <!-- End Cart Section -->
+    <c:import url="../common/footer.jsp" />
 
     <%@include file="/WEB-INF/views/common/footer.jsp" %>
     <!-- ========================= scroll-top ========================= -->

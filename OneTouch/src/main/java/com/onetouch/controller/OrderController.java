@@ -1,5 +1,6 @@
 package com.onetouch.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,97 +152,156 @@ public class OrderController {
 	@RequestMapping("/order/create_ready.do")
 	@ResponseBody
 	public Map<String, Object> createOrderReady(
-				HttpServletRequest request,
-				@RequestParam Map<String, Object> params){
-		Map<String, Object> result = new HashMap<>();
-		System.out.println("진입");
-		try {	
-			session = request.getSession();
-			MemVo user = (MemVo) session.getAttribute("user");
-			
-			if(user==null) {
-				result.put("success", false);
-				result.put("message", "로그인이 필요합니다.");
-				return result;
-			}
-			//파라미터값 받기
-			OrderVo order = new OrderVo();
-			order.setMem_idx(user.getMem_idx());
-			order.setOrder_mem_name((String)params.get("order_mem_name"));
-			order.setOrder_phone((String)params.get("order_phone"));		
-			order.setOrder_postal((String)params.get("order_postal"));
-			order.setOrder_address((String)params.get("order_address"));
-			order.setOrder_address_more((String)params.get("order_address_more"));
-			
-			int totalAmount = 0;
-			String orderName = "";
-			String orderType = (String)params.get("order_type");
-			
-			//단건
-			if("direct".equals(orderType)) {
-				int product_idx = Integer.parseInt((String)params.get("product_idx"));
-				int product_cnt = Integer.parseInt((String)params.get("product_cnt"));
-				
-				ProductVo vo = product_dao.selectOne(product_idx);
-				totalAmount = vo.getProduct_price() * product_cnt;
-				orderName = vo.getProduct_name();
-				
-				session.setAttribute("orderType", "direct");
-				session.setAttribute("product_idx", product_idx);
-				session.setAttribute("product_cnt", product_cnt);
-				
-			} else if ("cart".equals(orderType)){
-				//장바구니
-				String[] cart_id_array = request.getParameterValues("cart_id");
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("cart_id_array", cart_id_array);
-				List<CartVo> cartList = cart_dao.selectPaymentList(map);
-				totalAmount = cart_dao.selectPaymentTotalAmount(map);
-				
-				orderName = cartList.get(0).getProduct_name();
-				if(cartList.size() > 1) {
-					orderName += "외" + (cartList.size() - 1) + "건";  
-				}
-				
-				session.setAttribute("orderType", "cart");
-				session.setAttribute("cart_ids", cart_id_array);
-			}
-			
-			order.setTotal_amount(totalAmount);
-			order.setOrder_name(orderName);
-			order.setOrder_no("OT" + System.currentTimeMillis());
-			order.setOrder_status("결제대기"); 
-			
-			System.out.println(order.getOrder_no());
-			
-			order_service.insert(order);
-			System.out.println("생성된 order_id: " + order.getOrder_id());
-			
-			String payment_key = "OTPAY" + System.currentTimeMillis();
-			PaymentVo payment = new PaymentVo();
-			payment.setPayment_key(payment_key);
-			payment.setOrder_id(order.getOrder_id());
-			payment.setAmount(totalAmount); 
-			payment.setMethod("카드");
-			
-			//결제대기로 내용 전송
-			System.out.println(payment);
-			payment_service.createPaymentReady(payment);
-			
-			session.setAttribute("order_id", order.getOrder_id());
-			
-			//결제 성공
-			result.put("success", true);
-			result.put("payment_key", payment_key);
-			result.put("order_name", orderName);
-			result.put("amount", totalAmount);
-			System.out.println(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.put("success", false);
-			result.put("message", "오류" + e.getMessage());
-		}	
-		return result;
+	            HttpServletRequest request,
+	            @RequestParam Map<String, Object> params) {
+	    
+	    Map<String, Object> result = new HashMap<>();
+	    System.out.println("진입");
+	    
+	    try {	
+	        session = request.getSession();
+	        MemVo user = (MemVo) session.getAttribute("user");
+	        
+	        if(user == null) {
+	            result.put("success", false);
+	            result.put("message", "로그인이 필요합니다.");
+	            return result;
+	        }
+	        
+	        String orderType = (String)params.get("order_type");
+	        int totalAmount = 0;
+	        String orderName = "";
+	        OrderVo order = null;
+	        
+	        if("repay".equals(orderType)) {
+	            int order_id = Integer.parseInt((String)params.get("order_id"));
+	            
+	            // 기존 주문 조회
+	            order = order_dao.selectOneByOrderId(order_id);
+	            
+	            // 권한 체크
+	            if(order == null || order.getMem_idx() != user.getMem_idx()) {
+	                result.put("success", false);
+	                result.put("message", "잘못된 접근입니다.");
+	                return result;
+	            }
+	            
+	            // 결제대기 상태만 재결제 가능
+	            if(!"결제대기".equals(order.getOrder_status())) {
+	                result.put("success", false);
+	                result.put("message", "결제 대기 중인 주문만 결제할 수 있습니다.");
+	                return result;
+	            }
+	            
+	            // 주문 정보 업데이트 (주문자, 배송지 정보만)
+	            order.setOrder_mem_name((String)params.get("order_mem_name"));
+	            order.setOrder_phone((String)params.get("order_phone"));
+	            order.setOrder_postal((String)params.get("order_postal"));
+	            order.setOrder_address((String)params.get("order_address"));
+	            order.setOrder_address_more((String)params.get("order_address_more"));
+	            
+	            // 기존 주문 정보 유지
+	            totalAmount = order.getTotal_amount();
+	            orderName = order.getOrder_name();
+	            
+	            // 주문 정보 업데이트 (DB)
+	            order_dao.update(order);
+	            
+	            session.setAttribute("orderType", "repay");
+	            session.setAttribute("order_id", order_id);
+	            
+	        } else {
+	            // 신규 주문 생성
+	            order = new OrderVo();
+	            order.setMem_idx(user.getMem_idx());
+	            order.setOrder_mem_name((String)params.get("order_mem_name"));
+	            order.setOrder_phone((String)params.get("order_phone"));		
+	            order.setOrder_postal((String)params.get("order_postal"));
+	            order.setOrder_address((String)params.get("order_address"));
+	            order.setOrder_address_more((String)params.get("order_address_more"));
+	            
+	            // 단건
+	            if("direct".equals(orderType)) {
+	                int product_idx = Integer.parseInt((String)params.get("product_idx"));
+	                int product_cnt = Integer.parseInt((String)params.get("product_cnt"));
+	                
+	                ProductVo vo = product_dao.selectOne(product_idx);
+	                totalAmount = vo.getProduct_price() * product_cnt;
+	                orderName = vo.getProduct_name();
+	                
+	                session.setAttribute("orderType", "direct");
+	                session.setAttribute("product_idx", product_idx);
+	                session.setAttribute("product_cnt", product_cnt);
+	                
+	            } else if ("cart".equals(orderType)){
+	                // 장바구니
+	                String[] cart_id_array = request.getParameterValues("cart_id");
+	                Map<String, Object> map = new HashMap<String, Object>();
+	                map.put("cart_id_array", cart_id_array);
+	                List<CartVo> cartList = cart_dao.selectPaymentList(map);
+	                totalAmount = cart_dao.selectPaymentTotalAmount(map);
+	                
+	                orderName = cartList.get(0).getProduct_name();
+	                if(cartList.size() > 1) {
+	                    orderName += " 외 " + (cartList.size() - 1) + "건";  
+	                }
+	                
+	                session.setAttribute("orderType", "cart");
+	                session.setAttribute("cart_ids", cart_id_array);
+	            }
+	            
+	            order.setTotal_amount(totalAmount);
+	            order.setOrder_name(orderName);
+	            order.setOrder_no("OT" + System.currentTimeMillis());
+	            order.setOrder_status("결제대기"); 
+	            
+	            System.out.println(order.getOrder_no());
+	            
+	            order_service.insert(order);
+	            System.out.println("생성된 order_id: " + order.getOrder_id());
+	            
+	            session.setAttribute("order_id", order.getOrder_id());
+	        }
+	        
+	        // Payment 정보 생성 (신규/재결제 공통)
+	        String payment_key = "OTPAY" + System.currentTimeMillis();
+	        PaymentVo payment = new PaymentVo();
+	        payment.setPayment_key(payment_key);
+	        payment.setOrder_id(order.getOrder_id());
+	        payment.setAmount(totalAmount); 
+	        payment.setMethod("카드");
+	        
+	        // 재결제 payment 업데이트, 신규 insert
+	        if("repay".equals(orderType)) {
+	            // 기존 payment 조회
+	            PaymentVo existingPayment = payment_service.getPaymentByOrderId(order.getOrder_id());
+	            if(existingPayment != null) {
+	                existingPayment.setPayment_key(payment_key);
+	                existingPayment.setAmount(totalAmount);
+	                existingPayment.setStatus("READY");
+	                payment_service.createPaymentReady(existingPayment);
+	            } else {
+	                payment_service.createPaymentReady(payment);
+	            }
+	        } else {
+	            payment_service.createPaymentReady(payment);
+	        }
+	        
+	        System.out.println(payment);
+	        
+	        result.put("success", true);
+	        result.put("payment_key", payment_key);
+	        result.put("order_name", orderName);
+	        result.put("amount", totalAmount);
+	        System.out.println(result);
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        result.put("success", false);
+	        result.put("message", "오류: " + e.getMessage());
+	    }	
+	    
+	    return result;
 	}
 	
 	@RequestMapping("/order/complete.do")
@@ -262,4 +322,99 @@ public class OrderController {
 	    
 	    return "order/order_complete";
 	}
+	
+	@RequestMapping("/order/list.do")
+	public String orderList(Model model) {
+		
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		
+		if(memVo==null) {return "redirect:/user/login";}
+		
+		int mem_idx = memVo.getMem_idx();
+			
+		List<OrderVo> order_list = order_dao.selectList(mem_idx);
+		
+		model.addAttribute("order_list",order_list);
+		
+		return "order/order_list";
+	}
+	
+	@RequestMapping("/order/detail.do")
+	public String orderDetail(@RequestParam int order_id, Model model) {
+		
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		
+		if(memVo==null) {return "redirect:/user/login";}
+		
+		OrderVo order = order_dao.selectOneByOrderId(order_id);
+		
+		if(order == null || order.getMem_idx() != memVo.getMem_idx()) {
+			return "redirect:/order/list.do";
+		}
+		
+		List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+		
+		PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
+		
+		model.addAttribute("order", order);
+		model.addAttribute("order_items", order_items);
+		model.addAttribute("payment", payment);
+		
+		return "order/order_detail";
+	}
+	
+//	@RequestMapping("/order/repay_form.do")
+//	public String repayForm(@RequestParam int order_id, Model model) {
+//	    
+//	    MemVo memVo = (MemVo)session.getAttribute("user");
+//	    
+//	    if(memVo == null) {
+//	        return "redirect:/user/login";
+//	    }
+//	    
+//	    // 기존 주문 정보 조회
+//	    OrderVo order = order_dao.selectOneByOrderId(order_id);
+//	    
+//	    
+//	    if(order == null || order.getMem_idx() != memVo.getMem_idx()) {
+//	        return "redirect:/order/list.do";
+//	    }
+//	    
+//	    if(!"결제대기".equals(order.getOrder_status())) {
+//	        return "redirect:/order/detail.do?order_id=" + order_id;
+//	    }
+//	    
+//	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+//	    
+//	    //cartvo상태로 변환
+//	    List<Map<String, Object>> item_list = new ArrayList<>();
+//	    int total_amount = 0;
+//	    
+//	    for(OrderItemVo item : order_items) {
+//	        Map<String, Object> itemMap = new HashMap<>();
+//	        itemMap.put("product_name", item.getProduct_name());
+//	        itemMap.put("product_cnt", item.getProduct_cnt());
+//	        itemMap.put("product_price", item.getProduct_amount());
+//	        itemMap.put("total_amount", item.getTotal_amount());
+//	        itemMap.put("product_image_url", item.getProduct_image_url());
+//	        
+//	        item_list.add(itemMap);
+//	        total_amount += item.getTotal_amount();
+//	    }
+//	    
+//	    String order_name = order.getOrder_name();
+//	    
+//	    // request binding
+//	    model.addAttribute("order", order);
+//	    model.addAttribute("item_list", item_list);
+//	    model.addAttribute("total_amount", total_amount);
+//	    model.addAttribute("order_name", order_name);
+//	    model.addAttribute("order_type", "repay"); 
+//	    model.addAttribute("order_id", order_id);
+//	    
+//	    return "order/order_form";
+//	}
+
 }

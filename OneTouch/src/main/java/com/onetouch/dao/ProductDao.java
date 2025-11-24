@@ -53,10 +53,11 @@ public interface ProductDao {
     // 재고 이력 총 개수 조회
     int selectRemainCount(Map<String, Object> map);
     
+
     int uploadImages(ProductVo vo);
     int updateMainImage(int product_idx, String product_image_url); 
     int updateDetailImage(int product_image_idx, String product_image_url);
     int deleteImage(int product_image_idx);
  
-    
+
 }

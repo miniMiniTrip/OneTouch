@@ -380,7 +380,7 @@
     
     function confirmDeleteAnswer() {
         if(confirm('답변을 삭제하시겠습니까?')) {
-            location.href = '${pageContext.request.contextPath}/qna/deleteAnswer?qna_idx=${qna.qna_idx}';
+            location.href = '${pageContext.request.contextPath}/mypage/qna_deleteAnswer?qna_idx=${qna.qna_idx}';
         }
         
         
@@ -606,7 +606,7 @@
         <!-- 답변이 없는 경우에만 수정 버튼 표시 -->
         <c:if test="${not qna.qna_answered}">
             <button class="btn btn-edit" 
-                    onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">
+                    onclick="location.href='${pageContext.request.contextPath}/mypage/qna_modify?qna_idx=${qna.qna_idx}'">
                 수정
             </button>
         </c:if>
@@ -636,7 +636,7 @@
     <script>
         function confirmDelete() {
             if(confirm('정말 삭제하시겠습니까?')) {
-                location.href = '${pageContext.request.contextPath}/qna/delete?qna_idx=${qna.qna_idx}';
+                location.href = '${pageContext.request.contextPath}/mypage/qna_delete?qna_idx=${qna.qna_idx}';
             }
         }
         

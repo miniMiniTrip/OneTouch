@@ -8,13 +8,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onetouch.dao.HashtagDao;
+import com.onetouch.dao.ProductDao;
 import com.onetouch.vo.HashtagVo;
+import com.onetouch.vo.ProductVo;
 
 
 @Controller
@@ -22,6 +22,9 @@ public class HashtagController {
 	
 	@Autowired
 	HashtagDao hashtag_dao;
+	
+	@Autowired
+	ProductDao product_dao;
 	
 	@RequestMapping("/hashtag/list.do")
 	public String list(Model model) {
@@ -53,9 +56,24 @@ public class HashtagController {
 		return "redirect:list.do";
 	};
 
-     //단일 해시태그로 상품 검색 (클릭) not yet
-    public List<Integer> searchProductsByHashtag(int hashtag_idx) {
-    	return hashtag_dao.selectProductByHashtag(hashtag_idx);
+	@RequestMapping("/hashtag/search.do")
+    public String searchProductsByHashtag(@RequestParam("hashtag_idx") int hashtag_idx, 
+            Model model) {
+		HashtagVo hashtag = hashtag_dao.selectOne(hashtag_idx);
+		
+		//상품 리스트 조회
+		List<Integer> product_idx_list = hashtag_dao.selectProductByHashtag(hashtag_idx);
+		
+		List<ProductVo> product_list = new ArrayList<>();
+		if(product_idx_list != null && !product_idx_list.isEmpty()) {
+			product_list = product_dao.selectByIds(product_idx_list);
+		}
+		
+		model.addAttribute("hashtag",hashtag);
+		model.addAttribute("product_list",product_list);
+		model.addAttribute("search_type","hashtag");
+		
+    	return "product/product_list";
     }
     
 

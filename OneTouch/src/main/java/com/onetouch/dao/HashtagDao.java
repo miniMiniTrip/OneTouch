@@ -1,5 +1,6 @@
 package com.onetouch.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,15 @@ public interface HashtagDao {
 	//문진 결과 상품 조회
 	public List<Integer> selectProductsByHashtags(Map<String, Object> params);
 	
+	default List<Integer> selectProductsByHashtags(List<Integer> hashtag_list, int min_match) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("hashtag_list", hashtag_list);
+	    params.put("min_match", min_match);
+	    return selectProductsByHashtags(params);
+	}
+	
 	//문진 결과 추천글 조회
 	public List<Integer> selectPostsByHashtags(Map<String, Object> params);
 	
-
+	
 }

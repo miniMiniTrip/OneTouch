@@ -3,7 +3,60 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.dao.ProductDao">
-   
+
+<resultMap id="productWithHashtags" type="product">
+    <id property="product_idx" column="product_idx"/>
+    <result property="category_idx" column="category_idx"/>
+    <result property="product_wishlist" column="product_wishlist"/>
+    <result property="product_price" column="product_price"/>
+    <result property="product_name" column="product_name"/>
+    <result property="product_brand" column="product_brand"/>
+    <result property="product_comment" column="product_comment"/>
+    <result property="product_cnt" column="product_cnt"/>
+    <result property="product_time" column="product_time"/>
+    <result property="product_update" column="product_update"/>
+    <result property="category_name" column="category_name"/>
+    
+    <!-- HashtagVo 객체로 -->
+    <collection property="hashtag_list" 
+                ofType="hashtag" 
+                column="product_idx" 
+                select="selectHashtagsByProduct"/>
+</resultMap>
+
+	<!-- 상품별 해시태그 조회-->
+	<select id="selectHashtagsByProduct" parameterType="int" resultType="hashtag">
+	    select h.hashtag_idx, h.hashtag_name, h.hashtag_time, h.use_count
+	    from hashtag h
+	    inner join product_hashtag ph on h.hashtag_idx = ph.hashtag_idx
+	    where ph.product_idx = #{product_idx}
+	    order by h.hashtag_idx
+	</select>
+	
+	<!-- 여러 idx로 상품 조회 -->
+	<select id="selectByIds" parameterType="list" resultMap="productWithHashtags">
+	    select 
+	        p.product_idx,
+	        p.category_idx,
+	        p.product_wishlist,
+	        p.product_price,
+	        p.product_name,
+	        p.product_brand,
+	        p.product_comment,
+	        p.product_cnt,
+	        p.product_time,
+	        p.product_update,
+	        c.category_name
+	    from product p
+	    left join category c on p.category_idx = c.category_idx
+	    where p.product_idx in
+	    <foreach collection="list" item="id" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	    order by p.product_cnt desc
+	</select>
+
+    <!-- 관리자용 상품 목록 조회 (페이징 포함) -->
     <select id="selectListAdmin" parameterType="map" resultType="product">
     SELECT
         p.*,
@@ -37,53 +90,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </if>
 </select>
    
-    <!-- 🔥 고객용 상품 목록 조회 (정렬 기능 포함) -->
-    <select id="selectList" parameterType="map" resultType="product">
-        SELECT 
-            p.product_idx,
-            p.product_name,
-            p.product_brand,
-            p.product_comment,
-            p.product_price,
-            p.product_cnt,
-            p.product_time,
-            p.product_update,
-            p.category_idx,
-            p.product_wishlist,
-            c.category_name,
-            pi.product_image_url
-        FROM product p
-        LEFT JOIN category c ON p.category_idx = c.category_idx
-        LEFT JOIN (
-            SELECT product_idx, product_image_url 
-            FROM product_image 
-            WHERE product_image_level = 1
-        ) pi ON p.product_idx = pi.product_idx
-        
-        <where>
-            <if test="keyword != null and keyword != ''">
-                AND p.product_name LIKE CONCAT('%', #{keyword}, '%')
-            </if>
-            <if test="category_idx != null and category_idx != ''">
-                AND p.category_idx = #{category_idx}
-            </if>
-        </where>
-        
-        <!-- ⭐ ORDER BY 처리 -->
-        <choose>
-            <when test="orderBy != null and orderBy != ''">
-                ORDER BY ${orderBy}
-            </when>
-            <otherwise>
-                ORDER BY p.product_idx DESC
-            </otherwise>
-        </choose>
-        
-        <!-- 페이징 처리 -->
-        <if test="startRow != null and pageSize != null">
-            LIMIT #{startRow}, #{pageSize}
-        </if>
-    </select>
+    <!-- 고객용 상품 목록 조회 (정렬 기능 포함) -->
+	<select id="selectList" parameterType="map" resultMap="productWithHashtags">
+	    SELECT 
+	        p.product_idx,
+	        p.product_name,
+	        p.product_brand,
+	        p.product_comment,
+	        p.product_price,
+	        p.product_cnt,
+	        p.product_time,
+	        p.product_update,
+	        p.category_idx,
+	        p.product_wishlist,
+	        c.category_name,
+	        pi.product_image_url
+	    FROM product p
+	    LEFT JOIN category c ON p.category_idx = c.category_idx
+	    LEFT JOIN (
+	        SELECT product_idx, product_image_url 
+	        FROM product_image 
+	        WHERE product_image_level = 1
+	    ) pi ON p.product_idx = pi.product_idx
+	    
+	    <where>
+	        <if test="keyword != null and keyword != ''">
+	            AND p.product_name LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="category_idx != null and category_idx != ''">
+	            AND p.category_idx = #{category_idx}
+	        </if>
+	    </where>
+	    
+	    <!-- ORDER BY 처리 -->
+	    <choose>
+	        <when test="orderBy != null and orderBy != ''">
+	            ORDER BY ${orderBy}
+	        </when>
+	        <otherwise>
+	            ORDER BY p.product_idx DESC
+	        </otherwise>
+	    </choose>
+	    
+	    <!-- 페이징 처리 -->
+	    <if test="startRow != null and pageSize != null">
+	        LIMIT #{startRow}, #{pageSize}
+	    </if>
+	</select>
 
     <!-- 상품 총 개수 조회 (통합) -->
     <select id="selectCount" parameterType="map" resultType="int">

@@ -26,6 +26,37 @@
 <!-- End Breadcrumbs -->
 
 <style>
+.product-hashtags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.hashtag-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #f0f0f0;
+    color: #555;
+    border-radius: 12px;
+    font-size: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.hashtag-badge:hover {
+    background-color: #5c6bc0;
+    color: white;
+    border-color: #5c6bc0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(92, 107, 192, 0.3);
+}
+
+.hashtag-badge:active {
+    transform: translateY(0);
+}
+
 /* ==================== 전체 레이아웃 ==================== */
 .product-grids {
     padding: 0;
@@ -272,54 +303,68 @@
                                     </c:when>
                                     <c:otherwise>
                                         <c:forEach var="product" items="${list}">
-                                            <div class="col-lg-4 col-md-6 col-12">
-                                                <!-- Start Single Product -->
-                                                <div class="single-product">
-                                                    <div class="product-image">
-                                                        <c:choose>
-                                                            <c:when test="${not empty product.product_image_url}">
-                                                                <img src="${pageContext.request.contextPath}/images/${product.product_image_url}"  alt="${product.product_name}">
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="no-image">이미지 준비중</div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <div class="button">
-                                                            <a href="javascript:void(0);" 
-                                                               onclick="addToCart(${product.product_idx})" 
-                                                               class="btn"><i class="lni lni-cart"></i> 장바구니</a>
-                                                        </div>
-                                                        <!-- 찜하기 토글 버튼 -->
-													<span class="wishlist-toggle" 
-													      onclick="toggleWishlist(${product.product_idx}, this)"
-													      data-product-idx="${product.product_idx}"
-													      data-wishlist="false">
-													    <i class="lni lni-heart"></i>
-													</span>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <span class="category">${product.category_name}</span>
-                                                        <h4 class="title">
-                                                            <a href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
-                                                                ${product.product_name}
-                                                            </a>
-                                                        </h4>
-                                                        <div class="price">
-                                                            <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
-                                                        </div>
-                                                        <div class="product-stats">
-                                                            <span class="stat-item">
-                                                                <i class="lni lni-shopping-basket"></i> 구매가능수량 ${product.product_cnt}
-                                                            </span>
-                                                            <span class="stat-item">
-                                                                <i class="lni lni-heart"></i> 찜 ${product.product_wishlist}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- End Single Product -->
-                                            </div>
-                                        </c:forEach>
+										    <div class="col-lg-4 col-md-6 col-12">
+										        <!-- Start Single Product -->
+										        <div class="single-product">
+										            <div class="product-image">
+										                <c:choose>
+										                    <c:when test="${not empty product.product_image_url}">
+										                        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}"  alt="${product.product_name}">
+										                    </c:when>
+										                    <c:otherwise>
+										                        <div class="no-image">이미지 준비중</div>
+										                    </c:otherwise>
+										                </c:choose>
+										                <div class="button">
+										                    <a href="javascript:void(0);" 
+										                       onclick="addToCart(${product.product_idx})" 
+										                       class="btn"><i class="lni lni-cart"></i> 장바구니</a>
+										                </div>
+										                <!-- 찜하기 토글 버튼 -->
+										                <span class="wishlist-toggle" 
+										                      onclick="toggleWishlist(${product.product_idx}, this)"
+										                      data-product-idx="${product.product_idx}"
+										                      data-wishlist="false">
+										                    <i class="lni lni-heart"></i>
+										                </span>
+										            </div>
+										            <div class="product-info">
+										                <span class="category">${product.category_name}</span>
+										                <h4 class="title">
+										                    <a href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
+										                        ${product.product_name}
+										                    </a>
+										                </h4>
+										                
+										                <!-- ⭐ 해시태그 추가 -->
+										                <c:if test="${not empty product.hashtag_list}">
+										                    <div class="product-hashtags" style="margin: 10px 0;">
+										                        <c:forEach var="hashtag" items="${product.hashtag_list}">
+										                            <a href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}" 
+										                               class="hashtag-badge"
+										                               title="#${hashtag.hashtag_name} 상품 보기">
+										                                #${hashtag.hashtag_name}
+										                            </a>
+										                        </c:forEach>
+										                    </div>
+										                </c:if>
+										                
+										                <div class="price">
+										                    <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
+										                </div>
+										                <div class="product-stats">
+										                    <span class="stat-item">
+										                        <i class="lni lni-shopping-basket"></i> 구매가능수량 ${product.product_cnt}
+										                    </span>
+										                    <span class="stat-item">
+										                        <i class="lni lni-heart"></i> 찜 ${product.product_wishlist}
+										                    </span>
+										                </div>
+										            </div>
+										        </div>
+										        <!-- End Single Product -->
+										    </div>
+										</c:forEach>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -353,6 +398,25 @@
                                                         ?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
                                                             <i class="lni lni-chevron-right"></i>
                                                         </a>
+                                                        <p class="description">${product.product_comment}</p>
+
+														<!-- 해시태그 리스트 -->
+														<c:if test="${not empty product.hashtag_list}">
+														    <div class="product-hashtags" style="margin: 10px 0;">
+														        <c:forEach var="hashtag" items="${product.hashtag_list}">
+														            <a href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}" 
+														               class="hashtag-badge"
+														               title="#${hashtag.hashtag_name} 상품 보기">
+														                #${hashtag.hashtag_name}
+														            </a>
+														        </c:forEach>
+														    </div>
+														</c:if>
+														
+														<div class="price">
+														    <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
+														</div>
+                                                        
                                                     </li>
                                                 </c:if>
                                             </ul>
