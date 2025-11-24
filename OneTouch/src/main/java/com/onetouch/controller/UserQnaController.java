@@ -196,6 +196,95 @@ public class UserQnaController {
 	        return "redirect:/mypage/detail?qna_idx=" + qna_idx;  // ★ 수정된 부분
 	    }
 	
+	
+	    
+	    
+	    // 4️⃣ 수정 폼 보기
+	    @GetMapping("/mypage/qna_modify")
+	    public String modifyForm(@RequestParam int qna_idx, Model model, RedirectAttributes redirectAttributes) {
+	    	
+	    	System.out.println("   [UserQnaController]/mypage/qna_modify() 수정폼 보기");
+	    	
+	        // 로그인 체크
+	        MemVo user = (MemVo) session.getAttribute("user");
+	        
+	        if (user == null) {
+	            return "redirect:/user/login";
+	        }
+	        
+	        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+	        
+	        // 본인의 글인지 확인
+	        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+	            return "redirect:/mypage/qna_list";
+	            
+	        }
+	        
+	        // 답변이 완료된 경우 수정 불가
+	        if (qna.isQna_answered()) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "답변 완료된 문의는 수정할 수 없습니다.");
+	            return "redirect:/mypage/qna_detail?qna_idx=" + qna_idx;
+	        }
+	        
+	        model.addAttribute("qna", qna);
+	        return "qna/qna_modify";
+	    }
+	    
+	    
+	    
+	    // 유저  수정 처리
+	    @PostMapping("/mypage/qna_modify")
+	    public String modify(QnaVo vo, RedirectAttributes redirectAttributes) {
+	    	
+	    	System.out.println("   [UserQnaController]/mypage/qna_modify 수정 처리하기()");
+	        // 로그인 체크
+	        MemVo user = (MemVo) session.getAttribute("user");
+	        
+	        if (user == null) {
+	            return "redirect:/user/login";
+	        }
+	        
+	        // 기존 데이터 조회하여 본인 글인지 확인
+	        QnaVo qna = qnaDao.selectQnaDetail(vo.getQna_idx());
+	        
+	        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+	            return "redirect:/qna/list";
+	        }
+	     	System.out.println("   [UserQnaController]/mypage/qna_modify 수정 처리하기111()");
+	        qnaDao.updateQna(vo);
+	        return "redirect:/mypage/detail?qna_idx=" + vo.getQna_idx();
+	    }
+	    
+	    
+	     //마이페이지 삭제 처리
+	    @GetMapping("/mypage/qna_delete")
+	    public String delete(@RequestParam int qna_idx, RedirectAttributes redirectAttributes) {
+	        // 로그인 체크
+	        MemVo user = (MemVo) session.getAttribute("user");
+	        
+	        if (user == null) {
+	            return "redirect:/user/login";
+	        }
+	        
+	        // 본인의 글인지 확인
+	        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+	        
+	        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
+	            return "redirect:/qna/list";
+	        }
+	        
+	        System.out.println("=== QnA 삭제 ===");
+	        System.out.println("삭제할 번호: " + qna_idx);
+	        
+	        qnaDao.deleteQna(qna_idx);
+	        return "redirect:/mypage/qna_list";
+	    }
+	    
+	    
+	    
 	    
 	
 }
