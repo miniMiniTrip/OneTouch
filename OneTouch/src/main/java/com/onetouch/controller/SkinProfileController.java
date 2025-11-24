@@ -130,7 +130,7 @@ public class SkinProfileController {
 		model.addAttribute("list",list);
 		model.addAttribute("hashtag_list",hashtag_list);
 		model.addAttribute("product_list", product_list);
-
+		
 		return "skinprofile/view"; 
 	}
 	
