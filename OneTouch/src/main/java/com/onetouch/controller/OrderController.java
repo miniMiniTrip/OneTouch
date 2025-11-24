@@ -262,4 +262,47 @@ public class OrderController {
 	    
 	    return "order/order_complete";
 	}
+	
+	@RequestMapping("/order/list.do")
+	public String orderList(Model model) {
+		
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		
+		if(memVo==null) {return "redirect:/user/login";}
+		
+		int mem_idx = memVo.getMem_idx();
+			
+		List<OrderVo> order_list = order_dao.selectList(mem_idx);
+		
+		model.addAttribute("order_list",order_list);
+		
+		return "order/order_list";
+	}
+	
+	@RequestMapping("/order/detail.do")
+	public String orderDetail(@RequestParam int order_id, Model model) {
+		
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		
+		if(memVo==null) {return "redirect:/user/login";}
+		
+		OrderVo order = order_dao.selectOneByOrderId(order_id);
+		
+		if(order == null || order.getMem_idx() != memVo.getMem_idx()) {
+			return "redirect:/order/list.do";
+		}
+		
+		List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+		
+		PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
+		
+		model.addAttribute("order", order);
+		model.addAttribute("order_items", order_items);
+		model.addAttribute("payment", payment);
+		
+		return "order/order_detail";
+	}
+
 }

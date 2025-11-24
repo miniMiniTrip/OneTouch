@@ -199,8 +199,16 @@
                             <h4>주문 상품</h4>
                             <c:forEach var="item" items="${order_items}">
                                 <div class="product-item">
-                                    <img src="${item.product_image_url}" alt="${item.product_name}">
-                                    <div class="product-item-info">
+                                <c:choose>
+                                    <c:when test="${not empty item.product_image_url}">
+                                    <img src="${pageContext.request.contextPath}/images/${item.product_image_url}" alt="${item.product_name}">
+                                   	</c:when>
+                                   	<c:otherwise>
+                                   	<!-- 이미지 경로 확인 실패시 -->
+                                   	<img src="${pageContext.request.contextPath}/images/default.png"/>
+                                   	</c:otherwise>
+                                </c:choose>	
+                                   		<div class="product-item-info">
                                         <h6>${item.product_name}</h6>
                                         <p>수량: ${item.product_cnt}개</p>
                                     </div>

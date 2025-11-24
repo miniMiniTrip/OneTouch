@@ -61,8 +61,8 @@
                         <div class="single-footer our-app">
                             <h3>쇼핑 정보</h3>
                             <ul class="app-btn">
-                                <li><a href="${pageContext.request.contextPath}/product/list">전체 상품</a></li>
-                                <li><a href="${pageContext.request.contextPath}/post/list">커뮤니티</a></li>
+                                <li><a href="${pageContext.request.contextPath}/products">전체 상품</a></li>
+                                <li><a href="${pageContext.request.contextPath}/community">커뮤니티</a></li>
                                 <li><a href="${pageContext.request.contextPath}/skintest">피부 진단</a></li>
                                 <li><a href="${pageContext.request.contextPath}/reviews">리뷰</a></li>
                             </ul>
@@ -76,8 +76,8 @@
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
                                 <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
-                                <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
-                                <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품</a></li>
+                                <li><a href="${pageContext.request.contextPath}/cart">장바구니</a></li>
+                                <li><a href="${pageContext.request.contextPath}/wishlist">찜한 상품</a></li>
                             </ul>
                         </div>
                         <!-- End Single Widget -->
@@ -88,7 +88,7 @@
                             <h3>회사 정보</h3>
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/about">회사 소개</a></li>
-                                <li><a href="${pageContext.request.contextPath}/mypage/qna_list">문의하기</a></li>
+                                <li><a href="${pageContext.request.contextPath}/contact">문의하기</a></li>
                                 <li><a href="${pageContext.request.contextPath}/terms">이용약관</a></li>
                                 <li><a href="${pageContext.request.contextPath}/privacy">개인정보처리방침</a></li>
                             </ul>
