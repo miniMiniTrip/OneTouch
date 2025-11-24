@@ -20,20 +20,25 @@
     
     <style>
         .qna-section {
-            padding: 60px 0;
-            background-color: #f5f5f5;
+              padding: 0;
+    background-color: #fff;
+    min-height: calc(100vh - 400px);
         }
         
         .qna-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+              display: flex;
+    max-width: 100%;
+    margin: 0;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
         }
         
+        
+        /* 사이드바 css */
+        
+       /*  
         .sidebar {
             width: 200px;
             background: #fafafa;
@@ -82,7 +87,7 @@
             color: #5c6bc0;
             font-weight: 600;
             border-left: 3px solid #5c6bc0;
-        }
+        } */
         
         .content {
             flex: 1;
@@ -375,7 +380,7 @@
     
     function confirmDeleteAnswer() {
         if(confirm('답변을 삭제하시겠습니까?')) {
-            location.href = '${pageContext.request.contextPath}/qna/deleteAnswer?qna_idx=${qna.qna_idx}';
+            location.href = '${pageContext.request.contextPath}/mypage/qna_deleteAnswer?qna_idx=${qna.qna_idx}';
         }
         
         
@@ -436,6 +441,9 @@
     <section class="qna-section">
         <div class="container">
             <div class="qna-container">
+            
+            <!--  사이드바 영역 -->
+            <%-- 
                 <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
                     <div class="sidebar-subtitle">${user.mem_name}님 환영합니다</div>
@@ -462,12 +470,17 @@
                     <div class="menu-section">
                         <div class="menu-item">📝 로그아웃</div>
                     </div>
-                </div>
+                </div> --%>
+                
+                 <!-- 사이드바 인크루드 -->
+                 <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
+                
+                
                 
                 <div class="content">
                     <div class="content-header">
                         <h2>💬 상품 Q&A 상세보기</h2>
-                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/qna/list'">목록으로</button>
+                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/mypage/qna_list'">목록으로</button>
                     </div>
                     
                     <!-- Q&A 상세 -->
@@ -561,7 +574,7 @@
                     <div class="answer-header">
                         <span class="answer-badge">답변 작성</span>
                     </div>
-                    <form action="${pageContext.request.contextPath}/qna/answer" method="post" enctype="multipart/form-data">
+                    <form action="${pageContext.request.contextPath}/mypage/qna_answer" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
 
                         <textarea name="qna_answer_content"
@@ -587,13 +600,13 @@
 </div>
                     </div>
                     
-                    <<div class="btn-group">
+                    <div class="btn-group">
     <!-- 작성자 본인만 수정/삭제 버튼 표시, 관리자 제외 -->
     <c:if test="${user.mem_idx == qna.mem_idx && user.mem_roll != 'admin'}">
         <!-- 답변이 없는 경우에만 수정 버튼 표시 -->
         <c:if test="${not qna.qna_answered}">
             <button class="btn btn-edit" 
-                    onclick="location.href='${pageContext.request.contextPath}/qna/modify?qna_idx=${qna.qna_idx}'">
+                    onclick="location.href='${pageContext.request.contextPath}/mypage/qna_modify?qna_idx=${qna.qna_idx}'">
                 수정
             </button>
         </c:if>
@@ -623,7 +636,7 @@
     <script>
         function confirmDelete() {
             if(confirm('정말 삭제하시겠습니까?')) {
-                location.href = '${pageContext.request.contextPath}/qna/delete?qna_idx=${qna.qna_idx}';
+                location.href = '${pageContext.request.contextPath}/mypage/qna_delete?qna_idx=${qna.qna_idx}';
             }
         }
         
@@ -637,8 +650,9 @@
         });
     </script>
 
-    <!-- Start Footer Area -->
-    <c:import url="../common/footer.jsp" />
+      <!-- 푸터 인크루드-->
+   <%@include file="/WEB-INF/views/common/footer.jsp" %> 
+
     <!-- End Footer Area -->
 </body>
 </html>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -97,13 +98,29 @@ body {
 .thumbnail {
     width: 80px;
     height: 80px;
-    background: #f0f0f0;
+    background: #f0f0f0;  /* 기본 네모박스 색 */
     border-radius: 8px;
-    border: 2px solid #ddd;
+   /*  border: 2px solid #ddd;  */
     cursor: pointer;
     transition: border-color 0.3s;
-    flex-shrink: 0;
 }
+.thumbnail:hover, .thumbnail.active {
+    border-color: #2a5298;
+}
+
+.thumbnail.placeholder {
+    opacity: 0;  /* 기본 숨김 */
+}
+.product-image:hover .thumbnail.placeholder {
+    opacity: 1;  /* 마우스 올리면 나타남 */
+}
+
+
+/* 커서 올리면 보이게 */
+.product-image:hover .thumbnail.placeholder {
+     opacity: 1;
+}
+
 
 .thumbnail:hover, .thumbnail.active {
     border-color: #2a5298;
@@ -337,86 +354,68 @@ body {
     border-bottom: 3px solid #2a5298;
 }
 
-/* 모달 스타일 - 반응형 개선 */
-.modal-overlay {
+/* 탭 내용 영역 */
+.tab-content {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.tab-panel {
     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    animation: fadeIn 0.3s ease;
-    padding: 20px;
 }
 
-.modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    width: 100%;
-    max-width: 800px;
-    max-height: 80vh;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    animation: slideUp 0.3s ease;
+.tab-panel.active {
+    display: block;
 }
 
-.modal-header {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: white;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s;
-    touch-action: manipulation;
-}
-
-.modal-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.modal-body {
-    padding: 30px;
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-.modal-body h3 {
+.tab-panel h3 {
     color: #2a5298;
     margin-bottom: 20px;
     font-size: 18px;
 }
 
-.modal-body p, .modal-body li {
+.tab-panel p, .tab-panel li {
     line-height: 1.6;
     margin-bottom: 15px;
+}
+
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #2a5298;
+    font-weight: bold;
 }
 
 /* 리뷰 스타일 */
@@ -493,43 +492,6 @@ body {
     color: #28a745;
     font-size: 16px;
     margin-bottom: 5px;
-}
-
-/* 애니메이션 */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { 
-        opacity: 0;
-        transform: translate(-50%, -40%);
-    }
-    to { 
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-.feature-list {
-    list-style: none;
-    padding: 0;
-}
-
-.feature-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
-    position: relative;
-    padding-left: 25px;
-}
-
-.feature-list li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: #2a5298;
-    font-weight: bold;
 }
 
 /* ============== 반응형 미디어 쿼리 ============== */
@@ -749,20 +711,34 @@ body {
         <!-- 상품 상세 정보 -->
         <div class="product-detail">
             <div class="product-info">
+            
                 <!-- 이미지 영역 -->
-                <div class="product-image" >
-                    <div class="main-image"style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');">
-                        <c:if test="${empty product.product_image_url}">
-                            상품 이미지
-                        </c:if>
-                    </div>
-                    <div class="thumbnail-images">
-                     <div class="thumbnail active"></div>
-                     <div class="thumbnail"></div> 
-                        <div class="thumbnail"></div>
-                        <div class="thumbnail"></div>
-                    </div>
-                </div>
+					<div class="product-image">
+					    <c:if test="${not empty product.product_image_url}">
+					        <div class="main-image" 
+					              style="background-image: url('/images/${product.product_image_url}');">
+					        </div>
+					        <div class="thumbnail-images">
+					            <div class="thumbnail active" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
+					            <div class="thumbnail" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
+					            <div class="thumbnail" style="background-image: url('${pageContext.request.contextPath}/images/${product.product_image_url}');"></div>
+					        </div>
+					    </c:if>
+					
+					    <c:if test="${empty product.product_image_url}">
+					        <div class="main-image placeholder">
+					            <span class="placeholder-text">상품 이미지 없음</span>
+					        </div>
+					        <div class="thumbnail-images">
+					            <div class="thumbnail placeholder"></div>
+					            <div class="thumbnail placeholder"></div>
+					            <div class="thumbnail placeholder"></div>
+					        </div>
+					    </c:if>
+					</div>
+
+
+
 
                 <!-- 상품 정보 -->
                 <div class="product-details">
@@ -776,12 +752,19 @@ body {
                         <div class="stars">★★★★☆</div>
                         <span class="rating-text">4.8 (234개 후기)</span>
                     </div>
-
+					
+					
                     <div class="price-section">
-                        <div class="original-price">45,000원</div>
+                     <!-- 원가에서 계산하여 할인률 조절함 할인률 안만들었음-->
+                        <div class="original-price">
+                        	<fmt:formatNumber value="${product.product_price * 1.3}" type="number" maxFractionDigits="0" />
+                        </div>
+                         <!-- 할인가 : 원가에서 조정 -->
                         <div class="discount-info">
                             <span class="discount-rate">30%</span> 
-                            <span class="sale-price">${product.product_price}</span>
+                            <span class="sale-price">
+                            <fmt:formatNumber value="${product.product_price}" type="number" maxFractionDigits="0" />
+       						 </span>
                             <span class="currency">원</span>
                         </div>
                     </div>
@@ -797,8 +780,10 @@ body {
 
                     <div class="total-price">
                         <span class="total-label">총 상품금액</span> 
-                        <span class="total-amount" id="totalPrice">${product.product_price}원</span>
-                    </div>
+                        <span class="total-amount" id="totalPrice">
+				        <fmt:formatNumber value="${product.product_price}" type="number" maxFractionDigits="0"/> 원
+				    </span>
+				    </div>
 
                     <div class="button-group">
                         <button type="button" id="btnCart" class="btn btn-cart">장바구니</button>
@@ -811,110 +796,88 @@ body {
         <!-- 상품 설명 탭 -->
         <div class="product-tabs">
             <div class="tab-header">
-                <button class="tab-btn active" onclick="openModal('description')">상품설명</button>
-                <button class="tab-btn" onclick="openModal('reviews')">리뷰</button>
-                <button class="tab-btn" onclick="openModal('qna')">상품Q&A</button>
+                <button class="tab-btn active" onclick="showTab('description')">상품상세</button>
+                <button class="tab-btn" onclick="showTab('reviews')">리뷰</button>
+                <button class="tab-btn" onclick="showTab('qna')">상품Q&A</button>
             </div>
         </div>
     </div>
 
-    <!-- 상품설명 모달 -->
-    <div id="descriptionModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">상품상세정보</h2>
-                <button class="modal-close" onclick="closeModal('descriptionModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h3>제품 특징</h3>
-                <ul class="feature-list">
-                    <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
-                    <li>민감한 피부에도 안전한 저자극 포뮬러</li>
-                    <li>빠른 흡수력으로 끈적임 없는 사용감</li>
-                    <li>하루 종일 지속되는 보습 효과</li>
-                    <li>피부 트러블 완화 및 진정 효과</li>
-                </ul>
+   <!-- 탭 내용 -->
+            <div class="tab-content">
+                <!-- 상품설명 내용 -->
+                <div id="description-content" class="tab-panel active">
+                    <h3>제품 특징</h3>
+                    
+                     <!-- 상품 상세 이미지 추가 -->
+				    <div class="product-detail-image">
+				        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="상품 상세 이미지" />
+				    </div>
+				    <p>디버그: ${product.product_image_url}</p>
+				    
+				    <ul class="feature-list">
+				        <li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
+				        <!-- ... 기존 내용 ... -->
+				    </ul>
+				    <!-- ... 나머지 내용 ... -->
+				</div>
 
-                <h3>사용법</h3>
-                <p>세안 후 적당량을 손에 덜어 얼굴 전체에 부드럽게 발라주세요. 아침, 저녁 하루 2회 사용을 권장합니다.</p>
-
-                <h3>주의사항</h3>
-                <p>사용 중 이상이 있을 경우 즉시 사용을 중단하고 전문의와 상담하세요. 직사광선을 피해 서늘한 곳에 보관해주세요.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 리뷰 모달 -->
-    <div id="reviewsModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">고객 리뷰</h2>
-                <button class="modal-close" onclick="closeModal('reviewsModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="review-rating">★★★★★</div>
-                        <div class="review-author">김**님</div>
-                        <div class="review-date">2024.11.15</div>
+    <!-- 리뷰 내용 -->
+                <div id="reviews-content" class="tab-panel">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-rating">★★★★★</div>
+                            <div class="review-author">김**님</div>
+                            <div class="review-date">2024.11.15</div>
+                        </div>
+                        <div class="review-text">사용감이 정말 좋네요. 끈적하지 않고 빠르게 흡수되어서 만족합니다. 향도 은은하고 좋아요.</div>
                     </div>
-                    <div class="review-text">사용감이 정말 좋네요. 끈적하지 않고 빠르게 흡수되어서 만족합니다. 향도 은은하고 좋아요.</div>
-                </div>
 
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="review-rating">★★★★☆</div>
-                        <div class="review-author">박**님</div>
-                        <div class="review-date">2024.11.10</div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-rating">★★★★☆</div>
+                            <div class="review-author">박**님</div>
+                            <div class="review-date">2024.11.10</div>
+                        </div>
+                        <div class="review-text">피부가 민감한 편인데 자극 없이 잘 맞네요. 보습력도 충분합니다.</div>
                     </div>
-                    <div class="review-text">피부가 민감한 편인데 자극 없이 잘 맞네요. 보습력도 충분합니다.</div>
-                </div>
 
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="review-rating">★★★★★</div>
-                        <div class="review-author">이**님</div>
-                        <div class="review-date">2024.11.05</div>
-                    </div>
-                    <div class="review-text">배송도 빠르고 제품 퀄리티도 만족스럽습니다. 재주문 예정이에요.</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Q&A 모달 -->
-    <div id="qnaModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">상품 Q&A</h2>
-                <button class="modal-close" onclick="closeModal('qnaModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="qna-item">
-                    <div class="qna-question">
-                        <h4>Q. 민감성 피부도 사용 가능한가요?</h4>
-                        <p>저자극 제품을 찾고 있는데, 민감성 피부에도 괜찮을까요?</p>
-                    </div>
-                    <div class="qna-answer">
-                        <h4>A. 네, 사용 가능합니다.</h4>
-                        <p>저자극 포뮬러로 제작되어 민감성 피부에도 안전하게 사용하실 수 있습니다. 다만 개인차가 있을 수 있으니 처음 사용 시 소량으로 테스트해보시기 바랍니다.</p>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-rating">★★★★★</div>
+                            <div class="review-author">이**님</div>
+                            <div class="review-date">2024.11.05</div>
+                        </div>
+                        <div class="review-text">배송도 빠르고 제품 퀄리티도 만족스럽습니다. 재주문 예정이에요.</div>
                     </div>
                 </div>
 
-                <div class="qna-item">
-                    <div class="qna-question">
-                        <h4>Q. 하루에 몇 번 사용해야 하나요?</h4>
-                        <p>효과적인 사용법이 궁금합니다.</p>
+     <!-- Q&A 내용 -->
+                <div id="qna-content" class="tab-panel">
+                    <div class="qna-item">
+                        <div class="qna-question">
+                            <h4>Q. 민감성 피부도 사용 가능한가요?</h4>
+                            <p>저자극 제품을 찾고 있는데, 민감성 피부에도 괜찮을까요?</p>
+                        </div>
+                        <div class="qna-answer">
+                            <h4>A. 네, 사용 가능합니다.</h4>
+                            <p>저자극 포뮬러로 제작되어 민감성 피부에도 안전하게 사용하실 수 있습니다. 다만 개인차가 있을 수 있으니 처음 사용 시 소량으로 테스트해보시기 바랍니다.</p>
+                        </div>
                     </div>
-                    <div class="qna-answer">
-                        <h4>A. 하루 2회 사용을 권장합니다.</h4>
-                        <p>아침, 저녁 세안 후 사용하시면 최적의 효과를 얻으실 수 있습니다.</p>
+
+                    <div class="qna-item">
+                        <div class="qna-question">
+                            <h4>Q. 하루에 몇 번 사용해야 하나요?</h4>
+                            <p>효과적인 사용법이 궁금합니다.</p>
+                        </div>
+                        <div class="qna-answer">
+                            <h4>A. 하루 2회 사용을 권장합니다.</h4>
+                            <p>아침, 저녁 세안 후 사용하시면 최적의 효과를 얻으실 수 있습니다.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
+     </div>
+    
     <!-- JavaScript -->
     <script>
         // 수량 변경
@@ -934,46 +897,24 @@ body {
             document.getElementById('totalPrice').textContent = totalPrice.toLocaleString() + '원';
         }
 
-        // 모달 열기
-        function openModal(type) {
-            let modalId;
-            switch(type) {
-                case 'description': modalId = 'descriptionModal'; break;
-                case 'reviews': modalId = 'reviewsModal'; break;
-                case 'qna': modalId = 'qnaModal'; break;
-                default: return;
-            }
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
+        // 탭 전환 함수
+        function showTab(tabName) {
+            // 모든 탭 버튼 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 모든 탭 패널 숨김
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 클릭한 탭 버튼 활성화
+            event.target.classList.add('active');
+            
+            // 해당 탭 패널 표시
+            document.getElementById(tabName + '-content').classList.add('active');
         }
-
-        // 모달 닫기
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // 모달 외부 클릭 시 닫기
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal-overlay')) {
-                closeModal(e.target.id);
-            }
-        });
-
-        // ESC 키로 모달 닫기
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal-overlay').forEach(modal => {
-                    if (modal.style.display === 'block') closeModal(modal.id);
-                });
-            }
-        });
 
         // 썸네일 클릭
         document.querySelectorAll('.thumbnail').forEach(thumb => {

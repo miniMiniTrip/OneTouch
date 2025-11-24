@@ -188,5 +188,13 @@ public class LoginController {
 		return"redirect:/";
 	}
 	
+	//회원 수정 페이지 열기 
+	@RequestMapping("/user/modify")
+	public String userModufy() {
+		System.out.println("	[LoginController] userModufy ");
+		System.out.println("	[LoginController] return :  ");
+		return"";
+	}
+	
 	
 }
