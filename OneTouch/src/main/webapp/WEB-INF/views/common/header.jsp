@@ -253,7 +253,7 @@ margin-left: -20px;
 					<script>
 						const loginBtn = document.getElementById('loginBtn');
 						const currentUrl = window.location.href;
-						alert(loginBtn);
+						//alert(loginBtn);
 						loginBtn.href = loginBtn.href + currentUrl;
 					</script>
                 </ul>
