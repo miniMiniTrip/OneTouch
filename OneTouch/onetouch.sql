@@ -87,6 +87,13 @@ CREATE TABLE product (
 -- CREATE INDEX idx_product_wishlist ON product(product_wishlist);
 -- CREATE INDEX idx_product_time ON product(product_time DESC);
 
+
+--============ 배송상태값 예시
+
+ALTER TABLE product 
+ADD COLUMN tracking_number VARCHAR(50),
+ADD COLUMN delivery_status VARCHAR(20) DEFAULT '준비중';
+
 -- ========================================
 -- 4. 상품 이미지 테이블
 -- ========================================
