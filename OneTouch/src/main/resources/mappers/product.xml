@@ -154,21 +154,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND p.category_idx = #{category_idx}
             </if>
         </where>
-    </select>
+        </select>
 
-    <!-- 상품 상세 조회 -->
-    <select id="selectOne" parameterType="int" resultType="product">
-        SELECT 
-            p.*,
-            pi.product_image_url,
-            pi.product_image_idx,
-            c.category_name
-        FROM product p
-        LEFT JOIN product_image pi ON p.product_idx = pi.product_idx
-        LEFT JOIN category c ON p.category_idx = c.category_idx
-        WHERE p.product_idx = #{product_idx}
-        AND (pi.product_image_level = 1 OR pi.product_image_level IS NULL)
-    </select>
+
+<select id="selectMainImage" parameterType="int" resultType="string">
+    SELECT product_image_url 
+    FROM product_image 
+    WHERE product_idx = #{product_idx} AND product_image_level = 1 
+    LIMIT 1
+</select>
+        
+        
+ <select id="selectOne" parameterType="int" resultType="product">
+    SELECT 
+        p.*,
+        (SELECT product_image_url FROM product_image WHERE product_idx = p.product_idx AND product_image_level = 1 LIMIT 1) as product_image_url,
+        c.category_name
+    FROM product p
+    LEFT JOIN category c ON p.category_idx = c.category_idx
+    WHERE p.product_idx = #{product_idx}
+</select>
+<!-- detail 이미지들 조회 -->
+			<select id="selectDetailImages" parameterType="int" resultType="string">
+			    SELECT product_image_url
+			    FROM product_image
+			    WHERE product_idx = #{product_idx} 
+			    AND product_image_level >= 2
+			    ORDER BY product_image_level
+			</select>
+
 
     <!-- 상품 등록 -->
     <insert id="insert" parameterType="product" useGeneratedKeys="true" keyProperty="product_idx">
@@ -316,7 +330,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </where>
 </select>
-
 
     
 
