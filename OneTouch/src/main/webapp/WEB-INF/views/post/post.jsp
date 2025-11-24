@@ -1513,7 +1513,7 @@ document.addEventListener('click', function(e) {
     		//프로필 부분
     		html = html+`
              <div class="post-header">
-                 <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                 <img src="${pageContext.request.contextPath}/images/mem/\${postVo.mem_image_url}" alt="프로필" class="profile-img">
                  <p class="username">\${postVo.mem_id }</p>
                  <div class="post-actions">
                  (\${postVo.post_category })

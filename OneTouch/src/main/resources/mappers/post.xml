@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="post_idx" column="post_idx"/>
 	    <result property="mem_idx" column="mem_idx"/>
 	    <result property="mem_id" column="mem_id"/>
+	    <result property="mem_image_url" column="mem_image_url"/>
     	<result property="post_category" column="post_category"/>
     	<result property="post_title" column="post_title"/>
 	    <result property="post_content" column="post_content"/>
@@ -47,8 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- post 전체 조회 -->
 	<select id="selectPostList" resultMap="PostResultMap">
 	    SELECT 
-	        p.*, m.mem_id, 
-	        pr.product_idx, pr.product_name, pr.product_price
+	        p.*, m.mem_id, m.mem_image_url
+	        ,pr.product_idx, pr.product_name, pr.product_price
 	        ,pi.product_image_url
 	        , l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 	        , r.*
@@ -86,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTipList" resultMap="PostResultMap">
 		SELECT
 			p.*,m.mem_id 
+		   ,m.mem_image_url
 		   ,pr.product_idx, pr.product_name, pr.product_price
 	       ,pi.product_image_url
     	   , l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
@@ -115,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 리뷰 목록 -->
 	<select id="selectReviewList" resultMap="PostResultMap">
 		SELECT p.*,m.mem_id 
+		,m.mem_image_url
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 		, r.*
 		FROM otdb.post as p
@@ -136,6 +139,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 자유 목록 -->
 	<select id="selectFreeBoard" resultMap="PostResultMap">
 		SELECT p.*,m.mem_id 
+		,m.mem_image_url
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 		, r.*
 		FROM otdb.post as p
