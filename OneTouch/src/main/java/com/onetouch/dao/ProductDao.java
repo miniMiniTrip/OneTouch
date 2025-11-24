@@ -58,6 +58,9 @@ public interface ProductDao {
     int updateMainImage(int product_idx, String product_image_url); 
     int updateDetailImage(int product_image_idx, String product_image_url);
     int deleteImage(int product_image_idx);
- 
+    
+    //sw : 여러 product_idx로 상품 조회(hashtag 연동용)
+    public List<ProductVo> selectByIds(List<Integer> productIds);
+
 
 }
