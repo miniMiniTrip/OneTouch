@@ -141,33 +141,6 @@ public class AdminQnaController {
    
     
     
-    // 4️⃣ 수정 폼 보기
-    @GetMapping("/qna/modify")
-    public String modifyForm(@RequestParam int qna_idx, Model model, RedirectAttributes redirectAttributes) {
-        // 로그인 체크
-        MemVo user = (MemVo) session.getAttribute("user");
-        
-        if (user == null) {
-            return "redirect:/qna/list";
-        }
-        
-        QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
-        
-        // 본인의 글인지 확인
-        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-            return "redirect:/qna/list";
-        }
-        
-        // 답변이 완료된 경우 수정 불가
-        if (qna.isQna_answered()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "답변 완료된 문의는 수정할 수 없습니다.");
-            return "redirect:/qna/detail?qna_idx=" + qna_idx;
-        }
-        
-        model.addAttribute("qna", qna);
-        return "qna/qna_modify";
-    }
 
   
     
@@ -227,28 +200,7 @@ public class AdminQnaController {
     
     
     
-    // 유저  수정 처리
-    @PostMapping("/qna/modify")
-    public String modify(QnaVo vo, RedirectAttributes redirectAttributes) {
-        // 로그인 체크
-        MemVo user = (MemVo) session.getAttribute("user");
-        
-        if (user == null) {
-            return "redirect:/qna/list";
-        }
-        
-        // 기존 데이터 조회하여 본인 글인지 확인
-        QnaVo qna = qnaDao.selectQnaDetail(vo.getQna_idx());
-        
-        if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다.");
-            return "redirect:/qna/list";
-        }
-        
-        qnaDao.updateQna(vo);
-        return "redirect:/qna/detail?qna_idx=" + vo.getQna_idx();
-    }
-    
+   
     
     
 //  
@@ -390,7 +342,29 @@ public class AdminQnaController {
 
     
     
-    
+	/*
+	 * // 4️⃣ 수정 폼 보기
+	 * 
+	 * @GetMapping("/qna/modify") public String modifyForm(@RequestParam int
+	 * qna_idx, Model model, RedirectAttributes redirectAttributes) { // 로그인 체크
+	 * MemVo user = (MemVo) session.getAttribute("user");
+	 * 
+	 * if (user == null) { return "redirect:/qna/list"; }
+	 * 
+	 * QnaVo qna = qnaDao.selectQnaDetail(qna_idx);
+	 * 
+	 * // 본인의 글인지 확인 if (qna == null || qna.getMem_idx() != user.getMem_idx()) {
+	 * redirectAttributes.addFlashAttribute("errorMessage", "접근 권한이 없습니다."); return
+	 * "redirect:/qna/list"; }
+	 * 
+	 * // 답변이 완료된 경우 수정 불가 if (qna.isQna_answered()) {
+	 * redirectAttributes.addFlashAttribute("errorMessage",
+	 * "답변 완료된 문의는 수정할 수 없습니다."); return "redirect:/qna/detail?qna_idx=" + qna_idx;
+	 * }
+	 * 
+	 * model.addAttribute("qna", qna); return "qna/qna_modify"; }
+	 */
+
     
     
     
