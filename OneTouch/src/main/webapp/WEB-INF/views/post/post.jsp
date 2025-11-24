@@ -1771,11 +1771,11 @@ document.addEventListener('click', function(e) {
  	let nowPage=btn.dataset.nowPage;  
  	let postCategory=btn.dataset.postCategory;  
  	let replyInput = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"][data-post-category="\${postCategory}"]`);
- 	alert("1862번라인 : "+replyInput);
+ 	//alert("1862번라인 : "+replyInput);
  	let replyContent=replyInput.value.trim();
     //end 댓글유효성
-	alert(nowPage);
-	alert(postCategory);
+	//alert(nowPage);
+	//alert(postCategory);
 	//alert(postIdx);
 	//alert(replyContent); // 댓글 내용
 	//로그인 유저 체크 하고 있으면 댓글달기 실행
@@ -1784,7 +1784,7 @@ document.addEventListener('click', function(e) {
 		
  	//댓글 유효성 검사 (댓글이 써져있는지)
  	const input = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"][data-post-category="\${postCategory}"]`);
-    	alert(input);
+    	//alert(input);
     if(!input) {
         alert("댓글 입력창을 찾을 수 없습니다.");
         return;
@@ -1801,7 +1801,7 @@ document.addEventListener('click', function(e) {
 	 		url:"/post/reply"
 	 		,data:{"post_idx":postIdx,"mem_idx":login_mem_idx,"reply_content":replyContent}
 	 		,success:function(d){
-	 			alert("성공");
+	 			//alert("성공");
 	 			listHtml(postCategory,nowPage);
 	 		}
 	 		,error:function(e){
