@@ -11,5 +11,6 @@ import com.onetouch.vo.ReplyVo;
 public interface ReplyDao {
 	int insertPostReply(ReplyVo replyVo);
 	int updatePostReply(ReplyVo replyVo);
+	int deletePostReply(int reply_idx);
 	List<Map<String,Object>> selectReplyList();
 }

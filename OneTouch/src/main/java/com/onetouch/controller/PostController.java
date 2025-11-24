@@ -309,6 +309,22 @@ public class PostController {
 		return map;
 		
 	}
+
+	//댓글 삭제 버튼 클릭
+	@RequestMapping("/post/reply_delete")
+	@ResponseBody
+	public Map<String,Object> postReplyDelete(int reply_idx){
+		System.out.printf("	[PostController-@ResponseBody] postReplyDelete()\n");
+		System.out.printf("		reply_idx => %d\n",reply_idx);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		int res=replyDao.deletePostReply(reply_idx);
+		map.put("res", res==1);
+		System.out.printf("	[PostController-@ResponseBody] return map \n");
+		System.out.printf("	\n");
+		return map;
+		
+	}
 	
 	
 	//댓글 테스트화면

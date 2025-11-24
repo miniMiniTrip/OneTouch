@@ -1611,7 +1611,7 @@ document.addEventListener('click', function(e) {
                                              </button>
                                              <div class="comment-more-menu" style="display: none;">
                                                  <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
-                                                 <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}">삭제</button>
+                                                 <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}" data-now-page="\${d.nowPage}" data-post-category="\${d.post_category}">삭제</button>
                                              </div>
                                          </div>
                                  </div>
@@ -1912,8 +1912,22 @@ document.addEventListener('click', function(e) {
     	         // 댓글 삭제 버튼
     	         if (e.target.matches('.comment-delete-btn')) {
     	             const replyIdx = e.target.dataset.replyIdx;
+    	             const nowPage = e.target.dataset.nowPage;
+    	             const postCategory=e.target.dataset.postCategory;
     	             if (confirm('댓글을 삭제하시겠습니까?')) {
-    	                 alert('댓글 삭제 기능 - reply_idx: ' + replyIdx);
+    	                 //alert('댓글 삭제 기능 - reply_idx: ' + replyIdx);
+    	                 $.ajax({
+    	                	 url:"/post/reply_delete"
+    	                	,data:{"reply_idx":replyIdx}
+    	                 	,success:function(d){
+    	                 		//alert("댓글삭제 : "+d.res);
+    	                 		listHtml(postCategory,nowPage);
+    	                 	}//end success
+    	                 	,error:function(e){
+    	                 		alert("댓글삭제 실패 /n관리자에게 문의하세요");
+    	                 	}
+    	                 });//end : ajax 댓글삭제버튼
+    	                 
     	                 // 여기에 삭제 로직 추가
     	             }
     	         }
