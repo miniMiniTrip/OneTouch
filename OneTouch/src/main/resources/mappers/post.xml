@@ -44,6 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result property="reply_update" column="reply_update"/>
 		</collection>
 	</resultMap>
+	<!-- post 전체 조회 -->
 	<select id="selectPostList" resultMap="PostResultMap">
 	    SELECT 
 	        p.*, m.mem_id, 

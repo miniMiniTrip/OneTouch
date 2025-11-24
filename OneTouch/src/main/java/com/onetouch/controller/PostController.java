@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ReplyDao;
 import com.onetouch.service.PostService;
+import com.onetouch.service.ReplyService;
+import com.onetouch.service.ReplyServiceImpl;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
+import com.onetouch.vo.ReplyPageVo;
 import com.onetouch.vo.ReplyVo;
 
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +42,9 @@ public class PostController {
 
 	@Autowired
 	ReplyDao replyDao;
+	
+	@Autowired
+	ReplyService replyService;
 	
 	
 	
@@ -251,19 +257,14 @@ public class PostController {
 	// post 댓글 목록 가져오기
 	@RequestMapping("/post/reply_list")
 	@ResponseBody
-	public Map<String, Object> postReplyList(){
+	public Map<String, Object> postReplyList(int post_idx, String post_category, @RequestParam(defaultValue = "1") int nowReplyPage){
 		System.out.printf("		[PostController-@ResponseBody] postReplyList()\n");
+		System.out.printf("post_idx => %d , post_category => %s , nowReplyPage => %d\n",post_idx,post_category,nowReplyPage);
 		Map<String,Object> map = new HashMap<String, Object>();
-		List<Map<String,Object>> postReplyList= replyDao.selectReplyList();
-		ReplyVo replyVo;
-		for(Map<String,Object> row:postReplyList) {
-			Integer post_idx=(Integer)row.get("post_idx");
-			String replyList= (String)row.get("replyList");
-			
-			//map.put(post_idx, replyList);
-			System.out.println(post_idx);
-			System.out.println(replyList);
-		}
+		map.put("post_idx", post_idx);
+		map.put("post_category", post_category);
+		map.put("nowReplyPage", nowReplyPage);
+		map=replyService.selectReplyList(map);
 		
 		
 		System.out.printf("		[PostController-@ResponseBody] return : map\n");
