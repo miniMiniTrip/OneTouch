@@ -28,7 +28,7 @@ public class ReplyServiceImpl implements ReplyService {
 		int postIdxReplyTotalCount=replyDao.selectPostIdxReplyTotalCount(map);
 		System.out.printf("post_idx(댓글갯수) => %d(%d)\n",map.get("post_idx"),postIdxReplyTotalCount);
 		map.put("postIdxReplyTotalCount", postIdxReplyTotalCount);
-		String ReplyPagingation=PostReplyPaging.getPaging((String)map.get("post_category"), null, (Integer)map.get("nowReplyPage"), postIdxReplyTotalCount, MyConstant.Reply.BLOCK_LIST, MyConstant.Reply.BLOCK_PAGE);
+		String ReplyPagingation=PostReplyPaging.getPaging((String)map.get("post_category"), null, (Integer)map.get("nowReplyPage"), postIdxReplyTotalCount, MyConstant.Reply.BLOCK_LIST, MyConstant.Reply.BLOCK_PAGE,map);
 		map.put("ReplyPagingation", ReplyPagingation);
 
 		List<ReplyVo> replyList=replyDao.selectReplyList(map);
