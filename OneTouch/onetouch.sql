@@ -1,3 +1,5 @@
+select * from hashtag
+
 -- ================= 주의사항 ===================
 -- 추가되는 조건, Column이 생기는 경우 각 테이블 아래에,
 -- 추가되는 더미데이터는 first_data.sql 파일에 적어주세요.
@@ -24,16 +26,13 @@ CREATE TABLE mem (
     mem_birth DATE COMMENT '생년월일',
     mem_phone VARCHAR(20) NOT NULL COMMENT '전화번호',
     mem_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '가입일',
-    mem_update_time TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
+    mem_update_time TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일',
+    mem_image_url VARCHAR(500) NULL
     
 --	 조건문 확인해보세요 --    
 --   CONSTRAINT chk_mem_email CHECK (mem_email LIKE '%@%'),
 --   CONSTRAINT chk_mem_phone CHECK (mem_phone REGEXP '^[0-9-]+$'),
 --   CONSTRAINT chk_mem_id_length CHECK (CHAR_LENGTH(mem_id) >= 4)
-
-    ALTER TABLE `otdb`.`mem` 
-ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
-
 
 ) COMMENT '회원';
 
@@ -44,6 +43,12 @@ ADD COLUMN mem_postal VARCHAR(10) NULL;
 ALTER TABLE `otdb`.`mem` 
 CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
 
+-- ! 회원 프로필 이미지를 위한 컬럼추가
+ALTER TABLE `otdb`.`mem` 
+ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
+
+
+-- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
@@ -233,6 +238,7 @@ CREATE TABLE `order` (
     order_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문시간',
     order_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
+    
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
     
@@ -244,6 +250,11 @@ ALTER TABLE `order`
  CREATE INDEX idx_order_member ON `order`(mem_idx);
  CREATE INDEX idx_order_status ON `order`(order_status);
  CREATE INDEX idx_order_time ON `order`(order_time DESC);
+
+ALTER TABLE `order`
+ADD COLUMN order_tracking VARCHAR(50) COMMENT '송장번호',
+ADD COLUMN order_courier VARCHAR(50) COMMENT '택배사명';
+CREATE INDEX idx_order_tracking ON `order`(order_tracking);
 
 -- ========================================
 -- 11. 주문 상세 테이블
