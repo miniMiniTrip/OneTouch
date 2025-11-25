@@ -11,5 +11,8 @@ public interface MemService {
 	int insert(MemVo memVo) throws Exception;
 	
 	String findUserId(String name,String email);
+	/**아이디와 이메일로 memVo가져오기*/
+	MemVo findUserForPwReset(String mem_id, String mem_email);
+
 	
 }

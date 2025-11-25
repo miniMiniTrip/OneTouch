@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>아이디 찾기 - OneTouch</title>
+    <title>비밀번호 찾기 - OneTouch</title>
     <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
@@ -23,8 +23,8 @@
             box-sizing: border-box;
         }
 
-      /* 아이디 찾기 섹션 전체 중앙정렬 */
-      .account-findid.section {
+      /* 비밀번호 찾기 섹션 전체 중앙정렬 */
+      .account-findpassword.section {
           min-height: 100vh; /* 화면 전체 높이 */
           display: flex;
           justify-content: center;
@@ -33,7 +33,7 @@
       }
       
       /* Bootstrap container 여백 제거 */
-      .account-findid .container {
+      .account-findpassword .container {
           padding-left: 0 !important;
           padding-right: 0 !important;
           display: flex;
@@ -42,7 +42,7 @@
       }
       
       /* row도 중앙정렬 보정 */
-      .account-findid .row {
+      .account-findpassword .row {
           margin-left: 0 !important;
           margin-right: 0 !important;
           justify-content: center;
@@ -50,15 +50,15 @@
       }
       
       /* 열 내부를 완전 중앙으로 */
-      .account-findid .col-lg-6,
-      .account-findid .col-md-10,
-      .account-findid .col-12 {
+      .account-findpassword .col-lg-6,
+      .account-findpassword .col-md-10,
+      .account-findpassword .col-12 {
           display: flex;
           justify-content: center;
       }
       
-      /* 아이디 찾기 박스 중앙 고정 */
-      .findid-container {
+      /* 비밀번호 찾기 박스 중앙 고정 */
+      .findpassword-container {
           background: white;
           border-radius: 20px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -86,14 +86,14 @@
             color: #3949ab;
         }
 
-        .findid-title {
+        .findpassword-title {
             text-align: center;
             font-size: 28px;
             color: #333;
             margin-bottom: 10px;
         }
 
-        .findid-subtitle {
+        .findpassword-subtitle {
             text-align: center;
             font-size: 15px;
             color: #666;
@@ -127,7 +127,7 @@
             box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
         }
 
-        .findid-btn {
+        .findpassword-btn {
             width: 100%;
             padding: 16px;
             background: #1a237e;
@@ -141,7 +141,7 @@
             margin-bottom: 15px;
         }
 
-        .findid-btn:hover {
+        .findpassword-btn:hover {
             background: #0d47a1;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
@@ -191,7 +191,7 @@
         }
 
         @media (max-width: 768px) {
-            .findid-container {
+            .findpassword-container {
                 padding: 40px 30px;
             }
 
@@ -199,7 +199,7 @@
                 font-size: 40px;
             }
 
-            .findid-title {
+            .findpassword-title {
                 font-size: 24px;
             }
         }
@@ -229,14 +229,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">아이디 찾기</h1>
+                        <h1 class="page-title">비밀번호 찾기</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
                         <li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
-                        <li>아이디 찾기</li>
+                        <li>비밀번호 찾기</li>
                     </ul>
                 </div>
             </div>
@@ -244,19 +244,19 @@
     </div>
     <!-- End Breadcrumbs -->
 
-    <!-- 아이디 찾기 form 시작부분 -->
-     <div class="account-findid section">
+    <!-- 비밀번호 찾기 form 시작부분 -->
+     <div class="account-findpassword section">
         <div class="container">
           <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-10  col-12">
                 
-    <div class="findid-container">
+    <div class="findpassword-container">
         <div class="logo-section">
             <a href="${pageContext.request.contextPath}/" class="logo">One<span>Touch</span></a>
         </div>
 
-        <h2 class="findid-title">아이디 찾기</h2>
-        <p class="findid-subtitle">가입 시 등록한 정보를 입력해주세요</p>
+        <h2 class="findpassword-title">비밀번호 찾기</h2>
+        <p class="findpassword-subtitle">가입 시 등록한 정보를 입력해주세요</p>
 
         <!-- 성공 메시지 -->
         <c:if test="${not empty successMessage}">
@@ -272,28 +272,31 @@
             </div>
         </c:if>
 
-        <c:if test="${not empty param.error}">
+        <c:if test="${not empty msg}">
             <div class="error-message">
                 <c:choose>
-                    <c:when test="${param.error == 'notfound'}">
-                        입력한 정보로 등록된 아이디를 찾을 수 없습니다.
+                    <c:when test="${msg == 'notfound'}">
+                        입력한 정보로 등록된 계정을 찾을 수 없습니다.
+                    </c:when>
+                    <c:when test="${param.error == 'email'}">
+                        이메일 발송에 실패했습니다. 다시 시도해주세요.
                     </c:when>
                     <c:otherwise>
-                        아이디 찾기에 실패했습니다. 다시 시도해주세요.
+                        비밀번호 찾기에 실패했습니다. 다시 시도해주세요.
                     </c:otherwise>
                 </c:choose>
             </div>
         </c:if>
 
-        <form action="${pageContext.request.contextPath}/user/find_id" method="post" id="findIdForm">
-            <!-- 이름 -->
+        <form action="${pageContext.request.contextPath}/user/find_pw" method="post" id="findPasswordForm">
+            <!-- 아이디 -->
             <div class="form-group">
-                <label class="form-label">이름</label>
+                <label class="form-label">아이디</label>
                 <input type="text" 
-                       name="mem_name" 
-                       id="mem_name" 
+                       name="mem_id" 
+                       id="mem_id" 
                        class="form-input" 
-                       placeholder="이름을 입력하세요"
+                       placeholder="아이디를 입력하세요"
                        required>
             </div>
 
@@ -308,9 +311,9 @@
                        required>
             </div>
 
-            <!-- 아이디 찾기 버튼 -->
-            <button type="submit" class="findid-btn">아이디 찾기</button>
-            <button type="button" class="findid-btn" onclick="location.href='/user/find_pw_form';">비밀번호를 모르시나요?</button>
+            <!-- 비밀번호 찾기 버튼 -->
+            <button type="submit" class="findpassword-btn">비밀번호 재설정 메일 발송</button>
+            <button type="button" class="findpassword-btn" onclick="location.href='/user/find_id_form';">아이디를 모르시나요?</button>
         </form>
 
         <!-- 로그인으로 돌아가기 버튼 -->
