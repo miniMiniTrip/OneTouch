@@ -856,7 +856,7 @@ to {
 								data-image="/images/${product.product_image_url}"></div>
 
 							<!-- 나머지 상세 이미지들 -->
-							<c:forEach var="detailImage" items="${detailImages}">
+							<c:forEach var="detailImage" items="${upperdetailImages}">
 								<div class="thumbnail"
 									style="background-image: url('/images/${detailImage}'); background-size: cover;"
 									data-image="/images/${detailImage}"></div>
@@ -952,7 +952,7 @@ to {
 					<form id="imageUploadForm" enctype="multipart/form-data">
 						<input type="hidden" name="product_idx"
 							value="${product.product_idx}" /> <input type="file"
-							id="imageInput" name="updateMainProductImage" accept="image/*"
+							id="imageInput" name="productImages" accept="image/*"
 							multiple style="display: none;">
 						<button type="button" class="btn-upload"
 							onclick="document.getElementById('imageInput').click()">
@@ -970,11 +970,11 @@ to {
 				<c:if test="${not empty product.product_image_url}">
 					<div class="image-item">
 						<img src="/images/${product.product_image_url}" alt="메인 상품 이미지" />
-						<c:if test="${sessionScope.user_role == 'admin'}">
+						<c:if test="${sessionScope.user.mem_roll == 'admin'}">
 							<div class="image-actions">
-								<button onclick="updateProductImageByIdx(` ${detailImage} `)">수정</button>
+								<button onclick="updateProductImageByIdx(` ${lowerdetailImages} `)">수정</button>
 
-								<button onclick="deleteProductImageByIdx(`${detailImage}`)">삭제</button>
+								<button onclick="deleteProductImageByIdx(`${lowerdetailImages}`)">삭제</button>
 							</div>
 						</c:if>
 					</div>
@@ -991,12 +991,12 @@ to {
 
 
 			<!-- 상세 이미지들 -->
-			<c:forEach var="detailImage" items="${detailImages}"
+			<c:forEach var="detailImage" items="${lowerdetailImages}"
 				varStatus="status">
 				<div class="image-item">
 					<img src="${pageContext.request.contextPath}/images/${detailImage}"
 						alt="상품 상세 이미지" />
-					<c:if test="${sessionScope.user_role == 'admin'}">
+					<c:if test="${sessionScope.user.mem_roll == 'admin'}">
 						<div class="image-actions">
 							<button onclick="updateProductImageByIdx('${detailImage}')">수정</button>
 							<button onclick="deleteProductImageByIdx('${detailImage}')">삭제</button>
@@ -1227,7 +1227,7 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
         });
 
      // 이미지 업로드
-        document.addEventListener('DOMContentLoaded', function() {
+       /*  document.addEventListener('DOMContentLoaded', function() {
             const imageInput = document.getElementById('imageInput');
             const saveButton = document.getElementById('saveImages');
             const uploadUrl = '${pageContext.request.contextPath}/adminpage/uploadImages'; // context path 포함
@@ -1254,7 +1254,7 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
                         });
                 });
             }
-        });
+        }); */
 
         // 메인 이미지 수정
         function editMainImage() {
