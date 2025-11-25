@@ -1,5 +1,3 @@
-select * from hashtag
-
 -- ================= 주의사항 ===================
 -- 추가되는 조건, Column이 생기는 경우 각 테이블 아래에,
 -- 추가되는 더미데이터는 first_data.sql 파일에 적어주세요.
@@ -33,6 +31,10 @@ CREATE TABLE mem (
 --   CONSTRAINT chk_mem_phone CHECK (mem_phone REGEXP '^[0-9-]+$'),
 --   CONSTRAINT chk_mem_id_length CHECK (CHAR_LENGTH(mem_id) >= 4)
 
+    ALTER TABLE `otdb`.`mem` 
+ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
+
+
 ) COMMENT '회원';
 
 -- !중요 mem에 mem_postal 컬럼 추가 하기
@@ -42,7 +44,6 @@ ADD COLUMN mem_postal VARCHAR(10) NULL;
 ALTER TABLE `otdb`.`mem` 
 CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
 
--- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
