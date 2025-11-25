@@ -407,7 +407,7 @@
                     <label for="rememberMe">아이디 저장</label>
                 </div>
                 <div class="find-links">
-                    <a href="findId.jsp">아이디 찾기</a>
+                    <a href="find_id_from">아이디 찾기</a>
                     <span>|</span>
                     <a href="findPassword.jsp">비밀번호 찾기</a>
                 </div>

@@ -249,7 +249,42 @@ public class LoginController {
 		return map;
 	}
 	
+	// 아이디 찾기 페이지
+	@RequestMapping("/user/find_id_from")
+	public String findIdFrom() {
+		System.out.println("	[LoginController] findIdFrom() ");
+		System.out.println("	[LoginController] return :  ");
+		System.out.println("");
+		return"/user/find_id";
+	}
 	
+	// 아이디 찾기
+	@RequestMapping("/user/find_id")
+	public String findId(String mem_name,String mem_email,Model model) {
+		System.out.println("	[LoginController] findId() ");
+		System.out.println(mem_name);
+		System.out.println(mem_email);
+		String mem_id =memService.findUserId(mem_name, mem_email);
+		System.out.println(mem_id);
+		if(mem_id==null) {
+			model.addAttribute("errorMessage","일치하는 회원정보가 없습니다.");
+		}else {
+			String maskeId=maskId(mem_id);
+			maskeId=String.format("회원님의 아이디는 %s입니다",maskeId);
+			model.addAttribute("successMessage",maskeId);
+		}
+		System.out.println("	[LoginController] return :  ");
+		System.out.println("");
+		return"/user/find_id";
+	}
 	
+	// 아이디 마킹
+	private String maskId(String mem_id) {
+		if(mem_id.length() <=4) {
+			return "****";
+		}
+		
+		return mem_id.substring(0,2)+"****"+mem_id.substring(mem_id.length()-2);
+	}
 	
 }
