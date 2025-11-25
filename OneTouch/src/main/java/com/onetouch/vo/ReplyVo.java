@@ -12,6 +12,7 @@ public class ReplyVo {
 	int reply_idx;
 	int mem_idx;
 	String mem_id;
+	String mem_image_url;
 	int post_idx;
 	String reply_content;
 	/** 삭제여부 0:정상(기본값) 1:본인삭제 2:관리자삭제*/
@@ -21,4 +22,5 @@ public class ReplyVo {
 	
 	/** 댓글 그룹화로 조회해온 결과 list*/
 	List<ReplyVo> replyList;
+
 }

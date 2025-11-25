@@ -40,5 +40,8 @@ public class ProductVo{
     private String detail_image_url;    // level 2 (상세 이미지)
 
     private List<HashtagVo> hashtag_list; // 해시태그Vo 리스트
+    
+    private String trackingNumber;   // 송장번호
+    private String deliveryStatus;   // 배송상태
 
 }//end: ProductVo 

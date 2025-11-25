@@ -87,7 +87,14 @@ public class LoginController {
 	public String registerInsert(MemVo memVo) {
 		System.out.println("	[LoginController] register() ");
 		System.out.printf("				[회원가입등록요청정보]%s",memVo);
-		int res=memDao.insert(memVo);
+		int res=1;
+		try {
+			res = res*memService.insert(memVo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(res==1) {
 			System.out.println("		회원정보 1개 등록성공");
 		}

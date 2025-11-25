@@ -43,3 +43,10 @@ VALUES (
     '1990-01-01', 
     '010-1234-5678'
 );
+
+-- 회원 이미지
+CREATE TABLE `otdb`.`mem_image` (
+  `mem_image_idx` INT NOT NULL AUTO_INCREMENT,
+  `mem_idx` INT NOT NULL,
+  `mem_image_url` VARCHAR(500) NULL,
+  PRIMARY KEY (`mem_image_idx`));

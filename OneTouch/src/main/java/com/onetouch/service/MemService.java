@@ -7,5 +7,7 @@ import com.onetouch.vo.MemVo;
 public interface MemService {
 
 	Map<String,Object> loginCheck(Map<String, Object> map);
+
+	int insert(MemVo memVo) throws Exception;
 	
 }

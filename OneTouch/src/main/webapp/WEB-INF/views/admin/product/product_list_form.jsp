@@ -695,9 +695,160 @@
 		        font-size: 14px;
 		    }
 		    
-		        
-		        
-		        
+	   /* 플레이스홀더 스타일링 */
+		input::placeholder {
+		    color: #bbb;
+		    font-style: italic;
+		}
+		
+		/* 송장번호 입력 필드 */
+		input[type="text"] {
+		    border: 1px solid #e0e0e0;
+		    border-radius: 3px;
+		    background-color: #fafafa;
+		}
+		
+		input[type="text"]:focus {
+		    border-color: #007bff;
+		    background-color: white;
+		    outline: none;
+		}
+		
+		/* 셀렉트 박스 스타일 */
+		select {
+		    border: 1px solid #e0e0e0;
+		    border-radius: 3px;
+		    background-color: #fafafa;
+		}
+		
+		select:focus {
+		    border-color: #007bff;
+		    background-color: white;
+		    outline: none;
+		}
+			
+			/* 송장번호 입력 필드 */
+	.tracking-input {
+    width: 60px;           /* 85px → 60px로 더 줄임 */
+    height: 35px;          /* 높이 추가! */
+    padding: 8px 4px;      /* 세로 패딩 늘리고 가로 패딩 줄임 */
+    font-size: 10px;       /* 11px → 10px로 줄임 */
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+	}
+	
+	.tracking-input:focus {
+	    border-color: #007bff;
+	    background-color: white;
+	    box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+	    outline: none;
+	    transform: scale(1.02);
+	}
+	
+	.tracking-input:hover {
+	    border-color: #007bff;
+	    background-color: white;
+	 
+	}
+	
+	.tracking-input::placeholder {
+	    color: #adb5bd;
+	    font-style: italic;
+	}
+	
+	/* 송장번호가 입력됐을 때 */
+	.tracking-input.filled {
+	    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+	    border-color: #1976d2;
+	    color: #1565c0;
+	    font-weight: 600;
+	}
+	
+	
+	.delivery-select {
+	    width: 95px;
+	    padding: 8px 10px;
+	    font-size: 12px;
+	    border: 2px solid #e9ecef;
+	    border-radius: 15px;  
+	    background-color: #f8f9fa;
+	    transition: all 0.3s ease;
+	    text-align: center;
+	    cursor: pointer;
+	}
+	
+	.delivery-select:focus {
+	    border-color: #007bff;
+	    background-color: white;
+	    box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+	    outline: none;
+	    transform: scale(1.02);
+	}
+	
+	.delivery-select:hover {
+	    border-color: #007bff;
+	    background-color: white;
+	    transform: translateY(-1px);
+	}
+	
+	/* 배송상태별 */
+	.delivery-select.status-준비중 { 
+	    background: linear-gradient(135deg, #fff8e1, #ffecb3);
+	    border-color: #ff8f00;
+	    color: #e65100;
+	    font-weight: bold;
+	    box-shadow: 0 2px 8px rgba(255, 143, 0, 0.2);
+	}
+	
+	.delivery-select.status-배송중 { 
+	    background: linear-gradient(135deg, #e3f2fd, #90caf9);
+	    border-color: #1976d2;
+	    color: #0d47a1;
+	    font-weight: bold;
+	    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+	}
+	
+	.delivery-select.status-배송완료 { 
+	    background: linear-gradient(135deg, #e8f5e8, #a5d6a7);
+	    border-color: #388e3c;
+	    color: #1b5e20;
+	    font-weight: bold;
+	    box-shadow: 0 2px 8px rgba(56, 142, 60, 0.2);
+	}
+	
+	.delivery-select.status-반품 { 
+	    background: linear-gradient(135deg, #ffebee, #ef9a9a);
+	    border-color: #d32f2f;
+	    color: #b71c1c;
+	    font-weight: bold;
+	    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.2);
+	}
+	
+	.delivery-select.status-품절 { 
+	    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+	    border-color: #757575;
+	    color: #424242;
+	    font-weight: bold;
+	    box-shadow: 0 2px 8px rgba(117, 117, 117, 0.2);
+	}
+	
+	/* 전체 테이블 셀 여백 조정 */
+	.product-table td {
+	    vertical-align: middle;
+	    padding: 12px 8px;
+	}
+	
+	/* 옵션에도 스타일 적용 */
+	.delivery-select option {
+	    padding: 8px;
+	    border-radius: 8px;
+	    margin: 2px 0;
+	}
+					        
 		        
         
     </style>
@@ -741,19 +892,22 @@
                                 <thead>
                                     <tr>
                                         <th width="5%"><input type="checkbox" id="checkAll"></th>
-                                        <th width="10%">상품번호</th>
-                                        <th width="10%">카테고리</th>
-                                        <th width="10%">이미지</th>
-                                        <th width="25%">상품명</th>
-                                        <th width="15%">브랜드</th>
-                                        <th width="10%">가격</th>
-                                        <th width="8%">재고</th>
-                                        <th width="12%">관리</th>
+                                               <th width="8%">상품번호</th>
+										        <th width="8%">카테고리</th>
+										        <th width="8%">이미지</th>
+										        <th width="18%">상품명</th>
+										        <th width="10%">브랜드</th>
+										        <th width="10%">가격</th>
+										        <th width="6%">재고</th>
+										        <th width="8%">송장번호</th>
+										        <th width="8%">배송상태</th>
+										        <th width="10%">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:choose>
                                         <c:when test="${not empty list}">
+                                        
                                             <c:forEach var="product" items="${list}">
                                                 <tr>
                                                     <td><input type="checkbox" name="product_idx_list" value="${product.product_idx}"></td>
@@ -767,6 +921,60 @@
                                                     <td>${product.product_brand}</td>
                                                     <td><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</td>
                                                     <td id="remain_${product.product_idx}">${product.product_cnt}개</td>
+                                                    
+                                                         <!-- 가상 송장번호 (상품번호 기반) -->
+        											
+													<td>
+													    <input type="text" 
+													           id="tracking_${product.product_idx}" 
+													           class="tracking-input"
+													           placeholder="OT${String.format('%08d', product.product_idx * 1000 + 240000)}"
+													           onchange="updateTracking(${product.product_idx})"
+													           oninput="checkTrackingFilled(${product.product_idx})">
+													</td>
+        											
+        											 <!-- 배송상태: 첫 번째 옵션을 흐리게 표시 -->
+										        	<td>
+										            <select id="delivery_${product.product_idx}" 
+										                    style="width: 80px; padding: 2px; font-size: 11px; color: #999;"
+										                    onchange="updateDeliveryStatus(${product.product_idx})"
+										                    onfocus="this.style.color='#333'">
+										                <c:choose>
+										                    <c:when test="${product.product_cnt >= 20}">
+										                        <option value="" disabled selected style="color: #999;">상태선택</option>
+													                        <option value="준비중">📦 준비중</option>
+																	        <option value="배송중">🚚 배송중</option>
+																	        <option value="배송완료">✅ 배송완료</option>
+																	        <option value="반품">↩️ 반품</option>
+																	        <option value="품절">❌ 품절</option>
+										                    </c:when>
+										                    <c:when test="${product.product_cnt >= 10}">
+										                        <option value="" disabled selected style="color: #999;">상태선택</option>
+										                        <option value="준비중">📦 준비중</option>
+										                        <option value="배송중">🚚 배송중</option>
+										                        <option value="배송완료">✅ 배송완료</option>
+										                        <option value="반품">↩️ 반품</option>
+										                    </c:when>
+										                    <c:when test="${product.product_cnt > 0}">
+										                        <option value="" disabled selected style="color: #999;">상태선택</option>
+										                        <option value="준비중">📦 준비중</option>
+										                        <option value="배송중">🚚 배송중</option>
+										                        <option value="배송완료">✅ 배송완료</option>
+										                        <option value="반품">↩️ 반품</option>
+										                    </c:when>
+										                    <c:otherwise>
+										                        <option value="" disabled selected style="color: #999;">상태선택</option>
+										                        <option value="품절">❌ 품절</option>
+										                        <option value="준비중">📦 준비중</option>
+										                        <option value="배송중">🚚 배송중</option>
+										                        <option value="배송완료">✅ 배송완료</option>
+										                        <option value="반품">↩️ 반품</option>
+										                    </c:otherwise>
+										                </c:choose>
+										            </select>
+										        </td>
+											        											
+                                                    
                                                     <td>
 													    <div class="manage-buttons">
 													        <button type="button" class="btn btn-primary btn-sm" 
@@ -1233,7 +1441,60 @@
              }
          });
      }
-        
+      
+  // 송장번호 변경
+     function updateTracking(productIdx) {
+         const trackingInput = document.getElementById('tracking_' + productIdx);
+         const trackingNumber = trackingInput.value;
+         
+         if(trackingNumber.trim() !== '') {
+             trackingInput.style.color = '#333';
+             trackingInput.style.fontWeight = 'normal';
+             
+             console.log('상품 ' + productIdx + ' 송장번호 변경: ' + trackingNumber);
+             
+             Swal.fire({
+                 title: '송장번호 입력',
+                 text: '송장번호가 ' + trackingNumber + '로 입력되었습니다.',
+                 icon: 'success',
+                 timer: 1500,
+                 showConfirmButton: false
+             });
+         }
+     }
+
+     // 배송상태 변경
+     function updateDeliveryStatus(productIdx) {
+         const selectElement = document.getElementById('delivery_' + productIdx);
+         const deliveryStatus = selectElement.value;
+         
+         if(deliveryStatus !== '') {
+             // 선택됐을 때 색상과 스타일 변경
+             selectElement.style.color = '#333';
+             selectElement.style.fontWeight = 'bold';
+             selectElement.className = 'status-' + deliveryStatus;
+             
+             console.log('상품 ' + productIdx + ' 배송상태 변경: ' + deliveryStatus);
+             
+             Swal.fire({
+                 title: '배송상태 변경',
+                 text: '배송상태가 "' + deliveryStatus + '"로 변경되었습니다.',
+                 icon: 'success',
+                 timer: 1500,
+                 showConfirmButton: false
+             });
+         }
+     }
+
+     // 페이지 로드시 모든 입력 필드 초기화
+     $(document).ready(function() {
+         // 모든 송장번호 입력 필드를 비워두기
+         $('input[id^="tracking_"]').val('');
+         
+         // 모든 배송상태 셀렉트를 첫 번째 옵션으로 설정
+         $('select[id^="delivery_"]').prop('selectedIndex', 0);
+     });
+     
         
         
     </script>

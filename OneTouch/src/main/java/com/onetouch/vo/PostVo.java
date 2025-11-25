@@ -20,6 +20,9 @@ public class PostVo {
 	/** 회원 아이디 */
 	String mem_id;
 	
+	/** 회원 이미지 url */
+	String mem_image_url;
+	
 	/** 카테고리*/
 	String post_category;
 

@@ -262,6 +262,38 @@
         .login-link a:hover {
             text-decoration: underline;
         }
+        
+/* 파일 업로드 스타일 */
+.file-upload {
+	margin-bottom: 20px;
+}
+
+.file-upload-btn {
+	display: inline-block;
+	padding: 10px 15px;
+	border-radius: 6px;
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	color: #555;
+	font-size: 13px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.file-upload-btn:hover {
+	background-color: #eee;
+}
+
+.file-upload input[type="file"] {
+	display: none;
+}
+
+.file-name {
+	display: inline-block;
+	margin-left: 10px;
+	font-size: 13px;
+	color: #777;
+}
 
         @media (max-width: 768px) {
             .register-container {
@@ -317,7 +349,7 @@
         <div class="container">
             <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
                 <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-12">
-        <form action="${pageContext.request.contextPath}/user/insert" method="post" id="registerForm" onsubmit="return validateForm()">
+        <form action="${pageContext.request.contextPath}/user/insert" method="post" id="registerForm" enctype="multipart/form-data" onsubmit="return validateForm()">
 
                             <!-- 에러 메시지 -->
                             <c:if test="${not empty errorMessage}">
@@ -471,7 +503,19 @@
                             placeholder="상세 주소 (예: 101동 1001호)" required>
                  </div>
              </div>
-
+             
+             <div class="file-upload">
+             	<label for="file-input" class="file-upload-btn" id="post_photo_insert">프로필 사진 첨부</label> 
+				<input type="file" id="mem_image" name="mem_image" > 
+				<span class="file-name">
+				<!-- 선택된 파일 없음 -->
+				</span>
+			</div>
+			
+				<!-- 선택한 이미지 미리보기 영역 -->
+			<div id="image-preview" class="row mt-3"></div>
+			
+			<br>
             <!-- 약관 동의 -->
             <div class="checkbox-group">
                 <div class="checkbox-item">
@@ -535,6 +579,85 @@
    <!--  -->
 
     <script>
+    /* 선택한 이미지 미리보기 ------------------------ */
+	document.getElementById('mem_image').addEventListener('change', function(event) {
+	    const files = event.target.files;
+	    const previewContainer = document.getElementById('image-preview');
+	    
+	    // 이전 미리보기 초기화
+	    previewContainer.innerHTML = "";
+
+	    // 파일 이름 표시
+	    const fileNameDisplay = document.querySelector('.file-name');
+	    if (files.length === 1) {
+	        fileNameDisplay.textContent = files[0].name;
+	    } else if (files.length > 1) {
+	        fileNameDisplay.textContent = files.length + "개의 파일 선택됨";
+	    } else {
+	        fileNameDisplay.textContent = "선택된 파일 없음";
+	    }
+
+	    // 이미지 미리보기 생성
+	    Array.from(files).forEach(file => {
+	        if (!file.type.startsWith("image/")) return; // 이미지 파일만
+
+	        const reader = new FileReader();
+	        reader.onload = function(e) {
+	            const col = document.createElement("div");
+	            col.className = "col-4 mb-3 text-center"; // text-center 추가
+
+	            // 이미지 감싸는 div (정사각형 유지)
+	            const wrapper = document.createElement("div");
+	            wrapper.style.width = "100%";
+	            wrapper.style.paddingTop = "100%"; // 높이 비율 1:1
+	            wrapper.style.position = "relative";
+	            wrapper.style.borderRadius = "6px";
+	            wrapper.style.overflow = "hidden";
+	            wrapper.style.border = "1px solid #ddd";
+
+	            // 이미지
+	            const img = document.createElement("img");
+	            img.src = e.target.result;
+	            img.style.position = "absolute";
+	            img.style.top = "0";
+	            img.style.left = "0";
+	            img.style.width = "100%";
+	            img.style.height = "100%";
+	            img.style.objectFit = "cover"; // 이미지 비율 유지
+
+	            wrapper.appendChild(img);
+	            col.appendChild(wrapper);
+	            previewContainer.appendChild(col);
+	        };
+	        reader.readAsDataURL(file);
+	    });
+	});
+
+    
+		/* end : 선택한 이미지 미리보기 ------------------------ */
+		
+		     // 파일 업로드 표시
+        document.getElementById('mem_image').addEventListener('change', function() {
+            const fileCount = this.files.length;
+            const fileNameDisplay = document.querySelector('.file-name');
+            
+            if (fileCount > 0) {
+                if (fileCount === 1) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = `${fileCount}개의 파일이 선택됨`;
+                }
+            } else {
+                fileNameDisplay.textContent = '선택된 파일 없음';
+            }
+        });
+        
+        document.getElementById('post_photo_insert').addEventListener('click',function(){
+        	document.getElementById('mem_image').click();
+        })
+        
+        //
+		
         let userIdChecked = false;
 		let userEmailChecked= false;
         // 아이디 중복 확인

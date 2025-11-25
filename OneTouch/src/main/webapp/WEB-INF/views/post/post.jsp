@@ -997,6 +997,97 @@ body {
 }
 /* ------------------	end : 댓글 css		------------------ */
 
+/* ============================= */
+/* 댓글 페이지네이션 (가로 정렬 보장) */
+/* ============================= */
+.comment-pagination-all, .comment-pagination-free, .comment-pagination-skin,.comment-pagination-review {
+    display: flex !important;      /* 강제 가로 배치 */
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;             /* 자동 줄바꿈 방지 */
+    gap: 6px;
+    padding: 10px 0 20px;
+}
+
+/* 페이지 버튼 */
+.comment-page-link {
+    display: flex !important;      /* 버튼도 강제 가로 아이템 */
+    justify-content: center;
+    align-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    color: #555;
+
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
+
+    white-space: nowrap;           /* 텍스트 줄바꿈 제거 */
+}
+
+.comment-page-link:hover {
+    background: #f4f7ff;
+    border-color: #cdd7f5;
+    color: #224488;
+}
+
+/* 현재 페이지 */
+.comment-page-link.active {
+    background: linear-gradient(135deg, #1e3c72 0%, #2961c4 100%);
+    border-color: transparent;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(30, 60, 114, 0.3);
+    transform: translateY(-1px);
+}
+
+/* 비활성 */
+.comment-page-link.disabled {
+    background: #f5f5f5;
+    border-color: #e8e8e8;
+    color: #bbb;
+    cursor: default;
+    pointer-events: none;
+    box-shadow: none;
+}
+
+/* 화살표 */
+.comment-page-link.arrow {
+    font-size: 15px;
+}
+
+@media (max-width: 767px) {
+    .comment-page-link {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    .comment-page-link.arrow {
+        font-size: 13px;
+    }
+}
+.reply-list .comment-pagination {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 6px;
+    flex-wrap: nowrap !important;
+    justify-content: center;
+    align-items: center;
+}
+.reply-list .comment-pagination .comment-page-link {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+}
+/* --------- end : 댓글 페이지 네비게이션 ------------ */
+
 
 
 
@@ -1422,7 +1513,7 @@ document.addEventListener('click', function(e) {
     		//프로필 부분
     		html = html+`
              <div class="post-header">
-                 <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="프로필" class="profile-img">
+                 <img src="${pageContext.request.contextPath}/images/mem/\${postVo.mem_image_url}" alt="프로필" class="profile-img">
                  <p class="username">\${postVo.mem_id }</p>
                  <div class="post-actions">
                  (\${postVo.post_category })
@@ -1705,7 +1796,7 @@ document.addEventListener('click', function(e) {
 		         <!-- 댓글 목록 -->
 		                     <div class="comment-item" data-reply-idx="\${replys.reply_idx}">
 		                         <div class="comment-header">
-		                             <img src="https://randomuser.me/api/portraits/men/z.jpg" 
+		                             <img src="${pageContext.request.contextPath}/images/mem/\${replys.mem_image_url}" 
 		                                  alt="프로필" class="comment-profile-img">
 		                             <p class="comment-username">\${replys.mem_id}</p>
 		                             
@@ -1742,8 +1833,11 @@ document.addEventListener('click', function(e) {
 		     `
 		    	 	}
 		    	 } //end : for
-		    	 d.ReplyPagingation;
 		    	 
+		    	 //댓글 페이지 처리
+		    	 html=html+d.ReplyPagingation;
+		    	 
+	
 		   	}
 			 //alert(`"\${post_idx}"`);
 		  let replyDivList=document.querySelectorAll(`.reply-list[data-post-idx="\${post_idx}"]`);
@@ -1764,6 +1858,19 @@ document.addEventListener('click', function(e) {
  
  /* --- end: 댓글 List 출력 함수 ---*/
  
+ 	//댓글 페이지 선택시 댓글 새로 뿌려주기
+	 document.addEventListener("click",function(e){
+		 if(e.target && e.target.matches('.comment-page-link')){
+		 let post_idx=e.target.dataset.postIdx;
+		 let post_category=e.target.dataset.category;
+		 let nowReplyPage=e.target.dataset.page;
+		 //alert(post_idx);
+		 //alert(post_category);
+		 //alert(nowReplyPage);
+		 replyHtml(post_idx,post_category,nowReplyPage);		 
+		 }
+			 
+	 });
  
  /* ------------------------댓글 등록 함수--------------------------- */
  function replyInsert(btn){
@@ -1771,11 +1878,11 @@ document.addEventListener('click', function(e) {
  	let nowPage=btn.dataset.nowPage;  
  	let postCategory=btn.dataset.postCategory;  
  	let replyInput = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"][data-post-category="\${postCategory}"]`);
- 	alert("1862번라인 : "+replyInput);
+ 	//alert("1862번라인 : "+replyInput);
  	let replyContent=replyInput.value.trim();
     //end 댓글유효성
-	alert(nowPage);
-	alert(postCategory);
+	//alert(nowPage);
+	//alert(postCategory);
 	//alert(postIdx);
 	//alert(replyContent); // 댓글 내용
 	//로그인 유저 체크 하고 있으면 댓글달기 실행
@@ -1784,7 +1891,7 @@ document.addEventListener('click', function(e) {
 		
  	//댓글 유효성 검사 (댓글이 써져있는지)
  	const input = document.querySelector(`.post-comment[data-post-idx="\${postIdx}"][data-post-category="\${postCategory}"]`);
-    	alert(input);
+    	//alert(input);
     if(!input) {
         alert("댓글 입력창을 찾을 수 없습니다.");
         return;
@@ -1801,7 +1908,7 @@ document.addEventListener('click', function(e) {
 	 		url:"/post/reply"
 	 		,data:{"post_idx":postIdx,"mem_idx":login_mem_idx,"reply_content":replyContent}
 	 		,success:function(d){
-	 			alert("성공");
+	 			//alert("성공");
 	 			listHtml(postCategory,nowPage);
 	 		}
 	 		,error:function(e){
@@ -1964,14 +2071,18 @@ document.addEventListener('click', function(e) {
     	             const replyIdx = e.target.dataset.replyIdx;
     	             const nowPage = e.target.dataset.nowPage;
     	             const postCategory=e.target.dataset.postCategory;
+    	             //alert("댓글삭제");
     	             if (confirm('댓글을 삭제하시겠습니까?')) {
     	                 //alert('댓글 삭제 기능 - reply_idx: ' + replyIdx);
     	                 $.ajax({
     	                	 url:"/post/reply_delete"
     	                	,data:{"reply_idx":replyIdx}
     	                 	,success:function(d){
-    	                 		//alert("댓글삭제 : "+d.res);
     	                 		listHtml(postCategory,nowPage);
+    	                 		setTimeout(function(){
+    	                 		alert("댓글이 삭제 되었습니다");
+    	                 		}
+    	                 				,100);
     	                 	}//end success
     	                 	,error:function(e){
     	                 		alert("댓글삭제 실패 /n관리자에게 문의하세요");

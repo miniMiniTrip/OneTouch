@@ -53,6 +53,14 @@ public interface ProductDao {
     // 재고 이력 총 개수 조회
     int selectRemainCount(Map<String, Object> map);
     
-    //해시태그 검색용
-    List<ProductVo> selectByIds(@Param("list") List<Integer> product_idx_list);
+
+    int uploadImages(ProductVo vo);
+    int updateMainImage(int product_idx, String product_image_url); 
+    int updateDetailImage(int product_image_idx, String product_image_url);
+    int deleteImage(int product_image_idx);
+    
+    //sw : 여러 product_idx로 상품 조회(hashtag 연동용)
+    public List<ProductVo> selectByIds(List<Integer> productIds);
+
+
 }

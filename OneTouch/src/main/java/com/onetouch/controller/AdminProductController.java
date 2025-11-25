@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.CategoryDao;
 import com.onetouch.dao.ProductDao;
+import com.onetouch.service.ProductImageService;
 import com.onetouch.service.ProductService;
 import com.onetouch.vo.CategoryVo;
 import com.onetouch.vo.ProductVo;
@@ -40,6 +42,9 @@ public class AdminProductController {
     
     @Autowired
     ProductService productService;
+    
+    @Autowired
+    ProductImageService productImageService;
     
 
     // 통계 대시보드 페이지 추가
@@ -286,6 +291,94 @@ public class AdminProductController {
 
         return list;
     }
+    
+    
+    
+    //*******************상품 상세*******************************
+    
+    // 상세 이미지 업로드
+    @PostMapping("/uploadImages")
+    @ResponseBody
+    public Map<String, Object> insertProductImage(
+            @RequestParam("product_idx") int product_idx,
+            @RequestParam("productImages") MultipartFile[] files) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            boolean result = productImageService.uploadImages(product_idx, files);
+            response.put("success", result);
+            response.put("message", result ? "업로드 성공" : "업로드 실패");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    // 메인 이미지 수정
+    @PostMapping("/updateMainImage")
+    @ResponseBody
+    public Map<String, Object>  updateMainProductImage(
+            @RequestParam("product_idx") int product_idx,
+            @RequestParam("newImage") MultipartFile newImage) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            boolean result = productImageService.updateMainImage(product_idx, newImage);
+            response.put("success", result);
+            response.put("message", result ? "수정 성공" : "수정 실패");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    // 인덱스로 상세 이미지 수정
+    @PostMapping("/updateDetailImage")
+    @ResponseBody
+    public Map<String, Object> updateDetailImageByIdx(
+            @RequestParam("product_image_idx") int product_image_idx,
+            @RequestParam("newImage") MultipartFile newImage) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            boolean result = productImageService.updateDetailImage(product_image_idx, newImage);
+            response.put("success", result);
+            response.put("message", result ? "수정 성공" : "수정 실패");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    // 인덱스로 이미지 삭제
+    @PostMapping("/deleteImage")
+    @ResponseBody
+    public Map<String, Object> deleteImageByIdx(@RequestBody Map<String, Integer> request) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            int product_image_idx = request.get("product_image_idx");
+            boolean result = productImageService.deleteImage(product_image_idx);
+            response.put("success", result);
+            response.put("message", result ? "삭제 성공" : "삭제 실패");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류: " + e.getMessage());
+        }
+
+        return response;
+    }
+    
 	    
 	    
     

@@ -87,6 +87,13 @@ CREATE TABLE product (
 -- CREATE INDEX idx_product_wishlist ON product(product_wishlist);
 -- CREATE INDEX idx_product_time ON product(product_time DESC);
 
+
+--============ 배송상태값 예시
+
+ALTER TABLE product 
+ADD COLUMN tracking_number VARCHAR(50),
+ADD COLUMN delivery_status VARCHAR(20) DEFAULT '준비중';
+
 -- ========================================
 -- 4. 상품 이미지 테이블
 -- ========================================
@@ -515,3 +522,15 @@ DESC product_remain;
 
 -- 데이터 확인
 SELECT * FROM product_remain;
+
+
+SELECT * FROM product_image WHERE product_idx = 30;
+
+SELECT 
+    p.product_idx,
+    p.product_name,
+    pi.product_image_url,
+    pi.product_image_level
+FROM product p
+LEFT JOIN product_image pi ON p.product_idx = pi.product_idx AND pi.product_image_level = 1
+WHERE p.product_idx = 30;

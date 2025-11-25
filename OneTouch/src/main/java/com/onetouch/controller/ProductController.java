@@ -33,6 +33,8 @@ public class ProductController {
     
     @Autowired
     ProductService productService;
+    
+    
 
     // 상품 리스트 페이지
     @RequestMapping("/product/list")
@@ -123,21 +125,26 @@ public class ProductController {
         product.setProduct_image_url(imageUrl);
         
         System.out.println("강제 설정한 이미지: " + imageUrl);
-      
-        // 정상 조회된 경우 로그 출력 (여기로 이동)
         System.out.println("조회된 상품: " + product.getProduct_name());
         System.out.println("이미지 URL: " + product.getProduct_image_url());
         
         List<String> detailImages = product_dao.selectDetailImages(product_idx);
         System.out.println("디테일 이미지 개수: " + detailImages.size());
 	
+        for(String detail : detailImages) {
+        	System.out.println("[" + detail +"]");
+        }
 	
 	
         model.addAttribute("product", product);
         model.addAttribute("detailImages", detailImages); 
         return "product/product_detail";
    }
+    
+   
 
+    
+    
     
     
 }//end
