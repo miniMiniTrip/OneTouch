@@ -113,7 +113,7 @@
 
 .content-header h2 {
 	font-size: 18px;
-	color: #5c6bc0;
+	color: #1A237E;
 	font-weight: 600;
 	margin: 0;
 }
@@ -130,7 +130,7 @@
 }
 
 .btn-write {
-	background: #5c6bc0;
+	background: #1A237E;
 	color: white;
 	padding: 10px 24px;
 	border: none;

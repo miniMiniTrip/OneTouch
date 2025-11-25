@@ -32,6 +32,7 @@
 
 .menu-section {
     margin: 25px 0;
+    color: #1A237E !important;
 }
 
 .menu-title {
@@ -67,6 +68,17 @@
     font-weight: 600;
     border-left: 3px solid #5c6bc0;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 </style>
