@@ -138,7 +138,7 @@ public class ProductController {
 	
         model.addAttribute("product", product);
         model.addAttribute("detailImages", detailImages); 
-        return "product/product_detail";
+        return "product/product_detail?id= + product_idx";
    }
     
    
