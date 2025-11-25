@@ -217,4 +217,9 @@ public class OrderService {
 		
 		return order_dao.searchOrders(map);
 	}
+	
+	//주문상태만 변경
+	public int updateStatus(int order_id, String order_status){
+		return order_dao.updateStatus(order_id,order_status);
+	}
 }
