@@ -95,7 +95,7 @@
         
         .form-group {
             margin-bottom: 20px;
-            margin-left: 80px;
+            margin-left: 175px;
         }
         
         .form-label {
@@ -104,6 +104,7 @@
             color: #333;
             font-size: 14px;
             font-weight: 600;
+            margin-left: 65px;
         }
         
         .form-input {
@@ -114,6 +115,7 @@
             font-size: 14px;
             font-family: inherit;
             text-align: center;
+           
         }
         
         .form-input:focus {
@@ -131,6 +133,7 @@
             color: #333;
             margin-bottom: 25px;
             line-height: 1.6;
+            text-align: center;
         }
         
         .password-info i {
@@ -143,6 +146,7 @@
             gap: 10px;
             justify-content: center;
             margin-top: 25px;
+            margin-left: 213px;
         }
         
         .btn {
@@ -156,9 +160,15 @@
         }
         
         .btn-cancel {
-            background: white;
-            color: #666;
-            border: 1px solid #e0e0e0;
+             background: #dc3545 !important;
+    color: white;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: auto;
+    transition: background 0.3s;
         }
         
         .btn-cancel:hover {
@@ -167,9 +177,8 @@
         }
         
         .btn-submit {
-            background: #5c6bc0;
+            background: #5c6bc0 !important;
             color: white;
-            min-width: 150px;
         }
         
         .btn-submit:hover {
