@@ -22,4 +22,7 @@ public class OrderVo {
 	String order_address_more;
 	Timestamp order_time;
 	Timestamp order_update;
+	
+	String order_tracking;
+	String order_courier;
 }

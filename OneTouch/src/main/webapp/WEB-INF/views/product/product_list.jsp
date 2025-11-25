@@ -1,699 +1,759 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<%@include file="/WEB-INF/views/common/header.jsp" %>
+<%@include file="/WEB-INF/views/common/header.jsp"%>
 
 <!-- Breadcrumbs -->
 <div class="breadcrumbs">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6 col-12">
-                <div class="breadcrumbs-content">
-                    <h1 class="page-title">상품 목록</h1>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-12">
-                <ul class="breadcrumb-nav">
-                    <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i>Home</a></li>
-                    <li>Product</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="breadcrumbs-content">
+					<h1 class="page-title">상품 목록</h1>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-12">
+				<ul class="breadcrumb-nav">
+					<li><a href="${pageContext.request.contextPath}/"><i
+							class="lni lni-home"></i>Home</a></li>
+					<li>Product</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- End Breadcrumbs -->
 
 <style>
 .product-hashtags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin: 10px 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+	margin: 10px 0;
 }
 
 .hashtag-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    background-color: #f0f0f0;
-    color: #555;
-    border-radius: 12px;
-    font-size: 12px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border: 1px solid #e0e0e0;
+	display: inline-block;
+	padding: 1px 4px; /* 패딩 대폭 줄임 */
+	background-color: #f0f0f0;
+	color: #555;
+	border-radius: 8px; /* 더 작은 둥근 모서리 */
+	font-size: 11px; /* 폰트 크기 줄임 */
+	text-decoration: none;
+	transition: all 0.2s ease;
+	border: 1px solid #e0e0e0;
+	line-height: 1.2; /* 줄간격 조정 */
 }
 
 .hashtag-badge:hover {
-    background-color: #5c6bc0;
-    color: white;
-    border-color: #5c6bc0;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(92, 107, 192, 0.3);
+	background-color: #5c6bc0;
+	color: white;
+	border-color: #5c6bc0;
+	transform: translateY(-1px); /* 호버 이동 거리 줄임 */
+	box-shadow: 0 1px 3px rgba(92, 107, 192, 0.3); /* 그림자 줄임 */
 }
 
 .hashtag-badge:active {
-    transform: translateY(0);
+	transform: translateY(0);
 }
 
 /* ==================== 전체 레이아웃 ==================== */
 .product-grids {
-    padding: 0;
-    background-color: #fff;
+	padding: 0;
+	background-color: #fff;
 }
 
 .product-container {
-    display: flex;
-    max-width: 100%;
-    margin: 0;
+	display: flex;
+	max-width: 100%;
+	margin: 0;
 }
 
 /* ==================== 사이드바 스타일 (wishlist와 동일) ==================== */
 .sidebar {
-    width: 250px;
-    background: #fafafa;
-    border-right: 1px solid #e0e0e0;
-    padding: 30px 0;
-    min-height: calc(100vh - 400px);
+	width: 250px;
+	background: #fafafa;
+	border-right: 1px solid #e0e0e0;
+	padding: 30px 0;
+	min-height: calc(100vh - 400px);
 }
 
 .sidebar-header {
-    padding: 15px 30px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #333;
+	padding: 15px 30px;
+	font-size: 18px;
+	font-weight: 700;
+	color: #333;
 }
 
 .sidebar-subtitle {
-    padding: 5px 30px 20px;
-    font-size: 13px;
-    color: #999;
+	padding: 5px 30px 20px;
+	font-size: 13px;
+	color: #999;
 }
 
 .menu-section {
-    margin: 25px 0;
+	margin: 25px 0;
 }
 
 .menu-title {
-    padding: 10px 30px;
-    font-size: 12px;
-    color: #999;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+	padding: 10px 30px;
+	font-size: 12px;
+	color: #999;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
 }
 
 .menu-item {
-    padding: 14px 30px;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s;
-    border-left: 3px solid transparent;
-    text-decoration: none;
+	padding: 14px 30px;
+	font-size: 14px;
+	color: #333;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	transition: all 0.3s;
+	border-left: 3px solid transparent;
+	text-decoration: none;
 }
 
 .menu-item:hover {
-    background: #f0f0f0;
-    padding-left: 35px;
-    color: #333;
+	background: #f0f0f0;
+	padding-left: 35px;
+	color: #333;
 }
 
 .menu-item.active {
-    background: #e8eaf6;
-    color: #5c6bc0;
-    font-weight: 600;
-    border-left: 3px solid #5c6bc0;
+	background: #e8eaf6;
+	color: #5c6bc0;
+	font-weight: 600;
+	border-left: 3px solid #5c6bc0;
 }
 
 /* 검색 위젯 스타일 */
 .search-widget {
-    padding: 0 30px 30px;
-    border-bottom: 1px solid #e0e0e0;
+	padding: 0 30px 30px;
+	border-bottom: 1px solid #e0e0e0;
 }
 
 .search-widget h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 15px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 15px;
 }
 
 .search-widget form {
-    position: relative;
+	position: relative;
 }
 
 .search-widget input[type="text"] {
-    width: 100%;
-    padding: 10px 40px 10px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: all 0.3s;
+	width: 100%;
+	padding: 10px 40px 10px 15px;
+	border: 1px solid #e0e0e0;
+	border-radius: 6px;
+	font-size: 14px;
+	transition: all 0.3s;
 }
 
 .search-widget input[type="text"]:focus {
-    outline: none;
-    border-color: #5c6bc0;
-    box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.1);
+	outline: none;
+	border-color: #5c6bc0;
+	box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.1);
 }
 
 .search-widget button {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #666;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: color 0.3s;
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	color: #666;
+	font-size: 18px;
+	cursor: pointer;
+	padding: 5px 10px;
+	transition: color 0.3s;
 }
 
 .search-widget button:hover {
-    color: #5c6bc0;
+	color: #5c6bc0;
 }
 
 /* ==================== 컨텐츠 영역 ==================== */
 .content {
-    flex: 1;
-    padding: 50px 60px;
-    background: #fff;
+	flex: 1;
+	padding: 50px 60px;
+	background: #fff;
 }
 
 /* ==================== 반응형 ==================== */
-@media (max-width: 992px) {
-    .product-container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #e0e0e0;
-        min-height: auto;
-    }
-    
-    .content {
-        padding: 30px 20px;
-    }
+@media ( max-width : 992px) {
+	.product-container {
+		flex-direction: column;
+	}
+	.sidebar {
+		width: 100%;
+		border-right: none;
+		border-bottom: 1px solid #e0e0e0;
+		min-height: auto;
+	}
+	.content {
+		padding: 30px 20px;
+	}
+}
+
+/* 품절임박 작고 귀여운 네모 박스 */
+.low-stock-alert {
+	background: #ff4757;
+	color: white;
+	font-size: 10px;
+	font-weight: bold;
+	padding: 2px 3px; /* 좌우 패딩 줄임 */
+	border-radius: 2px;
+	display: inline-block;
+	margin: 2px 0;
+	animation: blink 1.5s infinite;
+	letter-spacing: -0.5px; /* 글자 간격 줄여서 딱 맞게 */
+	white-space: nowrap; /* 줄바꿈 방지 */
+	line-height: 1;
+	width: fit-content;
+}
+
+/* 반짝이는 애니메이션 */
+@
+keyframes blink { 0%, 50% {
+	opacity: 1;
+	background: #ff4757;
+}
+51
+%
+,
+100
+%
+{
+opacity
+:
+0.7;
+background
+:
+#ff6b7a;
+}
 }
 </style>
 
 <!-- Product Grids -->
 <section class="product-grids section">
-    <div class="container">
-        <div class="product-container">
-            
-            <!-- Start Product Sidebar -->
-            <div class="sidebar">
-                <!-- 검색 위젯 -->
-                <div class="search-widget">
-                    <h3>검색</h3>
-                    <form action="${pageContext.request.contextPath}/product/list" method="get">
-                        <input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
-                        <c:if test="${not empty category}">
-                            <input type="hidden" name="category" value="${category}">
-                        </c:if>
-                        <c:if test="${not empty sort}">
-                            <input type="hidden" name="sort" value="${sort}">
-                        </c:if>
-                        <button type="submit"><i class="lni lni-search-alt"></i></button>
-                    </form>
-                </div>
-                
-                <!-- 카테고리 메뉴 -->
-                <div class="menu-section">
-                    <div class="menu-title">카테고리</div>
-                    <a href="${pageContext.request.contextPath}/product/list${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}" 
-                       class="menu-item ${empty category ? 'active' : ''}">
-                        전체보기
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
-                       class="menu-item ${category eq '1' ? 'active' : ''}">
-                        스킨케어
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/list?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
-                       class="menu-item ${category eq '2' ? 'active' : ''}">
-                        메이크업/선케어
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/list?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}" 
-                       class="menu-item ${category eq '3' ? 'active' : ''}">
-                        클렌징케어
-                    </a>
-                </div>
-            </div>
-            <!-- End Product Sidebar -->
-            
-            <!-- Start Content -->
-            <div class="content">
-                <div class="product-grids-head">
-                    <div class="product-grid-topbar">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7 col-md-8 col-12">
-                                <div class="product-sorting">
-                                    <label for="sorting">정렬:</label>
-                                    <select class="form-control" id="sorting" onchange="location.href=this.value;">
-                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=popular" 
-                                                ${sort eq 'popular' or empty sort ? 'selected' : ''}>인기순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=newest" 
-                                                ${sort eq 'newest' ? 'selected' : ''}>최신순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-low" 
-                                                ${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high" 
-                                                ${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
-                                        <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating" 
-                                                ${sort eq 'rating' ? 'selected' : ''}>평점순</option>
-                                    </select>
-                                    <h3 class="total-show-product">총 <span>${totalCount}</span>개 상품</h3>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-md-4 col-12">
-                                <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <button class="nav-link active" id="nav-grid-tab" data-bs-toggle="tab"
-                                            data-bs-target="#nav-grid" type="button" role="tab"
-                                            aria-controls="nav-grid" aria-selected="true"><i class="lni lni-grid-alt"></i></button>
-                                        <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab"
-                                            data-bs-target="#nav-list" type="button" role="tab"
-                                            aria-controls="nav-list" aria-selected="false"><i class="lni lni-list"></i></button>
-                                    </div>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-				<div class="tab-content" id="nav-tabContent">
-                        <!-- Grid View -->
-                        <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
-                            aria-labelledby="nav-grid-tab">
-                            <div class="row">
-                                <c:choose>
-                                    <c:when test="${empty list}">
-                                        <div class="col-12">
-                                            <div class="alert alert-info text-center" role="alert">
-                                                <h4>검색 결과가 없습니다.</h4>
-                                                <p>다른 검색어나 카테고리를 시도해보세요.</p>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:forEach var="product" items="${list}">
-										    <div class="col-lg-4 col-md-6 col-12">
-										        <!-- Start Single Product -->
-										        <div class="single-product">
-										            <div class="product-image">
-										                <c:choose>
-										                    <c:when test="${not empty product.product_image_url}">
-										                        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}"  alt="${product.product_name}">
-										                    </c:when>
-										                    <c:otherwise>
-										                        <div class="no-image">이미지 준비중</div>
-										                    </c:otherwise>
-										                </c:choose>
-										                <div class="button">
-										                    <a href="javascript:void(0);" 
-										                       onclick="addToCart(${product.product_idx})" 
-										                       class="btn"><i class="lni lni-cart"></i> 장바구니</a>
-										                </div>
-										                <!-- 찜하기 토글 버튼 -->
-										                <span class="wishlist-toggle" 
-										                      onclick="toggleWishlist(${product.product_idx}, this)"
-										                      data-product-idx="${product.product_idx}"
-										                      data-wishlist="false">
-										                    <i class="lni lni-heart"></i>
-										                </span>
-										            </div>
-										            <div class="product-info">
-										                <span class="category">${product.category_name}</span>
-										                <h4 class="title">
-										                    <a href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
-										                        ${product.product_name}
-										                    </a>
-										                </h4>
-										                
-										                <!-- ⭐ 해시태그 추가 -->
-										                <c:if test="${not empty product.hashtag_list}">
-										                    <div class="product-hashtags" style="margin: 10px 0;">
-										                        <c:forEach var="hashtag" items="${product.hashtag_list}">
-										                            <a href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}" 
-										                               class="hashtag-badge"
-										                               title="#${hashtag.hashtag_name} 상품 보기">
-										                                #${hashtag.hashtag_name}
-										                            </a>
-										                        </c:forEach>
-										                    </div>
-										                </c:if>
-										                
-										                <div class="price">
-										                    <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
-										                </div>
-										                <div class="product-stats">
-										                    <span class="stat-item">
-										                        <i class="lni lni-shopping-basket"></i> 구매가능수량 ${product.product_cnt}
-										                    </span>
-										                    <span class="stat-item">
-										                        <i class="lni lni-heart"></i> 찜 ${product.product_wishlist}
-										                    </span>
-										                </div>
-										            </div>
-										        </div>
-										        <!-- End Single Product -->
-										    </div>
+	<div class="container">
+		<div class="product-container">
+
+			<!-- Start Product Sidebar -->
+			<div class="sidebar">
+				<!-- 검색 위젯 -->
+				<div class="search-widget">
+					<h3>검색</h3>
+					<form action="${pageContext.request.contextPath}/product/list"
+						method="get">
+						<input type="text" name="keyword" placeholder="제품명 검색..."
+							value="${keyword}">
+						<c:if test="${not empty category}">
+							<input type="hidden" name="category" value="${category}">
+						</c:if>
+						<c:if test="${not empty sort}">
+							<input type="hidden" name="sort" value="${sort}">
+						</c:if>
+						<button type="submit">
+							<i class="lni lni-search-alt"></i>
+						</button>
+					</form>
+				</div>
+
+				<!-- 카테고리 메뉴 -->
+				<div class="menu-section">
+					<div class="menu-title">카테고리</div>
+					<a
+						href="${pageContext.request.contextPath}/product/list${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}"
+						class="menu-item ${empty category ? 'active' : ''}"> 전체보기 </a> <a
+						href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+						class="menu-item ${category eq '1' ? 'active' : ''}"> 스킨케어 </a> <a
+						href="${pageContext.request.contextPath}/product/list?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+						class="menu-item ${category eq '2' ? 'active' : ''}"> 메이크업/선케어
+					</a> <a
+						href="${pageContext.request.contextPath}/product/list?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+						class="menu-item ${category eq '3' ? 'active' : ''}"> 클렌징케어 </a>
+				</div>
+			</div>
+			<!-- End Product Sidebar -->
+
+			<!-- Start Content -->
+			<div class="content">
+				<div class="product-grids-head">
+					<div class="product-grid-topbar">
+						<div class="row align-items-center">
+							<div class="col-lg-7 col-md-8 col-12">
+								<div class="product-sorting">
+									<label for="sorting">정렬:</label> <select class="form-control"
+										id="sorting" onchange="location.href=this.value;">
+										<option
+											value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=popular"
+											${sort eq 'popular' or empty sort ? 'selected' : ''}>인기순</option>
+										<option
+											value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=newest"
+											${sort eq 'newest' ? 'selected' : ''}>최신순</option>
+										<option
+											value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-low"
+											${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
+										<option
+											value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high"
+											${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
+										<option
+											value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating"
+											${sort eq 'rating' ? 'selected' : ''}>평점순</option>
+									</select>
+									<h3 class="total-show-product">
+										총 <span>${totalCount}</span>개 상품
+									</h3>
+								</div>
+							</div>
+							<div class="col-lg-5 col-md-4 col-12">
+								<nav>
+									<div class="nav nav-tabs" id="nav-tab" role="tablist">
+										<button class="nav-link active" id="nav-grid-tab"
+											data-bs-toggle="tab" data-bs-target="#nav-grid" type="button"
+											role="tab" aria-controls="nav-grid" aria-selected="true">
+											<i class="lni lni-grid-alt"></i>
+										</button>
+										<button class="nav-link" id="nav-list-tab"
+											data-bs-toggle="tab" data-bs-target="#nav-list" type="button"
+											role="tab" aria-controls="nav-list" aria-selected="false">
+											<i class="lni lni-list"></i>
+										</button>
+									</div>
+								</nav>
+							</div>
+						</div>
+					</div>
+					<div class="tab-content" id="nav-tabContent">
+						<!-- Grid View -->
+						<div class="tab-pane fade show active" id="nav-grid"
+							role="tabpanel" aria-labelledby="nav-grid-tab">
+							<div class="row">
+								<c:choose>
+									<c:when test="${empty list}">
+										<div class="col-12">
+											<div class="alert alert-info text-center" role="alert">
+												<h4>검색 결과가 없습니다.</h4>
+												<p>다른 검색어나 카테고리를 시도해보세요.</p>
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="product" items="${list}">
+											<div class="col-lg-4 col-md-6 col-12">
+												<!-- Start Single Product -->
+												<div class="single-product">
+													<div class="product-image">
+														<c:choose>
+															<c:when test="${not empty product.product_image_url}">
+																<img
+																	src="${pageContext.request.contextPath}/images/${product.product_image_url}"
+																	alt="${product.product_name}">
+															</c:when>
+															<c:otherwise>
+																<div class="no-image">이미지 준비중</div>
+															</c:otherwise>
+														</c:choose>
+														<div class="button">
+															<a href="javascript:void(0);"
+																onclick="addToCart(${product.product_idx})" class="btn"><i
+																class="lni lni-cart"></i> 장바구니</a>
+														</div>
+														<!-- 찜하기 토글 버튼 -->
+														<span class="wishlist-toggle"
+															onclick="toggleWishlist(${product.product_idx}, this)"
+															data-product-idx="${product.product_idx}"
+															data-wishlist="false"> <i class="lni lni-heart"></i>
+														</span>
+
+													</div>
+
+													<div class="product-info">
+														<span class="category">${product.category_name}</span>
+														<h4 class="title">
+															<a
+																href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
+																${product.product_name} </a>
+														</h4>
+
+														<p class="description">${product.product_comment}</p>
+														<!-- ⭐ 품절임박 알림 (30개 이하일 때만 표시) -->
+														<c:if test="${product.product_cnt <= 30}">
+															<div class="low-stock-alert">품절임박</div>
+														</c:if>
+
+														<!-- ⭐ 해시태그 추가 -->
+														<c:if test="${not empty product.hashtag_list}">
+															<div class="product-hashtags" style="margin: 10px 0;">
+																<c:forEach var="hashtag" items="${product.hashtag_list}">
+																	<a
+																		href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+																		class="hashtag-badge"
+																		title="#${hashtag.hashtag_name} 상품 보기">
+																		#${hashtag.hashtag_name} </a>
+																</c:forEach>
+															</div>
+														</c:if>
+
+
+
+														<div class="price">
+															<span><fmt:formatNumber
+																	value="${product.product_price}" pattern="#,###" />원</span>
+														</div>
+														<div class="product-stats">
+															<span class="stat-item"> <c:if
+																	test="${user.mem_roll == 'admin'}">
+																	<i class="lni lni-shopping-basket"></i> 판매가능수량 ${product.product_cnt}
+										                        </c:if>
+															</span> <span class="stat-item"> <i class="lni lni-heart"></i>
+																찜 ${product.product_wishlist}
+															</span>
+
+														</div>
+													</div>
+												</div>
+												<!-- End Single Product -->
+											</div>
 										</c:forEach>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                            
-                            <!-- Pagination -->
-                            <c:if test="${totalPage > 0}">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="pagination left">
-                                            <ul class="pagination-list">
-                                                <c:if test="${startPage > 1}">
-                                                    <li>
-                                                        <a href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-                                                            <i class="lni lni-chevron-left"></i>
-                                                        </a>
-                                                    </li>
-                                                </c:if>
-                                                
-                                                <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                                                    <li class="${i eq currentPage ? 'active' : ''}">
-                                                        <a href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-                                                            ${i}
-                                                        </a>
-                                                    </li>
-                                                </c:forEach>
-                                                
-                                                <c:if test="${endPage < totalPage}">
-                                                    <li>
-                                                        <a href="${pageContext.request.contextPath}/product/list
+									</c:otherwise>
+								</c:choose>
+							</div>
+
+							<!-- Pagination -->
+							<c:if test="${totalPage > 0}">
+								<div class="row">
+									<div class="col-12">
+										<div class="pagination left">
+											<ul class="pagination-list">
+												<c:if test="${startPage > 1}">
+													<li><a
+														href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+															<i class="lni lni-chevron-left"></i>
+													</a></li>
+												</c:if>
+
+												<c:forEach var="i" begin="${startPage}" end="${endPage}">
+													<li class="${i eq currentPage ? 'active' : ''}"><a
+														href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+															${i} </a></li>
+												</c:forEach>
+
+												<c:if test="${endPage < totalPage}">
+													<li><a
+														href="${pageContext.request.contextPath}/product/list
                                                         
                                                         ?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-                                                            <i class="lni lni-chevron-right"></i>
-                                                        </a>
-                                                        <p class="description">${product.product_comment}</p>
-
-														<!-- 해시태그 리스트 -->
+															<i class="lni lni-chevron-right"></i>
+													</a>
+														<p class="description">${product.product_comment}</p> <!-- 해시태그 리스트 -->
 														<c:if test="${not empty product.hashtag_list}">
-														    <div class="product-hashtags" style="margin: 10px 0;">
-														        <c:forEach var="hashtag" items="${product.hashtag_list}">
-														            <a href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}" 
-														               class="hashtag-badge"
-														               title="#${hashtag.hashtag_name} 상품 보기">
-														                #${hashtag.hashtag_name}
-														            </a>
-														        </c:forEach>
-														    </div>
+															<div class="product-hashtags" style="margin: 10px 0;">
+																<c:forEach var="hashtag" items="${product.hashtag_list}">
+																	<a
+																		href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+																		class="hashtag-badge"
+																		title="#${hashtag.hashtag_name} 상품 보기">
+																		#${hashtag.hashtag_name} </a>
+																</c:forEach>
+															</div>
 														</c:if>
-														
-														<div class="price">
-														    <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
-														</div>
-                                                        
-                                                    </li>
-                                                </c:if>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:if>
-                        </div>
-                        <!-- End Grid View -->
-                        
-                        <!-- List View -->
-                        <div class="tab-pane fade" id="nav-list" role="tabpanel"
-                            aria-labelledby="nav-list-tab">
-                            <div class="row">
-                                <c:forEach var="product" items="${list}">
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <div class="single-product list-view">
-                                            <div class="row align-items-center">
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <div class="product-image">
-                                                        <c:choose>
-                                                            <c:when test="${not empty product.product_image_url}">
-                                                                <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" alt="${product.product_name}">
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="no-image">이미지 준비중</div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-														<span class="wishlist-toggle" 
-														      onclick="toggleWishlist(${product.product_idx}, this)"
-														      data-product-idx="${product.product_idx}"
-														      data-wishlist="false">
-														    <i class="lni lni-heart"></i>
-														</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8 col-md-8 col-12">
-                                                    <div class="product-info">
-                                                        <span class="category">${product.category_name}</span>
-                                                        <h4 class="title">
-                                                            <a href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
-                                                                ${product.product_name}
-                                                            </a>
-                                                        </h4>
-                                                        <p class="description">${product.product_comment}</p>
-                                                        <div class="price">
-                                                            <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
-                                                        </div>
-                                                        <div class="product-stats">
-                                                            <span class="stat-item">
-                                                                <i class="lni lni-shopping-basket"></i> 구매가능수량 ${product.product_cnt}
-                                                            </span>
-                                                            <span class="stat-item">
-                                                                <i class="lni lni-heart"></i> 찜 ${product.product_wishlist}
-                                                            </span>
-                                                        </div>
-                                                        <div class="button-group">
-                                                            <a href="javascript:void(0);" 
-                                                               onclick="addToCart(${product.product_idx})" 
-                                                               class="btn btn-primary"><i class="lni lni-cart"></i> 장바구니</a>
-                                                            <a href="javascript:void(0);" 
-                                                               onclick="buyNow(${product.product_idx})" 
-                                                               class="btn btn-alt">즉시구매</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                        <!-- End List View -->
-                    </div>
-                </div>
-            </div>
 
-                    
+														<div class="price">
+															<span><fmt:formatNumber
+																	value="${product.product_price}" pattern="#,###" />원</span>
+														</div></li>
+												</c:if>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</c:if>
+						</div>
+						<!-- End Grid View -->
+
+						<!-- List View -->
+						<div class="tab-pane fade" id="nav-list" role="tabpanel"
+							aria-labelledby="nav-list-tab">
+							<div class="row">
+								<c:forEach var="product" items="${list}">
+									<div class="col-lg-12 col-md-12 col-12">
+										<div class="single-product list-view">
+											<div class="row align-items-center">
+												<div class="col-lg-4 col-md-4 col-12">
+													<div class="product-image">
+														<c:choose>
+															<c:when test="${not empty product.product_image_url}">
+																<img
+																	src="${pageContext.request.contextPath}/images/${product.product_image_url}"
+																	alt="${product.product_name}">
+															</c:when>
+															<c:otherwise>
+																<div class="no-image">이미지 준비중</div>
+															</c:otherwise>
+														</c:choose>
+														<span class="wishlist-toggle"
+															onclick="toggleWishlist(${product.product_idx}, this)"
+															data-product-idx="${product.product_idx}"
+															data-wishlist="false"> <i class="lni lni-heart"></i>
+														</span>
+													</div>
+												</div>
+												<div class="col-lg-8 col-md-8 col-12">
+													<div class="product-info">
+														<span class="category">${product.category_name}</span>
+														<h4 class="title">
+															<a
+																href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
+																${product.product_name} </a>
+														</h4>
+														<p class="description">${product.product_comment}</p>
+														<div class="price">
+															<span><fmt:formatNumber
+																	value="${product.product_price}" pattern="#,###" />원</span>
+														</div>
+														<div class="product-stats">
+															<span class="stat-item"> <i
+																class="lni lni-shopping-basket"></i> 구매가능수량
+																${product.product_cnt}
+															</span> <span class="stat-item"> <i class="lni lni-heart"></i>
+																찜 ${product.product_wishlist}
+															</span>
+														</div>
+														<div class="button-group">
+															<a href="javascript:void(0);"
+																onclick="addToCart(${product.product_idx})"
+																class="btn btn-primary"><i class="lni lni-cart"></i>
+																장바구니</a> <a href="javascript:void(0);"
+																onclick="buyNow(${product.product_idx})"
+																class="btn btn-alt">즉시구매</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+						<!-- End List View -->
+					</div>
+				</div>
+			</div>
+
+
 		</div>
 	</div>
-<!-- End Content -->
+	<!-- End Content -->
 
 </section>
 <!-- End Product Grids -->
 <style>
 /* 상품 카드 기본 스타일 */
 .single-product {
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
+	margin-bottom: 30px;
+	transition: all 0.3s ease;
 }
 
 .single-product:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* 상품 이미지 영역 */
 .product-image {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    height: 280px;
-    background: #f5f5f5;
+	position: relative;
+	overflow: hidden;
+	border-radius: 8px;
+	height: 280px;
+	background: #f5f5f5;
 }
 
 .product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
 }
 
 .product-image:hover img {
-    transform: scale(1.05);
+	transform: scale(1.05);
 }
 
 .no-image {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e0e0e0;
-    color: #999;
-    font-size: 14px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #e0e0e0;
+	color: #999;
+	font-size: 14px;
 }
 
 /* 찜 하기 버튼 */
 .wishlist-toggle {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 40px;
-    height: 40px;
-    background: white;
-    border-radius: 50%;
-    display: flex !important; 
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    z-index: 10; 
-    opacity: 1;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 40px;
+	height: 40px;
+	background: white;
+	border-radius: 50%;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+	z-index: 10;
+	opacity: 1;
 }
 
 .wishlist-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: scale(1.1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .wishlist-toggle i {
-    font-size: 20px;
-    color: #ff4757;
-    transition: all 0.3s ease;
+	font-size: 20px;
+	color: #ff4757;
+	transition: all 0.3s ease;
 }
 
 .wishlist-toggle[data-wishlist="true"] i {
-    color: #ff4757;
+	color: #ff4757;
 }
 
 /* 찜 안한 상태 (빈 하트) */
 .wishlist-toggle[data-wishlist="false"] i {
-    color: #ff4757;
+	color: #ff4757;
 }
-
 
 /* 상품 정보 영역 */
 .product-info {
-    padding: 15px;
+	padding: 15px;
+	height: 220px; /* 고정 높이 설정 */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between; /* 요소들 균등 분배 */
 }
 
 .product-info .category {
-    font-size: 12px;
-    color: #999;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    display: block;
+	font-size: 12px;
+	color: #999;
+	text-transform: uppercase;
+	margin-bottom: 5px;
+	display: block;
 }
 
 .product-info .title {
-    font-size: 15px;
-    margin: 10px 0;
-    height: 42px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+	font-size: 14px; /* 조금 줄임 */
+	margin: 3px 0;
+	height: 36px; /* 높이 줄임 */
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	line-height: 1.3;
 }
 
 .product-info .title a {
-    color: #333;
-    font-weight: 600;
+	color: #333;
+	font-weight: 600;
 }
 
 .product-info .title a:hover {
-    color: #0167F3;
+	color: #0167F3;
 }
 
 .product-info .price {
-    font-size: 18px;
-    color: #ff4757;
-    font-weight: bold;
-    margin: 10px 0;
+	font-size: 16px;
+	color: #ff4757;
+	font-weight: bold;
+	margin: 10px 0;
 }
 
 /* 상품 통계 */
 .product-stats {
-    display: flex;
-    gap: 15px;
-    font-size: 13px;
-    color: #666;
-    margin-top: 10px;
+	display: flex;
+	gap: 15px;
+	font-size: 13px;
+	color: #666;
+	margin-top: 5px;
 }
 
 .product-stats .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 
 .product-stats .stat-item i {
-    font-size: 16px;
+	font-size: 13px;
 }
 
 /* 버튼 그룹 스타일 */
 .button-group {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
+	margin-top: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 .button-group .btn {
-    flex: 1;
+	flex: 1;
 }
 
 /* 리스트뷰 스타일 */
 .single-product.list-view {
-    margin-bottom: 30px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 20px;
+	margin-bottom: 30px;
+	border: 1px solid #eee;
+	border-radius: 8px;
+	padding: 20px;
 }
 
 .single-product.list-view .product-image {
-    height: 250px;
+	height: 250px;
 }
 
 .single-product.list-view .description {
-    color: #666;
-    margin: 10px 0;
-    line-height: 1.6;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+	color: #666;
+	margin: 10px 0;
+	line-height: 1.6;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 /* 카테고리 링크 활성화 */
 .product-sidebar .list li a.active {
-    color: #0167F3;
-    font-weight: 600;
+	color: #0167F3;
+	font-weight: 600;
 }
 
 /* 반응형 */
-@media (max-width: 767px) {
-    .product-image {
-        height: 200px;
-    }
-    
-    .button-group {
-        flex-direction: column;
-    }
-    
-    .button-group .btn {
-        width: 100%;
-    }
+@media ( max-width : 767px) {
+	.product-image {
+		height: 200px;
+	}
+	.button-group {
+		flex-direction: column;
+	}
+	.button-group .btn {
+		width: 100%;
+	}
 }
 </style>
 
@@ -880,4 +940,4 @@ function buyNow(product_idx) {
 
 </script>
 
-<%@include file="/WEB-INF/views/common/footer.jsp" %>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

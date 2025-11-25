@@ -170,4 +170,56 @@ public class OrderService {
 		cart_dao.deletePaymentComplete(map);
 		order_dao.updateStatus(order_id, "결제완료");
 	}//end ordercartToss
+	
+	//=============관리자용 메서드===============
+	
+	//배송정보 업데이트
+	@Transactional
+	public int updateDeliveryInfo(int order_id, String order_tracking,
+								 String order_courier, String order_status) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("order_id", order_id);
+		map.put("order_tracking", order_tracking);
+		map.put("order_courier", order_courier);
+		map.put("order_status", order_status);
+		
+		return order_dao.updateDeliveryInfo(map);
+	}
+	
+	//송장 변경
+	@Transactional
+	public int updateTracking(int order_id, String order_tracking,
+								 String order_courier) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("order_id", order_id);
+		map.put("order_tracking", order_tracking);
+		map.put("order_courier", order_courier);
+		
+		return order_dao.updateTracking(map);
+	}
+	
+	//관리자 주문 조회
+	public List<OrderVo> selectAllOrdersforAdmin(){
+		return order_dao.selectAllOrdersforAdmin();
+	}
+	
+	//배송상태별 주문 조회
+	public List<OrderVo> selectOrdersByStatus(String order_status){
+		return order_dao.selectOrdersByStatus(order_status);
+	}
+	
+	//검색
+	public List<OrderVo> searchOrders(String search_keyword,
+										String order_status){
+		Map<String,Object> map = new HashMap<>();
+		map.put("search_keyword", search_keyword);
+		map.put("order_status", order_status);
+		
+		return order_dao.searchOrders(map);
+	}
+	
+	//주문상태만 변경
+	public int updateStatus(int order_id, String order_status){
+		return order_dao.updateStatus(order_id,order_status);
+	}
 }

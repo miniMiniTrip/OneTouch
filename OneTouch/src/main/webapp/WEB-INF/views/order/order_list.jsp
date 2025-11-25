@@ -5,6 +5,13 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
 <head>
+	<c:if test="${not empty message}">
+	    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 20px;">
+	        <i class="lni lni-checkmark-circle"></i>
+	        ${message}
+	        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	    </div>
+	</c:if>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>주문/배송 조회 - OneTouch</title>
@@ -216,12 +223,12 @@
 
 /* ==================== 주문 카드 ==================== */
 .order-card {
+    background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
     transition: all 0.3s;
-    background: #fff;
 }
 
 .order-card:hover {
@@ -232,28 +239,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 16px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .order-date {
-    color: #666;
     font-size: 14px;
+    color: #666;
+    margin-right: 15px;
 }
 
 .order-number {
-    font-weight: 600;
-    color: #333;
-    margin-left: 16px;
+    font-size: 13px;
+    color: #999;
 }
 
 .order-status {
-    display: inline-block;
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .status-pending {
@@ -262,48 +268,46 @@
 }
 
 .status-paid {
-    background: #d4edda;
-    color: #155724;
-}
-
-.status-shipping {
     background: #d1ecf1;
     color: #0c5460;
 }
 
+.status-shipping {
+    background: #cfe2ff;
+    color: #084298;
+}
+
 .status-completed {
-    background: #d4edda;
-    color: #155724;
+    background: #d1e7dd;
+    color: #0f5132;
 }
 
 .status-cancelled {
     background: #f8d7da;
-    color: #721c24;
+    color: #842029;
 }
 
-/* 주문 상품 */
 .order-products {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 16px 0;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
 .order-icon {
-    width: 60px;
-    height: 60px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    background: #f5f7fa;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    color: #5c6bc0;
 }
 
 .order-icon svg {
-    width: 30px;
-    height: 30px;
-    color: #5c6bc0;
+    width: 28px;
+    height: 28px;
 }
 
 .order-info {
@@ -318,8 +322,8 @@
 }
 
 .order-product-detail {
-    font-size: 14px;
-    color: #666;
+    font-size: 13px;
+    color: #999;
 }
 
 .order-amount {
@@ -329,118 +333,171 @@
 .order-amount .price {
     font-size: 20px;
     font-weight: 700;
-    color: #5c6bc0;
+    color: #333;
 }
 
-/* 주문 푸터 */
 .order-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 16px;
-    border-top: 1px solid #e9ecef;
-    margin-top: 16px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
 }
 
 .order-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .order-actions .btn {
-    padding: 8px 16px;
-    font-size: 14px;
+    padding: 8px 18px;
     border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
     transition: all 0.3s;
 }
 
-.order-actions .btn-outline-primary {
+.btn-outline-primary {
     background: white;
     color: #5c6bc0;
     border: 1px solid #5c6bc0;
 }
 
-.order-actions .btn-outline-primary:hover {
+.btn-outline-primary:hover {
     background: #5c6bc0;
     color: white;
 }
 
-.order-actions .btn-primary {
+.btn-primary {
     background: #5c6bc0;
     color: white;
-    border: 1px solid #5c6bc0;
+    border: none;
 }
 
-.order-actions .btn-primary:hover {
+.btn-primary:hover {
     background: #4a5aaf;
-    border-color: #4a5aaf;
 }
 
-.order-actions .btn-outline-danger {
+.btn-outline-danger {
     background: white;
     color: #dc3545;
     border: 1px solid #dc3545;
 }
 
-.order-actions .btn-outline-danger:hover {
+.btn-outline-danger:hover {
     background: #dc3545;
     color: white;
+}
+
+/* ==================== 배송 정보 표시 ==================== */
+.delivery-info {
+    background: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.delivery-info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.delivery-info-item:last-child {
+    margin-bottom: 0;
+}
+
+.delivery-info-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.delivery-info-value {
+    color: #333;
+    font-weight: 600;
+}
+
+
+/* 환불 상태 배지 */
+.status-refund {
+    background: #e8daef;
+    color: #6c3483;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 취소 상태 배지 */
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 환불 알림 박스 (선택사항) */
+.refund-notice {
+    background: #f3e5f5;
+    border: 1px solid #ba68c8;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #6a1b9a;
+}
+
+.refund-notice i {
+    font-size: 16px;
 }
 
 /* ==================== 반응형 ==================== */
 @media (max-width: 1200px) {
     .content {
-        padding: 40px;
-    }
-}
-
-@media (max-width: 992px) {
-    .mypage-container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        min-height: auto;
-        border-right: none;
-        border-bottom: 1px solid #e0e0e0;
-    }
-    
-    .content {
-        padding: 30px 20px;
-    }
-    
-    .order-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    .order-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
-    .order-actions {
-        width: 100%;
-        flex-direction: column;
-    }
-    
-    .order-actions .btn {
-        width: 100%;
+        padding: 40px 40px;
     }
 }
 
 @media (max-width: 768px) {
+    .mypage-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        min-height: auto;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+
     .order-products {
         flex-direction: column;
         align-items: flex-start;
     }
-    
-    .order-amount {
+
+    .order-footer {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .order-actions {
         width: 100%;
-        text-align: left;
+        flex-direction: column;
+    }
+
+    .order-actions .btn {
+        width: 100%;
     }
 }
     </style>
@@ -455,7 +512,6 @@
             </div>
         </div>
     </div>
-    <!-- /End Preloader -->
 
     <!-- Start Header Area -->
     <c:import url="../common/header.jsp" />
@@ -490,24 +546,21 @@
                 <!-- ==================== Sidebar ==================== -->
                 <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
+                    <div class="sidebar-subtitle">${sessionScope.user.mem_name}님 환영합니다</div>
                     
                     <!-- 쇼핑 메뉴 -->
                     <div class="menu-section">
-                        <!-- 장바구니 -->
-                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.mem_idx}" 
+                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.user.mem_idx}" 
                            class="menu-item">
                             🛒 장바구니
                         </a>
                         
-                        <!-- 찜 목록 -->
-                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.mem_idx}" 
+                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.user.mem_idx}" 
                            class="menu-item">
                             💝 찜
                         </a>
                         
-                        <!-- 주문/배송 조회 - 현재 페이지 -->
-                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}" 
+                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.user.mem_idx}" 
                            class="menu-item active">
                             🎯 주문/배송 조회
                         </a>
@@ -517,8 +570,7 @@
                     <div class="menu-section">
                         <div class="menu-title">나의 활동</div>
                         
-                        <!-- 상품 Q&A -->
-                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.mem_idx}" 
+                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.user.mem_idx}" 
                            class="menu-item">
                             💬 상품 Q&A
                         </a>
@@ -528,19 +580,16 @@
                     <div class="menu-section">
                         <div class="menu-title">회원 정보</div>
                         
-                        <!-- 회원정보 수정 -->
                         <a href="${pageContext.request.contextPath}/member/modify.do" 
                            class="menu-item">
                             👥 회원정보 수정
                         </a>
                         
-                        <!-- 배송지 관리 -->
                         <a href="${pageContext.request.contextPath}/member/address.do" 
                            class="menu-item">
                             🔒 배송지 관리
                         </a>
                         
-                        <!-- 알림톡신청 관리 -->
                         <a href="${pageContext.request.contextPath}/member/notification.do" 
                            class="menu-item">
                             📧 알림톡신청 관리
@@ -565,15 +614,17 @@
                     </div>
                     
                     <!-- 필터 탭 -->
-                    <div class="filter-tabs">
-                        <button class="active" data-filter="all">전체</button>
-                        <button data-filter="pending">결제대기</button>
-                        <button data-filter="paid">결제완료</button>
-                        <button data-filter="shipping">배송중</button>
-                        <button data-filter="completed">배송완료</button>
-                        <button data-filter="cancelled">취소/반품</button>
-                    </div>
-                    
+					<div class="filter-tabs">
+					    <button class="active" data-filter="all">전체</button>
+					    <button data-filter="pending">결제대기</button>
+					    <button data-filter="confirmed">상품확인중</button>
+					    <button data-filter="preparing">배송준비중</button>
+					    <button data-filter="shipping">배송중</button>
+					    <button data-filter="completed">배송완료</button>
+					    <button data-filter="refund">환불</button>
+					    <button data-filter="cancelled">취소</button>
+					</div>
+					                    
                     <!-- 주문 목록 -->
                     <c:choose>
                         <c:when test="${empty order_list}">
@@ -597,17 +648,19 @@
                                             </span>
                                             <span class="order-number">주문번호: ${order.order_no}</span>
                                         </div>
-                                        <span class="order-status 
-                                            <c:choose>
-                                                <c:when test="${order.order_status == '결제대기'}">status-pending</c:when>
-                                                <c:when test="${order.order_status == '결제완료'}">status-paid</c:when>
-                                                <c:when test="${order.order_status == '배송중'}">status-shipping</c:when>
-                                                <c:when test="${order.order_status == '배송완료'}">status-completed</c:when>
-                                                <c:when test="${order.order_status == '취소'}">status-cancelled</c:when>
-                                            </c:choose>
-                                        ">
-                                            ${order.order_status}
-                                        </span>
+										<span class="order-status 
+										    <c:choose>
+										        <c:when test="${order.order_status == '결제대기'}">status-pending</c:when>
+										        <c:when test="${order.order_status == '상품확인중'}">status-confirmed</c:when>
+										        <c:when test="${order.order_status == '배송준비중'}">status-preparing</c:when>
+										        <c:when test="${order.order_status == '배송중'}">status-shipping</c:when>
+										        <c:when test="${order.order_status == '배송완료'}">status-completed</c:when>
+										        <c:when test="${order.order_status == '환불'}">status-refund</c:when>
+										        <c:when test="${order.order_status == '취소'}">status-cancelled</c:when>
+										    </c:choose>
+										">
+										    ${order.order_status}
+										</span>
                                     </div>
                                     
                                     <!-- 주문 상품 -->
@@ -630,7 +683,27 @@
                                         </div>
                                     </div>
                                     
+                                    <!-- 배송 정보 (배송중, 배송완료인 경우에만 표시) -->
+                                    <c:if test="${not empty order.order_tracking and (order.order_status == '배송중' or order.order_status == '배송완료')}">
+                                        <div class="delivery-info">
+                                            <div class="delivery-info-item">
+                                                <span class="delivery-info-label">택배사</span>
+                                                <span class="delivery-info-value">${order.order_courier}</span>
+                                            </div>
+                                            <div class="delivery-info-item">
+                                                <span class="delivery-info-label">송장번호</span>
+                                                <span class="delivery-info-value">${order.order_tracking}</span>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                    
                                     <!-- 주문 푸터 -->
+                                    <c:if test="${order.order_status == '환불'}">
+									    <div class="refund-notice">
+									        <i class="lni lni-information"></i>
+									        <span>환불 요청이 접수되었습니다. 관리자 확인 후 처리됩니다.</span>
+									    </div>
+									</c:if>
                                     <div class="order-footer">
                                         <div class="text-muted" style="font-size: 14px;">
                                             배송지: ${order.order_address}
@@ -648,8 +721,11 @@
                                                     <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" 
                                                        class="btn btn-primary">리뷰작성</a>
                                                 </c:when>
-                                                <c:when test="${order.order_status == '배송중'}">
-                                                    <button class="btn btn-outline-primary" onclick="trackShipping('${order.order_no}')">배송조회</button>
+                                                <c:when test="${order.order_status == '배송중' and not empty order.order_tracking}">
+                                                    <button class="btn btn-outline-primary" 
+                                                            onclick="trackShipping('${order.order_courier}', '${order.order_tracking}')">
+                                                        배송조회
+                                                    </button>
                                                 </c:when>
                                             </c:choose>
                                         </div>
@@ -692,35 +768,40 @@
     });
     
     // 필터 탭 기능
-    document.querySelectorAll('.filter-tabs button').forEach(button => {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('.filter-tabs button').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            const filter = this.dataset.filter;
-            
-            document.querySelectorAll('.order-card').forEach(card => {
-                const status = card.dataset.status;
-                
-                if (filter === 'all') {
-                    card.style.display = 'block';
-                } else if (filter === 'pending' && status === '결제대기') {
-                    card.style.display = 'block';
-                } else if (filter === 'paid' && status === '결제완료') {
-                    card.style.display = 'block';
-                } else if (filter === 'shipping' && status === '배송중') {
-                    card.style.display = 'block';
-                } else if (filter === 'completed' && status === '배송완료') {
-                    card.style.display = 'block';
-                } else if (filter === 'cancelled' && (status === '취소' || status === '반품')) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-    
+	document.querySelectorAll('.filter-tabs button').forEach(button => {
+	    button.addEventListener('click', function() {
+	        // 활성 탭 변경
+	        document.querySelectorAll('.filter-tabs button').forEach(btn => btn.classList.remove('active'));
+	        this.classList.add('active');
+	        
+	        const filter = this.dataset.filter;
+	        
+	        // 주문 카드 필터링
+	        document.querySelectorAll('.order-card').forEach(card => {
+	            const status = card.dataset.status;
+	            
+	            if (filter === 'all') {
+	                card.style.display = 'block';
+	            } else if (filter === 'pending' && status === '결제대기') {
+	                card.style.display = 'block';
+	            } else if (filter === 'confirmed' && status === '상품확인중') {
+	                card.style.display = 'block';
+	            } else if (filter === 'preparing' && status === '배송준비중') {
+	                card.style.display = 'block';
+	            } else if (filter === 'shipping' && status === '배송중') {
+	                card.style.display = 'block';
+	            } else if (filter === 'completed' && status === '배송완료') {
+	                card.style.display = 'block';
+	            } else if (filter === 'refund' && status === '환불') {
+	                card.style.display = 'block';
+	            } else if (filter === 'cancelled' && status === '취소') {
+	                card.style.display = 'block';
+	            } else {
+	                card.style.display = 'none';
+	            }
+	        });
+	    });
+	});    
     // 주문 취소
     function cancelOrder(orderId) {
         if (confirm('주문을 취소하시겠습니까?')) {
@@ -746,9 +827,33 @@
         }
     }
     
-    // 배송 조회
-    function trackShipping(orderNo) {
-        window.open('${pageContext.request.contextPath}/order/track.do?order_no=' + orderNo, 'shipping', 'width=600,height=700');
+    // 배송 조회 (택배사별 조회 페이지 연결)
+    function trackShipping(orderCourier, orderTracking) {
+        let trackingUrl = '';
+        
+        // 택배사별 배송 조회 URL
+        switch(orderCourier) {
+            case 'CJ대한통운':
+                trackingUrl = 'https://www.cjlogistics.com/ko/tool/parcel/tracking?gnbInvcNo=' + orderTracking;
+                break;
+            case '우체국택배':
+                trackingUrl = 'https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1=' + orderTracking;
+                break;
+            case '한진택배':
+                trackingUrl = 'https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&schLang=KR&wblnumText2=' + orderTracking;
+                break;
+            case '롯데택배':
+                trackingUrl = 'https://www.lotteglogis.com/home/reservation/tracking/linkView?InvNo=' + orderTracking;
+                break;
+            case '로젠택배':
+                trackingUrl = 'https://www.ilogen.com/web/personal/trace/' + orderTracking;
+                break;
+            default:
+                alert('배송 조회 URL을 찾을 수 없습니다.');
+                return;
+        }
+        
+        window.open(trackingUrl, 'shipping', 'width=800,height=700');
     }
     
     // 결제하기

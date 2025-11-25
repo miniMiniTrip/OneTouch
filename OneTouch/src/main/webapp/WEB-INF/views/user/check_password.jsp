@@ -260,7 +260,7 @@
                                 현재 계정의 비밀번호를 입력하여 본인확인을 완료하세요.
                             </div>
                             
-                            <form action="verifyPassword" method="post" id="passwordForm">
+                            <form action="/user/user_modify" method="post" id="passwordForm">
                                 <div class="form-group">
                                     <label class="form-label">비밀번호</label>
                                     <input type="password" 
@@ -274,7 +274,7 @@
                                 
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-cancel" onclick="goBack();">취소</button>
-                                    <button type="submit" class="btn btn-submit" onclick="return validatePassword();">확인</button>
+                                    <button type="button" class="btn btn-submit" onclick="validatePassword(this.form);">확인</button>
                                 </div>
                             </form>
                         </div>
@@ -298,7 +298,7 @@
     
     <script>
         // 비밀번호 검증
-        function validatePassword() {
+        function validatePassword(f) {
             const password = document.querySelector('input[name="password"]').value;
             const errorMsg = document.getElementById('errorMsg');
             
@@ -309,15 +309,36 @@
                 return false;
             }
             
-            if (password.length < 8) {
+            if (password.length < 1) {
                 errorMsg.textContent = '비밀번호는 8자 이상이어야 합니다.';
                 errorMsg.style.display = 'block';
                 document.querySelector('input[name="password"]').focus();
                 return false;
             }
             
-            errorMsg.style.display = 'none';
-            return true;
+            $.ajax({
+            	url:"/user/check_password"
+            	,type:"post"
+            	,data:{"password":password}
+            	,success:function(d){
+            		alert("비번체크:"+d.checkPassword);
+            		if(d.checkPassword==false){
+                        errorMsg.textContent = '비밀번호가 틀렸습니다.';
+                        errorMsg.style.display = 'block';
+                        document.querySelector('input[name="password"]').focus();
+                        return;
+            		}
+            		if(d.checkPassword==true){
+			            alert("보내기");
+			            errorMsg.style.display = 'none';
+			            f.submit();
+            		}
+            	}
+            	,error:function(e){
+            		alert("비밀번호체크 실패 \n관리자에게 문의");
+            	}
+            });
+            
         }
         
         // 뒤로가기

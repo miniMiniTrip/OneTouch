@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 	</insert>
 	
+	<!-- 유저정보 업데이트 -->
 	<update id="updateMem" parameterType="MemVo">
 		UPDATE mem 
 			SET
@@ -54,5 +55,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	
+	<!-- 이름과 이메일로 아이디 찾기를 위한 유저 조회 -->
+	<select id="findUserId" parameterType="map" resultType="String">
+		SELECT mem_id FROM mem WHERE mem_name = #{mem_name} and mem_email = #{mem_email}
+	</select>
+	
+	<!-- 비밀번호 찾기: 아이디 + 이메일로 유저 찾기 -->
+	<select id="findUserForPwReset" parameterType="map" resultType="MemVo">
+	    SELECT * FROM mem
+	    WHERE mem_id = #{mem_id} AND mem_email = #{mem_email}
+	</select>
+	
+
 	
 </mapper>

@@ -2,13 +2,13 @@ package com.onetouch.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.MemDao;
+import com.onetouch.service.EmailService;
 import com.onetouch.service.MemService;
 import com.onetouch.vo.MemVo;
 
@@ -30,7 +31,8 @@ public class LoginController {
 	MemDao memDao;
 	@Autowired
 	HttpSession session;
-	
+	@Autowired
+	EmailService emailService; 
 	//==========계정
 	
 	
@@ -218,14 +220,128 @@ public class LoginController {
 	
 	 //비밀번호 확인 폼 열기
 	@RequestMapping("/user/check_password")
-	public String checkPassword() {
-		System.out.println("	[LoginController]  checkPassword() ");
+	public String checkPasswordFrom() {
+		System.out.println("	[LoginController]  checkPasswordFrom() ");
 		System.out.println("	[LoginController] return : user/check_password.jsp  ");
 		return"user/check_password";
 		
 	}
 	
+	//회원 수정시 비밀번호체크
+	@PostMapping("/user/check_password")
+	@ResponseBody
+	public Map<String,Object> checkPassword(String password) {
+		System.out.println("	[LoginController-@ResponseBody]  checkPassword() ");
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		MemVo memVo=(MemVo)session.getAttribute("user");
+		if(memVo==null) {
+			map.put("login", "로그인해주세요");
+			return map;
+		}
+		int mem_idx=memVo.getMem_idx();
+		MemVo memVoOrigin=memDao.selectMemIdxOne(mem_idx);
+		if(memVoOrigin.getMem_pw().equals(password)) {
+			map.put("checkPassword",true);
+		}else {
+			map.put("checkPassword",false);
+		}
+		System.out.println("	[LoginController-@ResponseBody]  return : map ");
+		System.out.println("");
+		return map;
+	}
 	
+	// 아이디 찾기 페이지
+	@RequestMapping("/user/find_id_form")
+	public String findIdFrom() {
+		System.out.println("	[LoginController] findIdFrom() ");
+		System.out.println("	[LoginController] return :  ");
+		System.out.println("");
+		return"/user/find_id";
+	}
+	
+	// 아이디 찾기
+	@RequestMapping("/user/find_id")
+	public String findId(String mem_name,String mem_email,Model model) {
+		System.out.println("	[LoginController] findId() ");
+		System.out.println(mem_name);
+		System.out.println(mem_email);
+		String mem_id =memService.findUserId(mem_name, mem_email);
+		System.out.println(mem_id);
+		if(mem_id==null) {
+			model.addAttribute("errorMessage","일치하는 회원정보가 없습니다.");
+		}else {
+			String maskeId=maskId(mem_id);
+			maskeId=String.format("회원님의 아이디는 %s입니다",maskeId);
+			model.addAttribute("successMessage",maskeId);
+		}
+		System.out.println("	[LoginController] return : /user/find_id.jsp ");
+		System.out.println("");
+		return"/user/find_id";
+	}
+	
+	// 아이디 마킹
+	private String maskId(String mem_id) {
+		if(mem_id.length() <=4) {
+			return "****";
+		}
+		
+		return mem_id.substring(0,2)+"****"+mem_id.substring(mem_id.length()-2);
+	}
+	
+	
+	
+	// 비밀번호 찾기 폼
+    @GetMapping("/user/find_pw_form")
+    public String findPwForm() {
+        return "user/find_pw";
+    }
+
+    
+    //임시 비밀번호 생성기
+    public String generateTempPassword(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int index = (int) (Math.random() * chars.length());
+            sb.append(chars.charAt(index));
+        }
+        return sb.toString();
+    }
+    
+    
+    // 비밀번호 재설정 요청
+    @PostMapping("/user/find_pw")
+    public String findPw(
+            @RequestParam String mem_id,
+            @RequestParam String mem_email,
+            Model model) {
+    	System.out.println("	[LoginController] findPw() ");
+        MemVo user = memService.findUserForPwReset(mem_id, mem_email);
+
+        if (user == null) {
+            model.addAttribute("msg", "notfound");
+            return "/user/find_pw";
+        }
+
+        String temporary_pw = generateTempPassword(10);
+        System.out.printf("발급받은 임시 비밀번호 : %s\n",temporary_pw);
+        MemVo memVo=memDao.selectMemIdOne(mem_id);
+        memVo.setMem_pw(temporary_pw);
+        int res=memDao.updateMem(memVo);
+        if(res==0){
+        	model.addAttribute("msg","email");
+        	return"/user/find_pw";
+        }
+        String text=String.format("안녕하세요. 임시비밀번호를 발급해드렸습니다. \n 회원님의 임시 비밀번호 다음과 같습니다 :   %s \n 로그인 후 반드시 비밀번호를 변경해주시기 바랍니다.",temporary_pw);
+        emailService.send(mem_email, "OneTouch 임시 비밀번호",text);
+
+        
+        model.addAttribute("successMessage", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
+        System.out.println("	[LoginController] return :  ");
+        System.out.println("");
+        return "/user/find_pw";
+    }
 	
 	
 }
