@@ -201,20 +201,52 @@ public class LoginController {
 	
 	//회원 수정 페이지 열기 
 	@RequestMapping("/user/user_modify")
-	public String userModufy() {
-		System.out.println("	[LoginController] userModufy ");
-		System.out.println("	[LoginController] return :user/modify  ");
+	public String userModufy(Model model) {
+		System.out.println("	[LoginController] userModufy() ");
+		MemVo memVo=(MemVo)session.getAttribute("user");
+		if(memVo==null) {
+			return "redirect:/";
+		}
+		int mem_idx=memVo.getMem_idx();
+		memVo=memDao.selectMemIdxOne(mem_idx);
+		
+		model.addAttribute("memVo",memVo);
+		System.out.println("	[LoginController] return :user/user_modify.jsp  ");
 		return"user/user_modify";
 	}
 	
 	
 	 //비밀번호 확인 폼 열기
 	@RequestMapping("/user/check_password")
-	public String checkPassword() {
-		System.out.println("	[LoginController]  checkPassword ");
-		System.out.println("	[LoginController] return : checkPassword  ");
+	public String checkPasswordFrom() {
+		System.out.println("	[LoginController]  checkPasswordFrom() ");
+		System.out.println("	[LoginController] return : user/check_password.jsp  ");
 		return"user/check_password";
 		
+	}
+	
+	//회원 수정시 비밀번호체크
+	@PostMapping("/user/check_password")
+	@ResponseBody
+	public Map<String,Object> checkPassword(String password) {
+		System.out.println("	[LoginController-@ResponseBody]  checkPassword() ");
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		MemVo memVo=(MemVo)session.getAttribute("user");
+		if(memVo==null) {
+			map.put("login", "로그인해주세요");
+			return map;
+		}
+		int mem_idx=memVo.getMem_idx();
+		MemVo memVoOrigin=memDao.selectMemIdxOne(mem_idx);
+		if(memVoOrigin.getMem_pw().equals(password)) {
+			map.put("checkPassword",true);
+		}else {
+			map.put("checkPassword",false);
+		}
+		System.out.println("	[LoginController-@ResponseBody]  return : map ");
+		System.out.println("");
+		return map;
 	}
 	
 	
