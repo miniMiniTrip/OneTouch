@@ -77,4 +77,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     where order_id = #{param1}
 </update>
 
+<!-- 관리자용 쿼리 -->
+
+<!-- 상태 전체 변경 -->
+<update id="updateDeliveryInfo" parameterType="map">
+    update `order` set
+        order_tracking = #{order_tracking},
+        order_courier = #{order_courier},
+        order_status = #{order_status},
+        order_update = now()
+    where order_id = #{order_id}
+</update>
+
+<!-- 송장 변경 -->
+<update id="updateTracking" parameterType="map">
+    update `order` set
+        order_tracking = #{order_tracking},
+        order_courier = #{order_courier},
+        order_update = now()
+    where order_id = #{order_id}
+</update>
+
+<!-- 관리자 모든 오더 조회 -->
+<select id="selectAllOrdersforAdmin" parameterType="order">
+	select * from `order`
+	order by order_time desc
+</select>
+	
+<!-- 배송상태별 조회 -->
+<select id="selectOrdersByStatus" parameterType="order">
+	select * from `order`
+	where order_status = #{order_status}
+	order by order_time desc
+</select>
+
+<!-- 검색 쿼리문 -->
+<select id="searchOrders" parameterType="map" resultType="order">
+	select * from `order`
+	where 1 = 1
+	<if test="searchKeyword != null and searchKeyword != ''">
+		and	(order_no like concat ('%', #{searchKeyword}, '%'))
+		or order_mem_name like concat ('%', #{searchKeyword}, '%'))
+	</if>
+	<if test="order_status != null and order_status !=''">
+		and order_status = #{order_status}
+	</if>
+	order by order_time desc
+</select>
 </mapper>
