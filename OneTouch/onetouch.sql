@@ -26,7 +26,8 @@ CREATE TABLE mem (
     mem_birth DATE COMMENT '생년월일',
     mem_phone VARCHAR(20) NOT NULL COMMENT '전화번호',
     mem_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '가입일',
-    mem_update_time TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
+    mem_update_time TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일',
+    mem_image_url VARCHAR(500) NULL
     
 --	 조건문 확인해보세요 --    
 --   CONSTRAINT chk_mem_email CHECK (mem_email LIKE '%@%'),
@@ -41,6 +42,11 @@ ADD COLUMN mem_postal VARCHAR(10) NULL;
 -- !중요합니다 mem_postal 컬럼이 추가하고 컬럼 위치 변경하는 명령어 
 ALTER TABLE `otdb`.`mem` 
 CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
+
+-- ! 회원 프로필 이미지를 위한 컬럼추가
+ALTER TABLE `otdb`.`mem` 
+ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
+
 
 -- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
