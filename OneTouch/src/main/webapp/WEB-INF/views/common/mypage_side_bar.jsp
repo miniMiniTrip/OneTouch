@@ -70,6 +70,39 @@
 
 
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const items = document.querySelectorAll(".menu-item");
+    const current = window.location.pathname + window.location.search;
+
+    items.forEach(item => {
+
+        // a 태그가 있으면 href 사용, 없으면 onclick 속성 사용
+        const linkTag = item.querySelector("a");
+
+        let targetUrl = null;
+
+        if (linkTag) {
+            targetUrl = linkTag.getAttribute("href");
+        } else {
+            const onclickValue = item.getAttribute("onclick");
+            if (onclickValue) {
+                // 예: location.href='/project/cart/list.do'
+                const match = onclickValue.match(/location\.href=['"]([^'"]+)['"]/);
+                if (match) targetUrl = match[1];
+            }
+        }
+
+        if (!targetUrl) return;
+
+        // 절대경로일 경우만 비교 (JSP contextPath 포함)
+        if (current === targetUrl || current.includes(targetUrl)) {
+            item.classList.add("active");
+        }
+    });
+});
+</script>
 
 </head>
 <body>
@@ -117,10 +150,11 @@
 					</div>
 	                    
 					<div class="menu-section">
-						<div class="menu-item active">📝 로그아웃</div>
+						<div class="menu-item">📝 로그아웃</div>
 	            	</div>
 	            </div>
                 
+       
                 
 </body>
 </html>

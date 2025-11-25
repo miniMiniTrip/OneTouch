@@ -201,9 +201,17 @@ public class LoginController {
 	
 	//회원 수정 페이지 열기 
 	@RequestMapping("/user/user_modify")
-	public String userModufy() {
-		System.out.println("	[LoginController] userModufy ");
-		System.out.println("	[LoginController] return :user/modify  ");
+	public String userModufy(Model model) {
+		System.out.println("	[LoginController] userModufy() ");
+		MemVo memVo=(MemVo)session.getAttribute("user");
+		if(memVo==null) {
+			return "redirect:/";
+		}
+		int mem_idx=memVo.getMem_idx();
+		memVo=memDao.selectMemIdxOne(mem_idx);
+		
+		model.addAttribute("memVo",memVo);
+		System.out.println("	[LoginController] return :user/user_modify.jsp  ");
 		return"user/user_modify";
 	}
 	
@@ -211,8 +219,8 @@ public class LoginController {
 	 //비밀번호 확인 폼 열기
 	@RequestMapping("/user/check_password")
 	public String checkPassword() {
-		System.out.println("	[LoginController]  checkPassword ");
-		System.out.println("	[LoginController] return : checkPassword  ");
+		System.out.println("	[LoginController]  checkPassword() ");
+		System.out.println("	[LoginController] return : user/check_password.jsp  ");
 		return"user/check_password";
 		
 	}

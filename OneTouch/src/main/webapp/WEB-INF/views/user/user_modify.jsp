@@ -222,7 +222,7 @@
     <div class="container">
         <div class="sidebar">
             <h2 class="sidebar-title">마이페이지</h2>
-            <p class="sidebar-welcome">${member.name}님, 환영합니다!</p>
+            <p class="sidebar-welcome">${mem.name}님, 환영합니다!</p>
             
             <ul class="sidebar-menu">
                 <li onclick="location.href='shopping';" style="cursor:pointer;">
@@ -259,7 +259,7 @@
             <div class="sidebar-divider"></div>
             
             <ul class="sidebar-menu">
-                <li onclick="location.href='memberInfo';" style="cursor:pointer;">
+                <li onclick="location.href='memInfo';" style="cursor:pointer;">
                     <span class="sidebar-menu-text">회원 정보</span>
                 </li>
                 <li class="sidebar-menu-active" onclick="location.href='editMember';" style="cursor:pointer;">
@@ -292,27 +292,27 @@
                 
                 <div class="form-group">
                     <label class="form-label">아이디</label>
-                    <input type="text" class="form-input" value="${member.userId}" readonly>
+                    <input type="text" class="form-input" value="${memVo.mem_id}" readonly>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">이름</label>
-                    <input type="text" class="form-input" name="name" value="${member.name}">
+                    <input type="text" class="form-input" name="name" value="${memVo.mem_name}">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">이메일</label>
-                    <input type="email" class="form-input" name="email" value="${member.email}">
+                    <input type="email" class="form-input" name="email" value="${memVo.mem_email}">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">휴대폰번호</label>
-                    <input type="tel" class="form-input" name="phone" value="${member.phone}">
+                    <input type="tel" class="form-input" name="phone" value="${memVo.mem_phone}">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">생년월일</label>
-                    <input type="date" class="form-input" name="birthDate" value="${member.birthDate}">
+                    <input type="date" class="form-input" name="birthDate" value="${memVo.mem_birth}">
                 </div>
                 
                 <div class="form-group">
@@ -332,19 +332,19 @@
                 <div class="form-group">
                     <label class="form-label">우편번호</label>
                     <div class="zipcode-container">
-                        <input type="text" class="form-input zipcode-input" name="zipCode" value="${member.zipCode}">
+                        <input type="text" class="form-input zipcode-input" name="zipCode" value="${memVo.postal}">
                         <button type="button" class="search-btn">검색</button>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">기본배송지</label>
-                    <input type="text" class="form-input" name="address" value="${member.address}">
+                    <input type="text" class="form-input" name="address" value="${memVo.addr}">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">상세주소</label>
-                    <input type="text" class="form-input" name="detailAddress" value="${member.detailAddress}">
+                    <input type="text" class="form-input" name="detailAddress" value="${memVo.addr_more}">
                 </div>
                 
                 <div class="button-group">
