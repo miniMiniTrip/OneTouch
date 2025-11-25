@@ -111,23 +111,23 @@ document.addEventListener("DOMContentLoaded", function () {
 				    
 				    <div class="menu-section">
 				        <div class="menu-item" onclick="location.href='${pageContext.request.contextPath}/cart/list.do'">
-				        	<a href="${pageContext.request.contextPath}/cart/list.do">🛒 장바구니</a>
+				        	<a href="${pageContext.request.contextPath}/cart/list.do">🛒 장바구니x</a>
 				        </div>
 				        
 				         <div class="menu-item" onclick="location.href='${pageContext.request.contextPath}/wishlist/list.do'"> 
-				        	<a href="${pageContext.request.contextPath}/wishlist/list.do">💝 찜</a>
+				        	<a href="${pageContext.request.contextPath}/wishlist/list.do">💝 찜x</a>
 				        </div>
 				       
 				        <div class="menu-item">
-				      	  <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}">🎯 주문/배송 조회</a>
+				      	  <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}">🎯 주문/배송 조회x</a>
                         </div>
                         
                         <div class="menu-item"> 
-                          <a href="${pageContext.request.contextPath}/mypage/skinprofile.do"> 🔬 피부 프로필 </a>
+                          <a href="${pageContext.request.contextPath}/mypage/skinprofile.do"> 🔬 피부 프로필 x</a>
                         </div>
                         
                         <div class="menu-item"> 
-                          <a href="${pageContext.request.contextPath}/skin/form.do"> 🔬 피부 진단 </a>
+                          <a href="${pageContext.request.contextPath}/skin/form.do"> 🔬 피부 진단 x</a>
                         </div>
 				   	</div>
 				    
@@ -140,8 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				        	<a href="${pageContext.request.contextPath}/mypage/qna_list">💝 상품 Q&A</a>
 				        </div> 
 				       
-				       
-				        <div class="menu-item">📝 내가 쓴 글</div>
+				       <!-- 내가 쓴 글 삭제  -->
+				        
 				    </div>
 				    
 				    <div class="menu-section">
