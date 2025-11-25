@@ -98,6 +98,19 @@
 			<version>3.0.1</version>
 		 </dependency>  
 		
+		<!-- PasswordEncoder 사용을 위한 라이브러리-->
+		<!--		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		-->
+		
+		<!-- Spring Boot Mail -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 		
 	</dependencies>
 
