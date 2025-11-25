@@ -2,9 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
 <head>
+	<c:if test="${not empty message}">
+	    <div class="alert alert-info alert-dismissible fade show" role="alert">
+	        ${message}
+	        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	    </div>
+	</c:if>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>주문 상세 - OneTouch</title>
@@ -825,37 +832,50 @@
                     </c:if>
                     
                     <!-- 액션 버튼 -->
-                    <div class="action-buttons">
-                        <a href="${pageContext.request.contextPath}/order/list.do" class="btn-secondary-custom">
-                            목록으로
-                        </a>
-                        
-                        <c:choose>
-                            <c:when test="${order.order_status == '결제대기'}">
-                                <button class="btn-primary-custom" onclick="payOrder(${order.order_id})">
-                                    결제하기
-                                </button>
-                                <button class="btn-danger-custom" onclick="cancelOrder(${order.order_id})">
-                                    주문취소
-                                </button>
-                            </c:when>
-                            <c:when test="${order.order_status == '결제완료'}">
-                                <button class="btn-outline-danger-custom" onclick="requestRefund(${order.order_id})">
-                                    환불요청
-                                </button>
-                            </c:when>
-                            <c:when test="${order.order_status == '배송완료'}">
-                                <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" 
-                                   class="btn-primary-custom">
-                                    리뷰작성
-                                </a>
-                                <button class="btn-outline-danger-custom" onclick="requestReturn(${order.order_id})">
-                                    반품요청
-                                </button>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                    
+					<div class="action-buttons">
+					    <a href="${pageContext.request.contextPath}/order/list.do" class="btn-secondary-custom">
+					        목록으로
+					    </a>
+					    
+					    <c:choose>
+					        <c:when test="${order.order_status == '결제대기'}">
+					            <button class="btn-primary-custom" onclick="payOrder(${order.order_id})">
+					                결제하기
+					            </button>
+					            <button class="btn-danger-custom" onclick="cancelOrder(${order.order_id})">
+					                주문취소
+					            </button>
+					        </c:when>
+					        
+					        <c:when test="${order.order_status == '상품확인중' || order.order_status == '배송준비중'}">
+					            <button class="btn-outline-danger-custom" onclick="refundOrder(${order.order_id})">
+					                환불요청
+					            </button>
+					        </c:when>
+					        
+					        <c:when test="${order.order_status == '배송완료'}">
+					            <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" 
+					               class="btn-primary-custom">
+					                리뷰작성
+					            </a>
+					        </c:when>
+					        
+					        <c:when test="${order.order_status == '환불'}">
+					            <div class="alert alert-info">
+					                <i class="lni lni-information"></i> 
+					                환불 요청이 접수되었습니다. 관리자 확인 후 처리됩니다.
+					            </div>
+					        </c:when>
+					        
+					        <c:when test="${order.order_status == '취소'}">
+					            <div class="alert alert-secondary">
+					                <i class="lni lni-close"></i> 
+					                주문이 취소되었습니다.
+					            </div>
+					        </c:when>
+					    </c:choose>
+					</div>
+					                    
                 </div>
             </div>
         </div>
@@ -893,78 +913,17 @@
         location.href = '${pageContext.request.contextPath}/order/payment.do?order_id=' + orderId;
     }
     
-    // 주문 취소
+	// 주문 취소
     function cancelOrder(orderId) {
         if (confirm('주문을 취소하시겠습니까?')) {
-            fetch('${pageContext.request.contextPath}/order/cancel.do', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'order_id=' + orderId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    alert('주문이 취소되었습니다.');
-                    location.reload();
-                } else {
-                    alert('주문 취소에 실패했습니다.');
-                }
-            })
-            .catch(error => {
-                alert('주문 취소 중 오류가 발생했습니다.');
-            });
+            location.href = '${pageContext.request.contextPath}/order/cancel.do?order_id=' + orderId;
         }
     }
-    
+
     // 환불 요청
-    function requestRefund(orderId) {
-        if (confirm('환불을 요청하시겠습니까?')) {
-            fetch('${pageContext.request.contextPath}/order/refund.do', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'order_id=' + orderId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    alert('환불 요청이 완료되었습니다.');
-                    location.reload();
-                } else {
-                    alert('환불 요청에 실패했습니다.');
-                }
-            })
-            .catch(error => {
-                alert('환불 요청 중 오류가 발생했습니다.');
-            });
-        }
-    }
-    
-    // 반품 요청
-    function requestReturn(orderId) {
-        if (confirm('반품을 요청하시겠습니까?')) {
-            fetch('${pageContext.request.contextPath}/order/return.do', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'order_id=' + orderId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    alert('반품 요청이 완료되었습니다.');
-                    location.reload();
-                } else {
-                    alert('반품 요청에 실패했습니다.');
-                }
-            })
-            .catch(error => {
-                alert('반품 요청 중 오류가 발생했습니다.');
-            });
+    function refundOrder(orderId) {
+        if (confirm('환불을 요청하시겠습니까?\n관리자 확인 후 처리됩니다.')) {
+            location.href = '${pageContext.request.contextPath}/order/refund.do?order_id=' + orderId;
         }
     }
     </script>

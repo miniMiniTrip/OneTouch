@@ -614,7 +614,7 @@
                     </div>
                     
                     <!-- 진단 폼 -->
-                    <form method="get" id="skinDiagnosisForm">
+                    <form method="post" id="skinDiagnosisForm">
                         
                         <!-- 질문 1: 피지 분비 -->
                         <div class="question-card active" data-question="1">

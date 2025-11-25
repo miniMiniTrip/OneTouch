@@ -47,8 +47,6 @@ CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem
 ALTER TABLE `otdb`.`mem` 
 ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
 
-
--- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
