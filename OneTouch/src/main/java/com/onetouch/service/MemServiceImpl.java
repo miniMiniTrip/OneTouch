@@ -1,6 +1,7 @@
 package com.onetouch.service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class MemServiceImpl implements MemService {
 		return map;
 	}
 
-
+	// 회원가입
 	@Override
 	public int insert(MemVo memVo) throws Exception {
 		//회원 이미지
@@ -69,6 +70,16 @@ public class MemServiceImpl implements MemService {
 		
 		int res=memDao.insert(memVo);
 		return res;
+	}
+	
+	// 아이디 찾기
+	@Override
+	public String findUserId(String name,String email) {
+		Map<String,Object> map =new HashMap<String, Object>();
+		map.put("mem_name", name);
+		map.put("mem_email", email);
+		String mem_id=memDao.findUserId(map);
+		return mem_id;
 	}
 	
 }

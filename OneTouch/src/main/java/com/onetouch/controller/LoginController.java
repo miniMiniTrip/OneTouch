@@ -201,23 +201,90 @@ public class LoginController {
 	
 	//회원 수정 페이지 열기 
 	@RequestMapping("/user/user_modify")
-	public String userModufy() {
-		System.out.println("	[LoginController] userModufy ");
-		System.out.println("	[LoginController] return :user/modify  ");
+	public String userModufy(Model model) {
+		System.out.println("	[LoginController] userModufy() ");
+		MemVo memVo=(MemVo)session.getAttribute("user");
+		if(memVo==null) {
+			return "redirect:/";
+		}
+		int mem_idx=memVo.getMem_idx();
+		memVo=memDao.selectMemIdxOne(mem_idx);
+		
+		model.addAttribute("memVo",memVo);
+		System.out.println("	[LoginController] return :user/user_modify.jsp  ");
 		return"user/user_modify";
 	}
 	
 	
 	 //비밀번호 확인 폼 열기
 	@RequestMapping("/user/check_password")
-	public String checkPassword() {
-		System.out.println("	[LoginController]  checkPassword ");
-		System.out.println("	[LoginController] return : checkPassword  ");
+	public String checkPasswordFrom() {
+		System.out.println("	[LoginController]  checkPasswordFrom() ");
+		System.out.println("	[LoginController] return : user/check_password.jsp  ");
 		return"user/check_password";
 		
 	}
 	
+	//회원 수정시 비밀번호체크
+	@PostMapping("/user/check_password")
+	@ResponseBody
+	public Map<String,Object> checkPassword(String password) {
+		System.out.println("	[LoginController-@ResponseBody]  checkPassword() ");
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		MemVo memVo=(MemVo)session.getAttribute("user");
+		if(memVo==null) {
+			map.put("login", "로그인해주세요");
+			return map;
+		}
+		int mem_idx=memVo.getMem_idx();
+		MemVo memVoOrigin=memDao.selectMemIdxOne(mem_idx);
+		if(memVoOrigin.getMem_pw().equals(password)) {
+			map.put("checkPassword",true);
+		}else {
+			map.put("checkPassword",false);
+		}
+		System.out.println("	[LoginController-@ResponseBody]  return : map ");
+		System.out.println("");
+		return map;
+	}
 	
+	// 아이디 찾기 페이지
+	@RequestMapping("/user/find_id_from")
+	public String findIdFrom() {
+		System.out.println("	[LoginController] findIdFrom() ");
+		System.out.println("	[LoginController] return :  ");
+		System.out.println("");
+		return"/user/find_id";
+	}
 	
+	// 아이디 찾기
+	@RequestMapping("/user/find_id")
+	public String findId(String mem_name,String mem_email,Model model) {
+		System.out.println("	[LoginController] findId() ");
+		System.out.println(mem_name);
+		System.out.println(mem_email);
+		String mem_id =memService.findUserId(mem_name, mem_email);
+		System.out.println(mem_id);
+		if(mem_id==null) {
+			model.addAttribute("errorMessage","일치하는 회원정보가 없습니다.");
+		}else {
+			String maskeId=maskId(mem_id);
+			maskeId=String.format("회원님의 아이디는 %s입니다",maskeId);
+			model.addAttribute("successMessage",maskeId);
+		}
+		System.out.println("	[LoginController] return :  ");
+		System.out.println("");
+		return"/user/find_id";
+	}
+	
+	// 아이디 마킹
+	private String maskId(String mem_id) {
+		if(mem_id.length() <=4) {
+			return "****";
+		}
+		
+		return mem_id.substring(0,2)+"****"+mem_id.substring(mem_id.length()-2);
+	}
 	
 }

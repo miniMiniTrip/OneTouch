@@ -1,6 +1,7 @@
 package com.onetouch.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -32,4 +33,20 @@ public interface OrderDao {
 	
 	//아이디로 검색
 	OrderVo selectOneByOrderId(int order_id);
+	
+	//주문상태 변경
+	int updateDeliveryInfo(Map<String, Object> params);
+	
+	//송장 변경
+	int updateTracking(Map<String, Object> params);
+	
+	//관리자 주문 조회
+	List<OrderVo> selectAllOrdersforAdmin();
+	
+	//배송상태별 조회
+	List<OrderVo> selectOrdersByStatus(String order_status);
+	
+	//검색
+	List<OrderVo> searchOrders(Map<String, Object> params);
+	
 }	

@@ -10,4 +10,6 @@ public interface MemService {
 
 	int insert(MemVo memVo) throws Exception;
 	
+	String findUserId(String name,String email);
+	
 }

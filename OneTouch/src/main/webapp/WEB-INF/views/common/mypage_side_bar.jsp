@@ -70,6 +70,39 @@
 
 
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const items = document.querySelectorAll(".menu-item");
+    const current = window.location.pathname + window.location.search;
+
+    items.forEach(item => {
+
+        // a 태그가 있으면 href 사용, 없으면 onclick 속성 사용
+        const linkTag = item.querySelector("a");
+
+        let targetUrl = null;
+
+        if (linkTag) {
+            targetUrl = linkTag.getAttribute("href");
+        } else {
+            const onclickValue = item.getAttribute("onclick");
+            if (onclickValue) {
+                // 예: location.href='/project/cart/list.do'
+                const match = onclickValue.match(/location\.href=['"]([^'"]+)['"]/);
+                if (match) targetUrl = match[1];
+            }
+        }
+
+        if (!targetUrl) return;
+
+        // 절대경로일 경우만 비교 (JSP contextPath 포함)
+        if (current === targetUrl || current.includes(targetUrl)) {
+            item.classList.add("active");
+        }
+    });
+});
+</script>
 
 </head>
 <body>
@@ -78,23 +111,23 @@
 				    
 				    <div class="menu-section">
 				        <div class="menu-item" onclick="location.href='${pageContext.request.contextPath}/cart/list.do'">
-				        	<a href="${pageContext.request.contextPath}/cart/list.do">🛒 장바구니</a>
+				        	<a href="${pageContext.request.contextPath}/cart/list.do">🛒 장바구니x</a>
 				        </div>
 				        
 				         <div class="menu-item" onclick="location.href='${pageContext.request.contextPath}/wishlist/list.do'"> 
-				        	<a href="${pageContext.request.contextPath}/wishlist/list.do">💝 찜</a>
+				        	<a href="${pageContext.request.contextPath}/wishlist/list.do">💝 찜x</a>
 				        </div>
 				       
 				        <div class="menu-item">
-				      	  <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}">🎯 주문/배송 조회</a>
+				      	  <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}">🎯 주문/배송 조회x</a>
                         </div>
                         
                         <div class="menu-item"> 
-                          <a href="${pageContext.request.contextPath}/mypage/skinprofile.do"> 🔬 피부 프로필 </a>
+                          <a href="${pageContext.request.contextPath}/mypage/skinprofile.do"> 🔬 피부 프로필 x</a>
                         </div>
                         
                         <div class="menu-item"> 
-                          <a href="${pageContext.request.contextPath}/skin/form.do"> 🔬 피부 진단 </a>
+                          <a href="${pageContext.request.contextPath}/skin/form.do"> 🔬 피부 진단 x</a>
                         </div>
 				   	</div>
 				    
@@ -107,8 +140,8 @@
 				        	<a href="${pageContext.request.contextPath}/mypage/qna_list">💝 상품 Q&A</a>
 				        </div> 
 				       
-				       
-				        <div class="menu-item">📝 내가 쓴 글</div>
+				       <!-- 내가 쓴 글 삭제  -->
+				        
 				    </div>
 				    
 				    <div class="menu-section">
@@ -117,10 +150,11 @@
 					</div>
 	                    
 					<div class="menu-section">
-						<div class="menu-item active">📝 로그아웃</div>
+						<div class="menu-item">📝 로그아웃</div>
 	            	</div>
 	            </div>
                 
+       
                 
 </body>
 </html>

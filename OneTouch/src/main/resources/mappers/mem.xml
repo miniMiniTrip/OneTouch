@@ -54,5 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	
+	<!-- 이름과 이메일로 아이디 찾기를 위한 유저 조회 -->
+	<select id="findUserId" parameterType="map" resultType="String">
+		SELECT mem_id FROM mem WHERE mem_name = #{mem_name} and mem_email = #{mem_email}
+	</select>
+	
+	
 	
 </mapper>
