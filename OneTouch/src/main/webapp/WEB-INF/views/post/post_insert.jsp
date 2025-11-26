@@ -310,6 +310,7 @@ function postInsert(f) {
         alert("모든 상품을 선택해주세요.");
         return; // 함수 종료
     }
+    
     // 해시 선택 검증
     let post_hashtag_array = [];
     let hashtagAllSelected = true;  // 모든 상품이 선택되었는지 여부를 체크할 변수
@@ -443,7 +444,7 @@ function postInsert(f) {
 			        <label for="skin-category">해시태그</label>
 			        <%--  
 			            <select id="skin-category" name="product_idx" class="form-control">
-			                <option value="">상품을 선택해주세요</option>
+			                <option value="">해시을 선택해주세요</option>
 			                <c:forEach var="productVo" items="${product_list_array }">
 			                    <option value="${productVo.product_idx }">${productVo.product_name }</option>
 			                </c:forEach>
@@ -451,12 +452,12 @@ function postInsert(f) {
 			        --%>
 			    </div>
 			    <div class="container mt-4">
-			        <!-- 상품 선택 폼을 추가하는 버튼 -->
+			        <!-- 해시 선택 폼을 추가하는 버튼 -->
 			        <button type="button" class="btn btn-primary" id="add-hashtag-btn">+</button>
 			
-			        <!-- 상품 폼을 담을 영역 -->
+			        <!-- 해시 폼을 담을 영역 -->
 			        <div id="hashtag-form-container" class="mt-4">
-			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
+			            <!-- 동적으로 추가된 해시 폼이 여기에 들어갑니다. -->
 			        </div>
 			    </div>
 			</div>

@@ -113,6 +113,21 @@ select.form-control {
 	padding-right: 40px;
 }
 
+/*  해시태그 폼 */
+.form-control-hashtag {
+	width : 200px;
+	padding: 12px 15px;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	font-size: 16px;
+	transition: border-color 0.2s;
+}
+
+.form-control-hashtag:focus {
+	outline: none;
+	border-color: #4751c9;
+	background-color: #fff;
+}
 .editor-area {
 	border: 1px solid #eee;
 	border-radius: 6px;
@@ -290,6 +305,27 @@ function postModify(f) {
         return;
     }
 
+	// 해시 선택 검증
+    let post_hashtag_array = [];
+    let hashtagAllSelected = true;  // 모든 상품이 선택되었는지 여부를 체크할 변수
+
+    // product_idx_array 배열에 상품 선택된 값을 추가
+    $('#hashtag-form-container .form-group input').each(function() {
+        let input_value = $(this).val().trim();
+        
+        if (input_value === "") {
+        	hashtagAllSelected = false; // 빈 값이 있으면 allSelected를 false로 설정
+        } else {
+        	post_hashtag_array.push(input_value);  // 비어있지 않으면 배열에 추가
+        }
+    });
+
+    // 해시 선택 검증
+    if (!hashtagAllSelected) {
+        alert("모든 해시태그를 작성해주세요.");
+        return; // 함수 종료
+    }
+
     // 제목 검증
     if (post_title == "") {
         alert("제목을 입력해주세요");
@@ -427,6 +463,20 @@ function postModify(f) {
 			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
 			        </div>
 			   </div>
+			   
+			   <!-- 해시태그 영역 -->
+   			    <div class="form-group">
+			        <label for="skin-category">해시태그</label>
+			    </div>
+			    <div class="container mt-4">
+			        <!-- 해시 선택 폼을 추가하는 버튼 -->
+			        <button type="button" class="btn btn-primary" id="add-hashtag-btn">+</button>
+			
+			        <!-- 해시 폼을 담을 영역 -->
+			        <div id="hashtag-form-container" class="mt-4">
+			            <!-- 동적으로 추가된 해시 폼이 여기에 들어갑니다. -->
+			        </div>
+			    </div>
 			</div>
 			   
 			   <!-- ----------------- 상풍 추가 js------------------ -->
@@ -461,10 +511,40 @@ function postModify(f) {
 				    $(document).on('click', '.remove-product-btn', function () {
 				        $(this).closest('.product-form').remove();
 				    });
+					
+				     
+				    /* ============================================
+				     *   1) 수정 화면: 기존 해시태그 목록 불러오기
+				     * ============================================ */
+				    let selectedHashtags = [
+				        <c:forEach var="tag" items="${postHashtagList}" varStatus="s">
+				            "${tag}" <c:if test="${!s.last}">,</c:if>
+				        </c:forEach>
+				    ];
 
+				    // 기존 해시태그 개수만큼 폼 자동 생성
+				    for (let tag of selectedHashtags) {
+				        addHashtagForm(tag);  // ★ 기존 해시태그는 값 넣어서 생성
+				    }
+
+				    /* ============================================
+				     *   2) + 버튼: 신규 해시태그 입력 폼 추가
+				     * ============================================ */
+				    $('#add-hashtag-btn').click(function () {
+				        addHashtagForm(null); // ★ null → 새 입력칸
+				    });
+
+				    /* ============================================
+				     *   3) - 버튼: 해시태그 입력폼 삭제
+				     * ============================================ */
+				    $(document).on('click', '.remove-hashtag-btn', function () {
+				        $(this).closest('.hashtag-form').remove();
+				    });
 				});
 				
-				//
+				/* ============================================
+				 *   상품 입력칸 생성 함수 
+				 * ============================================ */
 				function addProductForm(selectedValue) {
 
 				    let newFormGroup = `
@@ -493,6 +573,34 @@ function postModify(f) {
 				        $('#product-form-container .product-select:last').val(selectedValue);
 				    }
 				}
+				
+				/* ============================================
+				 *   해시태그 입력칸 생성 함수 
+				 * ============================================ */
+				function addHashtagForm(tagValue) {
+
+				    let newFormGroup = `
+				        <div class="form-group hashtag-form">
+				            <div class="d-flex align-items-center">
+				                <input type="text" class="form-control-hashtag"
+				                       name="post_hashtag_array"
+				                       placeholder="해시태그를 입력하세요">
+
+				                <button type="button"
+				                        class="btn btn-danger btn-sm remove-hashtag-btn ms-2">-</button>
+				            </div>
+				        </div>
+				    `;
+
+				    // HTML 삽입
+				    $('#hashtag-form-container').append(newFormGroup);
+
+				    // 기존 해시태그면 값 자동 세팅
+				    if (tagValue) {
+				        $('#hashtag-form-container .form-control-hashtag:last').val(tagValue);
+				    }
+				}
+				
 				</script>
 			   <!-- ----------------- end/상풍 추가 js------------------ -->
 
