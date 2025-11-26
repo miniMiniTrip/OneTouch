@@ -104,7 +104,7 @@
             color: #333;
             font-size: 14px;
             font-weight: 600;
-            margin-left: 65px;
+            margin-left: 67px;
         }
         
         .form-input {
@@ -184,6 +184,114 @@
             margin-top: 5px;
             display: none;
         }
+        
+        
+        
+        
+        
+        /*반응형 추가  */
+        
+        /* ========================= 반응형 ========================= */
+
+/* 태블릿 (max 992px) */
+@media (max-width: 992px) {
+
+    /* 전체 레이아웃 세로 배치 */
+    .password-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* 사이드바 너비 강제로 전체로 */
+    .sidebar {
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    .content {
+        width: 100%;
+        padding: 20px !important;
+        margin-left: 0 !important;
+    }
+
+    /* 비밀번호 박스 중앙 */
+    .password-detail {
+        margin: 20px auto !important;
+    }
+
+    /* 좌측 고정 margin 제거 */
+    .form-group {
+        margin-left: 0 !important;
+        text-align: center;
+    }
+
+    .form-label {
+        margin-left: 0 !important;
+    }
+
+    .btn-group {
+        margin-left: 0 !important;
+    }
+}
+
+/* 모바일 (max 768px) */
+@media (max-width: 768px) {
+
+    .password-detail {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0 !important;
+    }
+
+    .password-header,
+    .password-content {
+        padding: 20px 15px !important;
+    }
+
+    .form-input {
+        width: 90% !important;
+        max-width: 300px;
+    }
+}
+
+/* 작은 모바일 (max 480px) */
+@media (max-width: 480px) {
+
+    .content-header h2 {
+        font-size: 16px !important;
+    }
+
+    .password-icon {
+        font-size: 36px !important;
+    }
+
+    .password-title {
+        font-size: 18px !important;
+    }
+
+    .password-description {
+        font-size: 13px !important;
+    }
+
+    .btn {
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+    }
+    
+     .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center ;
+            margin-top: 25px;
+             margin-left: 110px !important; 
+        }
+        
+     
+    
+}
+       
+       
+        
     </style>
 </head>
 
