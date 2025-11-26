@@ -25,5 +25,6 @@ public interface WishlistDao {
 	int plusWishlistCount(int wishlist_idx);
 	int minusWishlistCount(int wishlist_idx);
 
-	
+	//헤더 찜 개수
+	int selectWishlistCount(int mem_idx); 
 }

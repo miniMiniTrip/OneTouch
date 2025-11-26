@@ -540,7 +540,7 @@
                     </div>
                 </div> -->
                  <!-- 사이드바 인크루드 -->
-                  <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
+				<%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
                  
                 <!-- Content -->
                 <div class="content">
@@ -588,7 +588,7 @@
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-12">
                                             <div class="product-image">
-                                                <a href="/product/detail.do?product_idx=${cart.product_idx}">
+                                                <a href="/product/detail?product_idx=${cart.product_idx}">
                                                     <c:choose>
                                                         <c:when test="${not empty cart.product_image_url}">
                                                             <img src="${pageContext.request.contextPath}/images/${cart.product_image_url}" 
@@ -605,7 +605,7 @@
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-12">
                                             <h5>
-                                                <a href="/product/detail.do?product_idx=${cart.product_idx}">
+                                                <a href="/product/detail?product_idx=${cart.product_idx}">
                                                     ${cart.product_name}
                                                 </a>
                                             </h5>
@@ -648,7 +648,7 @@
                                                 <button type="button" class="btn btn-outline-secondary" onclick="deleteSelected()">
                                                     선택삭제
                                                 </button>
-                                                <button type="button" class="btn btn-outline-secondary ml-2" onclick="location.href='/product/list.do'">
+                                                <button type="button" class="btn btn-outline-secondary ml-2" onclick="location.href='/product/list'">
                                                     계속 쇼핑하기
                                                 </button>
                                             </div>
@@ -698,20 +698,27 @@
     <!-- End Cart Section -->
     <c:import url="../common/footer.jsp" />
 
-    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
 
     <!-- ========================= JS here ========================= -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
+    // 프리로더 제거
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+    });
+    
     // 전체 선택/해제
     $('#checkAll').on('change', function() {
         $('.cart-check').prop('checked', $(this).prop('checked'));

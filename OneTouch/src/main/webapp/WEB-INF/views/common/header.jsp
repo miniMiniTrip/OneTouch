@@ -10,8 +10,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/glightbox.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
 <!-- jQuery -->
-
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <style>
@@ -409,13 +407,13 @@ document.addEventListener('click', function(e) {
                             <div class="wishlist">
                                 <a href="${pageContext.request.contextPath}/wishlist">
                                     <i class="lni lni-heart"></i> 
-                                    <span class="total-items">0</span>
+                                    <span class="total-items">${wishlistCount}</span>
                                 </a>
                             </div>
                             <div class="cart-items">
                                 <a href="javascript:void(0)" class="main-btn" id="cart-toggle">
                                     <i class="lni lni-cart"></i> 
-                                    <span class="total-items" id="cart-count">0</span>
+                                    <span class="total-items" id="cart-count">${cartCount}</span>
                                 </a>
 
                                 <!-- Shopping Cart Dropdown -->

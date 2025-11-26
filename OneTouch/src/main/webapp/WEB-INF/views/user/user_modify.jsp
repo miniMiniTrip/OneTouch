@@ -19,6 +19,308 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     
     <style>
+<<<<<<< HEAD
+/* ==================== 기본 레이아웃 ==================== */
+.member-section {
+    padding: 0;
+    background-color: #fff;
+    min-height: calc(100vh - 400px);
+}
+
+.member-container {
+    display: flex;
+    max-width: 100%;
+    margin: 0;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+}
+
+.content {
+    flex: 1;
+    padding: 40px;
+}
+
+.content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #5c6bc0;
+}
+
+.content-header h2 {
+    font-size: 18px;
+    color: #1A237E;
+    font-weight: 600;
+}
+
+.member-detail {
+    max-width: 700px;
+    margin-left: 150px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.section-title:first-of-type {
+    margin-top: 0;
+}
+
+/* ==================== 폼 스타일 ==================== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #5c6bc0;
+    box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.1);
+}
+
+.form-input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.zipcode-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.zipcode-input {
+    flex: 1;
+}
+
+.section-divider {
+    margin: 30px 0;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+}
+
+/* ==================== 버튼 스타일 ==================== */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 40px;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.btn-cancel {
+    background: #dc3545 !important;
+    color: white !important;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #c82333 !important;
+}
+
+.btn-submit {
+    background: #1A237E !important;
+    color: white !important;
+}
+
+.btn-submit:hover {
+    background: #4a5aaf !important;
+}
+
+.withdraw-btn {
+    display: inline-block;
+    margin-top: 50px;
+    color: #dc3545;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.withdraw-btn:hover {
+    color: #c82333;
+    text-decoration: underline;
+}
+
+.search-btn2 {
+    background: #1A237E;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.search-btn2:hover {
+    background: #4a5aaf !important;
+}
+
+/* ==================== 메시지 스타일 ==================== */
+.error-message {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+/* ==================== 프로필 사진 영역 ==================== */
+.profile-photo-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-photo-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-photo-preview {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.profile-photo-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #1A237E;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-photo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-photo-placeholder {
+    font-size: 48px;
+    color: #bdbdbd;
+}
+
+.profile-photo-info {
+    flex: 1;
+}
+
+.profile-photo-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-photo-info p {
+    font-size: 13px;
+    color: #757575;
+    margin-bottom: 5px;
+    line-height: 1.6;
+}
+
+.profile-photo-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-photo-upload,
+.btn-photo-delete {
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    border: none;
+}
+
+.btn-photo-upload {
+    background: #1A237E;
+    color: white;
+}
+
+.btn-photo-upload:hover {
+    background: #4a5aaf;
+}
+
+.btn-photo-delete {
+    background: red;
+    color: white;
+}
+
+.btn-photo-delete:hover {
+    background: darkred;
+}
+
+#photoFileInput {
+    display: none;
+}
+
+/* ========================= 모바일 반응형 ========================= */
+@media (max-width: 992px) {
+    .member-container {
+        flex-direction: column;
+        position: relative;
+    }
+=======
         .member-section {
             padding: 0;
             background-color: #fff;
@@ -323,156 +625,74 @@
         /* 반응형 */
         
         /* ... (기존 CSS 유지) ... */
+>>>>>>> 7cb33d731a9a2def9fac6a12c474eb81c2a62995
     
-    /* ========================= 마이페이지 메뉴 아코디언 및 반응형 스타일 추가 ========================= */
-    /* PC 사이드바 스타일 (mypage_side_bar.jsp에 있을 것으로 추정되나, 여기에 PC용 기본 스타일을 임시로 추가합니다.) */
-    .sidebar {
-        width: 250px; 
-        background: #fafafa;
-        border-right: 1px solid #e0e0e0;
-        padding: 30px 0;
-        min-height: calc(100vh - 400px); /* PC 높이 유지 */
+    .content {
+        padding: 20px;
+        width: 100%;
     }
-
-    /* 모바일 토글 버튼 스타일 (PC에서는 숨김) */
-    .mobile-menu-toggle {
-        display: none; 
-        padding: 12px 15px; 
-        background: #1A237E;
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.3s;
-        font-size: 18px; 
-        width: 100%; 
-        box-sizing: border-box;
+    
+    .member-detail {
+        margin-left: 0;
+        max-width: 100%;
     }
-
-    /* 메뉴 바디 (실제 사이드바 내용) 스타일 */
-    .menu-body {
-        overflow: hidden;
+    
+    .profile-photo-container {
+        flex-direction: column;
+        text-align: center;
     }
-
-    /* ========================= 반응형 (Media Queries) ========================= */
-    @media (max-width: 992px) {
-        .member-container {
-            flex-direction: column; 
-         
-        }
-        
-        .sidebar {
-            width: 100%; 
-            border-right: none !important;
-            border-bottom: 1px none #e0e0e0  !important;
-            min-height: auto;
-            
-            /* ⭐ 공백 제거 및 중앙 정렬 핵심 */
-            min-height: auto !important; 
-            padding: 0 !important;
-            display: flex !important; 
-            flex-direction: column;
-            align-items: center; /* 내부 요소 중앙 정렬 */
-        }
-        
-        /* 햄버거 버튼 스타일 (중앙에서 드롭다운 메뉴처럼 보이도록) */
-        .mobile-menu-toggle {
-            display: flex; /* 모바일에서 표시 */
-            max-width: 320px; 
-            width: 90%; 
-            margin: 15px auto; /* ⭐ 중앙 정렬 */
-            padding: 12px 15px; 
-            border-radius: 4px; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-        }
-
-        /* 메뉴 바디 (닫힌 상태: 공백 제거) */
-        .menu-body {
-            max-height: 0; 
-            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            
-            width: 90%; 
-            max-width: 320px; 
-            margin: 0 auto; /* 버튼 너비에 맞춰 중앙 정렬 */
-        }
-        
-        /* 메뉴가 펼쳐졌을 때의 스타일 */
-        .menu-body.active {
-            max-height: 1000px; 
-            padding-top: 10px !important; 
-            padding-bottom: 20px !important; 
-            
-            width: 90%; 
-            max-width: 320px;
-            margin: 0 auto 20px auto; 
-            
-            background: #fafafa; 
-            border: 1px solid #e0e0e0; 
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            border-top: none;
-        }
-
-        /* 콘텐츠 영역 */
-        .content {
-            padding: 30px 20px; 
-        }
-        .member-detail {
-            margin: 0 auto; 
-        }
+    
+    .profile-photo-buttons {
+        justify-content: center;
     }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+}
+
+@media (max-width: 576px) {
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
     </style>
     
     <script type="text/javascript">
-    
- // 파일 선택 창 열기
     function triggerFileInput() {
         document.getElementById('photoFileInput').click();
     }
 
-    // 파일 선택 시 미리보기
-    document.getElementById('photoFileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        
-        if (file) {
-            // 파일 크기 체크 (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('파일 크기는 5MB 이하여야 합니다.');
-                this.value = '';
-                return;
-            }
-            
-            // 파일 타입 체크
-            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-                alert('JPG 또는 PNG 파일만 업로드 가능합니다.');
-                this.value = '';
-                return;
-            }
-            
-            // 미리보기
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const photoPreview = document.getElementById('photoPreview');
-                photoPreview.innerHTML = '<img src="' + event.target.result + '" alt="프로필 사진">';
-            };
-            reader.readAsDataURL(file);
+    document.addEventListener('DOMContentLoaded', function() {
+        const photoInput = document.getElementById('photoFileInput');
+        if (photoInput) {
+            photoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('파일 크기는 5MB 이하여야 합니다.');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                        alert('JPG 또는 PNG 파일만 업로드 가능합니다.');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const photoPreview = document.getElementById('photoPreview');
+                        photoPreview.innerHTML = '<img src="' + event.target.result + '" alt="프로필 사진">';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         }
     });
 
-    // 사진 삭제
     function deletePhoto() {
         if (confirm('프로필 사진을 삭제하시겠습니까?')) {
             document.getElementById('photoFileInput').value = '';
@@ -480,13 +700,10 @@
             photoPreview.innerHTML = '<i class="lni lni-user profile-photo-placeholder"></i>';
         }
     }
-    
-    
     </script>
 </head>
 
 <body>
-    <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
@@ -495,13 +712,9 @@
             </div>
         </div>
     </div>
-    <!-- /End Preloader -->
 
-    <!-- Start Header Area -->
     <c:import url="../common/header.jsp" />
-    <!-- End Header Area -->
 
-    <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
@@ -520,14 +733,10 @@
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
 
-    <!-- Start Member Section -->
     <section class="member-section">
         <div class="container">
             <div class="member-container">
-            
-                <!-- 사이드바 인크루드 -->
                 <%@include file="../common/mypage_side_bar.jsp" %>
                 
                 <div class="content">
@@ -537,31 +746,29 @@
                     
                     <div class="success-message" id="successMsg"></div>
                     
-                    <!-- 회원정보 수정 폼 -->
                     <div class="member-detail">
                         <form id="memberForm" action="${pageContext.request.contextPath}/mypage/updateMember" method="post" enctype="multipart/form-data">
                             
-                            <!-- 프로필 사진 섹션 -->
-<div class="profile-photo-section">
-    <div class="profile-photo-container">
-        <div class="profile-photo-preview">
-            <div class="profile-photo-circle" id="photoPreview">
-                <i class="lni lni-user profile-photo-placeholder" id="photoPlaceholder"></i>
-            </div>
-        </div>
-        <div class="profile-photo-info">
-            <h4>프로필 사진</h4>
-            <p>JPG, PNG 파일 (최대 5MB)</p>
-            <p>권장 크기: 400x400px</p>
-            <div class="profile-photo-buttons">
-                <input type="file" id="photoFileInput" name="profilePhoto" accept="image/jpeg,image/png">
-                <button type="button" class="btn-photo-upload" onclick="triggerFileInput();">사진 업로드</button>
-                <button type="button" class="btn-photo-delete" onclick="deletePhoto();">삭제</button>
-            </div>
-        </div>
-    </div>
-</div>
-                            
+                            <div class="profile-photo-section">
+                                <div class="profile-photo-container">
+                                    <div class="profile-photo-preview">
+                                        <div class="profile-photo-circle" id="photoPreview">
+                                            <i class="lni lni-user profile-photo-placeholder"></i>
+                                        </div>
+                                    </div>
+                                    <div class="profile-photo-info">
+                                        <h4>프로필 사진</h4>
+                                        <p>JPG, PNG 파일 (최대 5MB)</p>
+                                        <p>권장 크기: 400x400px</p>
+                                        <div class="profile-photo-buttons">
+                                            <input type="file" id="photoFileInput" name="profilePhoto" accept="image/jpeg,image/png">
+                                            <button type="button" class="btn-photo-upload" onclick="triggerFileInput();">사진 업로드</button>
+                                            <button type="button" class="btn-photo-delete" onclick="deletePhoto();">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <h3 class="section-title">기본 정보</h3>
                             
                             <div class="form-group">
@@ -638,29 +845,23 @@
             </div>
         </div>
     </section>
-    <!-- End Member Section -->
 
-    <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
 
-    <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script>
-        // 폼 검증
         function validateForm() {
             let isValid = true;
             const form = document.getElementById('memberForm');
             
-            // 에러 메시지 초기화
             document.querySelectorAll('.error-message').forEach(msg => msg.style.display = 'none');
             
-            // 이름 검증
             const name = form.querySelector('input[name="name"]').value.trim();
             if (name === '') {
                 document.getElementById('nameError').textContent = '이름을 입력해주세요.';
@@ -668,7 +869,6 @@
                 isValid = false;
             }
             
-            // 이메일 검증
             const email = form.querySelector('input[name="email"]').value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (email === '' || !emailRegex.test(email)) {
@@ -677,7 +877,6 @@
                 isValid = false;
             }
             
-            // 휴대폰번호 검증
             const phone = form.querySelector('input[name="phone"]').value.trim();
             const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
             if (phone === '' || !phoneRegex.test(phone)) {
@@ -686,7 +885,6 @@
                 isValid = false;
             }
             
-            // 새 비밀번호 검증
             const newPassword = form.querySelector('input[name="newPassword"]').value;
             const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
             
@@ -707,27 +905,22 @@
             return isValid;
         }
         
-        // 우편번호 검색
         function searchZipcode() {
             alert('우편번호 검색 기능이 실행됩니다.');
-            // 실제 구현 시 우편번호 API 연동 (예: 카카오 우편번호 서비스)
         }
         
-        // 취소 확인
         function confirmCancel() {
             if (confirm('입력한 내용이 저장되지 않습니다. 계속하시겠습니까?')) {
                 history.back();
             }
         }
         
-        // 회원탈퇴 확인
         function confirmWithdraw() {
             if (confirm('정말로 회원을 탈퇴하시겠습니까?\n탈퇴 후 복구할 수 없습니다.')) {
                 location.href = '${pageContext.request.contextPath}/mypage/withdraw';
             }
         }
         
-        // 페이지 로드 시 성공 메시지 표시
         window.addEventListener('DOMContentLoaded', function() {
             const successMsg = '${param.success}';
             if (successMsg === 'true') {
@@ -741,7 +934,6 @@
             }
         });
         
-        // 프리로더 제거
         window.addEventListener('load', function() {
             const preloader = document.querySelector('.preloader');
             if (preloader) {
@@ -751,9 +943,6 @@
         });
     </script>
 
-    <!-- 푸터 인크루드 -->
     <%@include file="../common/footer.jsp" %>
-
-    <!-- End Footer Area -->
 </body>
 </html>

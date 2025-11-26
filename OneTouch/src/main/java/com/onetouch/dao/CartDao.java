@@ -29,5 +29,8 @@ public interface CartDao {
 	int delete(int cart_idx);
 	//결제시 삭제
 	int deletePaymentComplete(Map<String, Object> map);
+	
+	//헤더 카트 개수
+	int selectCartCount(int mem_idx); 
 
 }
