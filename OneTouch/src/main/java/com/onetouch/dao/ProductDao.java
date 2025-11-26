@@ -18,7 +18,8 @@ public interface ProductDao {
     List<ProductVo> selectListAdmin(Map<String, Object> map);
     List<ProductVo> selectRemainListByProduct(int product_idx); //재고조회
     List<ProductVo> selectRemainList(Map<String, Object> map);// 전체재고 이력조회
-    List<String> selectDetailImages(int product_idx);
+    List<String> selectUpperDetailImages(int product_idx);
+    List<String> selectLowerDetailImages(int product_idx);
     String selectMainImage(int product_idx);
     
     // 단일상품조회
@@ -61,6 +62,7 @@ public interface ProductDao {
     
     //sw : 여러 product_idx로 상품 조회(hashtag 연동용)
     public List<ProductVo> selectByIds(List<Integer> productIds);
+	List<ProductVo> selectProductImageProductIdxList(int product_idx);
 
 
 }
