@@ -56,5 +56,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where product_idx = #{product_idx} 
 	</update>
 	
+	<!-- 헤더 찜 개수 -->
+	<select id ="selectWishlistCount" resultType="int">
+		select count(*) from wishlist where mem_idx = #{mem_idx}
+	</select>
+	
+	
 </mapper>
 

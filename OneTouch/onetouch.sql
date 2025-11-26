@@ -342,7 +342,6 @@ CREATE TABLE post (
 --    CONSTRAINT chk_post_rating CHECK (post_rating IS NULL OR (post_rating BETWEEN 1 AND 5))
 ) COMMENT '게시글';
 
-
 -- post 카테고리 컬럼 1개 추가되었습니다
 ALTER TABLE post ADD COLUMN post_category VARCHAR(100) NOT NULL;
 -- post 제목 컬럼 1개 추가되었습니다

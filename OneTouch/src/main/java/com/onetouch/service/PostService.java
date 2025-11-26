@@ -15,7 +15,7 @@ public interface PostService {
 
 	Map<String, Object> selectFreeBoard(Map<String, Object> map);
 
-	int postInsert(PostVo postVo) throws Exception;
+	int postInsert(PostVo postVo,String[] post_hashtag_array) throws Exception;
 
 	Map<String, Object> postLikeUpdate(Map<String, Object> map) throws Exception;
 

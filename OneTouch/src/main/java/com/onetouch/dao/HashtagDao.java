@@ -10,7 +10,7 @@ import com.onetouch.vo.HashtagVo;
 
 @Mapper
 public interface HashtagDao {
-	//관리용>
+	//관리용
 	
 	//1. 전체조회
 	public List<HashtagVo> selectList();
@@ -26,23 +26,32 @@ public interface HashtagDao {
 	
 	//게시글용
 	
-	//해시태그 작성용>
+	//해시태그 작성용
 	//1. 중복검사용(3번 쓰기 전에 한 번 더 사용)
-	public List<String> selectByNames(HashtagVo vo);
+	public List<HashtagVo> selectByNames(List<String> hashtag_names);
 	
 	//2. 생성
-	public List<String> insert(HashtagVo vo);
+	public int insert(List<String> hashtag_names);
 	
-	//3. 글쓰기 시 일괄 등록
-	public Map<String,Object> insertPostHashtag(HashtagVo vo);
+	//3-1. 글쓰기 시 일괄 등록 (POST용)
+	public int insertPostHashtag(Map<String, Object> params);
 	
-	//4. 글에서 해시태그 연결 끊기
+	//3-2. 상품 등록 시 일괄 등록 (PRODUCT용)
+	public int insertProductHashtag(Map<String, Object> params);
+	
+	//4-1. 글에서 해시태그 연결 끊기
 	public int deletePostHashtagByPost(int post_idx);
 	
-	// 각 서비스단 조회용>
+	//4-2. 상품에서 해시태그 연결 끊기
+	public int deleteProductHashtagByProduct(int product_idx);
+	
+	// 각 서비스단 조회용
 	
 	//게시글 해시태그 출력
-	public String selectHashNamesByPost(int post_idx);
+	public List<String> selectHashNamesByPost(int post_idx);
+	
+	//상품 해시태그 출력
+	public List<String> selectHashNamesByProduct(int product_idx);
 	
 	//해시태그의 idx 조회
 	public int selectByIdx (int post_idx);

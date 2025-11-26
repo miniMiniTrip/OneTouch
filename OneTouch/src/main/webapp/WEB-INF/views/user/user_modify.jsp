@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     
     <style>
+<<<<<<< HEAD
 /* ==================== 기본 레이아웃 ==================== */
 .member-section {
     padding: 0;
@@ -319,6 +320,312 @@
         flex-direction: column;
         position: relative;
     }
+=======
+        .member-section {
+            padding: 0;
+            background-color: #fff;
+            min-height: calc(100vh - 400px);
+        }
+        
+        .member-container {
+            display: flex;
+            max-width: 100%;
+            margin: 0;
+            background: transparent;
+            border-radius: 0;
+            overflow: visible;
+            box-shadow: none;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+        
+        .content-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #5c6bc0;
+        }
+        
+        .content-header h2 {
+            font-size: 18px;
+            color: #1A237E;
+            font-weight: 600;
+        }
+        
+        .member-detail {
+            max-width: 700px;
+            margin-left: 150px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+        
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #5c6bc0;
+            box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.1);
+        }
+        
+        .form-input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+        
+        .zipcode-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .zipcode-input {
+            flex: 1;
+        }
+        
+        .section-divider {
+            margin: 30px 0;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            min-width: 120px;
+        }
+        
+        .btn-cancel {
+            background: red !important;
+            color: white !important;
+            padding: 4px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: auto;
+            transition: background 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background: rgb(255,100,100) !important; 
+            border-color: #999 !important;
+        }
+        
+        .btn-submit {
+            background: #1A237E !important;
+            color: white !important;
+        }
+        
+        .btn-submit:hover {
+            background: #4a5aaf !important;
+        }
+        
+        .withdraw-btn {
+            display: inline-block;
+            margin-top: 50px;
+            color: #dc3545;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .withdraw-btn:hover {
+            color: #c82333;
+            text-decoration: underline;
+        }
+        
+        .search-btn2 {
+            background: #1A237E;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            min-width: 120px;
+        }
+        
+        .search-btn:hover {
+            background: #4a5aaf !important;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        /* 프로필 사진 영역 */
+        .profile-photo-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .profile-photo-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .profile-photo-preview {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+        
+        .profile-photo-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #1A237E;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-photo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-photo-placeholder {
+            font-size: 48px;
+            color: #bdbdbd;
+        }
+        
+        .profile-photo-info {
+            flex: 1;
+        }
+        
+        .profile-photo-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .profile-photo-info p {
+            font-size: 13px;
+            color: #757575;
+            margin-bottom: 5px;
+            line-height: 1.6;
+        }
+        
+        .profile-photo-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-photo-upload,
+        .btn-photo-delete {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            border: none;
+        }
+        
+        .btn-photo-upload {
+            background: #1A237E;
+            color: white;
+        }
+        
+        .btn-photo-upload:hover {
+            background: #4a5aaf;
+        }
+        
+        .btn-photo-delete {
+            background: red;
+            color: white;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .btn-photo-delete:hover {
+            background: rgb(255,100,100); 
+            border-color: #999;
+        }
+        
+        /* 파일 input 숨김 */
+        #photoFileInput {
+            display: none;
+        }
+        
+        
+        
+        
+        
+        
+        
+        /* 반응형 */
+        
+        /* ... (기존 CSS 유지) ... */
+>>>>>>> 7cb33d731a9a2def9fac6a12c474eb81c2a62995
     
     .content {
         padding: 20px;
@@ -523,7 +830,7 @@
                             
                             <div class="form-group">
                                 <label class="form-label">상세주소</label>
-                                <input type="text" class="form-input" name="detailAddress" value="${sessionScope.loginMember.detailAddress}">
+                                <input type="text" class="form-input" name="detailAddress" value="${memVo.mem_addr_more}">
                             </div>
                             
                             <div class="btn-group">

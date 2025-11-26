@@ -93,7 +93,7 @@ header {
 	padding: 12px 15px;
 	border: 1px solid #eee;
 	border-radius: 6px;
-	font-size: 14px;
+	font-size: 16px;
 	transition: border-color 0.2s;
 	background-color: #fafafa;
 }
@@ -112,7 +112,20 @@ select.form-control {
 	background-position: right 15px center;
 	padding-right: 40px;
 }
+.form-control-hashtag {
+	width : 200px;
+	padding: 12px 15px;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	font-size: 16px;
+	transition: border-color 0.2s;
+}
 
+.form-control-hashtag:focus {
+	outline: none;
+	border-color: #4751c9;
+	background-color: #fff;
+}
 .editor-area {
 	border: 1px solid #eee;
 	border-radius: 6px;
@@ -297,6 +310,26 @@ function postInsert(f) {
         alert("모든 상품을 선택해주세요.");
         return; // 함수 종료
     }
+    // 해시 선택 검증
+    let post_hashtag_array = [];
+    let hashtagAllSelected = true;  // 모든 상품이 선택되었는지 여부를 체크할 변수
+
+    // product_idx_array 배열에 상품 선택된 값을 추가
+    $('#hashtag-form-container .form-group input').each(function() {
+        let input_value = $(this).val().trim();
+        
+        if (input_value === "") {
+        	hashtagAllSelected = false; // 빈 값이 있으면 allSelected를 false로 설정
+        } else {
+        	post_hashtag_array.push(input_value);  // 비어있지 않으면 배열에 추가
+        }
+    });
+
+    // 해시 선택 검증
+    if (!hashtagAllSelected) {
+        alert("모든 해시태그를 작성해주세요.");
+        return; // 함수 종료
+    }
 
     // 제목 검증
     if (post_title == "") {
@@ -405,11 +438,32 @@ function postInsert(f) {
 			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
 			        </div>
 			    </div>
+			    
+			    <div class="form-group">
+			        <label for="skin-category">해시태그</label>
+			        <%--  
+			            <select id="skin-category" name="product_idx" class="form-control">
+			                <option value="">상품을 선택해주세요</option>
+			                <c:forEach var="productVo" items="${product_list_array }">
+			                    <option value="${productVo.product_idx }">${productVo.product_name }</option>
+			                </c:forEach>
+			            </select>
+			        --%>
+			    </div>
+			    <div class="container mt-4">
+			        <!-- 상품 선택 폼을 추가하는 버튼 -->
+			        <button type="button" class="btn btn-primary" id="add-hashtag-btn">+</button>
+			
+			        <!-- 상품 폼을 담을 영역 -->
+			        <div id="hashtag-form-container" class="mt-4">
+			            <!-- 동적으로 추가된 상품 폼이 여기에 들어갑니다. -->
+			        </div>
+			    </div>
 			</div>
 			
-			<!-- ----------------- 상품 추가 js ------------------ -->
 			<script>
 			    $(document).ready(function() {
+			<!-- ----------------- 상품 추가 js ------------------ -->
 			        $('#add-product-btn').click(function() {
 			            // 새로운 상품 선택 폼을 생성할 HTML 코드
 			            let newFormGroup = `
@@ -439,10 +493,38 @@ function postInsert(f) {
 			            formGroup.remove(); // 해당 폼을 삭제
 			        });
 			        
+			<!-- ----------------- end/상품 추가 js ------------------ -->
+			        
+			<!-- ----------------- 해시태그 추가 js ------------------ -->
+			        $('#add-hashtag-btn').click(function() {
+			            // 새로운 해시태그 폼을 생성할 HTML 코드
+			            let newFormGroup = `
+			                <div class="form-group hashtag-form">
+			                    <div class="d-flex align-items-center">
+			                    	<input type="text" class="form-control-hashtag" name="post_hashtag_array" placeholder="해시태그를 입력하세요">
+			                      
+			                        <!-- 해시태그 삭제 버튼 추가 (select 오른쪽) -->
+			                        <button type="button" class="btn btn-danger btn-sm remove-hashtag-btn ms-2">-</button>
+			                    </div>
+			                </div>
+			            `;
+			
+			            // 생성된 폼을 화면에 추가
+			            $('#hashtag-form-container').append(newFormGroup);
+			        });
+			
+			        // 해시태그 삭제 버튼 클릭 시 해당 폼 삭제
+			        $(document).on('click', '.remove-hashtag-btn', function() {
+			            // 클릭된 삭제 버튼의 부모 div.hashtag-form을 찾고 삭제
+			            let formGroup = $(this).closest('.hashtag-form');
+			            console.log(formGroup); // 콘솔에서 삭제될 요소 확인
+			            formGroup.remove(); // 해당 폼을 삭제
+			        });
+			<!-- ----------------- end/해시태그 추가 js ------------------ -->
+			        
 
 			    });
 			</script>
-			<!-- ----------------- end/상품 추가 js ------------------ -->
 			
 			
 
