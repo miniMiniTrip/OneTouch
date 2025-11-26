@@ -1,3 +1,6 @@
+-- idx 초기화
+ALTER TABLE posts AUTO_INCREMENT = 1;
+
 -- ========================================
 -- 초기 데이터
 -- ========================================
@@ -47,6 +50,8 @@ INSERT INTO hashtag (hashtag_name) VALUES
 ('클렌징폼'), ('건성클렌징'), ('남자보습세안'),
 ('모공흡착'), ('화산송이'), ('강력세정');
 
+
+select * from hashtag
 
 
 INSERT INTO hashtag (hashtag_name) VALUES

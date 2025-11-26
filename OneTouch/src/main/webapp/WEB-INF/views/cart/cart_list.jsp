@@ -588,7 +588,7 @@
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-12">
                                             <div class="product-image">
-                                                <a href="/product/detail.do?product_idx=${cart.product_idx}">
+                                                <a href="/product/detail?product_idx=${cart.product_idx}">
                                                     <c:choose>
                                                         <c:when test="${not empty cart.product_image_url}">
                                                             <img src="${pageContext.request.contextPath}/images/${cart.product_image_url}" 
@@ -605,7 +605,7 @@
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-12">
                                             <h5>
-                                                <a href="/product/detail.do?product_idx=${cart.product_idx}">
+                                                <a href="/product/detail?product_idx=${cart.product_idx}">
                                                     ${cart.product_name}
                                                 </a>
                                             </h5>
@@ -648,7 +648,7 @@
                                                 <button type="button" class="btn btn-outline-secondary" onclick="deleteSelected()">
                                                     선택삭제
                                                 </button>
-                                                <button type="button" class="btn btn-outline-secondary ml-2" onclick="location.href='/product/list.do'">
+                                                <button type="button" class="btn btn-outline-secondary ml-2" onclick="location.href='/product/list'">
                                                     계속 쇼핑하기
                                                 </button>
                                             </div>
