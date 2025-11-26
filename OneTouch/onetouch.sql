@@ -47,8 +47,6 @@ CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem
 ALTER TABLE `otdb`.`mem` 
 ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
 
-
--- 아잇 왜 또 녹화하려니 안됨
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
 
@@ -343,7 +341,6 @@ CREATE TABLE post (
 --    CONSTRAINT chk_post_comment_count CHECK (post_comment_count >= 0),
 --    CONSTRAINT chk_post_rating CHECK (post_rating IS NULL OR (post_rating BETWEEN 1 AND 5))
 ) COMMENT '게시글';
-
 
 -- post 카테고리 컬럼 1개 추가되었습니다
 ALTER TABLE post ADD COLUMN post_category VARCHAR(100) NOT NULL;

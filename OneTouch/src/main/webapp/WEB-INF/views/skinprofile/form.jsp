@@ -246,207 +246,277 @@
 
 .question-number {
     font-size: 12px;
-    color: #5c6bc0;
+    color: #666;
     font-weight: 600;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 5px;
 }
 
 .question-text {
     font-size: 18px;
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ==================== 선택지 카드 스타일 (1-4번 질문용) ==================== */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.option-card {
+    position: relative;
+    cursor: pointer;
+    border: 3px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px 20px;
+    transition: all 0.3s;
+    background: #f8f9fa;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-card:hover {
+    border-color: #5c6bc0;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(92, 107, 192, 0.2);
+}
+
+.option-card.selected {
+    border-color: #5c6bc0;
+    background: linear-gradient(135deg, #e8eaf6 0%, #f0f2ff 100%);
+    box-shadow: 0 8px 16px rgba(92, 107, 192, 0.3);
+}
+
+.option-card-icon {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.option-card-text {
+    font-size: 16px;
     font-weight: 600;
     color: #333;
-    line-height: 1.5;
-    margin: 0;
+    transition: all 0.3s;
 }
 
-/* ==================== 선택지 스타일 ==================== */
-.options-container {
+.option-card.selected .option-card-text {
+    color: #5c6bc0;
+}
+
+.option-card-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: #5c6bc0;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.option-card.selected .option-card-check {
+    display: flex;
+}
+
+/* ==================== 피부톤 이미지 카드 스타일 ==================== */
+.skin-tone-options {
     display: grid;
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 10px;
 }
 
-.option-item {
+.skin-tone-card {
     position: relative;
+    cursor: pointer;
+    border: 3px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    background: #f8f9fa;
 }
 
+.skin-tone-card:hover {
+    border-color: #5c6bc0;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(92, 107, 192, 0.2);
+}
+
+.skin-tone-card.selected {
+    border-color: #5c6bc0;
+    background: linear-gradient(135deg, #e8eaf6 0%, #f0f2ff 100%);
+    box-shadow: 0 8px 16px rgba(92, 107, 192, 0.3);
+}
+
+.skin-tone-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.skin-tone-label {
+    padding: 15px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    background: white;
+    transition: all 0.3s;
+}
+
+.skin-tone-card.selected .skin-tone-label {
+    color: #5c6bc0;
+    background: linear-gradient(135deg, #e8eaf6 0%, #f0f2ff 100%);
+}
+
+.skin-tone-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: #5c6bc0;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.skin-tone-card.selected .skin-tone-check {
+    display: flex;
+}
+
+/* 숨겨진 라디오 버튼 */
 .option-input {
     position: absolute;
     opacity: 0;
-    pointer-events: none;
+    width: 0;
+    height: 0;
 }
 
-.option-label {
-    display: flex;
-    align-items: center;
-    padding: 18px 20px;
-    background: #f8f9fa;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 15px;
-    color: #333;
-    font-weight: 500;
-}
-
-.option-label:hover {
-    background: #fff;
-    border-color: #5c6bc0;
-    transform: translateX(5px);
-}
-
-.option-input:checked + .option-label {
-    background: #e8eaf6;
-    border-color: #5c6bc0;
-    color: #5c6bc0;
-    font-weight: 600;
-}
-
-.option-radio {
-    width: 22px;
-    height: 22px;
-    border: 2px solid #e0e0e0;
-    border-radius: 50%;
-    margin-right: 15px;
-    position: relative;
-    flex-shrink: 0;
-    transition: all 0.3s;
-}
-
-.option-input:checked + .option-label .option-radio {
-    border-color: #5c6bc0;
-    background: #5c6bc0;
-}
-
-.option-input:checked + .option-label .option-radio::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-/* ==================== 버튼 영역 ==================== */
+/* ==================== 버튼 스타일 ==================== */
 .button-container {
     display: flex;
     gap: 15px;
     margin-top: 30px;
-    justify-content: space-between;
-}
-
-.btn-secondary-custom {
-    background: #fff;
-    color: #666;
-    padding: 12px 28px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-secondary-custom:hover {
-    background: #f8f9fa;
-    border-color: #999;
-    color: #333;
-}
-
-.btn-secondary-custom:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    justify-content: center;
 }
 
 .btn-primary-custom {
-    background: #5c6bc0;
+    padding: 14px 35px;
+    background: linear-gradient(135deg, #5c6bc0 0%, #7e8fd4 100%);
     color: white;
-    padding: 12px 28px;
     border: none;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
 }
 
-.btn-primary-custom:hover {
-    background: #4a5aaf;
+.btn-primary-custom:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+    box-shadow: 0 6px 16px rgba(92, 107, 192, 0.4);
 }
 
 .btn-primary-custom:disabled {
     background: #ccc;
     cursor: not-allowed;
-    transform: none;
+    box-shadow: none;
 }
 
-/* ==================== 완료 상태 ==================== */
-.completion-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background: #d4edda;
-    color: #155724;
-    border-radius: 20px;
-    font-size: 12px;
+.btn-secondary-custom {
+    padding: 14px 35px;
+    background: white;
+    color: #5c6bc0;
+    border: 2px solid #5c6bc0;
+    border-radius: 8px;
+    font-size: 15px;
     font-weight: 600;
-    margin-left: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-secondary-custom:hover:not(:disabled) {
+    background: #f0f2ff;
+    transform: translateY(-2px);
+}
+
+.btn-secondary-custom:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
 }
 
 /* ==================== 반응형 ==================== */
-@media (max-width: 1200px) {
-    .content {
-        padding: 40px;
-    }
-}
-
-@media (max-width: 992px) {
-    .mypage-container {
-        flex-direction: column;
-    }
-    
+@media (max-width: 991px) {
+    /* 모바일에서 사이드바 숨김 */
     .sidebar {
-        width: 100%;
-        min-height: auto;
-        border-right: none;
-        border-bottom: 1px solid #e0e0e0;
+        display: none;
     }
     
     .content {
         padding: 30px 20px;
     }
     
+    .content-header h2 {
+        font-size: 20px;
+    }
+    
     .progress-steps {
         flex-wrap: wrap;
         gap: 10px;
     }
+    
+    .progress-step {
+        font-size: 11px;
+    }
 }
 
 @media (max-width: 768px) {
-    .question-card {
-        padding: 20px;
+    /* 모든 카드를 1열로 */
+    .options-grid {
+        grid-template-columns: 1fr;
     }
     
-    .question-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+    .skin-tone-options {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .skin-tone-image {
+        height: 200px;
+    }
+    
+    .question-header {
+        flex-direction: column;
+        text-align: center;
     }
     
     .question-text {
         font-size: 16px;
-    }
-    
-    .option-label {
-        padding: 14px 16px;
-        font-size: 14px;
     }
     
     .button-container {
@@ -458,9 +528,33 @@
         width: 100%;
     }
 }
+
+@media (max-width: 576px) {
+    .content {
+        padding: 20px 15px;
+    }
+    
+    .question-card {
+        padding: 20px;
+    }
+    
+    .progress-container {
+        padding: 15px;
+    }
+}
+
     </style>
 </head>
+
 <body>
+    <!--[if lte IE 9]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+        your experience and security.
+      </p>
+    <![endif]-->
+
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
@@ -471,11 +565,11 @@
         </div>
     </div>
     <!-- /End Preloader -->
-
+    
     <!-- Start Header Area -->
     <c:import url="../common/header.jsp" />
     <!-- End Header Area -->
-
+    
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
@@ -487,8 +581,8 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="${pageContext.request.contextPath}/"><i class="lni lni-home"></i> 홈</a></li>
-                        <li>마이페이지</li>
+                        <li><a href="${pageContext.request.contextPath}/main.do"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="${pageContext.request.contextPath}/mypage/main.do">마이페이지</a></li>
                         <li>피부 진단</li>
                     </ul>
                 </div>
@@ -502,291 +596,267 @@
         <div class="container">
             <div class="mypage-container">
                 
-                <!-- ==================== Sidebar ==================== -->
+                <!-- 사이드바 -->
                 <div class="sidebar">
-                    <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
+                    <div class="sidebar-header">
+                        마이페이지
+                    </div>
+                    <div class="sidebar-subtitle">
+                        ${user.mem_name}님 환영합니다
+                    </div>
                     
-                    <!-- 쇼핑 메뉴 -->
                     <div class="menu-section">
-                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            🛒 장바구니
+                        <div class="menu-title">쇼핑 정보</div>
+                        <a href="${pageContext.request.contextPath}/mypage/order.do" class="menu-item">
+                            주문 · 배송 조회
                         </a>
-                        
-                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            💝 찜
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            🎯 주문/배송 조회
+                        <a href="${pageContext.request.contextPath}/mypage/wishlist.do" class="menu-item">
+                            찜 목록
                         </a>
                     </div>
                     
-                    <!-- 나의 활동 -->
                     <div class="menu-section">
-                        <div class="menu-title">나의 활동</div>
-                        
-                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            💬 상품 Q&A
+                        <div class="menu-title">피부 관리</div>
+                        <a href="${pageContext.request.contextPath}/skinprofile/form.do" class="menu-item active">
+                            피부 진단
                         </a>
-                        
-                        <!-- 피부 진단 - 현재 페이지 -->
-                        <a href="${pageContext.request.contextPath}/skin/form.do" 
-                           class="menu-item active">
-                            🔬 피부 진단
+                        <a href="${pageContext.request.contextPath}/mypage/skinprofile.do" class="menu-item">
+                            내 피부 프로필
                         </a>
                     </div>
                     
-                    <!-- 회원 정보 -->
                     <div class="menu-section">
                         <div class="menu-title">회원 정보</div>
-                        
-                        <a href="${pageContext.request.contextPath}/member/modify.do" 
-                           class="menu-item">
-                            👥 회원정보 수정
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/member/address.do" 
-                           class="menu-item">
-                            🔒 배송지 관리
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/member/notification.do" 
-                           class="menu-item">
-                            📧 알림톡신청 관리
-                        </a>
-                    </div>
-                    
-                    <!-- 로그아웃 -->
-                    <div class="menu-section">
-                        <a href="${pageContext.request.contextPath}/member/logout.do" 
-                           class="menu-item"
-                           onclick="return confirm('로그아웃 하시겠습니까?');">
-                            📝 로그아웃
+                        <a href="${pageContext.request.contextPath}/mypage/modify.do" class="menu-item">
+                            회원정보 수정
                         </a>
                     </div>
                 </div>
                 
-                <!-- ==================== Content ==================== -->
+                <!-- 컨텐츠 영역 -->
                 <div class="content">
-                    <!-- Content Header -->
+                    
                     <div class="content-header">
                         <div>
-                            <h2>피부 타입 진단</h2>
+                            <h2>🔍 피부 진단</h2>
                             <p class="content-subtitle">
-                                5가지 질문으로 나만의 피부 타입을 알아보세요.<br>
-                                맞춤형 제품 추천을 받으실 수 있습니다.
+                                간단한 5개 질문으로 당신의 피부 타입을 분석하고 맞춤 상품을 추천받아보세요.
                             </p>
                         </div>
                     </div>
                     
-                    <!-- 진행 표시기 -->
+                    <!-- 진행 표시 -->
                     <div class="progress-container">
-                        <div class="progress-steps" id="progressSteps">
-                            <div class="progress-step active" data-step="1">
-                                <span class="step-number">1</span>
-                                <span>피지 분비</span>
+                        <div class="progress-steps">
+                            <div class="progress-step active">
+                                <div class="step-number">1</div>
+                                <span>피부 유형</span>
                             </div>
-                            <div class="progress-step" data-step="2">
-                                <span class="step-number">2</span>
-                                <span>피부 민감도</span>
+                            <div class="progress-step">
+                                <div class="step-number">2</div>
+                                <span>트러블</span>
                             </div>
-                            <div class="progress-step" data-step="3">
-                                <span class="step-number">3</span>
-                                <span>색소 침착</span>
+                            <div class="progress-step">
+                                <div class="step-number">3</div>
+                                <span>색소 변화</span>
                             </div>
-                            <div class="progress-step" data-step="4">
-                                <span class="step-number">4</span>
+                            <div class="progress-step">
+                                <div class="step-number">4</div>
                                 <span>주름</span>
                             </div>
-                            <div class="progress-step" data-step="5">
-                                <span class="step-number">5</span>
+                            <div class="progress-step">
+                                <div class="step-number">5</div>
                                 <span>피부톤</span>
                             </div>
                         </div>
                         <div class="progress-bar-wrapper">
-                            <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+                            <div class="progress-bar-fill" id="progressBar" style="width: 20%;"></div>
                         </div>
                     </div>
                     
-                    <!-- 진단 폼 -->
-                    <form method="get" id="skinDiagnosisForm">
+                    <div class="form-container">
                         
-                        <!-- 질문 1: 피지 분비 -->
-                        <div class="question-card active" data-question="1">
-                            <div class="question-header">
-                                <div class="question-icon">💧</div>
-                                <div class="question-title">
-                                    <div class="question-number">Question 1 of 5</div>
-                                    <h3 class="question-text">얼굴에 기름이 많다고 느껴지거나, 세안을 한 뒤 1시간 정도 지나면 기름이 나오시나요?</h3>
+                        <form method="get" id="skinDiagnosisForm">
+                            
+                            <!-- 질문 1: 피부 타입 -->
+                            <div class="question-card active" data-question="1">
+                                <div class="question-header">
+                                    <div class="question-icon">💧</div>
+                                    <div class="question-title">
+                                        <div class="question-number">Question 1 of 5</div>
+                                        <h3 class="question-text">얼굴에 기름이 많다고 느껴지거나, 세안을 한 뒤 1시간 정도 지나면 기름이 나오시나요?</h3>
+                                    </div>
+                                </div>
+                                
+                                <div class="options-grid">
+                                    <div class="option-card" data-name="skin1" data-value="1">
+                                        <input type="radio" name="skin1" value="1" id="skin1_1" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">🌊</div>
+                                        <div class="option-card-text">전체적으로<br>나온다</div>
+                                    </div>
+                                    
+                                    <div class="option-card" data-name="skin1" data-value="2">
+                                        <input type="radio" name="skin1" value="2" id="skin1_2" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">💦</div>
+                                        <div class="option-card-text">이마랑 코 쪽<br>위주로 나온다</div>
+                                    </div>
+                                    
+                                    <div class="option-card" data-name="skin1" data-value="3">
+                                        <input type="radio" name="skin1" value="3" id="skin1_3" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">✨</div>
+                                        <div class="option-card-text">안 나온다</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="options-container">
-                                <div class="option-item">
-                                    <input type="radio" name="skin1" value="1" id="skin1_1" class="option-input">
-                                    <label for="skin1_1" class="option-label">
-                                        <span class="option-radio"></span>
-                                        전체적으로 나온다
-                                    </label>
+                            
+                            <!-- 질문 2: 트러블 -->
+                            <div class="question-card" data-question="2">
+                                <div class="question-header">
+                                    <div class="question-icon">🩹</div>
+                                    <div class="question-title">
+                                        <div class="question-number">Question 2 of 5</div>
+                                        <h3 class="question-text">피부가 조그마한 자극에도 금방 붉어지거나, 피부 질환 치료를 받으신 적이 있나요?</h3>
+                                    </div>
                                 </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin1" value="2" id="skin1_2" class="option-input">
-                                    <label for="skin1_2" class="option-label">
-                                        <span class="option-radio"></span>
-                                        이마랑 코 쪽 위주로 나온다
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin1" value="3" id="skin1_3" class="option-input">
-                                    <label for="skin1_3" class="option-label">
-                                        <span class="option-radio"></span>
-                                        안 나온다
-                                    </label>
+                                
+                                <div class="options-grid">
+                                    <div class="option-card" data-name="skin2" data-value="1">
+                                        <input type="radio" name="skin2" value="1" id="skin2_1" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">🔴</div>
+                                        <div class="option-card-text">그렇다</div>
+                                    </div>
+                                    
+                                    <div class="option-card" data-name="skin2" data-value="2">
+                                        <input type="radio" name="skin2" value="2" id="skin2_2" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">✅</div>
+                                        <div class="option-card-text">아니다</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            
+                            <!-- 질문 3: 색소 변화 -->
+                            <div class="question-card" data-question="3">
+                                <div class="question-header">
+                                    <div class="question-icon">☀️</div>
+                                    <div class="question-title">
+                                        <div class="question-number">Question 3 of 5</div>
+                                        <h3 class="question-text">기미나 주근깨가 많거나 피부가 검어지는 체질이신가요?</h3>
+                                    </div>
+                                </div>
+                                
+                                <div class="options-grid">
+                                    <div class="option-card" data-name="skin3" data-value="1">
+                                        <input type="radio" name="skin3" value="1" id="skin3_1" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">🟤</div>
+                                        <div class="option-card-text">그렇다</div>
+                                    </div>
+                                    
+                                    <div class="option-card" data-name="skin3" data-value="2">
+                                        <input type="radio" name="skin3" value="2" id="skin3_2" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">⚪</div>
+                                        <div class="option-card-text">아니다</div>
+                                    </div>
+                                    
+                                    <div class="option-card" data-name="skin3" data-value="3">
+                                        <input type="radio" name="skin3" value="3" id="skin3_3" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">🔄</div>
+                                        <div class="option-card-text">빨개졌다가<br>돌아온다</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 질문 4: 주름 -->
+                            <div class="question-card" data-question="4">
+                                <div class="question-header">
+                                    <div class="question-icon">👴</div>
+                                    <div class="question-title">
+                                        <div class="question-number">Question 4 of 5</div>
+                                        <h3 class="question-text">조금이라도 주름이 있는 편인가요?</h3>
+                                    </div>
+                                </div>
+                                
+                                <div class="options-grid">
+                                    <div class="option-card" data-name="skin4" data-value="1">
+                                        <input type="radio" name="skin4" value="1" id="skin4_1" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">📉</div>
+                                        <div class="option-card-text">그렇다</div>
+                                    </div>
+                                    
+                                    <div class="option-card" data-name="skin4" data-value="2">
+                                        <input type="radio" name="skin4" value="2" id="skin4_2" class="option-input">
+                                        <div class="option-card-check">✓</div>
+                                        <div class="option-card-icon">🌟</div>
+                                        <div class="option-card-text">아니다</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 질문 5: 피부톤 (이미지 카드) -->
+                            <div class="question-card" data-question="5">
+                                <div class="question-header">
+                                    <div class="question-icon">🎨</div>
+                                    <div class="question-title">
+                                        <div class="question-number">Question 5 of 5</div>
+                                        <h3 class="question-text">아래 중 당신의 피부톤을 골라주세요.</h3>
+                                    </div>
+                                </div>
+                                
+                                <!-- 이미지 카드 그리드 -->
+                                <div class="skin-tone-options">
+                                    <!-- 밝은 톤 -->
+                                    <div class="skin-tone-card" data-name="skin5" data-value="1">
+                                        <input type="radio" name="skin5" value="1" id="skin5_1" class="option-input">
+                                        <div class="skin-tone-check">✓</div>
+                                        <img src="${pageContext.request.contextPath}/images/sp_color/skincolor1.png" 
+                                             alt="밝은 톤" class="skin-tone-image">
+                                        <div class="skin-tone-label">밝은 톤</div>
+                                    </div>
+                                    
+                                    <!-- 중간 톤 -->
+                                    <div class="skin-tone-card" data-name="skin5" data-value="2">
+                                        <input type="radio" name="skin5" value="2" id="skin5_2" class="option-input">
+                                        <div class="skin-tone-check">✓</div>
+                                        <img src="${pageContext.request.contextPath}/images/sp_color/skincolor2.png" 
+                                             alt="중간 톤" class="skin-tone-image">
+                                        <div class="skin-tone-label">중간 톤</div>
+                                    </div>
+                                    
+                                    <!-- 어두운 톤 -->
+                                    <div class="skin-tone-card" data-name="skin5" data-value="3">
+                                        <input type="radio" name="skin5" value="3" id="skin5_3" class="option-input">
+                                        <div class="skin-tone-check">✓</div>
+                                        <img src="${pageContext.request.contextPath}/images/sp_color/skincolor3.png" 
+                                             alt="어두운 톤" class="skin-tone-image">
+                                        <div class="skin-tone-label">어두운 톤</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 버튼 영역 -->
+                            <div class="button-container">
+                                <button type="button" class="btn-secondary-custom" id="prevBtn" onclick="previousQuestion()" disabled>
+                                    ← 이전
+                                </button>
+                                <button type="button" class="btn-primary-custom" id="nextBtn" onclick="nextQuestion()" disabled>
+                                    다음 →
+                                </button>
+                                <button type="button" class="btn-primary-custom" id="submitBtn" onclick="submitForm()" style="display: none;" disabled>
+                                    진단 결과 확인하기 ✓
+                                </button>
+                            </div>
+                            
+                        </form>
                         
-                        <!-- 질문 2: 피부 민감도 -->
-                        <div class="question-card" data-question="2">
-                            <div class="question-header">
-                                <div class="question-icon">🌡️</div>
-                                <div class="question-title">
-                                    <div class="question-number">Question 2 of 5</div>
-                                    <h3 class="question-text">피부가 조그마한 자극에도 금방 붉어지거나, 피부 질환 치료를 받으신 적이 있나요?</h3>
-                                </div>
-                            </div>
-                            <div class="options-container">
-                                <div class="option-item">
-                                    <input type="radio" name="skin2" value="1" id="skin2_1" class="option-input">
-                                    <label for="skin2_1" class="option-label">
-                                        <span class="option-radio"></span>
-                                        그렇다
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin2" value="2" id="skin2_2" class="option-input">
-                                    <label for="skin2_2" class="option-label">
-                                        <span class="option-radio"></span>
-                                        아니다
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 질문 3: 색소 침착 -->
-                        <div class="question-card" data-question="3">
-                            <div class="question-header">
-                                <div class="question-icon">☀️</div>
-                                <div class="question-title">
-                                    <div class="question-number">Question 3 of 5</div>
-                                    <h3 class="question-text">기미나 주근깨가 많거나 피부가 검어지는 체질이신가요?</h3>
-                                </div>
-                            </div>
-                            <div class="options-container">
-                                <div class="option-item">
-                                    <input type="radio" name="skin3" value="1" id="skin3_1" class="option-input">
-                                    <label for="skin3_1" class="option-label">
-                                        <span class="option-radio"></span>
-                                        그렇다
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin3" value="2" id="skin3_2" class="option-input">
-                                    <label for="skin3_2" class="option-label">
-                                        <span class="option-radio"></span>
-                                        아니다
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin3" value="3" id="skin3_3" class="option-input">
-                                    <label for="skin3_3" class="option-label">
-                                        <span class="option-radio"></span>
-                                        빨개졌다가 돌아온다
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 질문 4: 주름 -->
-                        <div class="question-card" data-question="4">
-                            <div class="question-header">
-                                <div class="question-icon">📏</div>
-                                <div class="question-title">
-                                    <div class="question-number">Question 4 of 5</div>
-                                    <h3 class="question-text">조금이라도 주름이 있는 편인가요?</h3>
-                                </div>
-                            </div>
-                            <div class="options-container">
-                                <div class="option-item">
-                                    <input type="radio" name="skin4" value="1" id="skin4_1" class="option-input">
-                                    <label for="skin4_1" class="option-label">
-                                        <span class="option-radio"></span>
-                                        그렇다
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin4" value="2" id="skin4_2" class="option-input">
-                                    <label for="skin4_2" class="option-label">
-                                        <span class="option-radio"></span>
-                                        아니다
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 질문 5: 피부톤 -->
-                        <div class="question-card" data-question="5">
-                            <div class="question-header">
-                                <div class="question-icon">🎨</div>
-                                <div class="question-title">
-                                    <div class="question-number">Question 5 of 5</div>
-                                    <h3 class="question-text">아래 중 당신의 피부톤을 골라주세요.</h3>
-                                </div>
-                            </div>
-                            <div class="options-container">
-                                <div class="option-item">
-                                    <input type="radio" name="skin5" value="1" id="skin5_1" class="option-input">
-                                    <label for="skin5_1" class="option-label">
-                                        <span class="option-radio"></span>
-                                        밝은 톤
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin5" value="2" id="skin5_2" class="option-input">
-                                    <label for="skin5_2" class="option-label">
-                                        <span class="option-radio"></span>
-                                        중간 톤
-                                    </label>
-                                </div>
-                                <div class="option-item">
-                                    <input type="radio" name="skin5" value="3" id="skin5_3" class="option-input">
-                                    <label for="skin5_3" class="option-label">
-                                        <span class="option-radio"></span>
-                                        어두운 톤
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 버튼 영역 -->
-                        <div class="button-container">
-                            <button type="button" class="btn-secondary-custom" id="prevBtn" onclick="previousQuestion()" disabled>
-                                ← 이전
-                            </button>
-                            <button type="button" class="btn-primary-custom" id="nextBtn" onclick="nextQuestion()" disabled>
-                                다음 →
-                            </button>
-                            <button type="button" class="btn-primary-custom" id="submitBtn" onclick="submitForm()" style="display: none;" disabled>
-                                진단 결과 확인하기 ✓
-                            </button>
-                        </div>
-                        
-                    </form>
-                    
+                    </div>
                 </div>
             </div>
         </div>
@@ -838,6 +908,64 @@
                 } else {
                     document.getElementById('submitBtn').disabled = false;
                 }
+                
+                updateProgress();
+            });
+        });
+        
+        // 일반 카드 클릭 이벤트 (1-4번 질문)
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                const value = this.getAttribute('data-value');
+                const radio = document.getElementById(name + '_' + value);
+                
+                // 라디오 버튼 선택
+                radio.checked = true;
+                
+                // 같은 그룹의 모든 카드에서 selected 클래스 제거
+                document.querySelectorAll(`.option-card[data-name="${name}"]`).forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // 클릭된 카드에 selected 클래스 추가
+                this.classList.add('selected');
+                
+                // 답변 저장 및 버튼 활성화
+                const questionNum = name.replace('skin', '');
+                window.answers[questionNum] = value;
+                
+                if (window.currentQuestion < window.totalQuestions) {
+                    document.getElementById('nextBtn').disabled = false;
+                } else {
+                    document.getElementById('submitBtn').disabled = false;
+                }
+                
+                updateProgress();
+            });
+        });
+        
+        // 피부톤 카드 클릭 이벤트 (5번 질문)
+        document.querySelectorAll('.skin-tone-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                const value = this.getAttribute('data-value');
+                const radio = document.getElementById(name + '_' + value);
+                
+                // 라디오 버튼 선택
+                radio.checked = true;
+                
+                // 모든 카드에서 selected 클래스 제거
+                document.querySelectorAll('.skin-tone-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // 클릭된 카드에 selected 클래스 추가
+                this.classList.add('selected');
+                
+                // 답변 저장 및 버튼 활성화
+                window.answers['5'] = value;
+                document.getElementById('submitBtn').disabled = false;
                 
                 updateProgress();
             });

@@ -51,7 +51,7 @@
         
         .content-header h2 {
             font-size: 18px;
-            color: #5c6bc0;
+            color:  #1A237E;
             font-weight: 600;
         }
         
@@ -160,29 +160,22 @@
         }
         
         .btn-cancel {
-             background: #dc3545 !important;
-    color: white;
-    padding: 4px 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    margin-left: auto;
-    transition: background 0.3s;
+           background: #d32f2f !important;
+            color: white  !important;
         }
         
         .btn-cancel:hover {
-            background: #f5f5f5;
-            border-color: #999;
+           background: #c62828;
+            border-color: #999 !important;
         }
         
         .btn-submit {
-            background: #5c6bc0 !important;
-            color: white;
+              background: #1a237e !important;
+            color: white !important;
         }
         
         .btn-submit:hover {
-            background: #4a5aaf;
+            background: #4a5aaf  !important;;
         }
         
         .error-message {

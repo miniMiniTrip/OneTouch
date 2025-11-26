@@ -168,8 +168,7 @@ public class PostController {
 		System.out.println("");
 		return"redirect:/post/list";
 	}
-	
-	
+		
 	//좋아요 ajax 통신을 통해서 좋아요 추가 좋아요 삭제 처리
 	@RequestMapping("/post/postLike")
 	@ResponseBody
@@ -343,7 +342,6 @@ public class PostController {
 		return map;
 		
 	}
-	
 	
 	//댓글 테스트화면
 	@RequestMapping("tt")

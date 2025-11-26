@@ -17,7 +17,7 @@ public interface OrderDao {
 	OrderVo insertOrder(OrderVo vo);
 	
 	//단건 주문 조회
-	int selectOne(OrderVo vo);
+	OrderVo selectOne(int order_id);
 	
 	//고객별 주문조회
 	List<OrderVo> selectList(int mem_idx);
