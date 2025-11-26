@@ -358,13 +358,14 @@
     @media (max-width: 992px) {
         .member-container {
             flex-direction: column; 
-            padding: 0 !important; 
+         
         }
         
         .sidebar {
             width: 100%; 
             border-right: none !important;
-            border-bottom: none !important;
+            border-bottom: 1px none #e0e0e0  !important;
+            min-height: auto;
             
             /* ⭐ 공백 제거 및 중앙 정렬 핵심 */
             min-height: auto !important; 
