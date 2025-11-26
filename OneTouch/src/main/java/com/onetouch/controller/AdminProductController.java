@@ -340,11 +340,13 @@ public class AdminProductController {
     public Map<String, Object> insertProductImage(
             @RequestParam("product_idx") int product_idx,
             @RequestParam("productImages") MultipartFile[] files) {
-
+    	System.out.println("	[AdminProductController-@ResponseBody] insertProductImage()");
+    	System.out.printf("			product_idx => %d\n",product_idx);
         Map<String, Object> response = new HashMap<>();
-
+        
         try {
             boolean result = productImageService.uploadImages(product_idx, files);
+            System.out.println(result);
             response.put("success", result);
             response.put("message", result ? "업로드 성공" : "업로드 실패");
         } catch (Exception e) {
@@ -352,6 +354,7 @@ public class AdminProductController {
             response.put("message", "서버 오류: " + e.getMessage());
         }
 
+        System.out.println("	[AdminProductController-@ResponseBody] return : response;");
         return response;
     }
 

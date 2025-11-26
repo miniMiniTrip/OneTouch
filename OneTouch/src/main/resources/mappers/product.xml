@@ -160,6 +160,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    WHERE product_idx = #{product_idx} AND product_image_level = 1 
 	    LIMIT 1
 	</select>
+
+	<!-- 상품 상세페이지에서 level알기위해 조회 -->
+	<select id="selectProductImageProductIdxList" parameterType="int" resultType="product">
+	    SELECT *
+	    FROM product_image 
+	    WHERE product_idx = #{product_idx} and 0 > product_image_level order by product_image_idx desc
+	</select>
 	        
 	        
 	<select id="selectOne" parameterType="int" resultMap="productWithHashtags">
@@ -178,6 +185,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    FROM product_image
 	    WHERE product_idx = #{product_idx} 
 	    AND product_image_level >= 2
+	    ORDER BY product_image_level
+	</select>
+
+	<!-- 상품 상세페이지 lowerdetailImages 이미지들 조회 -->
+	<select id="selectLowerDetailImages" parameterType="int" resultType="String">
+	    SELECT product_image_url
+	    FROM product_image
+	    WHERE product_idx = #{product_idx} 
+	    AND 0 > product_image_level
+	    ORDER BY product_image_level
+	</select>
+	
+	<!-- 상품 상세페이지 upperdetailImages 이미지들 조회 -->
+	<select id="selectUpperDetailImages" parameterType="int" resultType="String">
+	    SELECT product_image_url
+	    FROM product_image
+	    WHERE product_idx = #{product_idx} 
+	    AND  product_image_level >= 0
 	    ORDER BY product_image_level
 	</select>
 	
@@ -330,11 +355,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 		<!-- 상품 이미지 추가 -->
-		<insert id="insertProductImage" parameterType="com.onetouch.vo.ProductVo">
+		<insert id="uploadImages" parameterType="com.onetouch.vo.ProductVo">
 		    INSERT INTO product_image (
+		    	product_idx,
 		        product_image_url,
 		        product_image_level
 		    ) VALUES (
+		    	#{product_idx},
 		        #{product_image_url},
 		        #{product_image_level}
 		    )
