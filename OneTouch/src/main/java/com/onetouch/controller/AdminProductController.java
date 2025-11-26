@@ -1,6 +1,7 @@
 package com.onetouch.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.CategoryDao;
+import com.onetouch.dao.HashtagDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.ProductImageService;
 import com.onetouch.service.ProductService;
 import com.onetouch.vo.CategoryVo;
+import com.onetouch.vo.HashtagVo;
 import com.onetouch.vo.ProductVo;
 
 import jakarta.servlet.ServletContext;
@@ -36,6 +39,9 @@ public class AdminProductController {
 
     @Autowired
     CategoryDao category_dao;
+    
+    @Autowired
+    HashtagDao hashtag_dao;
 
     @Autowired
     ServletContext application;
@@ -88,6 +94,9 @@ public class AdminProductController {
         List<ProductVo> list = product_dao.selectListAdmin(map);
         
         List<CategoryVo> category_list = category_dao.selectList();
+        
+        // 해시태그 목록 조회 추가
+        List<HashtagVo> hashtag_list = hashtag_dao.selectList();
 
         // 페이징 정보 계산
         int totalPage = (int) Math.ceil((double) totalCount / pageSize);
@@ -102,6 +111,7 @@ public class AdminProductController {
         model.addAttribute("list", list);
         model.addAttribute("keyword", keyword);
         model.addAttribute("category_list", category_list);
+        model.addAttribute("hashtag_list", hashtag_list); // 해시태그 목록 추가
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalCount", totalCount);
@@ -127,10 +137,12 @@ public class AdminProductController {
     // 상품등록
     @PostMapping("/product/insert")
     public String insert(ProductVo productVo, 
-                        @RequestParam(name = "photo") MultipartFile photo, 
+                        @RequestParam(name = "photo") MultipartFile photo,
+                        @RequestParam(name = "hashtag_idx_list", required = false) List<Integer> hashtag_idx_list,
                         RedirectAttributes ra) throws Exception {
         
         System.out.printf("[AdminProductController-insert()] 받은 productVo: %s\n", productVo);
+        System.out.printf("[AdminProductController-insert()] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
         
         String saveDir = application.getRealPath("/images/");
         String product_image_url = "no_file";
@@ -157,14 +169,23 @@ public class AdminProductController {
             String product_comment = productVo.getProduct_comment().replaceAll("\n", "<br>");
             productVo.setProduct_comment(product_comment);
         }
+        
+        // 해시태그 처리: idx 리스트를 HashtagVo 리스트로 변환
+        if (hashtag_idx_list != null && !hashtag_idx_list.isEmpty()) {
+            List<HashtagVo> hashtag_list = new ArrayList<>();
+            for (Integer hashtag_idx : hashtag_idx_list) {
+                HashtagVo hashtagVo = new HashtagVo();
+                hashtagVo.setHashtag_idx(hashtag_idx);
+                hashtag_list.add(hashtagVo);
+            }
+            productVo.setHashtag_list(hashtag_list);
+            System.out.printf("[AdminProductController-insert()] 설정된 해시태그 개수: %d\n", hashtag_list.size());
+        }
 
         System.out.printf("[AdminProductController-insert()] 최종 productVo: %s\n", productVo);
         
         int res = productService.insert(productVo);
         System.out.printf("[AdminProductController-insert()] insert 결과: %d\n", res);
-
-
-
 
         return "redirect:/adminpage/product"; 
 
@@ -173,10 +194,12 @@ public class AdminProductController {
     // 상품 수정
     @PostMapping("/product/update")
     public String update(ProductVo vo, 
-                        @RequestParam("photo") MultipartFile photo, 
+                        @RequestParam("photo") MultipartFile photo,
+                        @RequestParam(name = "hashtag_idx_list", required = false) List<Integer> hashtag_idx_list,
                         HttpServletRequest request) throws Exception {
         
         System.out.printf("[AdminProductController-update()] 받은 vo: %s\n", vo);
+        System.out.printf("[AdminProductController-update()] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
         
         if (photo != null && !photo.isEmpty()) {
             String uploadPath = application.getRealPath("/images/");
@@ -194,12 +217,27 @@ public class AdminProductController {
             vo.setProduct_comment(product_comment);
         }
         
+        // 해시태그 처리: idx 리스트를 HashtagVo 리스트로 변환
+        if (hashtag_idx_list != null) {
+            List<HashtagVo> hashtag_list = new ArrayList<>();
+            for (Integer hashtag_idx : hashtag_idx_list) {
+                HashtagVo hashtagVo = new HashtagVo();
+                hashtagVo.setHashtag_idx(hashtag_idx);
+                hashtag_list.add(hashtagVo);
+            }
+            vo.setHashtag_list(hashtag_list);
+            System.out.printf("[AdminProductController-update()] 설정된 해시태그 개수: %d\n", hashtag_list.size());
+        } else {
+            // null이면 빈 리스트로 설정 (기존 해시태그 모두 삭제)
+            vo.setHashtag_list(new ArrayList<>());
+            System.out.println("[AdminProductController-update()] 해시태그 없음 - 기존 연결 모두 삭제 예정");
+        }
+        
         System.out.printf("[AdminProductController-update()] 최종 vo: %s\n", vo);
         
         int res = productService.update(vo);
         System.out.printf("[AdminProductController-update()] update 결과: %d\n", res);
         
-
 
         return "redirect:/adminpage/product";
     }

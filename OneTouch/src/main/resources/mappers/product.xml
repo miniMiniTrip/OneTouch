@@ -162,7 +162,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	        
 	        
-	 <select id="selectOne" parameterType="int" resultType="product">
+	<select id="selectOne" parameterType="int" resultMap="productWithHashtags">
 	    SELECT 
 	        p.*,
 	        (SELECT product_image_url FROM product_image WHERE product_idx = p.product_idx AND product_image_level = 1 LIMIT 1) as product_image_url,
@@ -171,7 +171,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    LEFT JOIN category c ON p.category_idx = c.category_idx
 	    WHERE p.product_idx = #{product_idx}
 	</select>
-	
+		
 	<!-- detail 이미지들 조회 -->
 	<select id="selectDetailImages" parameterType="int" resultType="String">
 	    SELECT product_image_url
