@@ -128,17 +128,21 @@ public class ProductController {
         System.out.println("조회된 상품: " + product.getProduct_name());
         System.out.println("이미지 URL: " + product.getProduct_image_url());
         
-        List<String> detailImages = product_dao.selectDetailImages(product_idx);
-        System.out.println("디테일 이미지 개수: " + detailImages.size());
+        List<String> lowerdetailImages = product_dao.selectLowerDetailImages(product_idx);
+        List<String> upperdetailImages = product_dao.selectUpperDetailImages(product_idx);
+        System.out.println("디테일 이미지 개수: " + lowerdetailImages.size());
 	
-        for(String detail : detailImages) {
+        for(String detail : lowerdetailImages) {
         	System.out.println("[" + detail +"]");
         }
 	
-	
+        System.out.printf("상세페이지 이미지 => %s\n",lowerdetailImages);
+        System.out.printf("상세페이지 이미지 => %s\n",upperdetailImages);
+        System.out.printf("상세페이지 product => %s\n",product);
         model.addAttribute("product", product);
-        model.addAttribute("detailImages", detailImages); 
-        return "product/product_detail?id= + product_idx";
+        model.addAttribute("upperdetailImages", upperdetailImages); 
+        model.addAttribute("lowerdetailImages", lowerdetailImages); 
+        return "product/product_detail";
    }
     
    

@@ -5,6 +5,13 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
 <head>
+	<c:if test="${not empty message}">
+	    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 20px;">
+	        <i class="lni lni-checkmark-circle"></i>
+	        ${message}
+	        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	    </div>
+	</c:if>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>주문/배송 조회 - OneTouch</title>
@@ -411,6 +418,45 @@
     font-weight: 600;
 }
 
+
+/* 환불 상태 배지 */
+.status-refund {
+    background: #e8daef;
+    color: #6c3483;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 취소 상태 배지 */
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 환불 알림 박스 (선택사항) */
+.refund-notice {
+    background: #f3e5f5;
+    border: 1px solid #ba68c8;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #6a1b9a;
+}
+
+.refund-notice i {
+    font-size: 16px;
+}
+
 /* ==================== 반응형 ==================== */
 @media (max-width: 1200px) {
     .content {
@@ -568,16 +614,17 @@
                     </div>
                     
                     <!-- 필터 탭 -->
-                    <div class="filter-tabs">
-                        <button class="active" data-filter="all">전체</button>
-                        <button data-filter="pending">결제대기</button>
-                        <button data-filter="confirmed">상품확인중</button>
-                        <button data-filter="preparing">배송준비중</button>
-                        <button data-filter="shipping">배송중</button>
-                        <button data-filter="completed">배송완료</button>
-                        <button data-filter="cancelled">취소/반품</button>
-                    </div>
-                    
+					<div class="filter-tabs">
+					    <button class="active" data-filter="all">전체</button>
+					    <button data-filter="pending">결제대기</button>
+					    <button data-filter="confirmed">상품확인중</button>
+					    <button data-filter="preparing">배송준비중</button>
+					    <button data-filter="shipping">배송중</button>
+					    <button data-filter="completed">배송완료</button>
+					    <button data-filter="refund">환불</button>
+					    <button data-filter="cancelled">취소</button>
+					</div>
+					                    
                     <!-- 주문 목록 -->
                     <c:choose>
                         <c:when test="${empty order_list}">
@@ -601,18 +648,19 @@
                                             </span>
                                             <span class="order-number">주문번호: ${order.order_no}</span>
                                         </div>
-                                        <span class="order-status 
-                                            <c:choose>
-                                                <c:when test="${order.order_status == '결제대기'}">status-pending</c:when>
-                                                <c:when test="${order.order_status == '상품확인중'}">status-paid</c:when>
-                                                <c:when test="${order.order_status == '배송준비중'}">status-paid</c:when>
-                                                <c:when test="${order.order_status == '배송중'}">status-shipping</c:when>
-                                                <c:when test="${order.order_status == '배송완료'}">status-completed</c:when>
-                                                <c:when test="${order.order_status == '취소'}">status-cancelled</c:when>
-                                            </c:choose>
-                                        ">
-                                            ${order.order_status}
-                                        </span>
+										<span class="order-status 
+										    <c:choose>
+										        <c:when test="${order.order_status == '결제대기'}">status-pending</c:when>
+										        <c:when test="${order.order_status == '상품확인중'}">status-confirmed</c:when>
+										        <c:when test="${order.order_status == '배송준비중'}">status-preparing</c:when>
+										        <c:when test="${order.order_status == '배송중'}">status-shipping</c:when>
+										        <c:when test="${order.order_status == '배송완료'}">status-completed</c:when>
+										        <c:when test="${order.order_status == '환불'}">status-refund</c:when>
+										        <c:when test="${order.order_status == '취소'}">status-cancelled</c:when>
+										    </c:choose>
+										">
+										    ${order.order_status}
+										</span>
                                     </div>
                                     
                                     <!-- 주문 상품 -->
@@ -650,6 +698,12 @@
                                     </c:if>
                                     
                                     <!-- 주문 푸터 -->
+                                    <c:if test="${order.order_status == '환불'}">
+									    <div class="refund-notice">
+									        <i class="lni lni-information"></i>
+									        <span>환불 요청이 접수되었습니다. 관리자 확인 후 처리됩니다.</span>
+									    </div>
+									</c:if>
                                     <div class="order-footer">
                                         <div class="text-muted" style="font-size: 14px;">
                                             배송지: ${order.order_address}
@@ -714,37 +768,40 @@
     });
     
     // 필터 탭 기능
-    document.querySelectorAll('.filter-tabs button').forEach(button => {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('.filter-tabs button').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            const filter = this.dataset.filter;
-            
-            document.querySelectorAll('.order-card').forEach(card => {
-                const status = card.dataset.status;
-                
-                if (filter === 'all') {
-                    card.style.display = 'block';
-                } else if (filter === 'pending' && status === '결제대기') {
-                    card.style.display = 'block';
-                } else if (filter === 'confirmed' && status === '상품확인중') {
-                    card.style.display = 'block';
-                } else if (filter === 'preparing' && status === '배송준비중') {
-                    card.style.display = 'block';
-                } else if (filter === 'shipping' && status === '배송중') {
-                    card.style.display = 'block';
-                } else if (filter === 'completed' && status === '배송완료') {
-                    card.style.display = 'block';
-                } else if (filter === 'cancelled' && (status === '취소' || status === '반품')) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-    
+	document.querySelectorAll('.filter-tabs button').forEach(button => {
+	    button.addEventListener('click', function() {
+	        // 활성 탭 변경
+	        document.querySelectorAll('.filter-tabs button').forEach(btn => btn.classList.remove('active'));
+	        this.classList.add('active');
+	        
+	        const filter = this.dataset.filter;
+	        
+	        // 주문 카드 필터링
+	        document.querySelectorAll('.order-card').forEach(card => {
+	            const status = card.dataset.status;
+	            
+	            if (filter === 'all') {
+	                card.style.display = 'block';
+	            } else if (filter === 'pending' && status === '결제대기') {
+	                card.style.display = 'block';
+	            } else if (filter === 'confirmed' && status === '상품확인중') {
+	                card.style.display = 'block';
+	            } else if (filter === 'preparing' && status === '배송준비중') {
+	                card.style.display = 'block';
+	            } else if (filter === 'shipping' && status === '배송중') {
+	                card.style.display = 'block';
+	            } else if (filter === 'completed' && status === '배송완료') {
+	                card.style.display = 'block';
+	            } else if (filter === 'refund' && status === '환불') {
+	                card.style.display = 'block';
+	            } else if (filter === 'cancelled' && status === '취소') {
+	                card.style.display = 'block';
+	            } else {
+	                card.style.display = 'none';
+	            }
+	        });
+	    });
+	});    
     // 주문 취소
     function cancelOrder(orderId) {
         if (confirm('주문을 취소하시겠습니까?')) {

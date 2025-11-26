@@ -587,7 +587,7 @@
                         <div class="celebration-icon">🎉</div>
                         <h2 class="celebration-title">진단이 완료되었습니다!</h2>
                         <p class="celebration-message">
-                            ${sessionScope.mem_name}님의 피부 타입 분석이 완료되었습니다.<br>
+                            ${sessionScope.user.mem_name}님의 피부 타입 분석이 완료되었습니다.<br>
                             아래 결과를 확인하고 맞춤 추천 상품을 만나보세요!
                         </p>
                     </div>

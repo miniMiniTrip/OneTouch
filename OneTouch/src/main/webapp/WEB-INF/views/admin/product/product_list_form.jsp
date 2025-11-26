@@ -1102,6 +1102,28 @@
                         <textarea id="product_comment" name="product_comment" class="form-textarea" placeholder="상품설명을 입력하세요"></textarea>
                     </div>
                     
+                    <!-- 해시태그 선택 -->
+                    <div class="form-group">
+                        <label class="form-label">해시태그</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; max-height: 200px; overflow-y: auto;">
+                            <c:forEach var="hashtag" items="${hashtag_list}">
+                                <label style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; cursor: pointer; border-radius: 6px; transition: background 0.2s; font-size: 13px;" 
+                                       onmouseover="this.style.background='#f5f7fa'" 
+                                       onmouseout="this.style.background='white'">
+                                    <input type="checkbox" 
+                                           name="hashtag_idx_list" 
+                                           value="${hashtag.hashtag_idx}"
+                                           class="hashtag-checkbox"
+                                           style="cursor: pointer;">
+                                    <span style="color: #1a237e;">#${hashtag.hashtag_name}</span>
+                                </label>
+                            </c:forEach>
+                        </div>
+                        <p style="margin-top: 8px; font-size: 12px; color: #666;">
+                            💡 이 상품의 특성을 나타내는 해시태그를 선택하세요
+                        </p>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label" for="product_cnt">재고수량</label>
                         <input type="number" id="product_cnt" name="product_cnt" class="form-input" placeholder="재고수량을 입력하세요" value="0">
@@ -1188,7 +1210,10 @@
             
             // 폼 초기화
             document.getElementById("productForm").reset();
-            
+			
+           	// 해시태그 초기화
+            $("input[name='hashtag_idx_list']").prop('checked', false);
+
             modal.classList.add("active");
         }
 
@@ -1218,6 +1243,14 @@
                         document.getElementById("currentImageDiv").style.display = "block";
                         document.getElementById("currentImage").src = 
                             "${pageContext.request.contextPath}/images/" + vo.product_image_url;
+                    }
+                    
+                    // 해시태그 체크박스 초기화 및 설정
+                    $("input[name='hashtag_idx_list']").prop('checked', false);
+                    if (vo.hashtag_list && vo.hashtag_list.length > 0) {
+                        vo.hashtag_list.forEach(function(hashtag) {
+                            $("input[name='hashtag_idx_list'][value='" + hashtag.hashtag_idx + "']").prop('checked', true);
+                        });
                     }
                     
                     // 모달 열기

@@ -1,6 +1,5 @@
 package com.onetouch.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -365,56 +364,73 @@ public class OrderController {
 		return "order/order_detail";
 	}
 	
-//	@RequestMapping("/order/repay_form.do")
-//	public String repayForm(@RequestParam int order_id, Model model) {
-//	    
-//	    MemVo memVo = (MemVo)session.getAttribute("user");
-//	    
-//	    if(memVo == null) {
-//	        return "redirect:/user/login";
-//	    }
-//	    
-//	    // 기존 주문 정보 조회
-//	    OrderVo order = order_dao.selectOneByOrderId(order_id);
-//	    
-//	    
-//	    if(order == null || order.getMem_idx() != memVo.getMem_idx()) {
-//	        return "redirect:/order/list.do";
-//	    }
-//	    
-//	    if(!"결제대기".equals(order.getOrder_status())) {
-//	        return "redirect:/order/detail.do?order_id=" + order_id;
-//	    }
-//	    
-//	    List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
-//	    
-//	    //cartvo상태로 변환
-//	    List<Map<String, Object>> item_list = new ArrayList<>();
-//	    int total_amount = 0;
-//	    
-//	    for(OrderItemVo item : order_items) {
-//	        Map<String, Object> itemMap = new HashMap<>();
-//	        itemMap.put("product_name", item.getProduct_name());
-//	        itemMap.put("product_cnt", item.getProduct_cnt());
-//	        itemMap.put("product_price", item.getProduct_amount());
-//	        itemMap.put("total_amount", item.getTotal_amount());
-//	        itemMap.put("product_image_url", item.getProduct_image_url());
-//	        
-//	        item_list.add(itemMap);
-//	        total_amount += item.getTotal_amount();
-//	    }
-//	    
-//	    String order_name = order.getOrder_name();
-//	    
-//	    // request binding
-//	    model.addAttribute("order", order);
-//	    model.addAttribute("item_list", item_list);
-//	    model.addAttribute("total_amount", total_amount);
-//	    model.addAttribute("order_name", order_name);
-//	    model.addAttribute("order_type", "repay"); 
-//	    model.addAttribute("order_id", order_id);
-//	    
-//	    return "order/order_form";
-//	}
-
+	//환불
+	@RequestMapping("/order/refund.do")
+	public String refund(int order_id,
+			RedirectAttributes ra) {
+		
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		if(memVo==null) {return "redirect:/user/login";}
+		
+		Integer mem_idx = memVo.getMem_idx();
+		
+		//주문 찾기
+		OrderVo order = order_dao.selectOneByOrderId(order_id);
+		
+		if(order == null || order.getMem_idx() != mem_idx) {
+			ra.addFlashAttribute("message", "잘못된 접근입니다.");
+			return "redirect:/order/list.do";
+		}
+		
+		String current_status = order.getOrder_status();
+		if(!"상품확인중".equals(current_status)&&
+		   !"배송확인중".equals(current_status)){
+			ra.addFlashAttribute("message","상품확인중 혹은 배송준비중 상태에서만 환불 가능합니다.");
+			return "redirect:/order/detail.do?order_id=" + order_id;
+		}
+		
+		int res = order_service.updateStatus(order_id, "환불");
+		
+		if( res > 0 ) {
+			ra.addFlashAttribute("message","환불 요청이 성공했습니다. 관리자 확인 후 처리됩니다.");			
+		} else {
+			ra.addFlashAttribute("message","환불 요청이 실패했습니다. 관리자에게 문의하세요.");
+		}
+		return "redirect:/order/list.do";
+	}
+	
+	//취소
+	@RequestMapping("/order/cancel.do")
+	public String cancel(int order_id,
+			RedirectAttributes ra) {
+		
+		MemVo memVo =  
+				(MemVo)session.getAttribute("user");
+		if(memVo==null) {return "redirect:/user/login";}
+		
+		Integer mem_idx = memVo.getMem_idx();
+		
+		OrderVo order = order_dao.selectOneByOrderId(order_id);
+		
+		if(order == null || order.getMem_idx() != mem_idx) {
+			ra.addFlashAttribute("message", "잘못된 접근입니다.");
+			return "redirect:/order/list.do";
+		}
+		
+		String current_status = order.getOrder_status();
+		if(!"결제대기".equals(current_status)) {
+			ra.addFlashAttribute("message","결제대기 상태에서만 환불 가능합니다.");
+			return "redirect:/order/detail.do?order_id=" + order_id;
+		}
+		
+		int res = order_service.updateStatus(order_id, "취소");
+		
+		if( res > 0 ) {
+			ra.addFlashAttribute("message","주문이 취소되었습니다.");			
+		} else {
+			ra.addFlashAttribute("message","주문 취소에 실패했습니다.");
+		}
+		return "redirect:/order/list.do";
+	}
 }
