@@ -218,7 +218,7 @@ public class LoginController {
 	}
 	
 	
-	 //비밀번호 확인 폼 열기
+	 // 마이페이지 회원정보 수정 페이지 열기 , 비밀번호 확인 폼 열기
 	@RequestMapping("/user/check_password")
 	public String checkPasswordFrom() {
 		System.out.println("	[LoginController]  checkPasswordFrom() ");
@@ -294,7 +294,7 @@ public class LoginController {
 	// 비밀번호 찾기 폼
     @GetMapping("/user/find_pw_form")
     public String findPwForm() {
-        return "user/find_pw";
+        return "/user/find_pw";
     }
 
     

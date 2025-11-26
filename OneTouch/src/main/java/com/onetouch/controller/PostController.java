@@ -155,13 +155,15 @@ public class PostController {
 	
 	//post 등록하기
 	@PostMapping("/post/insert")
-	public String postInsert(PostVo postVo) throws Exception {
+	public String postInsert(PostVo postVo,String[] post_hashtag_array) throws Exception {
 		System.out.println("	[PostController] postInsert() ");
+		//받아온 해시정보 체크
+		
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		postVo.setMem_idx(memVo.getMem_idx());
 		postVo.setPost_content(postVo.getPost_content().replaceAll("\n", "<br>"));
 		System.out.println("		"+postVo);
-		postService.postInsert(postVo);
+		postService.postInsert(postVo,post_hashtag_array);
 		
 		
 		System.out.println("	[PostController] redirect:/post/list");

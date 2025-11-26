@@ -2,6 +2,7 @@ package com.onetouch.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.common.MyConstant;
+import com.onetouch.dao.HashtagDao;
 import com.onetouch.dao.PostDao;
 import com.onetouch.util.PostPaging;
+import com.onetouch.vo.HashtagVo;
 import com.onetouch.vo.LikeVo;
 import com.onetouch.vo.PostPageVo;
 import com.onetouch.vo.PostProductVo;
@@ -27,6 +30,8 @@ public class PostServiceImpl implements PostService {
 	PostDao postDao;
 	@Autowired
 	ServletContext application;
+	@Autowired
+	HashtagDao hashtagDao;
 	
 	//전체 목록 불러오기
 	@Override
@@ -107,7 +112,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	/**post 등록처리*/
-	public int postInsert(PostVo postVo) throws Exception {
+	public int postInsert(PostVo postVo,String[] post_hashtag_array) throws Exception {
 		
 		//이미지 등록처리
 		String webPath = "/images/posts/";
@@ -137,7 +142,8 @@ public class PostServiceImpl implements PostService {
 		if(sb.toString().endsWith("*")) {
 			full_image_name=sb.toString().substring(0,sb.toString().length()-1);
 		}
-		postVo.setPost_image(full_image_name);		
+		postVo.setPost_image(full_image_name);	
+		// post 등록처리
 		int res =postDao.postInsert(postVo);
 		//-------------------------------------
 		System.out.printf("		[PostServiceImpl-postInsert()]postVo:%s\n",postVo);
@@ -152,6 +158,33 @@ public class PostServiceImpl implements PostService {
 				res=res * (postDao.postProductInsert(postVo));
 			}
 		}
+		
+		
+		//해시태그 name으로 조회 해서 있으면 넘어가고 없으면 새로 추가
+		List<String> hashtagNameList= new ArrayList<String>();
+		for(String hashtag:post_hashtag_array) {
+			hashtagNameList.add(hashtag);
+		}
+		
+		//해시태그 name 으로 해시테이블에서 조회
+		List<HashtagVo> hashtagVoList=hashtagDao.selectByNames(hashtagNameList);
+		System.out.println(hashtagVoList);
+		//해시태그에 정보가 없으면 새로 추가
+		if(hashtagVoList.size()<=0) {
+			System.out.println("해시태그가 없습니다.");
+			
+			res=res*hashtagDao.insert(hashtagNameList);
+			// 해시태그 이름으로 해시태그 조회해오기
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("post_idx", postVo.getPost_idx());
+			List<HashtagVo> hasgtageVo=hashtagDao.selectByNames(hashtagNameList);
+			System.out.printf("해시태그 : %s\n",hasgtageVo);
+			map.put("hashtag_list",hasgtageVo);
+			res=res*hashtagDao.insertPostHashtag(map);
+			System.out.printf("res : %d\n",res);
+			
+		}
+		
 		
 		
 		return res;

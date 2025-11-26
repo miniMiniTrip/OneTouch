@@ -139,7 +139,7 @@
         }
         
         .btn-cancel {
-            background: #dc3545 !important;
+            background: red !important;
             color: white !important;
             padding: 4px 12px;
             border: none;
@@ -151,7 +151,8 @@
         }
         
         .btn-cancel:hover {
-            background: #c82333 !important;
+            background: rgb(255,100,100) !important; 
+            border-color: #999 !important;
         }
         
         .btn-submit {
@@ -304,8 +305,8 @@
         }
         
         .btn-photo-delete:hover {
-            background: #eeeeee;
-            border-color: #bdbdbd;
+            background: rgb(255,100,100); 
+            border-color: #999;
         }
         
         /* 파일 input 숨김 */
@@ -565,30 +566,30 @@
                             
                             <div class="form-group">
                                 <label class="form-label">아이디</label>
-                                <input type="text" class="form-input" value="${sessionScope.loginMember.username}" disabled>
+                                <input type="text" class="form-input" value="${memVo.mem_id}" disabled>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">이름</label>
-                                <input type="text" class="form-input" name="name" value="${sessionScope.loginMember.name}" required>
+                                <input type="text" class="form-input" name="name" value="${memVo.mem_name}" required>
                                 <div class="error-message" id="nameError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">이메일</label>
-                                <input type="email" class="form-input" name="email" value="${sessionScope.loginMember.email}" required>
+                                <input type="email" class="form-input" name="email" value="${memVo.mem_email}" required>
                                 <div class="error-message" id="emailError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">휴대폰번호</label>
-                                <input type="tel" class="form-input" name="phone" value="${sessionScope.loginMember.phone}" required>
+                                <input type="tel" class="form-input" name="phone" value="${memVo.mem_phone}" required>
                                 <div class="error-message" id="phoneError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">생년월일</label>
-                                <input type="date" class="form-input" name="birthDate" value="${sessionScope.loginMember.birthDate}">
+                                <input type="date" class="form-input" name="birthDate" value="${memVo.mem_birth}">
                             </div>
                             
                             <div class="form-group">
@@ -610,19 +611,19 @@
                             <div class="form-group">
                                 <label class="form-label">우편번호</label>
                                 <div class="zipcode-container">
-                                    <input type="text" class="form-input zipcode-input" name="zipcode" value="${sessionScope.loginMember.zipcode}" readonly>
+                                    <input type="text" class="form-input zipcode-input" name="zipcode" value="${memVo.mem_postal}" readonly>
                                     <button type="button" class="search-btn2" onclick="searchZipcode();">검색</button>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">기본배송지</label>
-                                <input type="text" class="form-input" name="address" value="${sessionScope.loginMember.address}" readonly>
+                                <input type="text" class="form-input" name="address" value="${memVo.mem_addr}" readonly>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">상세주소</label>
-                                <input type="text" class="form-input" name="detailAddress" value="${sessionScope.loginMember.detailAddress}">
+                                <input type="text" class="form-input" name="detailAddress" value="${memVo.mem_addr_more}">
                             </div>
                             
                             <div class="btn-group">

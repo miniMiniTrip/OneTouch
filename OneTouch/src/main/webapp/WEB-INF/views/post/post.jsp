@@ -303,11 +303,41 @@ body {
     margin-bottom: 8px;
 }
 
-.post-tags {
-    color: var(--onetouch-light-blue);
-    font-size: 13px;
-    margin-bottom: 10px;
+
+/* 해시태그 css */
+.product-hashtags {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 3px;
+   margin: 10px 0;
+   display: inline-block;
 }
+
+.hashtag-badge {
+   display: inline-block;
+   padding: 1px 4px; /* 패딩 대폭 줄임 */
+   background-color: #f0f0f0;
+   color: var(--onetouch-light-blue);
+   border-radius: 8px; /* 더 작은 둥근 모서리 */
+   font-size: 13px; /* 폰트 크기 줄임 */
+   text-decoration: none;
+   transition: all 0.2s ease;
+   border: 1px solid #e0e0e0;
+   line-height: 1.2; /* 줄간격 조정 */
+}
+
+.hashtag-badge:hover {
+   background-color: #5c6bc0;
+   color: white;
+   border-color: #5c6bc0;
+   transform: translateY(-1px); /* 호버 이동 거리 줄임 */
+   box-shadow: 0 1px 3px rgba(92, 107, 192, 0.3); /* 그림자 줄임 */
+}
+
+.hashtag-badge:active {
+   transform: translateY(0);
+}
+/* end : 해시태그 css */
 
 .post-time {
     color: #999;
@@ -1669,7 +1699,15 @@ document.addEventListener('click', function(e) {
                  
              	<p class="post-title">\${postVo.post_title}</p>
                  <p class="post-text">\${postVo.post_content }</p>
-                 <p class="post-tags">#원터치 #남자화장품 #데일리 #스킨케어 #뷰티그램</p>
+                 `
+                 for(let hashtag of postVo.hashtagList){
+             html=html+`
+                 <div class="product-hashtags" style="margin: 10px 0;">
+                 	<a href="" class="hashtag-badge">#\${hashtag.hashtag_name}</a>
+                 </div>
+                 `
+                 }
+             html=html+`
                  <p class="post-time">\${postVo.post_time }</p>
              </div>
              

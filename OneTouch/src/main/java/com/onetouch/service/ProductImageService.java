@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +16,41 @@ import org.springframework.web.multipart.MultipartFile;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.vo.ProductVo;
 
+import jakarta.servlet.ServletContext;
+
 @Service
 public class ProductImageService {
 
     @Autowired
     private ProductDao product_dao;
+    @Autowired
+    ServletContext servledtContext;
 
     // 이미지 저장 경로
-    private final String UPLOAD_PATH = "src/main/webapp/images/";
+    private final String UPLOAD_PATH = "/images/";
 
     /**
      * 상품 상세 이미지 업로드
      */
     public boolean uploadImages(int product_idx, MultipartFile[] files) {
         try {
+        	List<ProductVo> vo =product_dao.selectProductImageProductIdxList(product_idx);
+        	System.out.println("레벨:"+vo.size());
+        	int level=-(vo.size())-1;
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
+                	//파일이름 변환됨
                     String fileName = generateFileName(file.getOriginalFilename());
+                    System.out.printf("파일이름 => %s\n",fileName);
                     saveFile(file, fileName);
-
                     ProductVo imageVo = new ProductVo();
                     imageVo.setProduct_image_url(fileName);
-                    imageVo.setProduct_image_level(2); // 상세 이미지
+                    imageVo.setProduct_image_level(level); // 상세 이미지
 
+                    imageVo.setProduct_idx(product_idx);
+                    System.out.println(imageVo);
                     product_dao.uploadImages(imageVo);  // DAO 메소드명과 일치
+                    level=level-1;
                 }
             }
             return true;
@@ -113,8 +125,11 @@ public class ProductImageService {
      * 파일 저장
      */
     private void saveFile(MultipartFile file, String fileName) throws IOException {
-        Path uploadPath = Paths.get(UPLOAD_PATH);
-
+    	
+        String realPath = servledtContext.getRealPath(UPLOAD_PATH);
+    	Path uploadPath = Paths.get(realPath);
+        System.out.printf("이미지 저장경로 => %s\n",uploadPath);
+        
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }

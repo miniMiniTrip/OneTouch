@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</select>
 	
 	<!-- 2. 없다면 생성 -->
-  	<insert id="insert" parameterType="hashtag">
+  	<insert id="insert" parameterType="list">
   	insert into hashtag (hashtag_name, hashtag_time) values
   		<foreach collection="list" item="name" separator=",">
   			( #{ name } , now() )
