@@ -51,7 +51,7 @@
         
         .content-header h2 {
             font-size: 18px;
-            color: #5c6bc0;
+            color:  #1A237E;
             font-weight: 600;
         }
         
