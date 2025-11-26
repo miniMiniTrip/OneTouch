@@ -46,17 +46,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		</foreach>
   	</insert>
   	
-  	<!-- 3. 글쓰기 시 일괄등록 -->
+  	<!-- 3-1. 글쓰기 시 일괄등록 (POST용) -->
   	<insert id="insertPostHashtag" parameterType="Map">
   		insert into post_hashtag (post_idx, hashtag_idx) values
   		<foreach collection="hashtag_list" item="hashtag" separator=",">
-  			( #{ post_idx }, #{ hashtag_idx } )
+  			( #{ post_idx }, #{ hashtag.hashtag_idx } )
   		</foreach>
   	</insert>
   	
-  	<!-- 4. post_hashtag 라인 삭제 -->
-  	<delete id="deletePostHashByPost" parameterType="int">
+  	<!-- 3-2. 상품 등록 시 일괄등록 (PRODUCT용) -->
+  	<insert id="insertProductHashtag" parameterType="Map">
+  		insert into product_hashtag (product_idx, hashtag_idx) values
+  		<foreach collection="hashtag_list" item="hashtag" separator=",">
+  			( #{ product_idx }, #{ hashtag.hashtag_idx } )
+  		</foreach>
+  	</insert>
+  	
+  	<!-- 4-1. post_hashtag 라인 삭제 -->
+  	<delete id="deletePostHashtagByPost" parameterType="int">
   		delete from post_hashtag where post_idx = #{ post_idx }
+  	</delete>
+  	
+  	<!-- 4-2. product_hashtag 라인 삭제 -->
+  	<delete id="deleteProductHashtagByProduct" parameterType="int">
+  		delete from product_hashtag where product_idx = #{ product_idx }
   	</delete>
   	
   	<!-- 각 서비스별 기능 -->
@@ -69,11 +82,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  	order by h.hashtag_name
   	</select>
   	
+  	<!-- 상품의 해시태그 출력 -->
+  	<select id="selectHashNamesByProduct" parameterType="int" resultType="String">
+	  	select hashtag_name from hashtag h
+	  	inner join product_hashtag prh on h.hashtag_idx = prh.hashtag_idx
+	  	where prh.product_idx = #{product_idx}
+	  	order by h.hashtag_name
+  	</select>
+  	
   	<!-- 해시태그 idx 조회 -->
   	<select id="selectByIdx" parameterType="int" resultType="int">
 		select ph.hashtag_idx
 		from post_hashtag ph
-		where ph.post_idx = #{post.idx}
+		where ph.post_idx = #{post_idx}
   	</select>
   	
   	<!-- 해시태그 클릭 시 상품 조회 -->

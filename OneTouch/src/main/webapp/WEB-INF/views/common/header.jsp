@@ -13,7 +13,69 @@
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <style>
+
+
+/* 카테고리 드롭다운 표시용 CSS */
+.sub-menu {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    min-width: 160px;
+    z-index: 9999;
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+.sub-menu.show {
+    display: block !important;
+}
+
+.sub-menu li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.sub-menu li a {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    color: #333333;
+    background: transparent;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.sub-menu li:last-child a {
+    border-bottom: none;
+}
+
+.sub-menu li a:hover {
+    background-color: #f8f9fa;
+    color: #2a5298;
+    text-decoration: none;
+}
+
+/* 부모 메뉴 항목에 relative 추가 */
+.nav-item {
+    position: relative;
+}
+
+
+
 /* 드롭다운 컨테이너 */
 .user-dropdown {
     position: relative !important;
@@ -111,68 +173,112 @@ margin-left: -20px;
 </style>
 
 <script type="text/javascript">
-    // 프리로더 제거
-    window.addEventListener('load', function() {
-        const preloader = document.querySelector('.preloader');
-        if (preloader) {
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.display = 'none', 500);
-        }
-    });
+//검색 기능
+function performSearch() {
+    const keyword = document.getElementById('search-input')?.value.trim();
+    if (keyword) {
+        location.href = "${pageContext.request.contextPath}/products?search=" + encodeURIComponent(keyword);
+    }
+}
 
-    // 햄버거식 드롭다운 토글 함수
-    function toggleDropdown(dropdownId) {
-        // 모든 드롭다운 닫기
-        document.querySelectorAll('.user-dropdown').forEach(dropdown => {
-            const menu = dropdown.querySelector('.user-dropdown-menu');
-            if (menu && menu.id !== dropdownId) {
-                menu.classList.remove('show');
-                menu.style.display = 'none';
-                dropdown.classList.remove('active');
+// 유저 드롭다운 토글
+function toggleDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const isVisible = dropdown.style.display === 'block';
+    
+    // 모든 드롭다운 닫기
+    document.querySelectorAll('.user-dropdown-menu').forEach(menu => {
+        menu.style.display = 'none';
+        menu.parentElement.classList.remove('active');
+    });
+    
+    // 현재 드롭다운 토글
+    if (!isVisible) {
+        dropdown.style.display = 'block';
+        dropdown.parentElement.classList.add('active');
+    }
+}
+
+// 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('스크립트 로드됨'); // 디버깅용
+    
+    // 검색 엔터키
+    document.getElementById('search-input')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') performSearch();
+    });
+    
+    // 카테고리 토글
+    const categoryBtn = document.querySelector('.dd-menu');
+    const categoryMenu = document.getElementById('submenu-1-1');
+    
+    console.log('카테고리 버튼:', categoryBtn); // 디버깅용
+    console.log('카테고리 메뉴:', categoryMenu); // 디버깅용
+    
+    if (categoryBtn && categoryMenu) {
+        categoryBtn.addEventListener('click', function(e) {
+            console.log('카테고리 클릭됨'); // 디버깅용
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isOpen = categoryMenu.classList.contains('show');
+            console.log('현재 상태:', isOpen ? '열림' : '닫힘'); // 디버깅용
+            
+            if (isOpen) {
+                categoryMenu.classList.remove('show');
+                this.classList.add('collapsed');
+                console.log('메뉴 닫음');
+            } else {
+                categoryMenu.classList.add('show');
+                this.classList.remove('collapsed');
+                console.log('메뉴 열음');
             }
         });
         
-        // 클릭한 드롭다운 토글
-        const dropdown = document.getElementById(dropdownId);
-        const parentDropdown = dropdown.parentElement;
-        
-        if (dropdown) {
-            if (dropdown.classList.contains('show')) {
-                // 닫기
-                dropdown.classList.remove('show');
-                setTimeout(() => {
-                    dropdown.style.display = 'none';
-                }, 300);
-                parentDropdown.classList.remove('active');
-            } else {
-                // 열기
-                dropdown.style.display = 'block';
-                setTimeout(() => {
-                    dropdown.classList.add('show');
-                }, 10);
-                parentDropdown.classList.add('active');
-            }
-        }
-    }
-
-    // 외부 클릭 시 모든 드롭다운 닫기
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.user-dropdown')) {
-            document.querySelectorAll('.user-dropdown').forEach(dropdown => {
-                const menu = dropdown.querySelector('.user-dropdown-menu');
-                if (menu) {
-                    menu.classList.remove('show');
-                    setTimeout(() => {
-                        menu.style.display = 'none';
-                    }, 300);
-                    dropdown.classList.remove('active');
-                }
+        // 카테고리 항목 클릭시 닫기
+        categoryMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                categoryMenu.classList.remove('show');
+                categoryBtn.classList.add('collapsed');
             });
-        }
+        });
+    } else {
+        console.error('카테고리 요소를 찾을 수 없음');
+    }
+    
+    // 모바일 메뉴 링크 클릭시 닫기
+    document.querySelectorAll('#navbarSupportedContent a').forEach(link => {
+        link.addEventListener('click', function() {
+            const href = this.getAttribute('href');
+            if (href && href !== 'javascript:void(0)' && !this.classList.contains('dd-menu')) {
+                const mobileMenu = document.getElementById('navbarSupportedContent');
+                if (mobileMenu && mobileMenu.classList.contains('show')) {
+                    document.querySelector('.navbar-toggler')?.click();
+                }
+            }
+        });
     });
+});
+
+// 외부 클릭시 닫기
+document.addEventListener('click', function(e) {
+    // 유저 드롭다운 닫기
+    if (!e.target.closest('.user-dropdown')) {
+        document.querySelectorAll('.user-dropdown-menu').forEach(menu => {
+            menu.style.display = 'none';
+            menu.parentElement.classList.remove('active');
+        });
+    }
+    
+    // 카테고리 닫기
+    if (!e.target.closest('#submenu-1-1') && !e.target.closest('.dd-menu')) {
+        const categoryMenu = document.getElementById('submenu-1-1');
+        const categoryBtn = document.querySelector('.dd-menu');
+        if (categoryMenu) categoryMenu.classList.remove('show');
+        if (categoryBtn) categoryBtn.classList.add('collapsed');
+    }
+});
 </script>
-
-
 
 
 <!-- Start Header Area -->
@@ -366,24 +472,22 @@ margin-left: -20px;
                                     <a href="${pageContext.request.contextPath}/">홈</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="dd-menu collapsed" href="javascript:void(0)" 
-                                       data-bs-toggle="collapse" data-bs-target="#submenu-1-1"
-                                       aria-controls="navbarSupportedContent" aria-expanded="false">카테고리</a>
-                                    <ul class="sub-menu collapse" id="submenu-1-1">
-                                        <li class="nav-item">
-                                            <a href="${pageContext.request.contextPath}/products?category=skincare">스킨케어</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="${pageContext.request.contextPath}/products?category=cleansing">클렌징</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="${pageContext.request.contextPath}/products?category=haircare">헤어케어</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="${pageContext.request.contextPath}/products?category=bodycare">바디케어</a>
-                                        </li>
-                                    </ul>
-                                </li>
+								    <a class="dd-menu collapsed" href="javascript:void(0)">카테고리</a>
+								    <ul class="sub-menu collapse" id="submenu-1-1">
+								        <li class="nav-item">
+								            <a href="${pageContext.request.contextPath}/products?category=skincare">스킨케어</a>
+								        </li>
+								        <li class="nav-item">
+								            <a href="${pageContext.request.contextPath}/products?category=cleansing">클렌징</a>
+								        </li>
+								        <li class="nav-item">
+								            <a href="${pageContext.request.contextPath}/products?category=haircare">헤어케어</a>
+								        </li>
+								        <li class="nav-item">
+								            <a href="${pageContext.request.contextPath}/products?category=bodycare">바디케어</a>
+								        </li>
+								    </ul>
+								</li>
                                 <li class="nav-item">
                                     <a href="${pageContext.request.contextPath}/product/list">전체 상품</a>
                                 </li>
@@ -433,7 +537,7 @@ margin-left: -20px;
 <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     // 프리로더 제거
     window.addEventListener('load', function() {
         const preloader = document.querySelector('.preloader');
@@ -450,16 +554,11 @@ margin-left: -20px;
         
         
     });
-</script>
-<script>
-function performSearch() {
-    const keyword = document.getElementById('search-input').value.trim();
-    const contextPath = "${pageContext.request.contextPath}";
-    if (keyword) {
-        location.href = contextPath+"/products?search=" + encodeURIComponent(keyword);
-    }
-}
+</script> -->
 
+
+
+<%-- 
 /* function updateHeaderCartCount() {
     const contextPath = '${pageContext.request.contextPath}';
     fetch(contextPath+"/cart/count")
@@ -475,5 +574,5 @@ function performSearch() {
 });*/
 
 
-</script>
+ --%>
 
