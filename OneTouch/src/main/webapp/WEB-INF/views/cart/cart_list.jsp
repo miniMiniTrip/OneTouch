@@ -540,7 +540,7 @@
                     </div>
                 </div> -->
                  <!-- 사이드바 인크루드 -->
-                  <%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
+				<%@include file="/WEB-INF/views/common/mypage_side_bar.jsp" %>
                  
                 <!-- Content -->
                 <div class="content">
@@ -698,20 +698,27 @@
     <!-- End Cart Section -->
     <c:import url="../common/footer.jsp" />
 
-    <%@include file="/WEB-INF/views/common/footer.jsp" %>
     <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
 
     <!-- ========================= JS here ========================= -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
+    // 프리로더 제거
+    window.addEventListener('load', function() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+    });
+    
     // 전체 선택/해제
     $('#checkAll').on('change', function() {
         $('.cart-check').prop('checked', $(this).prop('checked'));
