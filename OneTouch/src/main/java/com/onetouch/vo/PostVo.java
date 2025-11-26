@@ -76,4 +76,7 @@ public class PostVo {
 	
 	/** DB에서 post_idx 기준으로 댓글 List 가져올때 사용*/
 	List<ReplyVo> replyList;
+	
+	/** post_hashtag 테이블 가져온 List 사용*/
+	List<HashtagVo> hashtagList;
 }

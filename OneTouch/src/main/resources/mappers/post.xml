@@ -44,6 +44,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result property="reply_time" column="reply_time"/>
 			<result property="reply_update" column="reply_update"/>
 		</collection>
+		<collection property="hashtagList" ofType="com.onetouch.vo.HashtagVo">
+			<result property="hashtag_idx" column="hashtag_idx"/>
+			<result property="hashtag_name" column="hashtag_name"/>
+		</collection>
 	</resultMap>
 	<!-- post 전체 조회 -->
 	<select id="selectPostList" resultMap="PostResultMap">
@@ -53,13 +57,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        ,pi.product_image_url
 	        , l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 	        , r.*
+	        , ph.hashtag_idx
+	        , h.hashtag_name
 	    FROM post p
 	    JOIN mem m ON p.mem_idx = m.mem_idx
 	    LEFT JOIN post_product pp ON p.post_idx = pp.post_idx
 	    LEFT JOIN product pr ON pp.product_idx = pr.product_idx
 	    LEFT JOIN product_image pi ON pp.product_idx =pi.product_idx
 	    LEFT JOIN `like` l ON p.post_idx = l.post_idx
-	    LEFT join reply as r on p.post_idx=r.post_idx
+	    LEFT JOIN reply as r on p.post_idx=r.post_idx
+	    LEFT JOIN post_hashtag as ph on p.post_idx = ph.post_idx
+	    LEFT JOIN hashtag as h on ph.hashtag_idx=h.hashtag_idx
 	    <if test="postPageVo !=null and postPageVo.size()>0">
 	    WHERE p.post_idx IN
 	    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
@@ -92,6 +100,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	       ,pi.product_image_url
     	   , l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
     	   , r.*
+    	   , ph.hashtag_idx
+	       , h.hashtag_name
 		FROM otdb.post as p
 		join mem as m ON p.mem_idx=m.mem_idx
 	    LEFT JOIN post_product pp ON p.post_idx = pp.post_idx
@@ -100,6 +110,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	     LEFT JOIN `like` l 
         	ON p.post_idx = l.post_idx
         LEFT join reply as r on p.post_idx=r.post_idx
+        LEFT JOIN post_hashtag as ph on p.post_idx = ph.post_idx
+	    LEFT JOIN hashtag as h on ph.hashtag_idx=h.hashtag_idx
 		WHERE post_category='skin' 
 		<if test="postPageVo !=null and postPageVo.size()>0">
 		and
@@ -120,11 +132,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,m.mem_image_url
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 		, r.*
+		, ph.hashtag_idx
+	    , h.hashtag_name
 		FROM otdb.post as p
 		join mem as m
 		ON p.mem_idx=m.mem_idx
 		LEFT JOIN `like` l ON p.post_idx = l.post_idx
 		LEFT join reply as r on p.post_idx=r.post_idx
+		LEFT JOIN post_hashtag as ph on p.post_idx = ph.post_idx
+	    LEFT JOIN hashtag as h on ph.hashtag_idx=h.hashtag_idx
 		WHERE post_category='review' 
 		<if test="postPageVo !=null and postPageVo.size()>0">
 		and
@@ -142,11 +158,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,m.mem_image_url
 		, l.like_idx ,l.post_idx as like_post_idx,l.mem_idx as like_mem_idx,l.like_time
 		, r.*
+		, ph.hashtag_idx
+	    , h.hashtag_name
 		FROM otdb.post as p
 		join mem as m
 		ON p.mem_idx=m.mem_idx
 		LEFT JOIN `like` l ON p.post_idx = l.post_idx
 		LEFT join reply as r on p.post_idx=r.post_idx
+		LEFT JOIN post_hashtag as ph on p.post_idx = ph.post_idx
+	    LEFT JOIN hashtag as h on ph.hashtag_idx=h.hashtag_idx
 		WHERE post_category='free' 
 		<if test="postPageVo !=null and postPageVo.size()>0">
 		and

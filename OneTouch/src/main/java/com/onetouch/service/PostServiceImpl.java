@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.common.MyConstant;
+import com.onetouch.dao.HashtagDao;
 import com.onetouch.dao.PostDao;
 import com.onetouch.util.PostPaging;
 import com.onetouch.vo.LikeVo;
@@ -27,6 +28,8 @@ public class PostServiceImpl implements PostService {
 	PostDao postDao;
 	@Autowired
 	ServletContext application;
+	@Autowired
+	HashtagDao hashtagDao;
 	
 	//전체 목록 불러오기
 	@Override
@@ -107,7 +110,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	/**post 등록처리*/
-	public int postInsert(PostVo postVo) throws Exception {
+	public int postInsert(PostVo postVo,String[] post_hashtag_array) throws Exception {
 		
 		//이미지 등록처리
 		String webPath = "/images/posts/";
@@ -153,6 +156,10 @@ public class PostServiceImpl implements PostService {
 			}
 		}
 		
+		
+		//해시태그 name으로 조회 해서 있으면 넘어가고 없으면 새로 추가
+		
+		//hashtagDao.selectByNames(post_hashtag_array);
 		
 		return res;
 	}
