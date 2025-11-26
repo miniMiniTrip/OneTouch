@@ -160,8 +160,8 @@
         }
         
         .btn-cancel {
-             background: #dc3545 !important;
-    color: white;
+             background: red !important;
+    color: white !important;
     padding: 4px 12px;
     border: none;
     border-radius: 4px;
@@ -172,17 +172,17 @@
         }
         
         .btn-cancel:hover {
-            background: #f5f5f5;
-            border-color: #999;
+            background: rgb(255,100,100) !important; 
+            border-color: #999 !important;
         }
         
         .btn-submit {
-            background: #5c6bc0 !important;
-            color: white;
+            background: #1A237E !important;
+            color: white !important; 
         }
         
         .btn-submit:hover {
-            background: #4a5aaf;
+            background: #4a5aaf !important;
         }
         
         .error-message {
@@ -321,7 +321,7 @@
             	,type:"post"
             	,data:{"password":password}
             	,success:function(d){
-            		alert("비번체크:"+d.checkPassword);
+            		//alert("비번체크:"+d.checkPassword);
             		if(d.checkPassword==false){
                         errorMsg.textContent = '비밀번호가 틀렸습니다.';
                         errorMsg.style.display = 'block';
@@ -329,7 +329,7 @@
                         return;
             		}
             		if(d.checkPassword==true){
-			            alert("보내기");
+			            //alert("보내기");
 			            errorMsg.style.display = 'none';
 			            f.submit();
             		}
