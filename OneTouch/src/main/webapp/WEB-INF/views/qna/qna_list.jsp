@@ -42,59 +42,6 @@
 		box-shadow: none;
 	}
 
-/* 사이드바 */
-
-/* .sidebar {
-            width: 200px;
-            background: #fafafa;
-            border-right: 1px solid #e0e0e0;
-            padding: 20px 0;
-        }
-        
-        .sidebar-header {
-            padding: 15px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .sidebar-subtitle {
-            padding: 5px 20px 15px;
-            font-size: 12px;
-            color: #999;
-        }
-        
-        .menu-section {
-            margin: 20px 0;
-        }
-        
-        .menu-title {
-            padding: 10px 20px;
-            font-size: 13px;
-            color: #666;
-            font-weight: 600;
-        }
-        
-        .menu-item {
-            padding: 12px 20px;
-            font-size: 14px;
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: background 0.2s;
-        }
-        .menu-item:hover {
-            background: #f0f0f0;
-        }
-        
-        .menu-item.active {
-            background: #e8eaf6;
-            color: #5c6bc0;
-            font-weight: 600;
-            border-left: 3px solid #5c6bc0;
-        }
-         */
 
 /* 컨텐츠 부분.  */
 .content {
@@ -224,6 +171,89 @@
 .qna-table td.title {
 	text-align: center; /* 중앙 정렬 */
 	vertical-align: middle; /* 세로 중앙 정렬 */
+}
+
+
+
+
+
+
+
+	/* 반응형 추가 */
+	
+	
+	/* ========================= 반응형 ========================= */
+
+/* 태블릿 (max 992px) */
+@media (max-width: 992px) {
+    /* 전체 레이아웃 세로 배치 */
+    .qna-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* 사이드바 너비 전체 */
+    .sidebar {
+        width: 100% !important;
+        position: relative !important;
+        margin-bottom: 20px;
+    }
+
+    /* 컨텐츠 */
+    .content {
+        width: 100% !important;
+        padding: 20px !important;
+    }
+
+    /* 글쓰기 버튼 중앙 */
+    .btn-write {
+        display: inline-flex !important;
+        justify-content: center !important;
+        margin: 0 auto 20px auto !important;
+        width: 40% !important;
+        min-width: 120px;
+    }
+
+    /* 테이블 중앙 맞춤 */
+    .qna-table {
+        font-size: 13px !important;
+    }
+}
+
+/* 모바일 (max 768px) */
+@media (max-width: 768px) {
+    .btn-write {
+        width: 50% !important;
+        min-width: 100px !important;
+        font-size: 13px !important;
+        padding: 8px 15px !important;
+    }
+
+    .qna-table th,
+    .qna-table td {
+        padding: 10px 5px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* 작은 모바일 (max 480px) */
+@media (max-width: 480px) {
+    .content-header h2 {
+        font-size: 16px !important;
+    }
+
+    .btn-write {
+        width: 70% !important;
+        min-width: 80px !important;
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+
+    .qna-table th,
+    .qna-table td {
+        font-size: 11px !important;
+        padding: 8px 5px !important;
+    }
 }
 </style>
 
