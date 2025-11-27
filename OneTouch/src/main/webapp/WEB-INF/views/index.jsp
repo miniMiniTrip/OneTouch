@@ -22,7 +22,7 @@
 </head>
 
 <script>
-    window.location.href = "http://localhost:8080/main";
+    window.location.href = "main";
 </script>
 
 <body>

@@ -285,6 +285,9 @@ select.form-control {
 
 <!-- =======================================js : post등록============================================ -->
 <script type="text/javascript">
+if("${param.error}"=="db_not"){
+	alert("잘못된 입력방식입니다\n 다시 작성해주세요");
+}
 function postModify(f) {
     let post_category = f.post_category.value;
     let post_title = f.post_title.value.trim();
@@ -517,7 +520,7 @@ function postModify(f) {
 				     *   1) 수정 화면: 기존 해시태그 목록 불러오기
 				     * ============================================ */
 				    let selectedHashtags = [
-				        <c:forEach var="tag" items="${postHashtagList}" varStatus="s">
+				        <c:forEach var="tag" items="${hasgtagVo_list_array}" varStatus="s">
 				            "${tag}" <c:if test="${!s.last}">,</c:if>
 				        </c:forEach>
 				    ];

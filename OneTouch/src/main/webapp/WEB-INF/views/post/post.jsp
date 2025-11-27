@@ -488,15 +488,35 @@ body {
 @media (max-width: 767px) {
     .image-carousel {
         aspect-ratio: auto; /* 비율 제한 해제 */
-        height: auto;
+        height: 500px !important;
     }
 
-    .carousel-item,
-    .post-image {
-        height: auto; 
-        max-height: none;
-        object-fit: contain; /* 이미지 잘림 방지 */
+	.image-carousel {
+        aspect-ratio: unset;
+        height: 500px !important;
+        overflow: hidden;
     }
+    .carousel-inner {
+        display: flex;
+        scroll-snap-type: x mandatory;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        transition: none;
+        height: 100px;
+    }
+    .carousel-item {
+        flex: 0 0 100%;
+        width: 100%;
+        scroll-snap-align: start;
+    }
+    .post-image {
+        width: 100%;
+        height: 500px !important;
+        max-height: 80vh;
+        display: block;
+    }
+    /* 화살표 버튼 숨기기 */
+    /* .carousel-control { display: none !important; } */
 }
 /* 모바일에서 이미지 잘림 방지 + 슬라이드 정상화 */
 @media (max-width: 767px) {
@@ -534,7 +554,6 @@ body {
     .post-image {
         width: 100%;
         height: auto;
-        object-fit: contain;
     }
 }
 
@@ -1246,7 +1265,16 @@ function carousels(){
       function adjustHeight(index) {
           const activeImg = items[index]?.querySelector('img');
           //if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
-          if (activeImg) inner.style.height = '827px';
+          if (!activeImg) return;
+
+          // ★★★ 모바일이미지 높이! ★★★
+          if (window.innerWidth <= 767) {
+              inner.style.height = '500px';   // 모바일: 높이 자동
+              return;
+          }
+
+          // 데스크탑에서만 827px 적용
+          inner.style.height = '827px';
       }
 
       window.addEventListener('resize', () => adjustHeight(currentIndex));
@@ -1565,8 +1593,8 @@ document.addEventListener('click', function(e) {
          const img = images[i];
          /* alert(`\${img}`); */
          html=html+`
-                     <div class="carousel-item \${i==0 ? 'active' : ''}">
-                         <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100">
+                     <div class="carousel-item \${i==0 ? 'active' : ''}"  >
+                         <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100 h-100">
                      </div>
                      `
          }

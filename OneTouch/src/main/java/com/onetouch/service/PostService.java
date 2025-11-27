@@ -19,5 +19,5 @@ public interface PostService {
 
 	Map<String, Object> postLikeUpdate(Map<String, Object> map) throws Exception;
 
-	int updatePostVo(PostVo postVo) throws Exception;
+	int updatePostVo(PostVo postVo,String[] post_hashtag_array) throws Exception;
 }
