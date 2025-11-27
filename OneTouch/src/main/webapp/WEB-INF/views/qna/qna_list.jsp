@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
 <head>
@@ -377,7 +378,9 @@
 										<td>${qna.mem_name}</td>
 
 										<!-- 답변시간 -->
-										<td>${qna.qna_time}</td>
+										<td>
+    										<fmt:formatDate value="${qna.qna_time}" pattern="yyyy-MM-dd HH:mm"/>
+										</td>
 
 
 										<!-- 답변완료 / 대기상태 -->
