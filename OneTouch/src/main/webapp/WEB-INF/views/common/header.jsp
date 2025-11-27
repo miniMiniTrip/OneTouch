@@ -231,7 +231,7 @@ margin-left: -20px;
 function performSearch() {
     const keyword = document.getElementById('search-input')?.value.trim();
     if (keyword) {
-        location.href = "${pageContext.request.contextPath}/products?search=" + encodeURIComponent(keyword);
+        location.href = "${pageContext.request.contextPath}/product/list?keyword=" + encodeURIComponent(keyword) + "&sort=popular";
     }
 }
 
