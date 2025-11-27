@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class MembersControllerTest {
 
+	//관리자 회원관리 부분 컨트롤러. 
+	
     @GetMapping("/admin_members")
     public String adminPage() {
         return "admin/admin_members";
