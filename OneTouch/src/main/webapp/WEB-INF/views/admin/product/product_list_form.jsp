@@ -1102,27 +1102,362 @@
                         <textarea id="product_comment" name="product_comment" class="form-textarea" placeholder="상품설명을 입력하세요"></textarea>
                     </div>
                     
-                    <!-- 해시태그 선택 -->
+                    <!-- 해시태그 (직접 입력 + 선택) -->
                     <div class="form-group">
                         <label class="form-label">해시태그</label>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; max-height: 200px; overflow-y: auto;">
-                            <c:forEach var="hashtag" items="${hashtag_list}">
-                                <label style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; cursor: pointer; border-radius: 6px; transition: background 0.2s; font-size: 13px;" 
-                                       onmouseover="this.style.background='#f5f7fa'" 
-                                       onmouseout="this.style.background='white'">
-                                    <input type="checkbox" 
-                                           name="hashtag_idx_list" 
-                                           value="${hashtag.hashtag_idx}"
-                                           class="hashtag-checkbox"
-                                           style="cursor: pointer;">
-                                    <span style="color: #1a237e;">#${hashtag.hashtag_name}</span>
-                                </label>
-                            </c:forEach>
+                        
+                        <!-- 1. 직접 입력 섹션 -->
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                                <input type="text" 
+                                       id="newHashtagInput" 
+                                       placeholder="새 해시태그 입력 (예: 여름, 신상)"
+                                       style="flex: 1; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px;"
+                                       onkeypress="if(event.key==='Enter'){event.preventDefault();addCustomHashtag();}">
+                                <button type="button" 
+                                        onclick="addCustomHashtag()"
+                                        style="padding: 8px 16px; background: #1a237e; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#0d47a1'" 
+                                        onmouseout="this.style.background='#1a237e'">
+                                    추가
+                                </button>
+                            </div>
+                            
+                            <!-- 직접 입력한 태그들 표시 영역 -->
+                            <div id="customHashtagsContainer" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px; padding: 10px; background: #f5f7fa; border-radius: 6px; border: 1px dashed #d0d0d0;">
+                                <span style="color: #999; font-size: 12px; align-self: center;">직접 입력한 태그가 여기에 표시됩니다</span>
+                            </div>
                         </div>
+                        
+                        <!-- 2. 기존 해시태그 선택 섹션 -->
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 13px; color: #666; margin-bottom: 8px; font-weight: 600;">
+                                기존 해시태그 선택
+                            </div>
+                            <div id="hashtagListContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; min-height: 200px; background: white;">
+                                <!-- 페이징된 해시태그 체크박스들이 여기에 표시됨 -->
+                            </div>
+                            
+                            <!-- 페이징 네비게이션 -->
+                            <div id="hashtagPagination" style="display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 12px;">
+                                <!-- 페이징 버튼들이 여기에 표시됨 -->
+                            </div>
+                            
+                            <!-- Hidden inputs for selected hashtag_idx_list (페이징 대응) -->
+                            <div id="selectedHashtagsHidden" style="display: none;">
+                                <!-- 선택된 해시태그 idx들이 hidden input으로 렌더링됨 -->
+                            </div>
+                        </div>
+                        
                         <p style="margin-top: 8px; font-size: 12px; color: #666;">
-                            💡 이 상품의 특성을 나타내는 해시태그를 선택하세요
+                            💡 새 해시태그를 직접 입력하거나, 기존 해시태그를 선택하세요
                         </p>
                     </div>
+
+<style>
+/* 커스텀 해시태그 칩 스타일 */
+.custom-hashtag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+    animation: chipIn 0.3s ease;
+}
+
+@keyframes chipIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.custom-hashtag-chip .remove-btn {
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.custom-hashtag-chip .remove-btn:hover {
+    opacity: 1;
+}
+
+/* 페이징 버튼 스타일 */
+.page-btn {
+    padding: 6px 12px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    color: #333;
+    min-width: 36px;
+    text-align: center;
+}
+
+.page-btn:hover {
+    background: #f5f7fa;
+    border-color: #1a237e;
+}
+
+.page-btn.active {
+    background: #1a237e;
+    color: white;
+    border-color: #1a237e;
+    font-weight: 600;
+}
+
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.page-btn:disabled:hover {
+    background: white;
+    border-color: #e0e0e0;
+}
+</style>
+
+<script>
+// 전역 변수
+let customHashtags = []; // 직접 입력한 해시태그 이름들
+let allHashtags = []; // 전체 해시태그 리스트 (서버에서 받아옴)
+let selectedHashtagIds = []; // 선택된 해시태그 idx들 (페이징 대응용)
+let currentPage = 1;
+const itemsPerPage = 9; // 페이지당 9개 (3x3 그리드)
+
+// 페이지 로드 시 해시태그 리스트 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    // 서버에서 받은 해시태그 리스트를 allHashtags에 저장
+    allHashtags = [
+        <c:forEach var="hashtag" items="${hashtag_list}" varStatus="status">
+        {
+            idx: ${hashtag.hashtag_idx},
+            name: '${hashtag.hashtag_name}'
+        }<c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+    
+    renderHashtagList();
+});
+
+// 커스텀 해시태그 추가
+function addCustomHashtag() {
+    const input = document.getElementById('newHashtagInput');
+    let tagName = input.value.trim();
+    
+    // #이 맨 앞에 있으면 제거
+    if (tagName.startsWith('#')) {
+        tagName = tagName.substring(1);
+    }
+    
+    if (tagName === '') {
+        alert('해시태그를 입력해주세요');
+        return;
+    }
+    
+    // 특수문자 체크 (한글, 영문, 숫자만 허용)
+    if (!/^[가-힣a-zA-Z0-9]+$/.test(tagName)) {
+        alert('해시태그는 한글, 영문, 숫자만 사용할 수 있습니다');
+        return;
+    }
+    
+    // 중복 체크 (직접 입력한 것 중에서)
+    if (customHashtags.includes(tagName)) {
+        alert('이미 추가된 해시태그입니다');
+        return;
+    }
+    
+    // 기존 해시태그와 중복 체크
+    const existingHashtag = allHashtags.find(h => h.name === tagName);
+    if (existingHashtag) {
+        alert('이미 존재하는 해시태그입니다. 아래 목록에서 선택해주세요.');
+        return;
+    }
+    
+    // 추가
+    customHashtags.push(tagName);
+    renderCustomHashtags();
+    input.value = '';
+}
+
+// 커스텀 해시태그 렌더링
+// 커스텀 해시태그 렌더링
+function renderCustomHashtags() {
+    const container = document.getElementById('customHashtagsContainer');
+    
+    if (customHashtags.length === 0) {
+        container.innerHTML = '<span style="color: #999; font-size: 12px; align-self: center;">직접 입력한 태그가 여기에 표시됩니다</span>';
+        return;
+    }
+    
+    let html = '';
+    for (let i = 0; i < customHashtags.length; i++) {
+        const tag = customHashtags[i];
+        html += '<div class="custom-hashtag-chip">';
+        html += '<span>#' + tag + '</span>';
+        html += '<span class="remove-btn" onclick="removeCustomHashtag(' + i + ')">×</span>';
+        html += '<input type="hidden" name="hashtag_names" value="' + tag + '">';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+
+// 커스텀 해시태그 삭제
+function removeCustomHashtag(index) {
+    customHashtags.splice(index, 1);
+    renderCustomHashtags();
+}
+
+// 해시태그 리스트 렌더링 (페이징 적용)
+function renderHashtagList() {
+    const totalPages = Math.ceil(allHashtags.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentHashtags = allHashtags.slice(startIndex, endIndex);
+    
+    const container = document.getElementById('hashtagListContainer');
+    
+    if (currentHashtags.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #999;">등록된 해시태그가 없습니다</div>';
+    } else {
+        let html = '';
+        for (let i = 0; i < currentHashtags.length; i++) {
+            const hashtag = currentHashtags[i];
+            const isChecked = selectedHashtagIds.includes(hashtag.idx);
+            
+            html += '<label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; cursor: pointer; border-radius: 6px; transition: background 0.2s; font-size: 13px; border: 1px solid #e8e8e8;" ';
+            html += 'onmouseover="this.style.background=\'#f5f7fa\'; this.style.borderColor=\'#1a237e\'" ';
+            html += 'onmouseout="this.style.background=\'white\'; this.style.borderColor=\'#e8e8e8\'">';
+            html += '<input type="checkbox" value="' + hashtag.idx + '" class="hashtag-checkbox" ';
+            html += 'onchange="handleHashtagChange(' + hashtag.idx + ', this.checked)" ';
+            html += 'style="cursor: pointer; width: 16px; height: 16px; accent-color: #1a237e;"';
+            if (isChecked) {
+                html += ' checked';
+            }
+            html += '>';
+            html += '<span style="color: #1a237e; font-weight: 500;">#' + hashtag.name + '</span>';
+            html += '</label>';
+        }
+        container.innerHTML = html;
+    }
+    
+    renderPagination(totalPages);
+}
+
+// 해시태그 체크박스 변경 처리
+function handleHashtagChange(idx, checked) {
+    if (checked) {
+        // 체크됨 → 배열에 추가
+        if (!selectedHashtagIds.includes(idx)) {
+            selectedHashtagIds.push(idx);
+        }
+    } else {
+        // 체크 해제 → 배열에서 제거
+        const index = selectedHashtagIds.indexOf(idx);
+        if (index > -1) {
+            selectedHashtagIds.splice(index, 1);
+        }
+    }
+    
+    // hidden input 렌더링
+    renderSelectedHashtags();
+    
+    console.log('선택된 해시태그 IDX:', selectedHashtagIds);
+}
+
+// 선택된 해시태그를 hidden input으로 렌더링
+function renderSelectedHashtags() {
+    const container = document.getElementById('selectedHashtagsHidden');
+    
+    let html = '';
+    for (let i = 0; i < selectedHashtagIds.length; i++) {
+        html += '<input type="hidden" name="hashtag_idx_list" value="' + selectedHashtagIds[i] + '">';
+    }
+    container.innerHTML = html;
+}
+
+// 페이징 네비게이션 렌더링
+// 페이징 네비게이션 렌더링
+function renderPagination(totalPages) {
+    const container = document.getElementById('hashtagPagination');
+    
+    if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+    }
+    
+    let html = '';
+    
+    // 이전 버튼
+    html += '<button class="page-btn" onclick="changePage(' + (currentPage - 1) + ')"';
+    if (currentPage === 1) {
+        html += ' disabled';
+    }
+    html += '>◀</button>';
+    
+    // 페이지 번호들
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    if (startPage > 1) {
+        html += '<button class="page-btn" onclick="changePage(1)">1</button>';
+        if (startPage > 2) {
+            html += '<span style="padding: 0 8px; color: #999;">...</span>';
+        }
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        html += '<button class="page-btn';
+        if (i === currentPage) {
+            html += ' active';
+        }
+        html += '" onclick="changePage(' + i + ')">' + i + '</button>';
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            html += '<span style="padding: 0 8px; color: #999;">...</span>';
+        }
+        html += '<button class="page-btn" onclick="changePage(' + totalPages + ')">' + totalPages + '</button>';
+    }
+    
+    // 다음 버튼
+    html += '<button class="page-btn" onclick="changePage(' + (currentPage + 1) + ')"';
+    if (currentPage === totalPages) {
+        html += ' disabled';
+    }
+    html += '>▶</button>';
+    
+    container.innerHTML = html;
+}
+
+// 페이지 변경
+function changePage(page) {
+    const totalPages = Math.ceil(allHashtags.length / itemsPerPage);
+    if (page < 1 || page > totalPages) return;
+    
+    currentPage = page;
+    renderHashtagList();
+}
+</script>
 
                     <div class="form-group">
                         <label class="form-label" for="product_cnt">재고수량</label>
@@ -1213,6 +1548,12 @@
 			
            	// 해시태그 초기화
             $("input[name='hashtag_idx_list']").prop('checked', false);
+            customHashtags = [];
+            selectedHashtagIds = [];
+            renderCustomHashtags();
+            renderSelectedHashtags();
+            currentPage = 1;
+            renderHashtagList();
 
             modal.classList.add("active");
         }
@@ -1245,13 +1586,20 @@
                             "${pageContext.request.contextPath}/images/" + vo.product_image_url;
                     }
                     
-                    // 해시태그 체크박스 초기화 및 설정
-                    $("input[name='hashtag_idx_list']").prop('checked', false);
+                    // 해시태그 초기화 및 설정
+                    customHashtags = [];
+                    selectedHashtagIds = [];
+                    renderCustomHashtags();
+                    
                     if (vo.hashtag_list && vo.hashtag_list.length > 0) {
                         vo.hashtag_list.forEach(function(hashtag) {
-                            $("input[name='hashtag_idx_list'][value='" + hashtag.hashtag_idx + "']").prop('checked', true);
+                            selectedHashtagIds.push(hashtag.hashtag_idx);
                         });
                     }
+                    
+                    renderSelectedHashtags();
+                    currentPage = 1;
+                    renderHashtagList();
                     
                     // 모달 열기
                     modal.classList.add("active");
