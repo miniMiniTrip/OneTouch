@@ -36,7 +36,7 @@ public class SkinProfileController {
 	@Autowired
 	HttpSession session;
 	
-	@RequestMapping("/skinprofile/form.do")
+	@RequestMapping("/skinprofile/form")
 	public String SkinProfileForm() {
 		return "skinprofile/form";
 	}

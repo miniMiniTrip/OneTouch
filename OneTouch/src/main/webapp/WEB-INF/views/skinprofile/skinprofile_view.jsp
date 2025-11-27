@@ -762,7 +762,7 @@
                                         
                                         <div class="product-grid">
                                             <c:forEach var="product" items="${product_list}">
-                                                <div class="product-card" onclick="location.href='${pageContext.request.contextPath}/product/detail.do?product_idx=${product.product_idx}'">
+                                                <div class="product-card" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'">
                                                     <div class="product-name">${product.product_name}</div>
                                                     <div class="product-brand">${product.product_brand}</div>
                                                     <div class="product-comment">${product.product_comment}</div>
@@ -770,7 +770,7 @@
                                                         <div class="product-price">
                                                             <fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원
                                                         </div>
-                                                        <a href="${pageContext.request.contextPath}/product/detail.do?product_idx=${product.product_idx}" 
+                                                        <a href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}" 
                                                            class="btn-view-product" onclick="event.stopPropagation();">
                                                             상세보기
                                                         </a>

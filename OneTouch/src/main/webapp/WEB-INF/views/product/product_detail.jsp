@@ -826,6 +826,20 @@ to {
 	    }
 	}
 	
+.feature-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.feature-gif {
+    width: 150px;
+    border-radius: 8px;
+     margin: 0 auto;  
+    
+}
+
+
 
 
 </style>
@@ -1006,12 +1020,11 @@ to {
 			</c:forEach>
 		</div>
 
-		<!-- 제품 특징 (기존 내용) -->
-		<ul class="feature-list">
-			<li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
-			<li>빠른 흡수력과 끈적하지 않는 사용감</li>
-			<li>민감성 피부도 안심하고 사용 가능</li>
-		</ul>
+		<div class="feature-row">
+		    <img src="/images/장바구니하단.gif" alt="장바구니하단 GIF" class="feature-gif">
+		
+		   
+		</div>
 	</div>
 
 	<!-- 리뷰 내용 -->

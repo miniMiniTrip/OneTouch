@@ -210,7 +210,7 @@
             </div>
            
             <div class="mypage-menu-item">
-                <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}">🎯 주문/배송 조회</a>
+                <a href="${pageContext.request.contextPath}/order/list.do">🎯 주문/배송 조회</a>
             </div>
             
             <div class="mypage-menu-item">
