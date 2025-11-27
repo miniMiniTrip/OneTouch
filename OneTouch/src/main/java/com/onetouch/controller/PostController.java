@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.onetouch.dao.HashtagDao;
 import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ReplyDao;
 import com.onetouch.service.PostService;
 import com.onetouch.service.ReplyService;
-import com.onetouch.service.ReplyServiceImpl;
+import com.onetouch.vo.HashtagVo;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
-import com.onetouch.vo.ReplyPageVo;
 import com.onetouch.vo.ReplyVo;
 
 import jakarta.servlet.ServletContext;
@@ -51,6 +52,8 @@ public class PostController {
 	@Autowired
 	ServletContext application;
 	
+	@Autowired
+	HashtagDao hashtagDao;
 	
 	//커뮤니티 전체목록 열기 (동기로 구현)
 	@RequestMapping("/post/list")
@@ -221,6 +224,12 @@ public class PostController {
 		List<ProductVo> product_list_array=postDao.selectProductList();
 		System.out.printf("		productList(%d개):%s\n",product_list_array.size(),product_list_array);
 		
+		//post_idx 기준으로 해시태그 정보 1개 가져오기
+		List<String> hasgtagVo_list_array=hashtagDao.selectHashNamesByPost(post_idx);
+		System.out.printf("		hasgtagVo_list_array(%d개):%s\n",hasgtagVo_list_array.size(),hasgtagVo_list_array);
+		
+		
+		model.addAttribute("hasgtagVo_list_array", hasgtagVo_list_array);
 		model.addAttribute("product_list_array", product_list_array);
 		model.addAttribute("postVo", postVo);
 		model.addAttribute("postProductVo", postProductVo);
@@ -237,10 +246,21 @@ public class PostController {
 	
 	//post modify 버튼 클릭시 수정처리
 	@PostMapping("/post/modify")
-	public String postModify(PostVo postVo) throws Exception {
+	public String postModify(PostVo postVo,String[] post_hashtag_array,RedirectAttributes ra)  {
 		System.out.printf("	[PostController] postModify()\n");
-		System.out.printf("		%s\n",postVo);
-		int res=postService.updatePostVo(postVo);
+		System.out.printf("		postVo => %s\n",postVo);
+		System.out.printf("		post_hashtag_array => %d\n",post_hashtag_array.length);
+		
+		try {
+			int res=postService.updatePostVo(postVo,post_hashtag_array);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+				
+			ra.addAttribute("error","db_not");
+			ra.addAttribute("post_idx",postVo.getPost_idx());
+			System.out.println("에러메세지"+e.getMessage());
+			return "redirect:/post/modify";
+		}
 		System.out.println("	[PostController] return : /post/post_modify");
 		System.out.println("");
 		return "redirect:/post/list";
