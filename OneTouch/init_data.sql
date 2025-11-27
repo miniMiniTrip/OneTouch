@@ -317,3 +317,195 @@ ORDER BY product_image_level ASC;
 SELECT * FROM product_image 
 WHERE product_idx = 28
 ORDER BY product_image_level ASC;
+
+
+
+
+
+--==커뮤니티 dummy data ==
+insert into post values(null, 회원_idx, skin, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
+
+INSERT INTO post 
+VALUES (
+    NULL,                      -- post_idx (자동 증가)
+    1,                         -- mem_idx (회원 번호)
+    'skin',                    -- post_category (스킨 게시글)
+    '피부관리 꿀팁',              -- post_title (제목)
+    '이 제품 써봤는데 좋아요!',     -- post_content (내용)
+    '06.겨울피부관리.png*09.피부관리법.png*14.꿀피부치트.png',        -- post_image (이미지 파일명)
+    12,                       -- post_like (좋아요 수)
+    0,                        -- post_comment_count (댓글 수)
+    NULL,                     -- order_id (리뷰 주문번호 아님 → NULL)
+    0,                        -- post_review (리뷰글 아님 = 0)
+    0,                        -- post_rating (별점 = 0)
+    0,                        -- post_delete (삭제 여부)
+    NOW(),                    -- post_time (작성일)
+    NULL                      -- post_update (수정일)
+);
+
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                     -- post_idx
+    2,                        -- mem_idx
+    'review',                 -- post_category (리뷰)
+    '이 제품 솔직 후기',         -- post_title
+    '일주일 써봤는데 촉촉해요',   -- post_content
+    '15.비포에프터2.png',          -- post_image
+    5,                        -- post_like
+    0,                        -- post_comment_count
+    NULL,                     -- order_id (주문 번호: 샘플이므로 NULL)
+    1,                        -- post_review (리뷰글 = 1)
+    4,                        -- post_rating (별점)
+    0,                        -- post_delete
+    NOW(),                    -- post_time
+    NULL                      -- post_update
+);
+
+
+
+
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+    3,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '피부관리 첫번쨰',            		-- post_title
+    '촉촉한 스킨과 함깨 내돈내산',       -- post_content
+    '13.솜스킨.png*14.꿀피부치트.png',                -- post_image
+    3,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+    4,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '요즘너무 춥네요',            				-- post_title
+    '건조한 날씨 어떻게 피부관리들 하시나요? 올인원',    -- post_content
+    '16.올인원.png',                -- post_image
+    3,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+	4    ,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '피부관리 첫번쨰',            		-- post_title
+    '요즘 같은 환절기 피부 당기시는 분 👋🏻 아토베이러 크림과 함깨 ',       -- post_content
+    '18.크림01.png*19.크림02.png*20.크림03.png*21.로션04.png*22.크림05.png*23.크림06.png',                -- post_image
+    3,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+    4,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '스틱 파운데이션!',            		-- post_title
+    '수분 에센스 + 자외선 차단 + 파운데이션 + 프라이머까지 담은 올인원 커버 스틱⊹ ',       -- post_content
+    '24.파데.png*25.파데2.png*26파데3.png*27.파데4.png',                -- post_image
+    20,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+    4,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '만능 세럼입니다~',            		-- post_title
+    '피부에 가장 기본이 되는 보습, 미백, 주름개선, 진정, 피부장벽을 위한 
+영양성분을 꾹꾹 눌러담아 사심채워 만든 만능 세럼이랍니다..! ',       -- post_content
+    '세럼.png*세럼2.png*세럼3.png*세럼4.png',                -- post_image
+    20,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+    4,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '우르오스 폼클렌징입니다',            		-- post_title
+    '남자 화장품 브랜드로 굳건히 인기가 많은 !! 우르오스!!
+	제 친구 남편들 남친들은 다 이 브랜드 쓴다해도 과언이 아닐
+	정도로 정말 유명해요 ㅋ 저희 남편도 참 좋아하는 브랜드인데
+	이번에 신상으로 출시된 페이스워시는 특히나 사용감이 편해서 ',       -- post_content
+    '28.폼클렌징.png*29.폼클렌징2.png*30.폼클렌징3.png*31.폼클렌징4.png',                -- post_image
+    20,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+
+
+
+INSERT INTO post 
+VALUES (
+    NULL,                         -- post_idx
+    4,                            -- mem_idx
+    'free',                       -- post_category (자유게시판)
+    '관리하는 남자 필수템!',            		-- post_title
+    '원오브뎀 드 뗑 쿠션 / 1호 잡티, 모공 커버에 피부톤 정리까지!
+	화장이 처음인 남자도 쉽게! ',       -- post_content
+    '31팩트.png*32팩트2.png*33팩트3.png',                -- post_image
+    50,                            -- post_like
+    0,                            -- post_comment_count
+    NULL,                         -- order_id
+    0,                            -- post_review
+    0,                            -- post_rating
+    0,                            -- post_delete
+    NOW(),                        -- post_time
+    NULL                          -- post_update
+);
+
+
+insert into post values(null, 회원_idx, free, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
+
