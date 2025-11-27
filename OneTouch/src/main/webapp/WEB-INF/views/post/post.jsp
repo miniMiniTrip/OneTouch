@@ -1175,10 +1175,12 @@ body {
     <section class="section">
         <div class="container">
 			  <div class="post-write-container">
+			  <c:if test="${not empty user }">
 			   <button class="post-write-btn" onclick="location.href='/post/insert'">
 			    <i class="fas fa-plus"></i>
 			    <span>등록</span>
 			  </button>
+			  </c:if>
 			  </div>
             <div class="community-content">
                 <div class="community-tabs">
