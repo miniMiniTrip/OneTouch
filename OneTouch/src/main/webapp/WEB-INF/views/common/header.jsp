@@ -549,7 +549,7 @@ document.addEventListener('click', function(e) {
                                     <a href="${pageContext.request.contextPath}/post/list">커뮤니티</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="${pageContext.request.contextPath}/skintest">피부 진단</a>
+                                    <a href="${pageContext.request.contextPath}/skinprofile/form">피부 진단</a>
                                 </li>
                                 
                                    

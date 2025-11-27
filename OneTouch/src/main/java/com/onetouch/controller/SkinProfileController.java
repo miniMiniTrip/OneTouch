@@ -36,7 +36,7 @@ public class SkinProfileController {
 	@Autowired
 	HttpSession session;
 	
-	@RequestMapping("/skinprofile/form.do")
+	@RequestMapping("/skinprofile/form")
 	public String SkinProfileForm() {
 		return "skinprofile/form";
 	}
@@ -134,7 +134,7 @@ public class SkinProfileController {
 		return "skinprofile/view"; 
 	}
 	
-	@RequestMapping("/mypage/skinprofile.do")
+	@RequestMapping("/mypage/skinprofile")
 	public String myPageSkinProfile(Model model) {
 	    
 	    // 로그인 체크
