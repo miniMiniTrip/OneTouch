@@ -168,6 +168,62 @@
 margin-left: -20px;
 
 }  
+
+#cart-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 320px;
+    z-index: 1000;
+}
+
+#cart-dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#cart-dropdown-list li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#cart-dropdown-list li:last-child {
+    border-bottom: none;
+}
+
+#cart-dropdown-list li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.2s;
+}
+
+#cart-dropdown-list li a:hover {
+    background: #f8f9fa;
+}
+
+#cart-dropdown-list li h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+}
+
+#cart-dropdown-list li p {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+}
 </style>
 
 <script type="text/javascript">
@@ -405,7 +461,7 @@ document.addEventListener('click', function(e) {
                         </div>
                         <div class="navbar-cart">
                             <div class="wishlist">
-                                <a href="${pageContext.request.contextPath}/wishlist">
+                                <a href="${pageContext.request.contextPath}/wishlist/list.do">
                                     <i class="lni lni-heart"></i> 
                                     <span class="total-items">${wishlistCount}</span>
                                 </a>
@@ -420,7 +476,7 @@ document.addEventListener('click', function(e) {
                                 <div class="shopping-item" id="cart-dropdown">
                                     <div class="dropdown-cart-header">
                                         <span id="cart-item-count">0개 상품</span> 
-                                        <a href="${pageContext.request.contextPath}/cart">장바구니 보기</a>
+                                        <a href="${pageContext.request.contextPath}/cart/list.do">장바구니 보기</a>
                                     </div>
                                     
                                     <!-- dropdown list -->
@@ -534,6 +590,114 @@ document.addEventListener('click', function(e) {
 <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+<script>
+// 장바구니 드롭다운 토글
+let cartDropdownLoaded = false; // 한 번만 로드하기 위한 플래그
+
+$('#cart-toggle').on('click', function(e) {
+    e.preventDefault();
+    
+    const dropdown = $('#cart-dropdown');
+    const isVisible = dropdown.is(':visible');
+    
+    if(!isVisible) {
+        // 드롭다운 열기
+        dropdown.show();
+        
+        // 아직 로드 안 했으면 로드
+        if(!cartDropdownLoaded) {
+            loadCartDropdown();
+        }
+    } else {
+        // 드롭다운 닫기
+        dropdown.hide();
+    }
+});
+
+// 장바구니 목록 로드
+function loadCartDropdown() {
+    $.ajax({
+        url: '${pageContext.request.contextPath}/cart/dropdown',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if(data.result === 'success') {
+                // 목록 렌더링
+                renderCartDropdown(data.cart_list, data.total_amount, data.count);
+                cartDropdownLoaded = true;
+            } else if(data.result === 'not_login') {
+                // 비로그인 상태
+                $('#cart-dropdown-list').html(
+                    '<li style="padding: 20px; text-align: center; color: #999;">' +
+                    '로그인이 필요합니다.</li>'
+                );
+                $('#cart-dropdown-total').text('0원');
+            }
+        },
+        error: function() {
+            $('#cart-dropdown-list').html(
+                '<li style="padding: 20px; text-align: center; color: #999;">' +
+                '오류가 발생했습니다.</li>'
+            );
+        }
+    });
+}
+
+// 장바구니 목록 렌더링
+function renderCartDropdown(cartList, totalAmount, count) {
+    const listHtml = $('#cart-dropdown-list');
+    listHtml.empty();
+    
+    if(cartList.length === 0) {
+        listHtml.html(
+            '<li style="padding: 20px; text-align: center; color: #999;">' +
+            '장바구니가 비어있습니다.</li>'
+        );
+        $('#cart-item-count').text('0개 상품');
+        $('#cart-dropdown-total').text('0원');
+        return;
+    }
+    
+    // 최대 5개만 표시
+    const displayList = cartList.slice(0, 4);
+    
+    displayList.forEach(function(item) {
+        const imageUrl = item.product_image_url 
+            ? '${pageContext.request.contextPath}/images/' + item.product_image_url
+            : '${pageContext.request.contextPath}/images/default.png';
+        
+        const li = $('<li></li>');
+        li.html(`
+            <a href="${pageContext.request.contextPath}/product/detail?product_idx=\${item.product_idx}">
+                <img src="\${imageUrl}" alt="\${item.product_name}" 
+                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                <h4>\${item.product_name}</h4>
+                <p class="quantity">\${item.cart_cnt}개 - <span class="amount">\${item.product_price.toLocaleString()}원</span></p>
+            </a>
+        `);
+        listHtml.append(li);
+    });
+    
+    // 개수 및 총액 업데이트
+    $('#cart-item-count').text(count + '개 상품');
+    $('#cart-dropdown-total').text(totalAmount.toLocaleString() + '원');
+}
+
+// 외부 클릭 시 드롭다운 닫기
+$(document).on('click', function(e) {
+    if(!$(e.target).closest('#cart-toggle, #cart-dropdown').length) {
+        $('#cart-dropdown').hide();
+    }
+});
+
+// 장바구니 추가 후 드롭다운 갱신
+function refreshCartDropdown() {
+    cartDropdownLoaded = false; // 플래그 리셋
+    if($('#cart-dropdown').is(':visible')) {
+        loadCartDropdown(); // 열려있으면 즉시 갱신
+    }
+}
+</script>
 
 <!-- <script type="text/javascript">
     // 프리로더 제거

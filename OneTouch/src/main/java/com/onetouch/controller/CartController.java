@@ -98,4 +98,42 @@ public class CartController {
 	    
 	    return map;
 	}
+	
+	//헤더 드롭다운 목록용
+	@RequestMapping("/cart/dropdown")
+	@ResponseBody
+	public Map<String,Object> dropdown(){
+		Map<String,Object> map = new HashMap<>();
+		MemVo memVo = (MemVo) session.getAttribute("user");
+		if(memVo==null) {
+			map.put("result", "not_login");
+			map.put("cart_list", new java.util.ArrayList<>());
+			map.put("total_amount", 0);
+			map.put("count", 0);
+			return map;
+		}
+		
+		try {
+			int mem_idx = memVo.getMem_idx();
+			
+			List<CartVo> cart_list = cart_dao.selectList(mem_idx);
+			if(cart_list.size() > 4) {
+				cart_list = cart_list.subList(0, 4);
+			}	
+			int total_amount = cart_dao.selectCartTotalAmount(mem_idx);
+			int count = cart_dao.selectCartCount(mem_idx);
+			
+			map.put("result", "success");
+			map.put("cart_list", cart_list);
+			map.put("total_amount", total_amount);
+			map.put("count", count);
+			
+		} catch(Exception e) {
+			map.put("result", "error");
+			map.put("cart_list", new java.util.ArrayList<>());
+			map.put("total_amount", 0);
+			map.put("count", 0);
+		}
+		return map;
+	}
 }
