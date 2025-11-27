@@ -3,199 +3,204 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ko">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Q&A 작성 - OneTouch</title>
-    <meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Q&A 작성 - OneTouch</title>
+<meta name="description" content="2030 남성 뷰티 쇼핑몰 OneTouch">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.svg">
 
-    
-    <style>
-        /* 컨테이너 */
-        .container {
-            max-width: 1600px;
-            margin: 40px auto;
-            padding: 0 40px;
-        }
+<style>
+    /* ================== 컨테이너 ================== */
+    .container {
+        max-width: 1600px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
 
-        /* 레이아웃 */
+    /* ================== 레이아웃 ================== */
+    .admin-layout {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 30px;
+    }
+
+    /* ================== Q&A 작성 섹션 ================== */
+    .admin-qna-write-section {
+        padding: 0;
+    }
+
+    .admin-qna-write-container {
+        flex: 1;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .admin-qna-write-content {
+        padding: 40px;
+    }
+
+    .admin-qna-write-content-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #5c6bc0;
+    }
+
+    .admin-qna-write-content-header h2 {
+        font-size: 18px;
+        color: #5c6bc0;
+        font-weight: 600;
+    }
+
+    .admin-qna-write-btn-list {
+        background: #666;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .admin-qna-write-btn-list:hover {
+        background: #555;
+    }
+
+    .admin-qna-write-form-group {
+        margin-bottom: 25px;
+    }
+
+    .admin-qna-write-form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .admin-qna-write-form-label .required {
+        color: #dc3545;
+        margin-left: 3px;
+    }
+
+    .admin-qna-write-form-control,
+    .admin-qna-write-form-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        font-family: 'Malgun Gothic', sans-serif;
+        transition: border-color 0.3s;
+    }
+
+    .admin-qna-write-form-control:focus,
+    .admin-qna-write-form-select:focus {
+        outline: none;
+        border-color: #5c6bc0;
+    }
+
+    .admin-qna-write-form-control.textarea {
+        min-height: 200px;
+        resize: vertical;
+    }
+
+    .admin-qna-write-form-notice {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .admin-qna-write-form-notice-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #856404;
+        margin-bottom: 8px;
+    }
+
+    .admin-qna-write-form-notice-text {
+        font-size: 13px;
+        color: #856404;
+        line-height: 1.6;
+    }
+
+    .admin-qna-write-btn-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .admin-qna-write-btn {
+        padding: 12px 40px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .admin-qna-write-btn-submit {
+        background: #5c6bc0 !important;
+        color: white !important;
+    }
+
+    .admin-qna-write-btn-submit:hover {
+        background: #4a5aaf !important;
+    }
+
+    .admin-qna-write-btn-cancel {
+        background: #6c757d !important;
+        color: white !important;
+    }
+
+    .admin-qna-write-btn-cancel:hover {
+        background: #5a6268 !important;
+    }
+
+    .admin-qna-write-char-count {
+        text-align: right;
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+
+    /* ================== 반응형 ================== */
+    @media (max-width: 1024px) {
         .admin-layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 30px;
+            grid-template-columns: 200px 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .admin-layout {
+            grid-template-columns: 1fr;
         }
 
-        .admin-qna-write-section {
-            padding: 0;
-            background-color: transparent;
-        }
-        
-        .admin-qna-write-container {
-            flex: 1;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
         .admin-qna-write-content {
-            padding: 40px;
+            padding: 20px;
         }
-        
-        .admin-qna-write-content-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #5c6bc0;
-        }
-        
-        .admin-qna-write-content-header h2 {
-            font-size: 18px;
-            color: #5c6bc0;
-            font-weight: 600;
-        }
-        
-        .admin-qna-write-btn-list {
-            background: #666;
-            color: white;
-            padding: 8px 20px;
-            border: none;
-            border-radius: 4px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .admin-qna-write-btn-list:hover {
-            background: #555;
-        }
-        
-        .admin-qna-write-form {
-            background: white;
-        }
-        
-        .admin-qna-write-form-group {
-            margin-bottom: 25px;
-        }
-        
-        .admin-qna-write-form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .admin-qna-write-form-label .required {
-            color: #dc3545;
-            margin-left: 3px;
-        }
-        
-        .admin-qna-write-form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: 'Malgun Gothic', sans-serif;
-            transition: border-color 0.3s;
-        }
-        
-        .admin-qna-write-form-control:focus {
-            outline: none;
-            border-color: #5c6bc0;
-        }
-        
-        .admin-qna-write-form-control.textarea {
-            min-height: 200px;
-            resize: vertical;
-        }
-        
-        .admin-qna-write-form-select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-        
-        .admin-qna-write-form-select:focus {
-            outline: none;
-            border-color: #5c6bc0;
-        }
-        
-        .admin-qna-write-form-notice {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .admin-qna-write-form-notice-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #856404;
-            margin-bottom: 8px;
-        }
-        
-        .admin-qna-write-form-notice-text {
-            font-size: 13px;
-            color: #856404;
-            line-height: 1.6;
-        }
-        
-        .admin-qna-write-btn-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .admin-qna-write-btn {
-            padding: 12px 40px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .admin-qna-write-btn-submit {
-            background: #5c6bc0 !important;
-            color: white !important;
-        }
-        
-        .admin-qna-write-btn-submit:hover {
-            background: #4a5aaf !important;
-        }
-        
-        .admin-qna-write-btn-cancel {
-            background: #6c757d !important;
-            color: white !important;
-        }
-        
-        .admin-qna-write-btn-cancel:hover {
-            background: #5a6268 !important;
-        }
-        
-        .admin-qna-write-char-count {
-            text-align: right;
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
-        }
-    </style>
-</head>
 
+        .admin-qna-write-btn-group {
+            flex-direction: column;
+        }
+
+        .admin-qna-write-btn {
+            width: 100%;
+        }
+    }
+</style>
+</head>
 <body>
     <!-- Preloader -->
     <div class="preloader">
@@ -207,26 +212,22 @@
         </div>
     </div>
 
-    <!-- Start Header Area -->
+    <!-- Header -->
     <%@ include file="admin_header.jsp" %>
-    <!-- End Header Area -->
 
-    <!-- Start Q&A Write Section -->
+    <!-- Q&A Write Section -->
     <section class="admin-qna-write-section">
-        <!-- 메인 컨테이너 -->
         <div class="container">
             <div class="admin-layout">
-                <!-- 사이드바 -->
                 <%@ include file="admin_side.jsp"%>
 
-                <!-- 콘텐츠 영역 -->
                 <div class="admin-qna-write-container">
                     <div class="admin-qna-write-content">
                         <div class="admin-qna-write-content-header">
                             <h2>✎ Q&A 작성하기</h2>
                             <button class="admin-qna-write-btn-list" onclick="location.href='${pageContext.request.contextPath}/admin/qna_list'">목록으로</button>
                         </div>
-                        
+
                         <div class="admin-qna-write-form-notice">
                             <div class="admin-qna-write-form-notice-title">📢 문의 전 확인해주세요</div>
                             <div class="admin-qna-write-form-notice-text">
@@ -235,9 +236,8 @@
                                 • 욕설, 비방 등 부적절한 내용은 관리자에 의해 삭제될 수 있습니다.
                             </div>
                         </div>
-                        
+
                         <form class="admin-qna-write-form" method="post" action="${pageContext.request.contextPath}/admin/qna_write">
-                            <!-- 카테고리 -->
                             <div class="admin-qna-write-form-group">
                                 <label class="admin-qna-write-form-label">문의 유형<span class="required">*</span></label>
                                 <select class="admin-qna-write-form-select" name="qna_category" required>
@@ -250,24 +250,19 @@
                                 </select>
                             </div>
 
-                            <!-- 제목 -->
                             <div class="admin-qna-write-form-group">
                                 <label class="admin-qna-write-form-label">제목<span class="required">*</span></label>
                                 <input type="text" class="admin-qna-write-form-control" name="qna_title" placeholder="제목을 입력하세요" required maxlength="100">
                             </div>
 
-                            <!-- 내용 -->
                             <div class="admin-qna-write-form-group">
                                 <label class="admin-qna-write-form-label">문의 내용<span class="required">*</span></label>
-                                <textarea class="admin-qna-write-form-control textarea" name="qna_content"
-                                          placeholder="문의 내용을 작성해주세요" required maxlength="1000"
-                                          oninput="updateCharCount(this)"></textarea>
+                                <textarea class="admin-qna-write-form-control textarea" name="qna_content" placeholder="문의 내용을 작성해주세요" required maxlength="1000" oninput="updateCharCount(this)"></textarea>
                                 <div class="admin-qna-write-char-count">
                                     <span id="charCount">0</span> / 1000
                                 </div>
                             </div>
 
-                            <!-- 공개 여부 -->
                             <div class="admin-qna-write-form-group">
                                 <label class="admin-qna-write-form-label">공개 여부</label>
                                 <select class="admin-qna-write-form-select" name="qna_private">
@@ -276,7 +271,6 @@
                                 </select>
                             </div>
 
-                            <!-- 임시 회원번호 -->
                             <input type="hidden" name="mem_idx" value="${user.mem_idx }">
 
                             <div class="admin-qna-write-btn-group">
@@ -284,32 +278,21 @@
                                 <button type="button" class="admin-qna-write-btn admin-qna-write-btn-cancel" onclick="location.href='${pageContext.request.contextPath}/admin/qna_list'">취소</button>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- End Q&A Write Section -->
 
-    <!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
 
-    <%-- <!-- ========================= JS here ========================= -->
-    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-     --%>
     <script>
         function updateCharCount(textarea) {
-            const count = textarea.value.length;
-            document.getElementById('charCount').textContent = count;
+            document.getElementById('charCount').textContent = textarea.value.length;
         }
 
-        // 프리로더 제거
         window.addEventListener('load', function() {
             const preloader = document.querySelector('.preloader');
             if (preloader) {
@@ -318,6 +301,5 @@
             }
         });
     </script>
-    
 </body>
 </html>
