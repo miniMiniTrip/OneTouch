@@ -36,7 +36,7 @@ public class SkinProfileController {
 	@Autowired
 	HttpSession session;
 	
-	@RequestMapping("/skinprofile/form.do")
+	@RequestMapping("/skinprofile/form")
 	public String SkinProfileForm() {
 		return "skinprofile/form";
 	}
@@ -134,7 +134,7 @@ public class SkinProfileController {
 		return "skinprofile/view"; 
 	}
 	
-	@RequestMapping("/mypage/skinprofile.do")
+	@RequestMapping("/mypage/skinprofile")
 	public String myPageSkinProfile(Model model) {
 	    
 	    // 로그인 체크
@@ -150,7 +150,7 @@ public class SkinProfileController {
 	    if(skinProfile == null) {
 	        // 아직 진단 안 한 경우
 	        model.addAttribute("hasProfile", false);
-	        return "mypage/skinprofile_view";
+	        return "skinprofile/skinprofile_view";
 	    }
 	    
 	    // JSON 파싱: "[0,3,5,7,9]" → List<Integer>

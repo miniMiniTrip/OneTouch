@@ -40,6 +40,36 @@
 	box-sizing: border-box;
 }
 
+/* 해시태그 */
+
+.product-hashtags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+	margin: 10px 0;
+}
+
+.hashtag-badge {
+	display: inline-block;
+	padding: 1px 4px;
+	background-color: #f0f0f0;
+	color: #555;
+	border-radius: 8px;
+	font-size: 11px;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	border: 1px solid #e0e0e0;
+	line-height: 1.2;
+}
+
+.hashtag-badge:hover {
+	background-color: #5c6bc0;
+	color: white;
+	border-color: #5c6bc0;
+	transform: translateY(-1px);
+	box-shadow: 0 1px 3px rgba(92, 107, 192, 0.3);
+}
+
 /* 관리자 이미지 관리 */
 .admin-image-controls {
 	background: linear-gradient(135deg, #1e3c72, #3366cc);
@@ -826,6 +856,20 @@ to {
 	    }
 	}
 	
+.feature-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.feature-gif {
+    width: 150px;
+    border-radius: 8px;
+     margin: 0 auto;  
+    
+}
+
+
 
 
 </style>
@@ -879,6 +923,17 @@ to {
 						<div class="stars">★★★★☆</div>
 						<span class="rating-text">4.8 (234개 후기)</span>
 					</div>
+					<!-- 해시태그 -->
+                   <c:if test="${not empty product.hashtag_list}">
+                       <div class="product-hashtags">
+                           <c:forEach var="hashtag" items="${product.hashtag_list}">
+                               <a href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+                                   class="hashtag-badge" title="#${hashtag.hashtag_name} 상품 보기">
+                                   #${hashtag.hashtag_name}
+                               </a>
+                           </c:forEach>
+                       </div>
+                   </c:if>
 
 
 					<div class="price-section">
@@ -1006,12 +1061,11 @@ to {
 			</c:forEach>
 		</div>
 
-		<!-- 제품 특징 (기존 내용) -->
-		<ul class="feature-list">
-			<li>천연 성분으로 제작된 남성 전용 스킨케어 제품</li>
-			<li>빠른 흡수력과 끈적하지 않는 사용감</li>
-			<li>민감성 피부도 안심하고 사용 가능</li>
-		</ul>
+		<div class="feature-row">
+		    <img src="/images/장바구니하단.gif" alt="장바구니하단 GIF" class="feature-gif">
+		
+		   
+		</div>
 	</div>
 
 	<!-- 리뷰 내용 -->

@@ -111,7 +111,7 @@ public class AdminProductController {
         model.addAttribute("list", list);
         model.addAttribute("keyword", keyword);
         model.addAttribute("category_list", category_list);
-        model.addAttribute("hashtag_list", hashtag_list); // 해시태그 목록 추가
+        model.addAttribute("hashtag_list", hashtag_list); 
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalCount", totalCount);
@@ -139,17 +139,18 @@ public class AdminProductController {
     public String insert(ProductVo productVo, 
                         @RequestParam(name = "photo") MultipartFile photo,
                         @RequestParam(name = "hashtag_idx_list", required = false) List<Integer> hashtag_idx_list,
+                        @RequestParam(name = "hashtag_names", required = false) List<String> hashtag_names,
                         RedirectAttributes ra) throws Exception {
         
-        System.out.printf("[AdminProductController-insert()] 받은 productVo: %s\n", productVo);
-        System.out.printf("[AdminProductController-insert()] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
+        System.out.printf("insert] 받은 productVo: %s\n", productVo);
+        System.out.printf("insert] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
         
         String saveDir = application.getRealPath("/images/");
         String product_image_url = "no_file";
 
         if (photo != null && !photo.isEmpty()) {
             String filename = photo.getOriginalFilename();
-            System.out.printf("[AdminProductController-insert()] 원본 파일명: %s\n", filename);
+            System.out.printf("insert] 원본 파일명: %s\n", filename);
             
             File f = new File(saveDir, filename);
             
@@ -170,25 +171,71 @@ public class AdminProductController {
             productVo.setProduct_comment(product_comment);
         }
         
-        // 해시태그 처리: idx 리스트를 HashtagVo 리스트로 변환
+        List<Integer> finalHashtagIdxList = new ArrayList<>();
+        
+        // 직접 입력한 해시태그 처리
+        if(hashtag_names != null && !hashtag_names.isEmpty()) {
+        	System.out.printf("insert]직접 입력 해시태그 처리 시작 : %d개 \n", hashtag_names.size());
+        	
+        	List<HashtagVo> existingHashtags = hashtag_dao.selectByNames(hashtag_names);
+        	List<String> existingNames = new ArrayList<>();
+        	for(HashtagVo hVo : existingHashtags) {
+        		String name = hVo.getHashtag_name();
+        		existingNames.add(name);
+        	}
+        	System.out.printf("insert]존재하는 해시태그: %s \n", existingNames);
+        	
+        	for (HashtagVo existing : existingHashtags) {
+        		finalHashtagIdxList.add(existing.getHashtag_idx());
+        	}
+        	
+        	
+        	List<String> newHashtagNames = new ArrayList<>(); 
+        	for(String name : hashtag_names) {
+        		if(!existingNames.contains(name)) { //해시태그 네임이 존재하지 않는 경우
+        			newHashtagNames.add(name); //newhashtagnames 리스트에 추가
+        		}
+        	}
+        	
+        	if (!newHashtagNames.isEmpty()) {
+        		System.out.printf("insert]새로 생성할 해시태그 : %s \n", newHashtagNames);
+        		hashtag_dao.insert(hashtag_names);
+        		
+        		List<HashtagVo> newCreate = hashtag_dao.selectByNames(newHashtagNames);
+        		for(HashtagVo created : newCreate) {
+        			finalHashtagIdxList.add(created.getHashtag_idx());
+        		}
+        	}
+        }//if : hashtag_names != null
+        
+        // 체크박스 해시태그 처리
         if (hashtag_idx_list != null && !hashtag_idx_list.isEmpty()) {
-            List<HashtagVo> hashtag_list = new ArrayList<>();
-            for (Integer hashtag_idx : hashtag_idx_list) {
-                HashtagVo hashtagVo = new HashtagVo();
-                hashtagVo.setHashtag_idx(hashtag_idx);
-                hashtag_list.add(hashtagVo);
-            }
-            productVo.setHashtag_list(hashtag_list);
-            System.out.printf("[AdminProductController-insert()] 설정된 해시태그 개수: %d\n", hashtag_list.size());
+           finalHashtagIdxList.addAll(hashtag_idx_list);
         }
-
-        System.out.printf("[AdminProductController-insert()] 최종 productVo: %s\n", productVo);
+        
+        //최종 해시태그 처리
+        if (!finalHashtagIdxList.isEmpty()) {
+        	List<HashtagVo> hashtag_list = new ArrayList<>();
+        	for(Integer hashtag_idx : finalHashtagIdxList) {
+        		HashtagVo hashtagVo = new HashtagVo();
+        		hashtagVo.setHashtag_idx(hashtag_idx);
+        		hashtag_list.add(hashtagVo);
+        	}
+        	productVo.setHashtag_list(hashtag_list);
+        	System.out.printf("insert]최종 해시태그 설정 수 : %d \n", hashtag_list.size());
+        } else {
+        	productVo.setHashtag_list(new ArrayList<>());
+        	System.out.println("insert]해시태그 없음");
+        }
+        
+        System.out.printf("insert] 최종 productVo: %s\n", productVo);
         
         int res = productService.insert(productVo);
-        System.out.printf("[AdminProductController-insert()] insert 결과: %d\n", res);
-
+        System.out.printf("insert] insert 결과: %d\n", res);
+        
+        ra.addFlashAttribute("msg", res == 1 ? "상품이 등록되었습니다." : "상품 등록에 실패했습니다.");
+        
         return "redirect:/adminpage/product"; 
-
     }
 
     // 상품 수정
@@ -196,16 +243,17 @@ public class AdminProductController {
     public String update(ProductVo vo, 
                         @RequestParam("photo") MultipartFile photo,
                         @RequestParam(name = "hashtag_idx_list", required = false) List<Integer> hashtag_idx_list,
+                        @RequestParam(name = "hashtag_names", required = false) List<String> hashtag_names,
                         HttpServletRequest request) throws Exception {
         
-        System.out.printf("[AdminProductController-update()] 받은 vo: %s\n", vo);
-        System.out.printf("[AdminProductController-update()] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
+        System.out.printf("update] 받은 vo: %s\n", vo);
+        System.out.printf("update] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
         
         if (photo != null && !photo.isEmpty()) {
             String uploadPath = application.getRealPath("/images/");
             String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
             
-            System.out.printf("[AdminProductController-update()] 새 파일명: %s\n", fileName);
+            System.out.printf("update] 새 파일명: %s\n", fileName);
             
             File file = new File(uploadPath, fileName);
             photo.transferTo(file);
@@ -217,10 +265,52 @@ public class AdminProductController {
             vo.setProduct_comment(product_comment);
         }
         
-        // 해시태그 처리: idx 리스트를 HashtagVo 리스트로 변환
-        if (hashtag_idx_list != null) {
+        List<Integer> finalHashtagIdxList = new ArrayList<>();
+        
+        // 직접입력 해시태그 처리
+        if (hashtag_names !=null && !hashtag_names.isEmpty()) {
+        	System.out.printf("update]직접 입력 해시태그 처리 시작 : %d개 \n", hashtag_names.size());
+        	
+        	List<HashtagVo> existingHashtags = hashtag_dao.selectByNames(hashtag_names);
+        	List<String> existingNames = new ArrayList<>();
+        	for(HashtagVo hVo : existingHashtags) {
+        		String name = hVo.getHashtag_name();
+        		existingNames.add(name);
+        	}
+        	System.out.printf("update]존재하는 해시태그 : %s \n", existingNames);
+        	
+        	for(HashtagVo existing : existingHashtags) {
+        		finalHashtagIdxList.add(existing.getHashtag_idx());
+        	}
+        	
+        	List<String> newHashtagNames = new ArrayList<>();
+        	for(String name : hashtag_names) {
+        		if(!existingNames.contains(name)){
+        			newHashtagNames.add(name);
+        		}
+        	}
+        	
+        	if(!newHashtagNames.isEmpty()) {
+        		System.out.printf("update] 새로 생성할 해시태그 : %s \n", newHashtagNames);
+        		hashtag_dao.insert(hashtag_names);
+        		
+        		List<HashtagVo> newCreate = hashtag_dao.selectByNames(newHashtagNames);
+        		for(HashtagVo created : newCreate) {
+        			finalHashtagIdxList.add(created.getHashtag_idx());
+        		}
+        	}
+        	
+        }
+        
+        // 체크박스 해시태그 처리
+        if (hashtag_idx_list != null && !hashtag_idx_list.isEmpty()) {
+        	finalHashtagIdxList.addAll(hashtag_idx_list);
+        }
+        	
+        //최종처리
+        if(!finalHashtagIdxList.isEmpty()) {
             List<HashtagVo> hashtag_list = new ArrayList<>();
-            for (Integer hashtag_idx : hashtag_idx_list) {
+            for (Integer hashtag_idx : finalHashtagIdxList) {
                 HashtagVo hashtagVo = new HashtagVo();
                 hashtagVo.setHashtag_idx(hashtag_idx);
                 hashtag_list.add(hashtagVo);
@@ -237,8 +327,7 @@ public class AdminProductController {
         
         int res = productService.update(vo);
         System.out.printf("[AdminProductController-update()] update 결과: %d\n", res);
-        
-
+       
         return "redirect:/adminpage/product";
     }
 

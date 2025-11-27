@@ -276,6 +276,19 @@ body {
     margin: 0;
     color: #333;
 }
+/* 상품 이름 */
+.product-name {
+	font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: #111;
+    letter-spacing: -0.02em;     /* 살짝 타이트하게 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 /* ================================== */
@@ -488,15 +501,35 @@ body {
 @media (max-width: 767px) {
     .image-carousel {
         aspect-ratio: auto; /* 비율 제한 해제 */
-        height: auto;
+        height: 500px !important;
     }
 
-    .carousel-item,
-    .post-image {
-        height: auto; 
-        max-height: none;
-        object-fit: contain; /* 이미지 잘림 방지 */
+	.image-carousel {
+        aspect-ratio: unset;
+        height: 500px !important;
+        overflow: hidden;
     }
+    .carousel-inner {
+        display: flex;
+        scroll-snap-type: x mandatory;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        transition: none;
+        height: 100px;
+    }
+    .carousel-item {
+        flex: 0 0 100%;
+        width: 100%;
+        scroll-snap-align: start;
+    }
+    .post-image {
+        width: 100%;
+        height: 500px !important;
+        max-height: 80vh;
+        display: block;
+    }
+    /* 화살표 버튼 숨기기 */
+    /* .carousel-control { display: none !important; } */
 }
 /* 모바일에서 이미지 잘림 방지 + 슬라이드 정상화 */
 @media (max-width: 767px) {
@@ -534,7 +567,6 @@ body {
     .post-image {
         width: 100%;
         height: auto;
-        object-fit: contain;
     }
 }
 
@@ -1156,10 +1188,12 @@ body {
     <section class="section">
         <div class="container">
 			  <div class="post-write-container">
+			  <c:if test="${not empty user }">
 			   <button class="post-write-btn" onclick="location.href='/post/insert'">
 			    <i class="fas fa-plus"></i>
 			    <span>등록</span>
 			  </button>
+			  </c:if>
 			  </div>
             <div class="community-content">
                 <div class="community-tabs">
@@ -1246,7 +1280,16 @@ function carousels(){
       function adjustHeight(index) {
           const activeImg = items[index]?.querySelector('img');
           //if (activeImg) inner.style.height = activeImg.offsetHeight + 'px';
-          if (activeImg) inner.style.height = '827px';
+          if (!activeImg) return;
+
+          // ★★★ 모바일이미지 높이! ★★★
+          if (window.innerWidth <= 767) {
+              inner.style.height = '500px';   // 모바일: 높이 자동
+              return;
+          }
+
+          // 데스크탑에서만 827px 적용
+          inner.style.height = '827px';
       }
 
       window.addEventListener('resize', () => adjustHeight(currentIndex));
@@ -1545,12 +1588,6 @@ document.addEventListener('click', function(e) {
              <div class="post-header">
                  <img src="${pageContext.request.contextPath}/images/mem/\${postVo.mem_image_url}" alt="프로필" class="profile-img">
                  <p class="username">\${postVo.mem_id }</p>
-                 <div class="post-actions">
-                 (\${postVo.post_category })
-                     <button class="follow-btn">
-                         <i class="fas fa-ellipsis-h"></i>
-                     </button>
-                 </div>
              </div>
              `
              
@@ -1560,26 +1597,34 @@ document.addEventListener('click', function(e) {
                  `
          
          // post 이미지 영역
+         let imgCount=0;
          const images = `\${postVo.post_image}`.split("*"); // * 기준으로 나눔
          for(let i =0; i <images.length;i++){
+        	 imgCount=imgCount+1;
          const img = images[i];
          /* alert(`\${img}`); */
          html=html+`
-                     <div class="carousel-item \${i==0 ? 'active' : ''}">
-                         <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100">
+                     <div class="carousel-item \${i==0 ? 'active' : ''}"  >
+                         <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100 h-100">
                      </div>
                      `
          }
           html=html+`
                  </div>
-                 
+                 `
+                 if(imgCount>1){
+                	 
+                 html=html+`
                  <div class="carousel-control prev" data-carousel="carousel-\${loop}">
                      <i class="fas fa-chevron-left"></i>
                  </div>
                  <div class="carousel-control next" data-carousel="carousel-\${loop}">
                      <i class="fas fa-chevron-right"></i>
                  </div>
+                 `
+                 }
                  
+                 html=html+`
                  <div class="carousel-indicators" id="indicators-\${loop}">
                  `
          	   
@@ -1595,17 +1640,20 @@ document.addEventListener('click', function(e) {
              </div>
              `
             // 상품 이미지 영역
+            
             if(postVo.productList!=null){
              html=html+`
              <div class="product-section">
              `
              for(let productVo of postVo.productList){
+            	 let price=productVo.product_price;
+            	 let price_formatted = new Intl.NumberFormat('ko-KR').format(price);
 					html=html+`	                    	
                      <div class="product-card">
-                     	<a href="/product/4" class="product-link">
+                     	<a href="/product/detail?id=\${productVo.product_idx}" class="product-link">
 			                            <img src="${pageContext.request.contextPath }/images/\${productVo.product_image_url}" alt="제품" class="product-img">
-			                            <p class="product-discount">\${productVo.product_name }</p>
-			                            <p class="product-price">\${productVo.product_price }</p> 
+			                            <p class="product-name">\${productVo.product_name }</p>
+			                            <p class="product-price">₩\${price_formatted}</p>
 	                        </a>    
                      </div>
               	`
