@@ -134,7 +134,7 @@ public class SkinProfileController {
 		return "skinprofile/view"; 
 	}
 	
-	@RequestMapping("/mypage/skinprofile")
+	@RequestMapping("/mypage/skinprofile.do")
 	public String myPageSkinProfile(Model model) {
 	    
 	    // 로그인 체크
