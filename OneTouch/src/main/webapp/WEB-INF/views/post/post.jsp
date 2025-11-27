@@ -276,6 +276,19 @@ body {
     margin: 0;
     color: #333;
 }
+/* 상품 이름 */
+.product-name {
+	font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: #111;
+    letter-spacing: -0.02em;     /* 살짝 타이트하게 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 /* ================================== */
@@ -1575,12 +1588,6 @@ document.addEventListener('click', function(e) {
              <div class="post-header">
                  <img src="${pageContext.request.contextPath}/images/mem/\${postVo.mem_image_url}" alt="프로필" class="profile-img">
                  <p class="username">\${postVo.mem_id }</p>
-                 <div class="post-actions">
-                 (\${postVo.post_category })
-                     <button class="follow-btn">
-                         <i class="fas fa-ellipsis-h"></i>
-                     </button>
-                 </div>
              </div>
              `
              
@@ -1590,8 +1597,10 @@ document.addEventListener('click', function(e) {
                  `
          
          // post 이미지 영역
+         let imgCount=0;
          const images = `\${postVo.post_image}`.split("*"); // * 기준으로 나눔
          for(let i =0; i <images.length;i++){
+        	 imgCount=imgCount+1;
          const img = images[i];
          /* alert(`\${img}`); */
          html=html+`
@@ -1602,14 +1611,20 @@ document.addEventListener('click', function(e) {
          }
           html=html+`
                  </div>
-                 
+                 `
+                 if(imgCount>1){
+                	 
+                 html=html+`
                  <div class="carousel-control prev" data-carousel="carousel-\${loop}">
                      <i class="fas fa-chevron-left"></i>
                  </div>
                  <div class="carousel-control next" data-carousel="carousel-\${loop}">
                      <i class="fas fa-chevron-right"></i>
                  </div>
+                 `
+                 }
                  
+                 html=html+`
                  <div class="carousel-indicators" id="indicators-\${loop}">
                  `
          	   
@@ -1625,17 +1640,20 @@ document.addEventListener('click', function(e) {
              </div>
              `
             // 상품 이미지 영역
+            
             if(postVo.productList!=null){
              html=html+`
              <div class="product-section">
              `
              for(let productVo of postVo.productList){
+            	 let price=productVo.product_price;
+            	 let price_formatted = new Intl.NumberFormat('ko-KR').format(price);
 					html=html+`	                    	
                      <div class="product-card">
-                     	<a href="/product/4" class="product-link">
+                     	<a href="/product/detail?id=\${productVo.product_idx}" class="product-link">
 			                            <img src="${pageContext.request.contextPath }/images/\${productVo.product_image_url}" alt="제품" class="product-img">
-			                            <p class="product-discount">\${productVo.product_name }</p>
-			                            <p class="product-price">\${productVo.product_price }</p> 
+			                            <p class="product-name">\${productVo.product_name }</p>
+			                            <p class="product-price">₩\${price_formatted}</p>
 	                        </a>    
                      </div>
               	`
