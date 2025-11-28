@@ -2,6 +2,7 @@ package com.onetouch.service;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +97,14 @@ public class MemServiceImpl implements MemService {
         return memDao.findUserForPwReset(map);
     }
 	
+	
+	
+	//관리자 회원관리 부분. ========================
+	
+	@Override
+	// 관리자 회원 목록 조회 (검색 포함)
+	public List<MemVo> getMemberList(Map<String, Object> params) {
+	    return memDao.getMemberList(params);
+	}
 
 }
