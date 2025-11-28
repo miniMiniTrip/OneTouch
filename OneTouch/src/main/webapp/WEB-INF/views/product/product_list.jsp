@@ -521,7 +521,7 @@
 				<!-- 카테고리 메뉴 -->
 				<div class="menu-section">
 					<div class="menu-title">카테고리</div>
-					<a href="${pageContext.request.contextPath}/product/list${not empty keyword ? '?keyword='.concat(keyword) : ''}${not empty sort ? (not empty keyword ? '&' : '?').concat('sort=').concat(sort) : ''}"
+					<a href="${pageContext.request.contextPath}/product/list"
 						class="menu-item ${empty category ? 'active' : ''}">전체보기</a>
 					<a href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
 						class="menu-item ${category eq '1' ? 'active' : ''}">스킨케어</a>
@@ -700,7 +700,7 @@
 						                                <c:if test="${not empty product.hashtag_list}">
 						                                    <div class="product-hashtags">
 						                                        <c:forEach var="hashtag" items="${product.hashtag_list}">
-						                                            <a href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+						                                            <a href="${pageContext.request.contextPath}/product/list?keyword=${hashtag.hashtag_name}&sort=popular"
 						                                                class="hashtag-badge" title="#${hashtag.hashtag_name} 상품 보기">
 						                                                #${hashtag.hashtag_name}
 						                                            </a>
