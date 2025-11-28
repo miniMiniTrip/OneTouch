@@ -21,21 +21,18 @@
             color: #333;
         }
 
-        /* 컨테이너 */
         .container {
             max-width: 1600px;
             margin: 40px auto;
             padding: 0 40px;
         }
 
-        /* 레이아웃 */
         .admin-layout {
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 30px;
         }
 
-        /* 메인 컨텐츠 */
         .main-content {
             background: white;
             border-radius: 12px;
@@ -61,7 +58,6 @@
             gap: 8px;
         }
 
-        /* 검색 영역 */
         .search-area {
             display: flex;
             gap: 10px;
@@ -103,7 +99,6 @@
             background: #0d47a1;
         }
 
-        /* 테이블 스타일 */
         .members-table {
             width: 100%;
             border-collapse: collapse;
@@ -140,66 +135,15 @@
             text-align: center;
         }
 
-        /* 상태 배지 */
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-active {
-            background: #e8f5e9;
-            color: #388e3c;
-        }
-
-        .status-inactive {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        /* 액션 버튼 */
-        .action-buttons {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-        }
-
-        .btn-small {
-            padding: 6px 12px;
-            border: none;
+        .roll-select {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
+            background: white;
         }
 
-        .btn-edit {
-            background: #1a237e !important;
-            color: white!important;
-            border: 1px solid #1a237e !important;
-        }
-
-        .btn-edit:hover {
-            background: #1a237e;
-            color: white;
-        }
-
-        .btn-delete {
-            background: #d32f2f;
-            color: white;
-            border: 1px solid #d32f2f;
-        }
-
-        .btn-delete:hover {
-            background: #d32f2f;
-            color: white;
-        }
-
-        /* 페이지네이션 */
         .pagination {
             display: flex;
             justify-content: center;
@@ -207,28 +151,68 @@
             margin-top: 30px;
         }
 
-        .pagination a,
-        .pagination span {
+        .pagination a {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 13px;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
         }
 
-        .pagination a:hover,
+        .pagination a:hover {
+            background: #1a237e;
+            color: white;
+            border-color: #1a237e;
+        }
+
         .pagination a.active {
             background: #1a237e;
             color: white;
             border-color: #1a237e;
         }
 
-        .pagination span {
+        .pagination a.disabled {
             color: #999;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
-        /* 반응형 */
+        .total-count {
+            text-align: right;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+
+			  .btn-small {
+		    padding: 6px 12px;
+		    border: none;
+		    border-radius: 4px;
+		    font-size: 12px;
+		    font-weight: 600;
+		    cursor: pointer;
+		    transition: all 0.3s;
+		    white-space: nowrap;
+		}
+		
+		.btn-delete {
+		    background: white;
+		    color: #d32f2f;
+		    border: 1px solid #d32f2f;
+		}
+		
+		.btn-delete:hover {
+		    background: #d32f2f;
+		    color: white;
+		}
+
+
+
+			/* 반응형 */
         @media (max-width: 768px) {
             .container {
                 padding: 0 20px;
@@ -254,96 +238,98 @@
             .members-table td {
                 padding: 10px 5px;
             }
-
-            .action-buttons {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- 헤더 -->
     <%@ include file="admin_header.jsp" %>
 
-    <!-- 메인 컨테이너 -->
     <div class="container">
         <div class="admin-layout">
-            <!-- 사이드바 -->
             <%@ include file="admin_side.jsp"%>
 
-            <!-- 메인 컨텐츠 -->
             <main class="main-content">
                 <div class="section-header">
                     <h2 class="section-title">👥 회원관리</h2>
                 </div>
 
-                <!-- 검색 영역 -->
                 <div class="search-area">
-                    <input type="text" class="search-input" placeholder="이름, 아이디, 이메일 검색" id="searchKeyword">
+                    <input type="text" class="search-input" placeholder="이름, 아이디, 이메일 검색" 
+                           id="searchKeyword" value="${keyword}">
                     <select class="search-select" id="searchType">
                         <option value="">전체</option>
-                        <option value="name">이름</option>
-                        <option value="id">아이디</option>
-                        <option value="email">이메일</option>
+                        <option value="name" ${searchType == 'name' ? 'selected' : ''}>이름</option>
+                        <option value="id" ${searchType == 'id' ? 'selected' : ''}>아이디</option>
+                        <option value="email" ${searchType == 'email' ? 'selected' : ''}>이메일</option>
                     </select>
                     
                     <select class="search-select" id="searchRoll">
                         <option value="">권한</option>
-                        <option value="admin">관리자</option>
-                        <option value="user">일반회원</option>
+                        <option value="admin" ${roll == 'admin' ? 'selected' : ''}>관리자</option>
+                        <option value="user" ${roll == 'user' ? 'selected' : ''}>일반회원</option>
                     </select>
                     <button class="btn-search" onclick="searchMembers()">검색</button>
                 </div>
 
-                <!-- 회원 테이블 -->
                 <c:choose>
                     <c:when test="${not empty members}">
+                        <div class="total-count">
+                            전체 ${totalCount}명
+                        </div>
+                        
                         <table class="members-table">
                             <thead>
-                                <tr>
-                                    <th style="width: 80px;">아이디</th>
-                                    <th style="width: 100px;">이름</th>
-                                    <th style="width: 150px;">이메일</th>
-                                    <th style="width: 100px;">가입일</th>
-                                    <th style="width: 80px;">권한</th>
-                                    <th style="width: 120px;">관리</th>
-                                </tr>
-                            </thead>
+							    <tr>
+							        <th style="width: 80px;">아이디</th>
+							        <th style="width: 100px;">이름</th>
+							        <th style="width: 150px;">이메일</th>
+							        <th style="width: 100px;">가입일</th>
+							        <th style="width: 100px;">권한</th>
+							        <th style="width: 80px;">관리</th>  <!-- 추가 -->
+							    </tr>
+						  </thead>
                             <tbody>
-                                <c:forEach var="member" items="${members}">
-                                    <tr>
-                                        <td>${member.mem_id}</td>
-                                        <td>${member.mem_name}</td>
-                                        <td>${member.mem_email}</td>
-                                        <td>${member.mem_time}</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${member.mem_roll == 'admin'}">
-                                                    <span class="status-badge status-active">관리자</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="status-badge status-inactive">일반회원</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn-small btn-edit" onclick="editMember('${member.mem_id}')">수정</button>
-                                                <button class="btn-small btn-delete" onclick="deleteMember('${member.mem_id}')">삭제</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
+								    <c:forEach var="member" items="${members}">
+								        <tr>
+								            <td>${member.mem_id}</td>
+								            <td>${member.mem_name}</td>
+								            <td>${member.mem_email}</td>
+								            <td>${member.mem_time}</td>
+								            <td>
+								                <select class="roll-select" 
+								                        onchange="updateMemberRoll('${member.mem_id}', this.value)">
+								                    <option value="user" ${member.mem_roll == 'user' ? 'selected' : ''}>일반회원</option>
+								                    <option value="admin" ${member.mem_roll == 'admin' ? 'selected' : ''}>관리자</option>
+								                </select>
+								            </td>
+								            <td>
+								                <button class="btn-small btn-delete" onclick="deleteMember('${member.mem_id}')">삭제</button>
+								            </td>
+								        </tr>
+								    </c:forEach>
+							</tbody>
                         </table>
 
                         <!-- 페이지네이션 -->
                         <div class="pagination">
-                            <a href="#" onclick="previousPage(); return false;">&lt;</a>
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#" onclick="nextPage(); return false;">&gt;</a>
+                            <c:if test="${currentPage > 1}">
+                                <a href="?page=${currentPage - 1}&keyword=${keyword}&searchType=${searchType}&roll=${roll}">&lt;</a>
+                            </c:if>
+                            <c:if test="${currentPage == 1}">
+                                <a class="disabled">&lt;</a>
+                            </c:if>
+                            
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <a href="?page=${i}&keyword=${keyword}&searchType=${searchType}&roll=${roll}" 
+                                   class="${i == currentPage ? 'active' : ''}">${i}</a>
+                            </c:forEach>
+                            
+                            <c:if test="${currentPage < totalPages}">
+                                <a href="?page=${currentPage + 1}&keyword=${keyword}&searchType=${searchType}&roll=${roll}">&gt;</a>
+                            </c:if>
+                            <c:if test="${currentPage == totalPages}">
+                                <a class="disabled">&gt;</a>
+                            </c:if>
                         </div>
                     </c:when>
                     <c:otherwise>
@@ -357,39 +343,69 @@
     </div>
 
     <script>
-    function searchMembers() {
-        const keyword = document.getElementById('searchKeyword').value;
-        const type = document.getElementById('searchType').value;
-        const roll = document.getElementById('searchRoll').value;
-        
-        // 검색 URL 생성
-        let url = '/admin/admin_members?';
-        if (keyword) url += 'keyword=' + encodeURIComponent(keyword) + '&';
-        if (type) url += 'searchType=' + type + '&';
-        if (roll) url += 'roll=' + roll;
-        
-        // 페이지 이동
-        window.location.href = url;
-    }
-
-        function editMember(memberId) {
-            // 수정 페이지로 이동
-            window.location.href = '/admin/member/edit?mem_id=' + memberId;
+        function searchMembers() {
+            const keyword = document.getElementById('searchKeyword').value;
+            const type = document.getElementById('searchType').value;
+            const roll = document.getElementById('searchRoll').value;
+            
+            let url = '/admin/admin_members?page=1';
+            if (keyword) url += '&keyword=' + encodeURIComponent(keyword);
+            if (type) url += '&searchType=' + type;
+            if (roll) url += '&roll=' + roll;
+            
+            window.location.href = url;
         }
 
-        function deleteMember(memberId) {
-            if (confirm('정말 삭제하시겠습니까?')) {
-                // 삭제 로직 구현
-                console.log('Delete:', memberId);
+        function updateMemberRoll(memId, newRoll) {
+            if (confirm('권한을 변경하시겠습니까?')) {
+                fetch('/admin/updateMemberRoll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'mem_id=' + memId + '&mem_roll=' + newRoll
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다.');
+                });
+            } else {
+                location.reload(); // 취소시 원래대로
             }
         }
-
-        function previousPage() {
-            console.log('Previous page');
-        }
-
-        function nextPage() {
-            console.log('Next page');
+        
+        function deleteMember(memberId) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                fetch('/admin/deleteMember', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'mem_id=' + memberId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다.');
+                });
+            }
         }
     </script>
 </body>
