@@ -454,6 +454,10 @@ body {
     border-color: var(--onetouch-navy);
 }
 
+.count-num{
+	margin-top: 10px;
+}
+
 /* 데스크탑에서 드래그 슬라이드 */
 @media (min-width: 768px) {
     .image-carousel {
@@ -1705,7 +1709,7 @@ document.addEventListener('click', function(e) {
 					    `
 				}
 				html=html+`
-					<p class="post-likes" data-post-idx="\${postVo.post_idx }">\${postVo.post_like }</p>
+					<p class="post-likes count-num" data-post-idx="\${postVo.post_idx }">\${postVo.post_like }</p>
 				    <button class="interaction-btn">
 				        <i class="far fa-comment"></i>
 				    </button>
@@ -1721,7 +1725,7 @@ document.addEventListener('click', function(e) {
 					<button class="interaction-btn star active" data-post-idx="\${postVo.post_idx}">
 					    <i class="fas fa-star"></i>
 					</button>
-					<p>\${postVo.post_rating }</p>  
+					<p class="count-num">\${postVo.post_rating }</p>  
 					`
 				}						    
 				//post 수정 삭제 부분
