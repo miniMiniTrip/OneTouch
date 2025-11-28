@@ -1,5 +1,6 @@
 package com.onetouch.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.onetouch.vo.MemVo;
@@ -14,5 +15,15 @@ public interface MemService {
 	/**아이디와 이메일로 memVo가져오기*/
 	MemVo findUserForPwReset(String mem_id, String mem_email);
 
+	
+	
+	// 관리자 회원 목록 조회 (검색 포함)======
+	List<MemVo> getMemberList(Map<String, Object> params);
+	
+	
+	
+	
+	
+	
 	
 }

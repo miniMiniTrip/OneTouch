@@ -178,9 +178,9 @@
         }
 
         .btn-edit {
-            background: white;
-            color: #1a237e;
-            border: 1px solid #1a237e;
+            background: #1a237e !important;
+            color: white!important;
+            border: 1px solid #1a237e !important;
         }
 
         .btn-edit:hover {
@@ -189,8 +189,8 @@
         }
 
         .btn-delete {
-            background: white;
-            color: #d32f2f;
+            background: #d32f2f;
+            color: white;
             border: 1px solid #d32f2f;
         }
 
@@ -286,10 +286,11 @@
                         <option value="id">아이디</option>
                         <option value="email">이메일</option>
                     </select>
-                    <select class="search-select" id="searchStatus">
-                        <option value="">상태</option>
-                        <option value="active">활성</option>
-                        <option value="inactive">비활성</option>
+                    
+                    <select class="search-select" id="searchRoll">
+                        <option value="">권한</option>
+                        <option value="admin">관리자</option>
+                        <option value="user">일반회원</option>
                     </select>
                     <button class="btn-search" onclick="searchMembers()">검색</button>
                 </div>
@@ -304,7 +305,7 @@
                                     <th style="width: 100px;">이름</th>
                                     <th style="width: 150px;">이메일</th>
                                     <th style="width: 100px;">가입일</th>
-                                    <th style="width: 80px;">상태</th>
+                                    <th style="width: 80px;">권한</th>
                                     <th style="width: 120px;">관리</th>
                                 </tr>
                             </thead>
@@ -314,16 +315,14 @@
                                         <td>${member.mem_id}</td>
                                         <td>${member.mem_name}</td>
                                         <td>${member.mem_email}</td>
-                                        <td>
-                                            <fmt:formatDate value="${member.mem_date}" pattern="yyyy-MM-dd"/>
-                                        </td>
+                                        <td>${member.mem_time}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${member.mem_status == 'active'}">
-                                                    <span class="status-badge status-active">활성</span>
+                                                <c:when test="${member.mem_roll == 'admin'}">
+                                                    <span class="status-badge status-active">관리자</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="status-badge status-inactive">비활성</span>
+                                                    <span class="status-badge status-inactive">일반회원</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -358,14 +357,20 @@
     </div>
 
     <script>
-        function searchMembers() {
-            const keyword = document.getElementById('searchKeyword').value;
-            const type = document.getElementById('searchType').value;
-            const status = document.getElementById('searchStatus').value;
-            
-            // 검색 로직 구현
-            console.log('Search:', { keyword, type, status });
-        }
+    function searchMembers() {
+        const keyword = document.getElementById('searchKeyword').value;
+        const type = document.getElementById('searchType').value;
+        const roll = document.getElementById('searchRoll').value;
+        
+        // 검색 URL 생성
+        let url = '/admin/admin_members?';
+        if (keyword) url += 'keyword=' + encodeURIComponent(keyword) + '&';
+        if (type) url += 'searchType=' + type + '&';
+        if (roll) url += 'roll=' + roll;
+        
+        // 페이지 이동
+        window.location.href = url;
+    }
 
         function editMember(memberId) {
             // 수정 페이지로 이동

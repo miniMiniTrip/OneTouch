@@ -1,5 +1,6 @@
 package com.onetouch.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -21,5 +22,11 @@ public interface MemDao {
 	/**아이디와 이메일로 memVo 정보가져오기*/
     MemVo findUserForPwReset(Map<String, Object> map);
 
+    
+    
+    
+   //관리자 회원관리 부분==========
+ // 관리자 회원 목록 조회 (검색 포함)
+    List<MemVo> getMemberList(Map<String, Object> params);
 
 }
