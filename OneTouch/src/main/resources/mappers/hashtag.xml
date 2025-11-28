@@ -146,6 +146,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   			limit #{limit}
   		</if>
   	</select>
- 
+  	
+  	<!-- post 와 product에서 해시태그 카운트 한후 합산해서 hashtag 테이블에 update 시킴 -->
+ 	<select id="updatePostProductHashtagTotalConut">
+ 		UPDATE hashtag h
+		JOIN (
+		    SELECT hashtag_idx, SUM(cnt) AS total_count
+		    FROM (
+		        -- post_hashtag 카운트
+		        SELECT hashtag_idx, COUNT(*) AS cnt
+		        FROM post_hashtag
+		        GROUP BY hashtag_idx
+		        UNION ALL
+		        -- product_hashtag 카운트
+		        SELECT hashtag_idx, COUNT(*) AS cnt
+		        FROM product_hashtag
+		        GROUP BY hashtag_idx
+		    ) AS combined
+		    GROUP BY hashtag_idx
+		) AS counts
+		ON h.hashtag_idx = counts.hashtag_idx
+		SET h.use_count = counts.total_count
+		WHERE h.hashtag_idx IN (SELECT hashtag_idx FROM (
+		    SELECT hashtag_idx FROM post_hashtag
+		    UNION
+		    SELECT hashtag_idx FROM product_hashtag
+		) AS tmp);
+ 	</select>
+ 	
+ 	<!-- hashtag 테이블 use_count 순서대로 1~5위까지 가져오기 -->
+ 	<select id="selectHashtagRank" resultType="hashtag">
+ 		SELECT h.*
+		FROM
+		(SELECT
+			hashtag_name,
+		    hashtag_idx,
+		    use_count,
+		    ROW_NUMBER() OVER (ORDER BY use_count DESC) AS rank_num
+		FROM hashtag) h
+		WHERE rank_num IN (1,2,3,4,5,6,7,8);
+ 	</select>
 
 </mapper>

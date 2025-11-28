@@ -67,5 +67,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 
-	
+
+
+
+
+
+
+<!-- 관리자 회원관리 부분 -->
+
+
+<!-- 회원 목록 조회 (검색 포함) -->
+ <select id="getMemberList" parameterType="map" resultType="MemVo">
+    SELECT * FROM mem
+    <where>
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <when test="searchType == 'name'">
+                    AND mem_name LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'id'">
+                    AND mem_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'email'">
+                    AND mem_email LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <otherwise>
+                    AND (mem_name LIKE CONCAT('%', #{keyword}, '%')
+                         OR mem_id LIKE CONCAT('%', #{keyword}, '%')
+                         OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+                </otherwise>
+            </choose>
+        </if>
+        
+        <if test="roll != null and roll != ''">
+            AND mem_roll = #{roll}
+        </if>
+    </where>
+    ORDER BY mem_time DESC
+</select>
+ 
 </mapper>
+
+
+
+
+
+
+	
