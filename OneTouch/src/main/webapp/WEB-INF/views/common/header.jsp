@@ -224,6 +224,10 @@ margin-left: -20px;
     font-size: 12px;
     color: #666;
 }
+
+.one_i{
+margin-top: 10px !important;
+}
 </style>
 
 <script type="text/javascript">
@@ -462,13 +466,13 @@ document.addEventListener('click', function(e) {
                         <div class="navbar-cart">
                             <div class="wishlist">
                                 <a href="${pageContext.request.contextPath}/wishlist/list.do">
-                                    <i class="lni lni-heart"></i> 
+                                    <i class="lni lni-heart one_i"></i> 
                                     <span class="total-items">${wishlistCount}</span>
                                 </a>
                             </div>
                             <div class="cart-items">
                                 <a href="javascript:void(0)" class="main-btn" id="cart-toggle">
-                                    <i class="lni lni-cart"></i> 
+                                    <i class="lni lni-cart one_i"></i> 
                                     <span class="total-items" id="cart-count">${cartCount}</span>
                                 </a>
 
@@ -564,16 +568,16 @@ document.addEventListener('click', function(e) {
                     <h5 class="title">Follow Us:</h5>
                     <ul>
                         <li><a href="javascript:void(0)">
-                            <i class="lni lni-facebook-filled"></i>
+                            <i class="lni lni-facebook-filled one_i"></i>
                         </a></li>
                         <li><a href="javascript:void(0)">
-                            <i class="lni lni-twitter-original"></i>
+                            <i class="lni lni-twitter-original one_i"></i>
                         </a></li>
                         <li><a href="javascript:void(0)">
-                            <i class="lni lni-instagram"></i>
+                            <i class="lni lni-instagram one_i"></i>
                         </a></li>
                         <li><a href="javascript:void(0)">
-                            <i class="lni lni-youtube"></i>
+                            <i class="lni lni-youtube one_i"></i>
                         </a></li>
                     </ul>
                 </div>
