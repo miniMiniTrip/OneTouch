@@ -1328,13 +1328,13 @@ function carousels(){
           showSlide(0);
 
           // 자동 슬라이드 (3초 간격)
-          let autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 10000);
+          let autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 2000);
 
           // 마우스 진입 시 자동 슬라이드 중지
           carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
           // 마우스 떠나면 자동 슬라이드 재개
           carousel.addEventListener('mouseleave', () => {
-              autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 10000);
+              autoSlideInterval = setInterval(() => showSlide(currentIndex + 1), 2000);
           });
 
           // =========================
