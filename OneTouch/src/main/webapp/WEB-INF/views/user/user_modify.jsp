@@ -260,27 +260,27 @@
     margin-top: 15px;
 }
 
-.btn-photo-upload {
+/* .btn-photo-upload {
     background: #1A237E;
     color: white;
     padding: 8px 20px;
     border-radius: 4px;
     font-size: 13px;
     font-weight: 600;
-}
+} */
 
 .btn-photo-upload:hover {
     background: #4a5aaf;
 }
 
-.btn-photo-delete {
+/* .btn-photo-delete {
     background: red;
     color: white;
     padding: 8px 20px;
     border-radius: 4px;
     font-size: 13px;
     font-weight: 600;
-}
+} */
 
 .btn-photo-delete:hover {
     background: red;
@@ -436,8 +436,8 @@
                                         <p>권장 크기: 400x400px</p>
                                         <div class="profile-photo-buttons">
                                             <input type="file" id="photoFileInput" name="profilePhoto" accept="image/jpeg,image/png">
-                                            <button type="button" class="btn-photo-upload" onclick="triggerFileInput();">사진 업로드</button>
-                                            <button type="button" class="btn-photo-delete" onclick="deletePhoto();">삭제</button>
+                                            <button type="button" class="btn btn-submit" onclick="triggerFileInput();">사진 업로드</button>
+                                            <button type="button" class="btn btn-cancel" onclick="deletePhoto();">삭제</button>
                                         </div>
                                     </div>
                                 </div>
@@ -493,7 +493,7 @@
                                 <label class="form-label">우편번호</label>
                                 <div class="zipcode-container">
                                     <input type="text" class="form-input zipcode-input" name="zipcode" value="${memVo.mem_postal}" readonly>
-                                    <button type="button" class="search-btn2" onclick="searchZipcode();">검색</button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="searchZipcode();">검색</button>
                                 </div>
                             </div>
                             
@@ -580,7 +580,7 @@
         }
         
         function searchZipcode() {
-            alert('우편번호 검색 기능이 실행됩니다.');  
+          
             
             new daum.Postcode({
                 oncomplete: function(data) {
