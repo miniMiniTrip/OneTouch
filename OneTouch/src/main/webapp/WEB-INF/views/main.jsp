@@ -19,6 +19,122 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" /> 
 </head>
 
+<style>
+	    /* 인기 해시 태그 영역  */
+		.hashtag-div{
+			display: flex;
+ 		    justify-content: center;  /* 가로 가운데 */
+		}
+	    .hashtag-list {
+	    	width : 500px !important;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+        .hashtag-btn {
+            background: white;
+            border: 2px solid #1a237e;
+            color: #1a237e;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hashtag-btn:hover {
+            background: #1a237e;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+        }
+
+        /* 상품 이미지 영역 */
+        .product-div{
+			display: flex;
+ 		    justify-content: center;  /* 가로 가운데 */
+		}
+        .product-image {
+            position: relative;
+            
+            border-radius: 8px;
+            height: 280px;
+            background: #f5f5f5;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e0e0e0;
+            color: #999;
+            font-size: 14px;
+        }
+
+        
+        /* 상품 카드 기본 스타일 */
+        .single-product {
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            height: 500px;
+        }
+
+        .single-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 상품카드에 들어가는 해시 태그 css */
+        .product-hashtags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin: 10px 0;
+        }
+
+        .hashtag-badge {
+            display: inline-block;
+            padding: 1px 4px; /* 패딩 대폭 줄임 */
+            background-color: #f0f0f0;
+            color: #555;
+            border-radius: 8px; /* 더 작은 둥근 모서리 */
+            font-size: 11px; /* 폰트 크기 줄임 */
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid #e0e0e0;
+            line-height: 1.2; /* 줄간격 조정 */
+        }
+
+        .hashtag-badge:hover {
+            background-color: #5c6bc0;
+            color: white;
+            border-color: #5c6bc0;
+            transform: translateY(-1px); /* 호버 이동 거리 줄임 */
+            box-shadow: 0 1px 3px rgba(92, 107, 192, 0.3); /* 그림자 줄임 */
+        }
+
+        .hashtag-badge:active {
+            transform: translateY(0);
+        }
+</style>
 <body>
     <!-- Preloader -->
     <div class="preloader">
@@ -32,7 +148,6 @@
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
-<%-- 	<jsp:include page="/WEB-INF/views/common/header.jsp" /> --%>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
     <!-- End Header Area -->
 
@@ -115,29 +230,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <c:forEach var="hashtag" items="${popularHashtags}">
-                    <div class="col-lg-3 col-md-6 col-12">
-                        <!-- Start Single Category -->
-                        <div class="single-category">
-                            <h3 class="heading">#${hashtag.name}</h3>
-                            <ul>
-                                <c:forEach var="product" items="${hashtag.topProducts}" end="4">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
-                                            ${product.name}
-                                        </a>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                            <div class="button">
-                                <a href="${pageContext.request.contextPath}/product/list?hashtagId=${hashtag.hashtagId}" 
-                                   class="btn">더보기</a>
-                            </div>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
+            <div class="row hashtag-div">
+                            <div class="hashtag-list">
+                <c:forEach var="hashtag" items="${hashtagRank}">
+                            	<a class="hashtag-btn" href="${pageContext.request.contextPath}/product/list?keyword=${hashtag.hashtag_name}&sort=popular">#${hashtag.hashtag_name }</a>
+                                <%-- <a href="${pageContext.request.contextPath}/product/list?keyword=${hashtag.hashtag_name}&sort=popular" 
+                                   class="btn"  style="margin-top: 8px">더보기</a> --%>
                 </c:forEach>
+                            </div>
+                        <!-- End Single Category -->
             </div>
         </div>
     </section>
@@ -232,11 +333,80 @@
         </div>
     </section>
     <!-- End Trending Product Area -->
-
-    <!-- Start Banner Area (OneTouch: 맞춤 추천 배너) -->
-    <c:if test="${not empty user}">
+ <!-- Start New Arrival Product Area (OneTouch: 신상품) -->
+   
         <section class="banner section">
             <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>신상품</h2>
+                        <p>막 출시된 따끈따끈한 신제품들</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row product-div" >
+                <c:forEach var="product" items="${ProductVoList}">
+                <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Start Single Product -->
+                        <div class="single-product">
+                            <div class="product-image">
+                                <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" 
+                                     alt="${product.product_name}">
+                                <img src="" 
+                                     alt="">
+                                <span class="new-tag">NEW</span>
+                                <div class="button">
+                                    <a href="" 
+                                       class="btn">
+                                        <i class="lni lni-cart"></i> 장바구니
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">${product.category_name}</span>
+                                <h4 class="title">
+                                    <a href="${pageContext.request.contextPath}/product/detail/${product.product_idx}">
+                                        ${product.product_name}
+                                    </a>
+                                </h4>
+                                <ul class="review">
+                                    <c:forEach begin="1" end="5" var="i">
+                                        <li>
+                                            <i class="lni lni-star${i <= 4?'-filled':''}"></i>
+                                        </li>
+                                    </c:forEach>
+                                    <li><span>4 (?)</span></li>
+                                </ul>
+                                <div class="price">
+                                    <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
+                                </div>
+                                <!-- ⭐ 해시태그 추가 -->
+                                <c:if test="${not empty product.hashtag_list}">
+                                    <div class="product-hashtags" style="margin: 10px 0;">
+                                        <c:forEach var="hashtag" items="${product.hashtag_list}">
+                                        <a
+                                            href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+                                            class="hashtag-badge"
+                                            title="#${hashtag.hashtag_name} 상품 보기">
+                                            #${hashtag.hashtag_name} </a>
+                                        </c:forEach>
+                                    </div>
+                                </c:if>
+                            </div>
+                        </div>
+                        <!-- End Single Product -->
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+            
+        </section>
+    <!-- End Banner Area -->
+
+    <!-- Start Banner Area (OneTouch: 맞춤 추천 배너) -->
+    <section class="trending-product section">
+        <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="single-banner" 
@@ -266,71 +436,6 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </c:if>
-    <!-- End Banner Area -->
-
-    <!-- Start New Arrival Product Area (OneTouch: 신상품) -->
-    <section class="trending-product section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-title">
-                        <h2>신상품</h2>
-                        <p>막 출시된 따끈따끈한 신제품들</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <c:forEach var="product" items="${newProducts}">
-                    <div class="col-lg-3 col-md-6 col-12">
-                        <!-- Start Single Product -->
-                        <div class="single-product">
-                            <div class="product-image">
-                                <img src="${pageContext.request.contextPath}${product.imageUrl}" 
-                                     alt="${product.name}">
-                                <span class="new-tag">NEW</span>
-                                <div class="button">
-                                    <a href="${pageContext.request.contextPath}/product/detail/${product.productId}" 
-                                       class="btn">
-                                        <i class="lni lni-cart"></i> 장바구니
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <span class="category">${product.categoryName}</span>
-                                <h4 class="title">
-                                    <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
-                                        ${product.name}
-                                    </a>
-                                </h4>
-                                <ul class="review">
-                                    <c:forEach begin="1" end="5" var="i">
-                                        <li>
-                                            <i class="lni lni-star${i <= product.avgRating ? '-filled' : ''}"></i>
-                                        </li>
-                                    </c:forEach>
-                                    <li><span>${product.avgRating} (${product.reviewCount})</span></li>
-                                </ul>
-                                <div class="price">
-                                    <span><fmt:formatNumber value="${product.price}" pattern="#,###"/>원</span>
-                                </div>
-                                <c:if test="${not empty product.hashtags}">
-                                    <div class="product-hashtags mt-2">
-                                        <c:forEach var="hashtag" items="${product.hashtags}" end="2">
-                                            <small class="badge bg-light text-dark me-1">
-                                                #${hashtag}
-                                            </small>
-                                        </c:forEach>
-                                    </div>
-                                </c:if>
-                            </div>
-                        </div>
-                        <!-- End Single Product -->
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
     </section>
     <!-- End New Arrival Product Area -->
 

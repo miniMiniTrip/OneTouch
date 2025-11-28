@@ -1,23 +1,71 @@
 -- idx 초기화
-ALTER TABLE posts AUTO_INCREMENT = 1;
+-- ALTER TABLE posts AUTO_INCREMENT = 1;
 
 -- ========================================
--- 초기 데이터
+--  	category 테이블 더미 (상품 관련된 테이블)
 -- ========================================
-
 -- 카테고리 초기 데이터
 INSERT INTO category (category_name) VALUES 
 ('스킨케어'),
 ('메이크업/선케어'),
 ('클렌징케어');
 
+
+-- ========================================
+-- 				mem 테이블 더미
+-- ========================================
 -- 관리자 계정 (비밀번호: 1234 - 실제로는 암호화 필요)
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone) VALUES 
-('admin', '1234', '관리자', '12423', 'admin@onetouch.com', 'admin', '010-1234-1123');
+-- mem_idx = 1
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
+('admin', '1234', '관리자', '06945', 'admin@onetouch.com', 'admin', '010-8282-8282','서울 동작구 여의대방로 지하 218','101동 1001호');
 
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone) VALUES 
-('user1', '1234', '김유저', '12423', 'user1@onetouch.com', 'user', '010-1234-1123');
+-- mem_idx = 2
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
+('user1', '1234', '김유저', '36526', 'user1@onetouch.com', 'user', '010-6262-6262','경북 영양군 수비면 판사길 5','201동 1502호');
 
+-- mem_idx = 3
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
+('a1234', '123', '서경원', '54628', 'suh0007@naver.com', 'admin', '010-7171-7171','전북특별자치도 익산시 고봉로 156','501동 701호');
+
+-- mem_idx = 4
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
+('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호');
+
+-- mem_idx = 5
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
+('admin91', '1234', '고유빈', '06035', 'admin91@onetouch.com', 'admin', '010-6666-5555','서울 강남구 가로수길 9','107동 1301호');
+
+-- mem_idx = 6
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
+('sw5080', '1234', '이시원', '06035', 'sw5080@onetouch.com', 'admin', '010-2211-5775','서울 강남구 가로수길 13','106동 1101호');
+
+-- mem_idx = 7~25
+-- 좋아요를 위한 무의미한 유저 더미추가
+INSERT INTO mem (mem_id,mem_pw,mem_name,mem_email,mem_roll,mem_phone)VALUES
+ ('u1231','123','유저01','user0@onetouch.com','user','010-1111-1110')
+,('u1232','123','유저02','user2@onetouch.com','user','010-1111-1112')
+,('u1233','123','유저03','user3@onetouch.com','user','010-1111-1113')
+,('u1234','123','유저04','user4@onetouch.com','user','010-1111-1114')
+,('u1235','123','유저05','user5@onetouch.com','user','010-1111-1115')
+,('u1236','123','유저06','user6@onetouch.com','user','010-1111-1116')
+,('u1237','123','유저07','user7@onetouch.com','user','010-1111-1117')
+,('u1238','123','유저08','user8@onetouch.com','user','010-1111-1118')
+,('u1239','123','유저09','user9@onetouch.com','user','010-1111-1119')
+,('u1221','123','유저10','user01@onetouch.com','user','010-1111-1110')
+,('u1222','123','유저11','user02@onetouch.com','user','010-1111-1120')
+,('u1223','123','유저12','user03@onetouch.com','user','010-1111-1130')
+,('u1224','123','유저13','user04@onetouch.com','user','010-1111-1140')
+,('u1225','123','유저14','user05@onetouch.com','user','010-1111-1150')
+,('u1226','123','유저15','user06@onetouch.com','user','010-1111-1160')
+,('u1227','123','유저16','user07@onetouch.com','user','010-1111-1170')
+,('u1228','123','유저17','user08@onetouch.com','user','010-1111-1180')
+,('u1229','123','유저18','user09@onetouch.com','user','010-1111-1190')
+,('u1220','123','유저19','user00@onetouch.com','user','010-1111-1100');
+
+
+-- ========================================
+-- 			hashtag 테이블 더미
+-- ========================================
 -- 해시태그 초기데이터
 INSERT INTO hashtag (hashtag_name) VALUES
 ('지성'),('복합성'),('건성'),('민감성'),('저항성'),('색소성'),('비색소성'),('주름성'),('탄력성'),('밝은톤'),('중간톤'),('어두운톤');
@@ -51,7 +99,7 @@ INSERT INTO hashtag (hashtag_name) VALUES
 ('모공흡착'), ('화산송이'), ('강력세정');
 
 
-select * from hashtag
+-- select * from hashtag
 
 
 INSERT INTO hashtag (hashtag_name) VALUES
@@ -129,9 +177,8 @@ INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
 
 
 --=============================================================================================================
--- 상품 초기 데이터
+-- 상품(product) 초기 더미 데이터
 --=============================================================================================================
-
 
 
 -- 30개 상품 INSERT
@@ -213,36 +260,36 @@ INSERT INTO product_image (product_idx, product_image_url, product_image_level) 
 
 -- 상품 리스트 더미데이터 파일이름 --
 
-C1_P1_COSRX_스네일92_보습장벽.jpg
-C1_P2_조선미녀_인삼토너_수분영양.jpg
-C1_P3_APLB_비피다크림_톤업미백.jpg
-C1_P4_우르오스_올인원_간편데일리.jpg
-C1_P5_비오템_아쿠아파워_수분폭탄.jpg
-C1_P6_포엘리에_저속노화_올인원_향기보습.jpg
-C1_P7_라네즈옴므 블루에너지_수분폭탄_생기.jpg
-C1_P8_라로슈포제_시카토너_진정민감.jpg
-C1_P9_스킨푸드_당근패드_진정쿨링.jpg
-C1_P10_더마비_데일리로션_바디페이스.jpg
-C2_P1_닥터지_그린마일드_무기자차.jpg
-C2_P2_라운드랩_자작나무_수분선크림.jpg
-C2_P3_듀이트리_안티폴루션_미세먼지차단.jpg
-C2_P4_유이크_레미디_마일드무기자차.jpg
-C2_P5_아이디얼포맨_베러톤_자연스러운톤업.jpg
-C2_P6_다슈_아쿠아_비비로션_수분생기.jpg
-C2_P7_오브제_커버파데_스틱간편.jpg
-C2_P8_비레디_블루쿠션_피부톤수정.jpg
-C2_P9_헤라옴므_블랙쿠션_보송밀착.jpg
-C2_P10_메이크프렘_카밍선크림_진정쿨링.jpg
-C3_P1_센카_퍼펙트휩_딥클렌징.jpg
-C3_P2_이니스프리_그린티폼_촉촉약산성.jpg
-C3_P3_해피바스_클렌징폼_블랙헤드.jpg
-C3_P4_바이오더마_클렌징워터_순한세정.jpg
-C3_P5_아크네스_포밍워시_여드름케어.jpg
-C3_P6_라로슈포제_에빠끌라_피지조절.jpg
-C3_P7_식물나라_탄산수_모공노폐물.jpg
-C3_P8_프리메라_마일드필링_각질제거.jpg
-C3_P9_아벤느_클렌징폼_건성보습.jpg
-C3_P10_이니스프리_화산송이_모공흡착.jpg
+-- C1_P1_COSRX_스네일92_보습장벽.jpg
+-- C1_P2_조선미녀_인삼토너_수분영양.jpg
+-- C1_P3_APLB_비피다크림_톤업미백.jpg
+-- C1_P4_우르오스_올인원_간편데일리.jpg
+-- C1_P5_비오템_아쿠아파워_수분폭탄.jpg
+-- C1_P6_포엘리에_저속노화_올인원_향기보습.jpg
+-- C1_P7_라네즈옴므 블루에너지_수분폭탄_생기.jpg
+-- C1_P8_라로슈포제_시카토너_진정민감.jpg
+-- C1_P9_스킨푸드_당근패드_진정쿨링.jpg
+-- C1_P10_더마비_데일리로션_바디페이스.jpg
+-- C2_P1_닥터지_그린마일드_무기자차.jpg
+-- C2_P2_라운드랩_자작나무_수분선크림.jpg
+-- C2_P3_듀이트리_안티폴루션_미세먼지차단.jpg
+-- C2_P4_유이크_레미디_마일드무기자차.jpg
+-- C2_P5_아이디얼포맨_베러톤_자연스러운톤업.jpg
+-- C2_P6_다슈_아쿠아_비비로션_수분생기.jpg
+-- C2_P7_오브제_커버파데_스틱간편.jpg
+-- C2_P8_비레디_블루쿠션_피부톤수정.jpg
+-- C2_P9_헤라옴므_블랙쿠션_보송밀착.jpg
+-- C2_P10_메이크프렘_카밍선크림_진정쿨링.jpg
+-- C3_P1_센카_퍼펙트휩_딥클렌징.jpg
+-- C3_P2_이니스프리_그린티폼_촉촉약산성.jpg
+-- C3_P3_해피바스_클렌징폼_블랙헤드.jpg
+-- C3_P4_바이오더마_클렌징워터_순한세정.jpg
+-- C3_P5_아크네스_포밍워시_여드름케어.jpg
+-- C3_P6_라로슈포제_에빠끌라_피지조절.jpg
+-- C3_P7_식물나라_탄산수_모공노폐물.jpg
+-- C3_P8_프리메라_마일드필링_각질제거.jpg
+-- C3_P9_아벤느_클렌징폼_건성보습.jpg
+-- C3_P10_이니스프리_화산송이_모공흡착.jpg
 
 
 --==상세페이지 dummy data ==
@@ -321,10 +368,12 @@ ORDER BY product_image_level ASC;
 
 
 
+-- ========================================
+-- 			커뮤니티(post) dummy data
+-- ========================================
+-- insert into post values(null, 회원_idx, skin, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
 
---==커뮤니티 dummy data ==
-insert into post values(null, 회원_idx, skin, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
-
+-- post_idx=1
 INSERT INTO post 
 VALUES (
     NULL,                      -- post_idx (자동 증가)
@@ -333,7 +382,7 @@ VALUES (
     '피부관리 꿀팁',              -- post_title (제목)
     '이 제품 써봤는데 좋아요!',     -- post_content (내용)
     '06_겨울피부관리.png*09_피부관리법.png*14_꿀피부치트.png',        -- post_image (이미지 파일명)
-    12,                       -- post_like (좋아요 수)
+    19,                       -- post_like (좋아요 수)
     0,                        -- post_comment_count (댓글 수)
     NULL,                     -- order_id (리뷰 주문번호 아님 → NULL)
     0,                        -- post_review (리뷰글 아님 = 0)
@@ -342,9 +391,56 @@ VALUES (
     NOW(),                    -- post_time (작성일)
     NULL                      -- post_update (수정일)
 );
+-- post에 보이는 상품 더미
+INSERT INTO post_product
+(post_idx,product_idx,post_product_time)
+VALUES 
+(1,5,now())
+,(1,9,now())
+,(1,4,now())
+,(1,1,now())
+,(1,3,now())
+,(1,6,now())
+,(1,7,now())
+,(1,10,now())
+,(1,11,now())
+,(1,20,now())
+,(1,21,now())
+,(1,1,now());
+
+-- 1번 post_idx에 대한 `like` 테이블 정보 (좋아요)
+INSERT INTO `like` (post_idx,mem_idx)
+VALUES 
+(1,7)
+,(1,8)
+,(1,9)
+,(1,10)
+,(1,11)
+,(1,12)
+,(1,13)
+,(1,14)
+,(1,15)
+,(1,16)
+,(1,17)
+,(1,18)
+,(1,19)
+,(1,20)
+,(1,21)
+,(1,22)
+,(1,23)
+,(1,24)
+,(1,25);
+
+-- post_idx = 1 번 해시태그 등록
+INSERT INTO post_hashtag (post_idx,hashtag_idx)
+VALUES
+(1,1)
+,(1,8)
+,(1,9)
+,(1,10);
 
 
-
+-- post_idx=2
 INSERT INTO post 
 VALUES (
     NULL,                     -- post_idx
@@ -353,7 +449,7 @@ VALUES (
     '이 제품 솔직 후기',         -- post_title
     '일주일 써봤는데 촉촉해요',   -- post_content
     '09_피부관리법.png*13_솜스킨.png*07_내돈내산.png',          -- post_image
-    5,                        -- post_like
+    10,                        -- post_like
     0,                        -- post_comment_count
     NULL,                     -- order_id (주문 번호: 샘플이므로 NULL)
     1,                        -- post_review (리뷰글 = 1)
@@ -363,21 +459,39 @@ VALUES (
     NULL                      -- post_update
 );
 
+-- 2번 post_idx에 대한 `like` 테이블 정보 (좋아요)
+INSERT INTO `like` (post_idx,mem_idx)
+VALUES 
+(2,15)
+,(2,16)
+,(2,17)
+,(2,18)
+,(2,19)
+,(2,20)
+,(2,21)
+,(2,22)
+,(2,23)
+,(2,24);
+
+-- post_idx = 2 번 해시태그 등록
+INSERT INTO post_hashtag (post_idx,hashtag_idx)
+VALUES
+(2,1)
+,(2,8)
+,(2,9)
+,(2,10);
 
 
-
-
-
-
+-- post_idx=3
 INSERT INTO post 
 VALUES (
     NULL,                         -- post_idx
-    4,                            -- mem_idx
+    3,                            -- mem_idx
     'free',                       -- post_category (자유게시판)
     '요즘너무 춥네요',            				-- post_title
     '건조한 날씨 어떻게 피부관리들 하시나요? 올인원',    -- post_content
     '16_올인원.png',                -- post_image
-    3,                            -- post_like
+    0,                            -- post_like
     0,                            -- post_comment_count
     NULL,                         -- order_id
     0,                            -- post_review
@@ -388,6 +502,16 @@ VALUES (
 );
 
 
+-- post_idx = 3 번 해시태그 등록
+INSERT INTO post_hashtag (post_idx,hashtag_idx)
+VALUES
+(3,2)
+,(3,4)
+,(3,9)
+,(3,10);
+
+
+-- post_idx=4
 INSERT INTO post 
 VALUES (
     NULL,                         -- post_idx
@@ -396,7 +520,7 @@ VALUES (
     '피부관리 첫번쨰',            		-- post_title
     '요즘 같은 환절기 피부 당기시는 분 👋🏻 아토베이러 크림과 함깨 ',       -- post_content
     '17_크림01.png*18_크림02.png*19_크림03.png*20_크림04.png*21_크림05.png*22_크림06.png',                -- post_image
-    3,                            -- post_like
+    0,                            -- post_like
     0,                            -- post_comment_count
     NULL,                         -- order_id
     0,                            -- post_review
@@ -406,16 +530,24 @@ VALUES (
     NULL                          -- post_update
 );
 
+-- post_idx = 4 번 해시태그 등록
+INSERT INTO post_hashtag (post_idx,hashtag_idx)
+VALUES
+(4,2)
+,(4,3)
+,(4,8)
+,(4,10);
 
+-- post_idx=5
 INSERT INTO post 
 VALUES (
     NULL,                         -- post_idx
-    4,                            -- mem_idx
-    'free',                       -- post_category (자유게시판)
+    3,                            -- mem_idx
+    'skin',                       -- post_category (자유게시판)
     '스틱 파운데이션!',            		-- post_title
     '수분 에센스 + 자외선 차단 + 파운데이션 + 프라이머까지 담은 올인원 커버 스틱⊹ ',       -- post_content
     '23_파데.png*24_파데2.png*25_파데3.png*26_파데4.png',                -- post_image
-    20,                            -- post_like
+    0,                            -- post_like
     0,                            -- post_comment_count
     NULL,                         -- order_id
     0,                            -- post_review
@@ -425,17 +557,24 @@ VALUES (
     NULL                          -- post_update
 );
 
+INSERT INTO post_product
+(
+post_idx, product_idx, post_product_time
+)
+VALUES 
+(5,17,now())
 
+-- post_idx=6
 INSERT INTO post 
 VALUES (
     NULL,                         -- post_idx
-    4,                            -- mem_idx
+    2,                            -- mem_idx
     'free',                       -- post_category (자유게시판)
     '만능 세럼입니다~',            		-- post_title
     '피부에 가장 기본이 되는 보습, 미백, 주름개선, 진정, 피부장벽을 위한 
 영양성분을 꾹꾹 눌러담아 사심채워 만든 만능 세럼이랍니다..! ',       -- post_content
     '34_세럼.png*35_세럼2.png*36_세럼3.png*37_세럼4.png',               -- post_image
-    20,                            -- post_like
+    0,                            -- post_like
     0,                            -- post_comment_count
     NULL,                         -- order_id
     0,                            -- post_review
@@ -445,11 +584,11 @@ VALUES (
     NULL                          -- post_update
 );
 
-
+-- post_idx=7
 INSERT INTO post 
 VALUES (
     NULL,                         -- post_idx
-    4,                            -- mem_idx
+    5,                            -- mem_idx
     'free',                       -- post_category (자유게시판)
     '우르오스 폼클렌징입니다',            		-- post_title
     '남자 화장품 브랜드로 굳건히 인기가 많은 !! 우르오스!!
@@ -457,7 +596,7 @@ VALUES (
 	정도로 정말 유명해요 ㅋ 저희 남편도 참 좋아하는 브랜드인데
 	이번에 신상으로 출시된 페이스워시는 특히나 사용감이 편해서 ',       -- post_content
     '27_폼클렌징.png*28_폼클렌징2.png*29_폼클렌징3.png*30_폼클렌징4.png',                -- post_image
-    20,                            -- post_like
+    0,                            -- post_like
     0,                            -- post_comment_count
     NULL,                         -- order_id
     0,                            -- post_review
@@ -469,7 +608,7 @@ VALUES (
 
 
 
-
+-- post_idx=8
 INSERT INTO post 
 VALUES (
     NULL,                         -- post_idx
@@ -479,7 +618,7 @@ VALUES (
     '원오브뎀 드 뗑 쿠션 / 1호 잡티, 모공 커버에 피부톤 정리까지!
 	화장이 처음인 남자도 쉽게! ',       -- post_content
     '31_팩트.png*32_팩트2.png*33_팩트3.png',                -- post_image
-    50,                            -- post_like
+    19,                            -- post_like
     0,                            -- post_comment_count
     NULL,                         -- order_id
     0,                            -- post_review
@@ -489,6 +628,29 @@ VALUES (
     NULL                          -- post_update
 );
 
+-- 8번 post_idx에 대한 `like` 테이블 정보 (좋아요)
+INSERT INTO `like` (post_idx,mem_idx)
+VALUES 
+(8,7)
+,(8,8)
+,(8,9)
+,(8,10)
+,(8,11)
+,(8,12)
+,(8,13)
+,(8,14)
+,(8,15)
+,(8,16)
+,(8,17)
+,(8,18)
+,(8,19)
+,(8,20)
+,(8,21)
+,(8,22)
+,(8,23)
+,(8,24)
+,(8,25);
 
-insert into post values(null, 회원_idx, free, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
+
+-- insert into post values(null, 회원_idx, free, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
 

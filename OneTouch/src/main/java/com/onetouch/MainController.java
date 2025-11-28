@@ -1,10 +1,26 @@
 package com.onetouch;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.onetouch.dao.ProductDao;
+import com.onetouch.service.HashtagService;
+import com.onetouch.vo.HashtagVo;
+import com.onetouch.vo.ProductVo;
 
 @Controller
 public class MainController {
+	@Autowired
+	HashtagService hashtagService;
+	
+	@Autowired
+	ProductDao product_dao;
 	
 	@RequestMapping("/")
 	public String oneTouchIndex() {
@@ -15,9 +31,19 @@ public class MainController {
 	}
 	
 	@RequestMapping("main")
-	public String oneTouchMain() {
+	public String oneTouchMain(Model model) {
 		System.out.println("	[oneTouchMain] oneTouchMain()");
 		
+		List<HashtagVo> hashtagRank=hashtagService.updatePostProductHashtagTotalConut();
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("orderBy","product_cnt DESC, product_idx DESC");
+		map.put("startRow", 0);
+		map.put("pageSize", 3);
+		List<ProductVo> ProductVoList = product_dao.selectList(map);
+		System.out.printf("		뉴상품 3개 => %s\n",ProductVoList);
+		model.addAttribute("hashtagRank", hashtagRank);
+		model.addAttribute("ProductVoList", ProductVoList);
 		System.out.println("	[oneTouchMain] return : main.jsp ");
 		return "main";
 	}
