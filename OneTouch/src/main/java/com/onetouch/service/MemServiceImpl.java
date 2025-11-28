@@ -99,12 +99,21 @@ public class MemServiceImpl implements MemService {
 	
 	
 	
-	//관리자 회원관리 부분. ========================
-	
+	// 관리자 회원관리 부분
 	@Override
-	// 관리자 회원 목록 조회 (검색 포함)
 	public List<MemVo> getMemberList(Map<String, Object> params) {
 	    return memDao.getMemberList(params);
 	}
 
+	@Override
+	public int getMemberCount(Map<String, Object> params) {
+	    return memDao.getMemberCount(params);
+	}
+
+	@Override
+	public int updateMemberRoll(Map<String, Object> params) {
+	    return memDao.updateMemberRoll(params);
+	}
 }
+
+

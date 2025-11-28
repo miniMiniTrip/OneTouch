@@ -17,13 +17,15 @@ public interface MemService {
 
 	
 	
-	// 관리자 회원 목록 조회 (검색 포함)======
-	List<MemVo> getMemberList(Map<String, Object> params);
+	// 관리자 회원관리 부분
+		List<MemVo> getMemberList(Map<String, Object> params);
+		int getMemberCount(Map<String, Object> params);  // 추가
+		int updateMemberRoll(Map<String, Object> params);  // 추가
+	}
 	
 	
 	
 	
 	
 	
-	
-}
+

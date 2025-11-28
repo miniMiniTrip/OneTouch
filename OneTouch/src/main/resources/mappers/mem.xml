@@ -75,9 +75,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 관리자 회원관리 부분 -->
 
-
-<!-- 회원 목록 조회 (검색 포함) -->
- <select id="getMemberList" parameterType="map" resultType="MemVo">
+<!-- 회원 목록 조회 (검색 + 페이징) -->
+<select id="getMemberList" parameterType="map" resultType="MemVo">
     SELECT * FROM mem
     <where>
         <if test="keyword != null and keyword != ''">
@@ -104,7 +103,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </where>
     ORDER BY mem_time DESC
+    LIMIT #{limit} OFFSET #{offset}
 </select>
+
+<!-- 회원 전체 개수 조회 -->
+<select id="getMemberCount" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM mem
+    <where>
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <when test="searchType == 'name'">
+                    AND mem_name LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'id'">
+                    AND mem_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'email'">
+                    AND mem_email LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <otherwise>
+                    AND (mem_name LIKE CONCAT('%', #{keyword}, '%')
+                         OR mem_id LIKE CONCAT('%', #{keyword}, '%')
+                         OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+                </otherwise>
+            </choose>
+        </if>
+        
+        <if test="roll != null and roll != ''">
+            AND mem_roll = #{roll}
+        </if>
+    </where>
+</select>
+
+<!-- 회원 권한 변경 -->
+<update id="updateMemberRoll" parameterType="map">
+    UPDATE mem 
+    SET mem_roll = #{mem_roll}
+    WHERE mem_id = #{mem_id}
+</update>
  
 </mapper>
 

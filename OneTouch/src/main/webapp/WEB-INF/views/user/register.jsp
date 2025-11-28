@@ -309,7 +309,11 @@
 </head>
 
 <body>
+<<<<<<< HEAD
+   
+=======
 
+>>>>>>> master
     <!-- Start Header Area -->
     <c:import url="../common/header.jsp" />
     <!-- End Header Area -->

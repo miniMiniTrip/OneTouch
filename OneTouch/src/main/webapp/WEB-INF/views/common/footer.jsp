@@ -1,5 +1,4 @@
 
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -78,21 +77,24 @@
                                 <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
                                 <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
                                 <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품</a></li>
+                                <li><a href="${pageContext.request.contextPath}/mypage/qna_list">문의하기</a></li>
                             </ul>
                         </div>
                         <!-- End Single Widget -->
                     </div>
                     <div class="col-lg-3 col-md-6 col-12">
                         <!-- Single Widget -->
-                        <div class="single-footer f-link">
+                      
+                       <%--  <div class="single-footer f-link">
                             <h3>회사 정보</h3>
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/about">회사 소개</a></li>
-                                <li><a href="${pageContext.request.contextPath}/mypage/qna_list">문의하기</a></li>
+                               
                                 <li><a href="${pageContext.request.contextPath}/terms">이용약관</a></li>
                                 <li><a href="${pageContext.request.contextPath}/privacy">개인정보처리방침</a></li>
                             </ul>
-                        </div>
+                        </div> --%>
+                        
                         <!-- End Single Widget -->
                     </div>
                 </div>
@@ -118,7 +120,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-12">
-                        <ul class="socila">
+                        <!-- ul class="socila">
                             <li>
                                 <span>팔로우:</span>
                             </li>
@@ -126,7 +128,7 @@
                             <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                             <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
                             <li><a href="javascript:void(0)"><i class="lni lni-youtube"></i></a></li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
             </div>
