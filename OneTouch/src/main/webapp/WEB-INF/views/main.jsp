@@ -116,23 +116,23 @@
                 </div>
             </div>
             <div class="row">
-                <c:forEach var="hashtag" items="${popularHashtags}">
-                    <div class="col-lg-3 col-md-6 col-12">
+                <c:forEach var="hashtag" items="${hashtagRank}">
+                    <div class="col-lg-3 col-md-6 col-12 text-center" style="margin-top: 20px">
                         <!-- Start Single Category -->
                         <div class="single-category">
-                            <h3 class="heading">#${hashtag.name}</h3>
+                            <h3 class="heading">#${hashtag.hashtag_name}</h3>
                             <ul>
-                                <c:forEach var="product" items="${hashtag.topProducts}" end="4">
+                               <%--  <c:forEach var="product" items="${hashtag.topProducts}" >
                                     <li>
                                         <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
                                             ${product.name}
                                         </a>
                                     </li>
-                                </c:forEach>
+                                </c:forEach> --%>
                             </ul>
                             <div class="button">
-                                <a href="${pageContext.request.contextPath}/product/list?hashtagId=${hashtag.hashtagId}" 
-                                   class="btn">더보기</a>
+                                <a href="${pageContext.request.contextPath}/product/list?hashtagId=${hashtag.hashtag_idx}" 
+                                   class="btn"  style="margin-top: 8px">더보기</a>
                             </div>
                         </div>
                         <!-- End Single Category -->

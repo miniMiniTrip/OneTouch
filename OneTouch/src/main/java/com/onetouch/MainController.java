@@ -1,10 +1,19 @@
 package com.onetouch;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.onetouch.service.HashtagService;
+import com.onetouch.vo.HashtagVo;
 
 @Controller
 public class MainController {
+	@Autowired
+	HashtagService hashtagService;
 	
 	@RequestMapping("/")
 	public String oneTouchIndex() {
@@ -15,9 +24,12 @@ public class MainController {
 	}
 	
 	@RequestMapping("main")
-	public String oneTouchMain() {
+	public String oneTouchMain(Model model) {
 		System.out.println("	[oneTouchMain] oneTouchMain()");
 		
+		List<HashtagVo> hashtagRank=hashtagService.updatePostProductHashtagTotalConut();
+		
+		model.addAttribute("hashtagRank", hashtagRank);
 		System.out.println("	[oneTouchMain] return : main.jsp ");
 		return "main";
 	}

@@ -75,5 +75,10 @@ public interface HashtagDao {
 	//문진 결과 추천글 조회
 	public List<Integer> selectPostsByHashtags(Map<String, Object> params);
 	
+	//post_hashtag 테이블과 product_hashtag 테이블에 있는 hashtag_idx 카운트해서 hashtag 테이블에 use_count컬럼에 update
+	public void updatePostProductHashtagTotalConut();
+	
+	//hashtag 랭킹 가져오기
+	public List<HashtagVo> selectHashtagRank();
 	
 }
