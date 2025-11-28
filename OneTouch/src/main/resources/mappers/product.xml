@@ -160,6 +160,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    WHERE product_idx = #{product_idx} AND product_image_level = 1 
 	    LIMIT 1
 	</select>
+	
+	<!-- 상품 이미지 순서대로 가져와서 썸네일로 보여줘 -->
+	<select id="selectProductImages" resultType="map">
+    SELECT product_image_idx, product_idx, product_image_name, product_image_level
+    FROM product_image 
+    WHERE product_idx = #{product_idx}
+    ORDER BY product_image_level ASC
+	</select>
 
 	<!-- 상품 상세페이지에서 level알기위해 조회 -->
 	<select id="selectProductImageProductIdxList" parameterType="int" resultType="product">
@@ -232,20 +240,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             NOW()
         )
     </insert>
-
-    <!-- 상품 이미지 등록 -->
-    <insert id="productImageInsert" parameterType="product">
-        INSERT INTO product_image (
-            product_idx,
-            product_image_url,
-            product_image_level
-        )
-        VALUES (
-            #{product_idx},
-            #{product_image_url},
-            1
-        )
-    </insert>
+	<!-- 이미지 등록  -->
+	
+    <insert id="insertProductImage" parameterType="product">
+    INSERT INTO product_image (
+        product_idx,
+        product_image_url,
+        product_image_level
+    )
+    VALUES (
+        #{product_idx},
+        #{product_image_url},
+        #{product_image_level}  
+    )
+	</insert>
 
     <!-- 상품 수정 -->
     <update id="update" parameterType="product">
