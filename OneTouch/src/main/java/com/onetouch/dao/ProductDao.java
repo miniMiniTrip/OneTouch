@@ -29,7 +29,7 @@ public interface ProductDao {
     int insert(ProductVo vo);
     
     // 이미지등록
-    int productImageInsert(ProductVo productVo);
+    int insertProductImage(ProductVo productVo);
     
     // 상품수정
     int update(ProductVo vo);

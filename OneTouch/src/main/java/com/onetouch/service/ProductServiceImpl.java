@@ -1,5 +1,7 @@
 package com.onetouch.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,10 +9,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.dao.HashtagDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.vo.ProductVo;
+
+import jakarta.servlet.ServletContext;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -20,10 +25,12 @@ public class ProductServiceImpl implements ProductService {
     
     @Autowired
     HashtagDao hashtag_dao;
+    @Autowired
+    ServletContext application;
     
     @Override
     @Transactional
-    public int insert(ProductVo productVo) {
+    public int insert(ProductVo productVo) throws Exception {
         System.out.printf("[ProductServiceImpl-insert] 초기 productVo: %s\n", productVo);
         
         // 1. product 테이블에 상품 등록
@@ -31,8 +38,37 @@ public class ProductServiceImpl implements ProductService {
         System.out.printf("[ProductServiceImpl-insert] product 등록 후 productVo의 product_idx: %d\n", productVo.getProduct_idx());
         
         // 2. product_image 테이블에 이미지 등록
-        res = product_dao.productImageInsert(productVo);
+        res = res*product_dao.insertProductImage(productVo);
         System.out.printf("[ProductServiceImpl-insert] product_image 등록 완료\n");
+        
+        // 2-1.product_image 테이블에 레벨에 2부터 양수로 서브이미지 등록 
+        String saveDirDetail = application.getRealPath("/images/products_detail");
+        String product_sub_image_url="no_file";
+        String sub_image_name="";
+        int level=2;
+        if(productVo.getPhoto_sub()!=null) {
+        	for(MultipartFile sub_image : productVo.getPhoto_sub()) {
+        		sub_image_name=sub_image.getOriginalFilename();
+        		File f=new File(saveDirDetail,sub_image_name);
+        		if(f.exists()){
+        			long tm =System.currentTimeMillis();
+        			sub_image_name=String.format("%d_%s",tm,sub_image_name);
+        			f = new File(saveDirDetail,sub_image_name);
+        		}
+        		
+        		sub_image.transferTo(f);
+        		productVo.setProduct_image_url(sub_image_name);
+        		productVo.setProduct_image_level(level); // 1은 메인 2 3 4 5 는 서브 
+        		res=res*product_dao.insertProductImage(productVo);
+        		
+        		level=level+1;
+        	}
+        }
+        // 2-2. product_image 테이블에 레벨에 음수로 내용이미지 등록
+//        if(productVo.) {
+//        	
+//        }
+        
         
         // 3. 해시태그 처리
         if (productVo.getHashtag_list() != null && !productVo.getHashtag_list().isEmpty()) {

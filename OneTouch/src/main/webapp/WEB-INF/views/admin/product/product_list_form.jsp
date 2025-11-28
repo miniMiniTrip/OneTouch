@@ -1465,8 +1465,16 @@ function changePage(page) {
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="photo">상품 이미지</label>
+                        <label class="form-label" for="photo">상품 메인이미지</label>
                         <input type="file" id="photo" name="photo" class="form-input" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="photo">상품 서브이미지</label>
+                        <input type="file" id="photo_sub" name="photo_sub" class="form-input" accept="image/*" multiple>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="photo">상품 내용이미지</label>
+                        <input type="file" id="photo_content" name="photo_content" class="form-input" accept="image/*" multiple>
                     </div>
                 </div>
                 
@@ -1651,9 +1659,16 @@ function changePage(page) {
                 return;
             }
             if (mode == "insert" && f.photo.value == "") {
-                alert("상품 이미지를 선택하세요!");
+                alert("상품 메인이미지를 선택하세요!");
                 return;
             }
+            if (mode == "insert" && f.photo_sub.value == "") {
+                alert("상품 서브이미지를 선택하세요!");
+                return;
+            }if (mode == "insert" && f.photo_content.value == "") {
+                alert("상품 내용이미지를 선택하세요!");
+                return;
+            }    
 
             // 폼 제출
             if (mode == "insert") {
@@ -1661,6 +1676,8 @@ function changePage(page) {
             } else {
                 f.action = "${pageContext.request.contextPath}/adminpage/product/update";
             }
+            f.method="post";
+            f.enctype = "multipart/form-data";
             f.submit();
         }
 

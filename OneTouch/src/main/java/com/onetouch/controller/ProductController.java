@@ -116,10 +116,12 @@ public class ProductController {
     // 상품 상세 페이지
     @GetMapping("/product/detail")
     public String productDetail(@RequestParam("id") int product_idx, Model model) {
+    	System.out.printf("\n");
         System.out.printf("=== [ProductController] 상품 상세 조회: %d ===\n", product_idx);
 
         ProductVo product = product_dao.selectOne(product_idx);
         //이미지 강제로 조회
+        System.out.printf("	상품 1개 조회 한 결과 => %s\n",product);
         
         String imageUrl = product_dao.selectMainImage(product_idx);
         product.setProduct_image_url(imageUrl);
@@ -142,6 +144,8 @@ public class ProductController {
         model.addAttribute("product", product);
         model.addAttribute("upperdetailImages", upperdetailImages); 
         model.addAttribute("lowerdetailImages", lowerdetailImages); 
+        System.out.printf("=== [ProductController] return : product/product_detail.jsp  ===\n");
+        System.out.printf("\n");
         return "product/product_detail";
    }
     

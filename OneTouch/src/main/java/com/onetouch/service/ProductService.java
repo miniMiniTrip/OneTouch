@@ -9,7 +9,7 @@ import com.onetouch.vo.ProductVo;
 @Service
 public interface ProductService {
 	
-    int insert(ProductVo productVo);
+    int insert(ProductVo productVo) throws Exception;
     
     int update(ProductVo productVo);
     

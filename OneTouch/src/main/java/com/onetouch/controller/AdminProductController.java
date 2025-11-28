@@ -138,34 +138,41 @@ public class AdminProductController {
     @PostMapping("/product/insert")
     public String insert(ProductVo productVo, 
                         @RequestParam(name = "photo") MultipartFile photo,
+//                        @RequestParam(name = "photo_sub") MultipartFile[] photo_sub,
+//                        @RequestParam(name = "photo_content") MultipartFile[] photo_content,
                         @RequestParam(name = "hashtag_idx_list", required = false) List<Integer> hashtag_idx_list,
                         @RequestParam(name = "hashtag_names", required = false) List<String> hashtag_names,
                         RedirectAttributes ra) throws Exception {
         
+    	System.out.printf("	[AdminProductController] insert()\n");
+//    	System.out.printf("		photo_sub => %s\n",photo_sub);
+//    	System.out.printf("		photo_content => %s\n",photo_content);
         System.out.printf("insert] 받은 productVo: %s\n", productVo);
         System.out.printf("insert] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
         
-        String saveDir = application.getRealPath("/images/");
+        String saveDirMain = application.getRealPath("/images/products_list");
         String product_image_url = "no_file";
-
+        
+        //메인 이미지 파일 저장
         if (photo != null && !photo.isEmpty()) {
             String filename = photo.getOriginalFilename();
             System.out.printf("insert] 원본 파일명: %s\n", filename);
             
-            File f = new File(saveDir, filename);
+            File f = new File(saveDirMain, filename);
             
             if (f.exists()) {
                 long tm = System.currentTimeMillis();
                 filename = String.format("%d_%s", tm, filename);
-                f = new File(saveDir, filename);
+                f = new File(saveDirMain, filename);
             }
             
             photo.transferTo(f);
             product_image_url = filename;
         }
-
+        productVo.setProduct_image_level(1);
         productVo.setProduct_image_url(product_image_url);
-
+        
+        //상품 내용 \n <=> <br> 
         if (productVo.getProduct_comment() != null) {
             String product_comment = productVo.getProduct_comment().replaceAll("\n", "<br>");
             productVo.setProduct_comment(product_comment);
@@ -230,6 +237,7 @@ public class AdminProductController {
         
         System.out.printf("insert] 최종 productVo: %s\n", productVo);
         
+        //상품 insert
         int res = productService.insert(productVo);
         System.out.printf("insert] insert 결과: %d\n", res);
         

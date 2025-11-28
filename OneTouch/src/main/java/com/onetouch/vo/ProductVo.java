@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -27,6 +28,8 @@ public class ProductVo{
  // private String category_description;
     
     // 상품 이미지 정보
+    private MultipartFile[] photo_sub; // 서브이미지
+    private MultipartFile[] photo_content; // 내용이미지
     private int product_image_idx;
     private String product_image_url;
     private int product_image_level;
