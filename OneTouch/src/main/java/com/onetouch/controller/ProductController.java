@@ -157,6 +157,7 @@ public class ProductController {
         return "product/product_detail";
    }
     
+    // 상품 상세페이지에서 메인 이미지랑 서브 이미지 수정 기능
     @ResponseBody
     @RequestMapping("/product/updateDetailImage")
     public Map<String, Object> updateDetailImage(
@@ -248,5 +249,36 @@ public class ProductController {
         return result;
     }
     
+    
+    // 상품 상세페이지에서 내용 이미지 삭제처리
+    @ResponseBody
+    @RequestMapping("/product/deleteDetailContentImage")
+    public Map<String, Object> deleteDetailContentImage(
+            @RequestParam("contentImagesName") List<String> images   // 삭제할 이미지 이름 리스트
+    ) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            String realPath = application.getRealPath("/images/products_detail"); // 상세 이미지 경로
+
+            for (String imageName : images) {
+                if (imageName != null && !imageName.isEmpty()) {
+                    Path filePath = Paths.get(realPath, imageName);
+                    Files.deleteIfExists(filePath); // 실제 파일 삭제
+                    // DB에서도 삭제
+                    product_dao.deleteContentImage(imageName);
+                }
+            }
+
+            result.put("success", true);
+            result.put("message", "내용 이미지가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+            result.put("message", "내용 이미지 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return result; // JSON 반환
+    }
     
 }//end

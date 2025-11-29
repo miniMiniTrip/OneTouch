@@ -49,6 +49,9 @@ public interface ProductDao {
     // 상품 내용이미지 삭제
     int deleteProductContentImages(int product_idx);
     
+    // 파일명으로 내용이미지 삭제처리
+    int deleteContentImage(String image_url);
+    
     // 단일상품삭제
     int delete(int product_idx);
     

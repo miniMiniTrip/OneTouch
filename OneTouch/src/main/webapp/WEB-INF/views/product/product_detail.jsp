@@ -1333,6 +1333,19 @@ background
 	border-radius: 8px;
 	margin: 0 auto;
 }
+
+/* 내용 이미지 추가할때 미리보기 보기 영역  */
+#previewContainer {
+    text-align: center;
+}
+#previewContainer img {
+    margin: 10px;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: inline-block; /* inline-block으로 여러 이미지도 가운데 정렬 */
+}
+
 </style>
 </head>
 <body>
@@ -1361,8 +1374,8 @@ background
 								<button
 									onclick="updateProductImageByIdx('${product.product_image_url}')">수정</button>
 
-								<button
-									onclick="deleteProductImageByIdx(`${lowerdetailImages}`)">삭제</button>
+								<%-- <button
+									onclick="deleteProductImageByIdx(`${lowerdetailImages}`)">삭제</button> --%>
 							</div>
 						</c:if>
 						</div>
@@ -1490,13 +1503,49 @@ background
 						<button type="button" class="btn-upload"
 							onclick="document.getElementById('imageInput').click()">
 							이미지 추가</button>
-						<div id="previewContainer"></div>
+							<button type="button" id="saveImages" class="btn-save"
+							style="display: none;">저장</button>
+						<div id="previewContainer">
+						</div>
 						<button type="button" id="saveImages" class="btn-save"
 							style="display: none;">저장</button>
 					</form>
 				</div>
 			</c:if>
+		<script type="text/javascript">
+		const imageInput = document.getElementById('imageInput');
+		const previewContainer = document.getElementById('previewContainer');
+		const saveButton = document.getElementById('saveImages');
 
+		imageInput.addEventListener('change', function() {
+		    previewContainer.innerHTML = ""; // 이전 미리보기 초기화
+		    const files = imageInput.files;
+
+		    if (files.length > 0) {
+		        saveButton.style.display = 'inline-block'; // 저장 버튼 보이기
+		    } else {
+		        saveButton.style.display = 'none';
+		    }
+
+		    for (let i = 0; i < files.length; i++) {
+		        const file = files[i];
+
+		        if (!file.type.startsWith('image/')) continue; // 이미지 파일만 처리
+
+		        const reader = new FileReader();
+		        reader.onload = function(e) {
+		            const img = document.createElement('img');
+		            img.src = e.target.result;
+		            img.style.maxWidth = "100%";
+		            img.style.margin = "5px auto";
+		            img.style.border = "1px solid #ccc";
+		            img.style.borderRadius = "8px";
+		            previewContainer.appendChild(img);
+		        }
+		        reader.readAsDataURL(file); // 선택 파일을 base64로 읽기
+		    }
+		});
+		</script>
 
 
 
@@ -1510,8 +1559,8 @@ background
 						alt="상품 상세 이미지" />
 					<c:if test="${sessionScope.user.mem_roll == 'admin'}">
 						<div class="image-actions">
-							<button onclick="updateProductImageByIdx('${detailImage}')">수정</button>
-							<button onclick="deleteProductImageByIdx('${detailImage}')">삭제</button>
+							<%-- <button onclick="updateProductImageByIdx('${detailImage}')">수정</button> --%>
+							<button onclick="deleteProductImageByIdx()">삭제</button>
 						</div>
 					</c:if>
 				</div>
@@ -1847,7 +1896,7 @@ background
 </div>
 
 
-<!-- ================= 	모달	=================== -->
+<!-- ================= 	모달수정	=================== -->
 <script type="text/javascript">
 function updateProductImageByIdx(imageFilename) {
     let subImages = [
@@ -1968,7 +2017,44 @@ function updateProductImageByIdx(imageFilename) {
     });
 }
 </script>
-<!-- ================= 	//모달	=================== -->
+<!-- ================= 	//모달수정	=================== -->
+
+<!-- ================= 상품 내용 이미지 삭제 ================-->
+<script type="text/javascript">
+function deleteProductImageByIdx(){
+    let contentImagesName = [
+        <c:forEach var="img" items="${lowerdetailImages}">
+            "${img}",
+        </c:forEach>
+    ];
+    const formData = new FormData();
+    formData.append("contentImagesName",contentImagesName);
+		$.ajax({
+            url: '/product/deleteDetailContentImage',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '내용 이미지가 삭제되었습니다',
+                        timer: 1800,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire('실패', data.message || '내용 이미지 삭제에 실패했습니다.', 'error');
+                }
+            },
+            error: function() {
+                Swal.fire('오류', '서버와 연결이 불안정합니다.', 'error');
+            }
+        });
+}
+</script>
+<!-- ================= /상품 내용 이미지 삭제 ===============-->
+
 
 	<script>
         // 수량 변경
