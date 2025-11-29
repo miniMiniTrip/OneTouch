@@ -468,17 +468,16 @@ body {
 	color: white;
 }
 
-.btn-buy {
-	background: linear-gradient(135deg, #1e3c72, #2a5298);
-	color: white;
-	transition: all 0.2s;
+.button-group .btn-buy {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white !important;
+    transition: all 0.2s;
 }
 
-.btn-buy:hover {
-	background: #2a5298;
-	color: white;
+.button-group .btn-buy:hover {
+    background: #2a5298;
+    color: white !important;
 }
-
 /* 상품 설명 탭 */
 .product-tabs {
 	margin-top: 40px;
@@ -1442,8 +1441,8 @@ background
 					</div>
 
 					<div class="button-group">
-						<button type="button" id="btnCart" class="btn btn-cart">장바구니</button>
-						<button type="button" id="btnBuy" class="btn btn-buy">구매하기</button>
+						<button type="button" id="btnCart" class="btn btn-cart">장바구니담기</button>
+						<button type="button" id="btnBuy" class="btn btn-buy">바로구매 > </button> <!-- 로그인 해주세요 연결 -->
 					</div>
 				</div>
 			</div>
