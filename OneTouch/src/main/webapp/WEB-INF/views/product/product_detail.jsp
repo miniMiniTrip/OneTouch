@@ -782,13 +782,7 @@ to {
 	gap: 10px;
 }
 
-/* .search-input {
-	padding: 8px 12px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	width: 200px;
-	font-size: 14px;
-} */
+
 
 .sort-select {
 	padding: 8px 12px;
@@ -932,41 +926,197 @@ to {
 }
 
 /* Q&A 스타일 */
-.qna-item {
-	border-bottom: 1px solid #eee;
-	padding: 20px 0;
+
+#qna-content {
+	width: 100%;          /* 화면 가득 */
+    max-width: 1200px;    /* 최대 1200px */
+    margin: 0 auto;       /* 중앙 정렬 */
+    padding: 0 20px;      /* 좌우 여백 */
+    box-sizing: border-box; /* 패딩 포함 */
+	
+	}
+.content{
+
+	flex: 1;
+	padding: 40px;
 }
 
-.qna-item:last-child {
-	border-bottom: none;
+
+.content-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 30px;
+	padding-bottom: 15px;
+/* 	border-bottom: 2px solid #5c6bc0; */ /* 파랑 선 안예뻐서 가림 */
 }
 
-.qna-question {
-	background: #f8f9fa;
-	padding: 15px;
-	border-radius: 8px;
-	margin-bottom: 10px;
-	border-left: 4px solid #2a5298;
+.content-header h2 {
+	font-size: 18px;
+	color: #1A237E;
+	font-weight: 600;
+	margin: 0;
 }
 
-.qna-question h4 {
-	color: #2a5298;
+.qna-title {
+    display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 30px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #5c6bc0;
+}
+
+.back-arrow {
+    font-size: 18px;
+    color: #666;
+    cursor: pointer;
+}
+
+
+.qna-btn-write {
+	
+    background: #1A237E; 
+    color: white;
+    padding: 5px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer; 
+    display: block; /* inline-flex에서 block으로 변경 */
+    width: fit-content;
+    margin-left: auto; /* 오른쪽 정렬 */
+    gap: 6px;
+    transition: background 0.3s;
+    height: 40px;
+}
+
+.qna-btn-write:hover {
+	background: #4a5aaf;
+	color: white;
+}
+
+.qna-btn-write::before {
+	content: '✎';
 	font-size: 16px;
-	margin-bottom: 5px;
 }
 
-.qna-answer {
-	padding: 15px;
-	background: #fff;
-	border-left: 4px solid #28a745;
-	margin-left: 20px;
+
+
+/* Q&A 테이블 */
+.qna-table-container {
+    margin-top: 20px;
+    overflow-x: auto;
 }
 
-.qna-answer h4 {
-	color: #28a745;
-	font-size: 16px;
-	margin-bottom: 5px;
+.qna-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
 }
+
+.qna-table thead {
+    background: #f8f9fa;
+}
+
+.qna-table th {
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+ .qna-table td {
+    padding: 15px 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee; 
+    vertical-align: middle;
+} 
+ 
+
+.qna-table th:nth-child(2),
+.qna-table td:nth-child(2) {
+   /*  text-align: left; */
+    text-align: center;
+    width: 30%;
+    padding-left: 10px
+}
+
+.qna-table th:nth-child(1),
+.qna-table td:nth-child(1) {
+    width: 10%;
+}
+
+.qna-table th:nth-child(3),
+.qna-table td:nth-child(3) {
+    width: 12%;
+}
+
+.qna-table th:nth-child(4),
+.qna-table td:nth-child(4) {
+    width: 20%;
+}
+
+.qna-table th:nth-child(5),
+.qna-table td:nth-child(5) {
+    width: 12%;
+}
+
+.qna-title-link {
+    color: #5c6bc0;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.qna-title-link:hover {
+    text-decoration: underline;
+}
+
+.date-time {
+    font-size: 14px;
+}
+
+.time {
+    color: #666;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-badge.answered {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .qna-table th,
+    .qna-table td {
+        padding: 10px 5px;
+        font-size: 14px;
+    }
+    
+    .qna-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+}
+
+
+
 
 /* ============== 반응형 미디어 쿼리 ============== */
 
@@ -1134,7 +1284,7 @@ to {
 	}
 }
 
-/* 품절임박 작고 귀여운 네모 박스 */
+/* 품절임박 박스 */
 .low-stock-alert {
 	background: #ff4757;
 	color: white;
@@ -1587,32 +1737,119 @@ background
 
 
 
-	<!-- Q&A 내용 -->
+	<!-- 상품 Q&A  --> <!-- 상품 Q&A  --> <!-- 상품 Q&A  --> <!-- 상품 Q&A  -->
 	<div id="qna-content" class="tab-panel">
-		<div class="qna-item">
-			<div class="qna-question">
-				<h4>Q. 민감성 피부도 사용 가능한가요?</h4>
-				<p>저자극 제품을 찾고 있는데, 민감성 피부에도 괜찮을까요?</p>
-			</div>
-			<div class="qna-answer">
-				<h4>A. 네, 사용 가능합니다.</h4>
-				<p>저자극 포뮬러로 제작되어 민감성 피부에도 안전하게 사용하실 수 있습니다. 다만 개인차가 있을 수 있으니 처음
-					사용 시 소량으로 테스트해보시기 바랍니다.</p>
-			</div>
-		</div>
-
-		<div class="qna-item">
-			<div class="qna-question">
-				<h4>Q. 하루에 몇 번 사용해야 하나요?</h4>
-				<p>효과적인 사용법이 궁금합니다.</p>
-			</div>
-			<div class="qna-answer">
-				<h4>A. 하루 2회 사용을 권장합니다.</h4>
-				<p>아침, 저녁 세안 후 사용하시면 최적의 효과를 얻으실 수 있습니다.</p>
-			</div>
-		</div>
-	</div>
-
+    <div class="content">
+        <div class="content-header">
+            <h2>💬상품 Q&A</h2>
+        </div>
+        <%-- <c:if test="${not empty qna_list}"> --%>
+        <button class="qna-btn-write"
+       <%--  onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'" --%>>Q&A 쓰기</button>
+    	<%-- </c:if> --%>
+    </div>
+    
+    <div class="qna-table-container">
+        <table class="qna-table">
+            <thead>
+                <tr>
+                  
+				    <th style="width: 80px;">번호</th>
+					<th>제목</th>
+					<th style="width: 100px;">작성자</th>
+					<th style="width: 120px;">작성일</th>
+					<th style="width: 100px;">답변상태</th>
+					</tr>
+               
+            </thead>
+            
+            <tbody>
+            	<%-- <c:forEach var="qna" items="${qna_list}" varStatus="status"> --%>
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <a href="#" class="qna-title-link">배송언제되나요?</a>
+                    </td>
+                    <td>관리자</td>
+                    <td>
+                        <div class="date-time">
+                            <div>2025-11-29</div>
+                            <div class="time">16:37:55.0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge answered">답변대기</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <a href="#" class="qna-title-link">민감성 피부도 사용 가능한가요?</a>
+                    </td>
+                    <td>김**님</td>
+                    <td>
+                        <div class="date-time">
+                            <div>2025-11-28</div>
+                            <div class="time">14:22:30.0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge completed">답변완료</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <a href="#" class="qna-title-link">사용법이 궁금해요</a>
+                    </td>
+                    <td>박**님</td>
+                    <td>
+                        <div class="date-time">
+                            <div>2025-11-27</div>
+                            <div class="time">09:15:42.0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge completed">답변완료</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        <a href="#" class="qna-title-link">환불 가능한가요?</a>
+                    </td>
+                    <td>이**님</td>
+                    <td>
+                        <div class="date-time">
+                            <div>2025-11-26</div>
+                            <div class="time">11:40:15.0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge answered">답변대기</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>
+                        <a href="#" class="qna-title-link">제품 성분이 궁금합니다</a>
+                    </td>
+                    <td>최**님</td>
+                    <td>
+                        <div class="date-time">
+                            <div>2025-11-25</div>
+                            <div class="time">15:25:08.0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge completed">답변완료</span>
+                    </td>
+                </tr>
+               <%--  </c:forEach> --%>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 	<script>
         // 수량 변경
