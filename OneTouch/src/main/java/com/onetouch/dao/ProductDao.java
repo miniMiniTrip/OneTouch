@@ -37,6 +37,9 @@ public interface ProductDao {
     // 상품 이미지 수정
     int updateProductImage(ProductVo productVo);
     
+    // 상품 파일 삭제를 위한 product idx 기준으로 이름 조회
+    List<ProductVo> selectProductImageListName(int product_idx);
+    
     // 상품 서브이미지 삭제
     int deleteProductSubImages(int product_idx);
     

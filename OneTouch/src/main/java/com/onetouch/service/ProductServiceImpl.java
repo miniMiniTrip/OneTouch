@@ -1,7 +1,6 @@
 package com.onetouch.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,7 +205,27 @@ public class ProductServiceImpl implements ProductService {
         hashtag_dao.deleteProductHashtagByProduct(product_idx);
         System.out.println("[ProductServiceImpl-delete] 해시태그 연결 삭제 완료");
         
-        // 2. 상품 삭제 (CASCADE 설정으로 product_image도 자동 삭제됨)
+        // 2. 상품 이미지 서버에 업로드된 파일 삭제처리
+        List<ProductVo> imagesNameList=product_dao.selectProductImageListName(product_idx);
+        for(ProductVo image:imagesNameList) {
+        	if(image.getProduct_image_level()==1) {
+        		String saveDirDetail = application.getRealPath("/images/products_list");
+        		
+        		File f = new File(saveDirDetail,image.getProduct_image_url());
+        		if(f.exists()) {
+        		f.delete();
+        		}
+        	}else {
+        		String saveDirDetail = application.getRealPath("/images/products_detail");
+        		File f = new File(saveDirDetail,image.getProduct_image_url());
+        		if(f.exists()) {
+        			f.delete();
+        		}
+        		
+        	}
+        }
+        
+        // 2-1. 상품 삭제 (CASCADE 설정으로 product_image도 자동 삭제됨)
         int res = product_dao.delete(product_idx);
         System.out.printf("[ProductServiceImpl-delete] 삭제 결과: %d\n", res);
         
