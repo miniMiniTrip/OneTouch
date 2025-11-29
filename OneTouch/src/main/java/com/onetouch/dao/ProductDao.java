@@ -21,7 +21,7 @@ public interface ProductDao {
     List<String> selectUpperDetailImages(int product_idx);
     List<String> selectLowerDetailImages(int product_idx);
     String selectMainImage(int product_idx);
-    
+    List<String> selectDetailImages(int product_idx);
     // 단일상품조회
     ProductVo selectOne(int product_idx);
     
@@ -36,6 +36,9 @@ public interface ProductDao {
     
     // 상품 이미지 수정
     int updateProductImage(ProductVo productVo);
+    
+    // 상품 이미지 1레벨 (메인이미지) 조회
+    ProductVo selectProductImageLevel1(int product_idx);
     
     // 상품 파일 삭제를 위한 product idx 기준으로 이름 조회
     List<ProductVo> selectProductImageListName(int product_idx);

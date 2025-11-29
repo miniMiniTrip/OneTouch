@@ -108,21 +108,33 @@ public class ProductServiceImpl implements ProductService {
         System.out.printf("[ProductServiceImpl-update] 받은 productVo: %s\n", productVo);
         
         // 1. product 테이블 업데이트
-        int res = product_dao.update(productVo);
+        int res = 1;
+        		res=res*product_dao.update(productVo);
         System.out.printf("[ProductServiceImpl-update] product 테이블 업데이트 결과: %d\n", res);
         
         // 2. 이미지가 변경된 경우만 product_image 업데이트
         if (productVo.getProduct_image_url() != null && !productVo.getProduct_image_url().isEmpty()) {
             System.out.printf("[ProductServiceImpl-update] 새 이미지 URL: %s\n", productVo.getProduct_image_url());
-            res = product_dao.updateProductImage(productVo);
+            // 기존이미지 이름 가져와서 서버에 파일 지우기
+            ProductVo product_image_level1=product_dao.selectProductImageLevel1(productVo.getProduct_idx());
+            String product_main_image_name=product_image_level1.getProduct_image_url();
+            File f=new File(application.getRealPath("/images/products_list"),product_main_image_name);
+            f.delete();
+            res = res*product_dao.updateProductImage(productVo);
             System.out.printf("[ProductServiceImpl-update] product_image 테이블 업데이트 결과: %d\n", res);
         } else {
             System.out.println("[ProductServiceImpl-update] 이미지 변경 없음");
         }
         // 2-1 서브 이미지 변경
         if(productVo.getPhoto_sub()!=null&&productVo.getPhoto_sub().length>0&&!productVo.getPhoto_sub()[0].isEmpty()) {
+        	// 기존 서브 이미지 삭제전 업로드되어있는 서브 이미지 파일 삭제처리
+        	List<String> before_sub_images_name=product_dao.selectDetailImages(productVo.getProduct_idx());
+        	for(String before_sub_image_name:before_sub_images_name) {
+        		File f=new File(application.getRealPath("/images/products_detail"),before_sub_image_name);
+        		f.delete();
+        	}
         	// 기존 서브 이미지 삭제처리
-        	product_dao.deleteProductSubImages(productVo.getProduct_idx());
+        	res=res*product_dao.deleteProductSubImages(productVo.getProduct_idx());
         	// 서브 이미지 등록
         	String saveDirDetail = application.getRealPath("/images/products_detail");
             String sub_image_name="no_file";
@@ -149,6 +161,12 @@ public class ProductServiceImpl implements ProductService {
         
         // 2-2. 상품 내용 이미지 변경
         if(productVo.getPhoto_content()!=null&&productVo.getPhoto_content().length>0&&!productVo.getPhoto_content()[0].isEmpty()) {
+        	// 기존 상품 내용 이미지 파일 삭제 처리
+        	List<String> before_content_images_name=product_dao.selectLowerDetailImages(productVo.getProduct_idx());
+        	for(String before_sub_image_name:before_content_images_name) {
+        		File f=new File(application.getRealPath("/images/products_detail"),before_sub_image_name);
+        		f.delete();
+        	}
         	// 기존 상품 내용 이미지 삭제
         	product_dao.deleteProductContentImages(productVo.getProduct_idx());
         	String saveDirDetail = application.getRealPath("/images/products_detail");
