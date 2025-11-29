@@ -126,7 +126,7 @@ public class AdminProductController {
     @GetMapping("/product/get")
     @ResponseBody
     public ProductVo getProduct(@RequestParam int product_idx) {
-        System.out.printf("[AdminProductController-getProduct()] product_idx: %d\n", product_idx);
+        System.out.printf("[AdminProductController-getProduct() 수정from ] product_idx: %d\n", product_idx);
         Map<String,Object> map =new HashMap<String,Object>();
         ProductVo vo = product_dao.selectOne(product_idx);
         map.put("vo", vo);

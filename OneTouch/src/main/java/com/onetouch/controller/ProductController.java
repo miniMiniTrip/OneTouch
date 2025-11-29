@@ -1,8 +1,14 @@
 package com.onetouch.controller;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.common.MyConstant;
 import com.onetouch.dao.CategoryDao;
@@ -148,6 +156,97 @@ public class ProductController {
         System.out.printf("\n");
         return "product/product_detail";
    }
+    
+    @ResponseBody
+    @RequestMapping("/product/updateDetailImage")
+    public Map<String, Object> updateDetailImage(
+            @RequestParam("product_idx") int productIdx,
+            @RequestParam("old_image_filename") String oldImageFilename,
+            @RequestParam(value = "newMainImage", required = false) MultipartFile newMainImage,
+            @RequestParam(value = "newSubImages", required = false) List<MultipartFile> newSubImages
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // =========================
+            // 1️ 메인 이미지 처리
+            // =========================
+            if (newMainImage != null && !newMainImage.isEmpty()) {
+                // 기존 메인 이미지 삭제
+                if (oldImageFilename != null && !oldImageFilename.isEmpty()) {
+                    String realPath = application.getRealPath("/images/products_list");
+                    Path oldFilePath = Paths.get(realPath, oldImageFilename);
+                    Files.deleteIfExists(oldFilePath);
+                }
+
+                // 새 메인 이미지 저장
+                String originName = newMainImage.getOriginalFilename();
+                String ext = originName.substring(originName.lastIndexOf("."));
+                String savedName = UUID.randomUUID().toString() + ext;
+
+                String realPath = application.getRealPath("/images/products_list");
+                File dir = new File(realPath);
+                if (!dir.exists()) dir.mkdirs();
+
+                newMainImage.transferTo(new File(realPath, savedName));
+
+                // DB 업데이트 (메인 이미지 컬럼)
+                ProductVo vo = new ProductVo();
+                vo.setProduct_idx(productIdx);
+                vo.setProduct_image_url(savedName);
+
+                product_dao.updateProductImage(vo);
+                result.put("mainImageUpdated", true);
+                result.put("newMainFilename", savedName);
+            }
+
+            // =========================
+            // 2️ 서브 이미지 처리
+            // =========================
+            if (newSubImages != null && !newSubImages.isEmpty()) {
+                String subImagePath = application.getRealPath("/images/products_detail");
+                File subDir = new File(subImagePath);
+                if (!subDir.exists()) subDir.mkdirs();
+                
+            	// 기존 서브 이미지 삭제전 업로드되어있는 서브 이미지 파일 삭제처리
+            	List<String> before_sub_images_name=product_dao.selectDetailImages(productIdx);
+            	for(String before_sub_image_name:before_sub_images_name) {
+            		File f=new File(application.getRealPath("/images/products_detail"),before_sub_image_name);
+            		f.delete();
+            	}
+            	// 기존 서브 이미지 삭제처리
+            	int res=product_dao.deleteProductSubImages(productIdx);
+            	int level=2;
+                ProductVo savedSubFiles = new ProductVo();
+                savedSubFiles.setProduct_idx(productIdx);
+                for (MultipartFile subFile : newSubImages) {
+                    if (!subFile.isEmpty()) {
+                        String originName = subFile.getOriginalFilename();
+                        String ext = originName.substring(originName.lastIndexOf("."));
+                        String savedName = UUID.randomUUID().toString() + ext;
+
+                        subFile.transferTo(new File(subDir, savedName));
+                        savedSubFiles.setProduct_image_url(savedName);
+                        savedSubFiles.setProduct_image_level(level); // 1은 메인 2 3 4 5 는 서브 
+                		res=res*product_dao.insertProductImage(savedSubFiles);
+                		
+                		level=level+1;
+
+                    }
+                }
+                result.put("subImagesUpdated", true);
+                result.put("newSubFilenames", savedSubFiles);
+            }
+
+            result.put("success", true);
+            result.put("message", "이미지가 성공적으로 교체되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+            result.put("message", "이미지 교체 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return result;
+    }
     
     
 }//end

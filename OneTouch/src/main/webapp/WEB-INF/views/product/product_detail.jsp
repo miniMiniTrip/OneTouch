@@ -1338,6 +1338,7 @@ background
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp"%>
 
+
 	<div class="main-container">
 		<!-- 브레드크럼 -->
 		<div class="breadcrumb">
@@ -1351,14 +1352,27 @@ background
 				<!-- 이미지 영역 수정 -->
 				<div class="product-image">
 					<c:if test="${not empty product.product_image_url}">
+					<div class="image-item">
 						<div class="main-image" id="mainImage"
 							style="background-image: url('/images/products_list/${product.product_image_url}');">
+													<c:if test="${sessionScope.user.mem_roll == 'admin'}">
+							
+							<div class="image-actions">
+								<button
+									onclick="updateProductImageByIdx('${product.product_image_url}')">수정</button>
+
+								<button
+									onclick="deleteProductImageByIdx(`${lowerdetailImages}`)">삭제</button>
+							</div>
+						</c:if>
 						</div>
+							
+					</div>
 						<div class="thumbnail-images">
 							<!-- 첫 번째 썸네일은 메인 이미지와 동일하게 -->
 							<div class="thumbnail active"
 								style="background-image: url('/images/products_list/${product.product_image_url}'); background-size: cover;"
-								data-image="/images/${product.product_image_url}">2</div>
+								data-image="/images/${product.product_image_url}"></div>
 
 							<!-- 나머지 상세 이미지들 -->
 							<c:forEach var="detailSubImage" items="${subImages}">
@@ -1483,24 +1497,7 @@ background
 				</div>
 			</c:if>
 
-			<!-- 상품 상세 이미지 출력 -->
-			<div class="product-detail-images">
-				<!-- 메인 이미지 -->
-				<c:if test="${not empty product.product_image_url}">
-					<div class="image-item">
-						<img src="/images/${product.product_image_url}" alt="메인 상품 이미지" />
-						<c:if test="${sessionScope.user.mem_roll == 'admin'}">
-							<div class="image-actions">
-								<button
-									onclick="updateProductImageByIdx(` ${lowerdetailImages} `)">수정</button>
 
-								<button
-									onclick="deleteProductImageByIdx(`${lowerdetailImages}`)">삭제</button>
-							</div>
-						</c:if>
-					</div>
-				</c:if>
-			</div>
 
 
 
@@ -1848,6 +1845,130 @@ background
         </table>
     </div>
 </div>
+
+
+<!-- ================= 	모달	=================== -->
+<script type="text/javascript">
+function updateProductImageByIdx(imageFilename) {
+    let subImages = [
+        <c:forEach var="img" items="${subImages}">
+            "${img}",
+        </c:forEach>
+    ];
+    let subImageHtml = "";
+    for (let subImage of subImages) {
+        subImageHtml += `
+        <img src="${pageContext.request.contextPath}/images/products_detail/\${subImage}"
+            style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+            alt="서브 이미지">
+        <p style="margin-top: 12px; font-size:14px; color:#666;">
+            <strong>서브 이미지:</strong>\${subImage}<br>
+        </p>`;
+    }
+
+    Swal.fire({
+        title: '상세 이미지 수정',
+        html: `
+            <div style="text-align: center; padding: 20px;">
+                <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 12px;">
+                    <img src="${pageContext.request.contextPath}/images/products_list/\${imageFilename}"
+                         style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+                         alt="메인 이미지">
+                    <p style="margin-top: 12px; font-size:14px; color:#666;">
+                        <strong>메인 이미지:</strong>\${imageFilename}<br>
+                    </p>
+                </div>
+                <input type="file" id="mainNewImage" accept="image/*"
+                       style="display: block; margin: 15px auto; padding: 10px; border: 2px dashed #1e3c72; border-radius: 8px; width: 100%; max-width: 400px;">
+                <p style="color: #e74c3c; font-size: 13px; margin-top: 8px;">
+                    ※ 메인 이미지를 선택하면 기존 이미지가 교체됩니다.
+                </p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 12px;">
+                    \${subImageHtml}
+                </div>
+                <input type="file" id="subNewImage" accept="image/*"
+                       style="display: block; margin: 15px auto; padding: 10px; border: 2px dashed #1e3c72; border-radius: 8px; width: 100%; max-width: 400px;" multiple>
+                <p style="color: #e74c3c; font-size: 13px; margin-top: 8px;">
+                    ※ 서브 이미지를 선택하면 기존 이미지가 교체됩니다.
+                </p>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: '이미지 교체하기',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#1e3c72',
+        cancelButtonColor: '#95a5a6',
+        width: '600px',
+        padding: '20px',
+        backdrop: 'rgba(0,0,0,0.7)',
+        preConfirm: () => {
+            const fileMainInput = document.getElementById('mainNewImage');
+            const fileSubInput = document.getElementById('subNewImage');
+
+            if ((!fileMainInput.files || fileMainInput.files.length === 0) &&
+                (!fileSubInput.files || fileSubInput.files.length === 0)) {
+                Swal.showValidationMessage('적어도 하나의 이미지를 선택해야 합니다!');
+                return false;
+            }
+
+            const formData = new FormData();
+
+            // 메인 이미지가 선택되었으면 append
+            if (fileMainInput.files && fileMainInput.files.length > 0) {
+                formData.append('newMainImage', fileMainInput.files[0]);
+            }
+
+            // 서브 이미지가 선택되었으면 append (여러개 가능)
+            if (fileSubInput.files && fileSubInput.files.length > 0) {
+                for (let i = 0; i < fileSubInput.files.length; i++) {
+                    formData.append('newSubImages', fileSubInput.files[i]);
+                }
+            }
+
+            return formData;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = result.value;
+            formData.append('product_idx', '${product.product_idx}');
+            formData.append('old_image_filename', imageFilename);
+
+            Swal.fire({
+                title: '업로드 중...',
+                text: '이미지를 교체하고 있습니다',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            $.ajax({
+                url: '/product/updateDetailImage',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '교체되었습니다!',
+                            timer: 1800,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire('실패', data.message || '이미지 교체에 실패했습니다.', 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('오류', '서버와 연결이 불안정합니다.', 'error');
+                }
+            });
+        }
+    });
+}
+</script>
+<!-- ================= 	//모달	=================== -->
 
 	<script>
         // 수량 변경
