@@ -127,8 +127,10 @@ public class AdminProductController {
     @ResponseBody
     public ProductVo getProduct(@RequestParam int product_idx) {
         System.out.printf("[AdminProductController-getProduct()] product_idx: %d\n", product_idx);
-        
+        Map<String,Object> map =new HashMap<String,Object>();
         ProductVo vo = product_dao.selectOne(product_idx);
+        map.put("vo", vo);
+        
         System.out.printf("[AdminProductController-getProduct()] 조회된 상품: %s\n", vo);
         
         return vo;
@@ -256,9 +258,9 @@ public class AdminProductController {
         
         System.out.printf("update] 받은 vo: %s\n", vo);
         System.out.printf("update] 받은 해시태그 idx 목록: %s\n", hashtag_idx_list);
-        
+        //이미지 수정 처리
         if (photo != null && !photo.isEmpty()) {
-            String uploadPath = application.getRealPath("/images/");
+            String uploadPath = application.getRealPath("/images/products_list");
             String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
             
             System.out.printf("update] 새 파일명: %s\n", fileName);

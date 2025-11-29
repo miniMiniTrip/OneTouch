@@ -43,8 +43,7 @@ public class ProductServiceImpl implements ProductService {
         
         // 2-1.product_image 테이블에 레벨에 2부터 양수로 서브이미지 등록 
         String saveDirDetail = application.getRealPath("/images/products_detail");
-        String product_sub_image_url="no_file";
-        String sub_image_name="";
+        String sub_image_name="no_file";
         int level=2;
         if(productVo.getPhoto_sub()!=null) {
         	for(MultipartFile sub_image : productVo.getPhoto_sub()) {
@@ -65,9 +64,25 @@ public class ProductServiceImpl implements ProductService {
         	}
         }
         // 2-2. product_image 테이블에 레벨에 음수로 내용이미지 등록
-//        if(productVo.) {
-//        	
-//        }
+        
+        String content_image_name ="";
+        level=-1;
+        if(productVo.getPhoto_content()!=null) {
+        	for(MultipartFile content_image:productVo.getPhoto_content()) {
+        		content_image_name=content_image.getOriginalFilename();
+        		File f =new File(saveDirDetail,content_image_name);
+        		if(f.exists()){
+        			long tm = System.currentTimeMillis();
+        			content_image_name=String.format("%d_%s",tm,content_image_name);
+        			f=new File(saveDirDetail,content_image_name);
+        		}
+        		content_image.transferTo(f);
+        		productVo.setProduct_image_url(content_image_name);
+        		productVo.setProduct_image_level(level);
+        		res=res*product_dao.insertProductImage(productVo);
+        		level=level-1;
+        	}
+        }
         
         
         // 3. 해시태그 처리
@@ -90,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
     
     @Override
     @Transactional
-    public int update(ProductVo productVo) {
+    public int update(ProductVo productVo) throws Exception {
         System.out.printf("[ProductServiceImpl-update] 받은 productVo: %s\n", productVo);
         
         // 1. product 테이블 업데이트
@@ -104,6 +119,58 @@ public class ProductServiceImpl implements ProductService {
             System.out.printf("[ProductServiceImpl-update] product_image 테이블 업데이트 결과: %d\n", res);
         } else {
             System.out.println("[ProductServiceImpl-update] 이미지 변경 없음");
+        }
+        // 2-1 서브 이미지 변경
+        if(productVo.getPhoto_sub()!=null&&productVo.getPhoto_sub().length>0&&!productVo.getPhoto_sub()[0].isEmpty()) {
+        	// 기존 서브 이미지 삭제처리
+        	product_dao.deleteProductSubImages(productVo.getProduct_idx());
+        	// 서브 이미지 등록
+        	String saveDirDetail = application.getRealPath("/images/products_detail");
+            String sub_image_name="no_file";
+            int level=2;
+            if(productVo.getPhoto_sub()!=null) {
+            	for(MultipartFile sub_image : productVo.getPhoto_sub()) {
+            		sub_image_name=sub_image.getOriginalFilename();
+            		File f=new File(saveDirDetail,sub_image_name);
+            		if(f.exists()){
+            			long tm =System.currentTimeMillis();
+            			sub_image_name=String.format("%d_%s",tm,sub_image_name);
+            			f = new File(saveDirDetail,sub_image_name);
+            		}
+            		
+            		sub_image.transferTo(f);
+            		productVo.setProduct_image_url(sub_image_name);
+            		productVo.setProduct_image_level(level); // 1은 메인 2 3 4 5 는 서브 
+            		res=res*product_dao.insertProductImage(productVo);
+            		
+            		level=level+1;
+            	}
+            }
+        }
+        
+        // 2-2. 상품 내용 이미지 변경
+        if(productVo.getPhoto_content()!=null&&productVo.getPhoto_content().length>0&&!productVo.getPhoto_content()[0].isEmpty()) {
+        	// 기존 상품 내용 이미지 삭제
+        	product_dao.deleteProductContentImages(productVo.getProduct_idx());
+        	String saveDirDetail = application.getRealPath("/images/products_detail");
+            String content_image_name ="no_file";
+            int level=-1;
+            if(productVo.getPhoto_content()!=null) {
+            	for(MultipartFile content_image:productVo.getPhoto_content()) {
+            		content_image_name=content_image.getOriginalFilename();
+            		File f =new File(saveDirDetail,content_image_name);
+            		if(f.exists()){
+            			long tm = System.currentTimeMillis();
+            			content_image_name=String.format("%d_%s",tm,content_image_name);
+            			f=new File(saveDirDetail,content_image_name);
+            		}
+            		content_image.transferTo(f);
+            		productVo.setProduct_image_url(content_image_name);
+            		productVo.setProduct_image_level(level);
+            		res=res*product_dao.insertProductImage(productVo);
+            		level=level-1;
+            	}
+            }
         }
         
         // 3. 해시태그 처리 (기존 연결 삭제 후 새로 등록)

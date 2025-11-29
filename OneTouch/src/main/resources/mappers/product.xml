@@ -276,6 +276,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE product_idx = #{product_idx}
         AND product_image_level = 1
     </update>
+    
+    <!-- 상품 서브 이미지 삭제 -->
+	<delete id="deleteProductSubImages">
+		DELETE FROM product_image
+		WHERE product_idx=#{product_idx} AND product_image_level >1;
+	</delete>
+    <!-- 상품 내용 이미지 삭제 -->
+	<delete id="deleteProductContentImages">
+		DELETE FROM product_image
+		WHERE product_idx=#{product_idx} AND 0 > product_image_level;
+	</delete>
 
     <!-- 상품 삭제 -->
     <delete id="delete" parameterType="int">
