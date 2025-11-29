@@ -352,7 +352,7 @@
                         <div class="single-product">
                             <div class="product-image">
                                 <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" 
-                                     alt="${product.product_name}">
+                                     alt="${product.product_name}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'">
                                 <img src="" 
                                      alt="">
                                 <span class="new-tag">NEW</span>
@@ -366,7 +366,7 @@
                             <div class="product-info">
                                 <span class="category">${product.category_name}</span>
                                 <h4 class="title">
-                                    <a href="${pageContext.request.contextPath}/product/detail/${product.product_idx}">
+                                    <a href="${pageContext.request.contextPath}/product/detail?id=${product.product_idx}">
                                         ${product.product_name}
                                     </a>
                                 </h4>
