@@ -208,7 +208,7 @@ body {
 	width: 100%;
 	height: 400px;
 	background-image:
-		url('${pageContext.request.contextPath}/images/${product.product_image_url}');
+		url('${pageContext.request.contextPath}/images/products_list/${product.product_image_url}');
 	background-size: contain; /* cover에서 contain으로 변경 - 이미지 짤림 방지 */
 	background-repeat: no-repeat;
 	background-position: center;
@@ -1352,19 +1352,18 @@ background
 				<div class="product-image">
 					<c:if test="${not empty product.product_image_url}">
 						<div class="main-image" id="mainImage"
-							style="background-image: url('/images/${product.product_image_url}');">
+							style="background-image: url('/images/products_list/${product.product_image_url}');">
 						</div>
 						<div class="thumbnail-images">
 							<!-- 첫 번째 썸네일은 메인 이미지와 동일하게 -->
 							<div class="thumbnail active"
-								style="background-image: url('/images/${product.product_image_url}'); background-size: cover;"
-								data-image="/images/${product.product_image_url}"></div>
+								style="background-image: url('/images/products_list/${product.product_image_url}'); background-size: cover;"
+								data-image="/images/${product.product_image_url}">2</div>
 
 							<!-- 나머지 상세 이미지들 -->
-							<c:forEach var="detailImage" items="${upperdetailImages}">
-								<div class="thumbnail"
-									style="background-image: url('/images/${detailImage}'); background-size: cover;"
-									data-image="/images/${detailImage}"></div>
+							<c:forEach var="detailSubImage" items="${subImages}">
+								<div class="thumbnail" style="background-image: url('/images/products_detail/${detailSubImage}'); background-size: cover;"
+									data-image="/images/products_detail/${detailSubImage}"></div>
 							</c:forEach>
 						</div>
 					</c:if>

@@ -117,7 +117,7 @@ public class ProductController {
     @GetMapping("/product/detail")
     public String productDetail(@RequestParam("id") int product_idx, Model model) {
     	System.out.printf("\n");
-        System.out.printf("=== [ProductController] 상품 상세 조회: %d ===\n", product_idx);
+        System.out.printf("=== [ProductController] productDetail() 상품 상세 조회: %d ===\n", product_idx);
 
         ProductVo product = product_dao.selectOne(product_idx);
         //이미지 강제로 조회
@@ -127,11 +127,11 @@ public class ProductController {
         product.setProduct_image_url(imageUrl);
         
         System.out.println("강제 설정한 이미지: " + imageUrl);
-        System.out.println("조회된 상품: " + product.getProduct_name());
+        System.out.println("조회된 상품명: " + product.getProduct_name());
         System.out.println("이미지 URL: " + product.getProduct_image_url());
         
         List<String> lowerdetailImages = product_dao.selectLowerDetailImages(product_idx);
-        List<String> upperdetailImages = product_dao.selectUpperDetailImages(product_idx);
+        List<String> subImages = product_dao.selectUpperDetailImages(product_idx);
         System.out.println("디테일 이미지 개수: " + lowerdetailImages.size());
 	
         for(String detail : lowerdetailImages) {
@@ -139,10 +139,10 @@ public class ProductController {
         }
 	
         System.out.printf("상세페이지 이미지 => %s\n",lowerdetailImages);
-        System.out.printf("상세페이지 이미지 => %s\n",upperdetailImages);
+        System.out.printf("서브 이미지 => %s\n",subImages);
         System.out.printf("상세페이지 product => %s\n",product);
         model.addAttribute("product", product);
-        model.addAttribute("upperdetailImages", upperdetailImages); 
+        model.addAttribute("subImages", subImages); 
         model.addAttribute("lowerdetailImages", lowerdetailImages); 
         System.out.printf("=== [ProductController] return : product/product_detail.jsp  ===\n");
         System.out.printf("\n");
