@@ -1755,7 +1755,8 @@ document.addEventListener('click', function(e) {
                  for(let hashtag of postVo.hashtagList){
              html=html+`
                  <div class="product-hashtags" style="margin: 10px 0;">
-                 	<a href="" class="hashtag-badge">#\${hashtag.hashtag_name}</a>
+                 <a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}" 
+                     class="badge bg-info">#${hashtag.hashtag_name}</a>
                  </div>
                  `
                  }
