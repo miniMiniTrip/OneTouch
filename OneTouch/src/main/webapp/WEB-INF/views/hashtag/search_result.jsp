@@ -713,7 +713,14 @@
 										</span>
 										<span class="post-meta-item">
 											<i class="lni lni-calendar"></i> 
-											<fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd" />
+											<c:choose>
+												<c:when test="${post.post_time != null}">
+													${fn:substring(post.post_time, 0, 10)}
+												</c:when>
+												<c:otherwise>
+													-
+												</c:otherwise>
+											</c:choose>
 										</span>
 									</div>
 								</li>
@@ -905,3 +912,6 @@ function buyNow(product_idx) {
 </script>
 
 <%@include file="/WEB-INF/views/common/footer.jsp"%>
+
+</body>
+</html>
