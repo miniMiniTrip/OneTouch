@@ -229,6 +229,10 @@
             <div class="mypage-menu-item">
                 <a href="${pageContext.request.contextPath}/mypage/qna_list">💬 상품 Q&A</a>
             </div>
+            
+            <div class="mypage-menu-item">
+                <a href="${pageContext.request.contextPath}/post/mypost_list">💬 내 커뮤니티</a>
+            </div>
         </div>
         
         <!-- 회원 정보 -->
@@ -252,15 +256,22 @@
 // ========================= 현재 페이지 활성화 표시 =========================
 document.addEventListener("DOMContentLoaded", function () {
     const items = document.querySelectorAll(".mypage-menu-item");
-    const current = window.location.pathname + window.location.search;
+    const currentPath = window.location.pathname;
 
     items.forEach(item => {
         const linkTag = item.querySelector("a");
-        
-        if (linkTag) {
-            const targetUrl = linkTag.getAttribute("href");
-            
-            if (targetUrl && (current === targetUrl || current.includes(targetUrl))) {
+        if (!linkTag) return;
+
+        const targetUrl = linkTag.getAttribute("href");
+
+        // exact match 또는 일부 포함 match
+        if (targetUrl) {
+            // 예: /user/check_password 또는 /user/user_modify 모두 회원정보 수정 메뉴로 처리
+            if (currentPath.startsWith("/user/") && targetUrl.includes("check_password")) {
+                item.classList.add("active");
+            }
+            // 나머지 메뉴는 기존 방식
+            else if (currentPath === targetUrl || currentPath.includes(targetUrl)) {
                 item.classList.add("active");
             }
         }
