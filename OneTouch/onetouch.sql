@@ -325,7 +325,7 @@ CREATE TABLE post (
     post_image VARCHAR(200) COMMENT '이미지',
     post_like INT NOT NULL DEFAULT 0 COMMENT '좋아요수',
     post_comment_count INT NOT NULL DEFAULT 0 COMMENT '댓글수',
-    order_id INT COMMENT '주문FK(리뷰)',
+    order_item_id INT COMMENT '',
     post_review BOOLEAN NOT NULL DEFAULT FALSE COMMENT '리뷰여부',
     post_rating INT COMMENT '별점',
     post_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', -- 0 정상, 1 유저 삭제, 2 관리자 삭제
@@ -352,6 +352,12 @@ CHANGE COLUMN `post_category` `post_category` VARCHAR(100) NOT NULL AFTER `mem_i
 -- post_title컬럼 위치 변경하는 sql
 ALTER TABLE post 
 CHANGE COLUMN `post_title` `post_title` VARCHAR(200) NOT NULL AFTER `post_category`;
+-- post order_id 외래키 제거
+ALTER TABLE post DROP FOREIGN KEY post_ibfk_2;
+-- post order_id 컬럼 => order_item_id 로 변경 
+ALTER TABLE `otdb`.`post` 
+CHANGE COLUMN `order_id` `order_item_id` INT NULL DEFAULT NULL ;
+
 
 -- CREATE INDEX idx_post_member ON post(mem_idx);
 -- CREATE INDEX idx_post_time ON post(post_time DESC);
