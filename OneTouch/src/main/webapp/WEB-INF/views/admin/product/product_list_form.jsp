@@ -1591,7 +1591,7 @@ function changePage(page) {
                     if (vo.product_image_url) {
                         document.getElementById("currentImageDiv").style.display = "block";
                         document.getElementById("currentImage").src = 
-                            "${pageContext.request.contextPath}/images/" + vo.product_image_url;
+                            "${pageContext.request.contextPath}/images/products_list/" + vo.product_image_url;
                     }
                     
                     // 해시태그 초기화 및 설정
