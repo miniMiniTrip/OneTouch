@@ -334,6 +334,12 @@ public class OrderController {
 			
 		List<OrderVo> order_list = order_dao.selectList(mem_idx);
 		
+		// 각 주문의 order_items 조회 (리뷰 작성용)
+		for(OrderVo order : order_list) {
+			List<OrderItemVo> items = order_item_dao.selectListByOrderId(order.getOrder_id());
+			order.setOrder_items(items);
+		}
+		
 		model.addAttribute("order_list",order_list);
 		
 		return "order/order_list";

@@ -266,15 +266,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- order 테이블과 order_item -->
 	<select id="selectReviewOrderOne" parameterType="map" resultType="ReviewVo">
-		SELECT 
-		o.order_id
-		,o.mem_idx
-		,oi.order_item_id
-		,oi.product_idx
-		,oi.product_name
-		FROM otdb.order as o
-		JOIN order_item as oi WHERE o.order_id=oi.order_id and mem_idx = #{mem_idx} and product_idx = #{product_idx}
+	    SELECT 
+	        o.order_id, o.mem_idx, oi.order_item_id, oi.product_idx, oi.product_name
+	    FROM otdb.order as o
+	    JOIN order_item as oi 
+	    WHERE o.order_id=oi.order_id 
+	    and o.mem_idx = #{mem_idx} 
+	    and oi.product_idx = #{product_idx}
+	    <if test="order_item_id != null and order_item_id > 0">
+	    and oi.order_item_id = #{order_item_id}
+	    </if>
+	    LIMIT 1
 	</select>
+	<!-- sw: order_item_id로 해당 아이템만 조회하도록 함
+			 limit 1은 한번만 작성할 수 있게 처리하는 장치 -->
+	
 	
 	<select id="selectByIds" parameterType="list" resultMap="PostResultMap">
 	    SELECT 
@@ -294,4 +300,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    ORDER BY p.post_idx DESC
 	</select>
 	
+	<select id="selectPostOrderItemOne" resultType="PostVo">
+		SELECT * FROM otdb.post
+		WHERE order_item_id=#{order_item_id};
+	</select>
 </mapper>

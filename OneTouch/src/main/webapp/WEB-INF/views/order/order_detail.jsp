@@ -732,10 +732,10 @@
                             
                             <c:forEach var="item" items="${orderItems}">
                                 <div class="product-item">
-                                    <div class="product-image ${empty item.product_image ? 'no-image' : ''}">
+                                    <div class="product-image ${empty item.product_image_url ? 'no-image' : ''}">
                                         <c:choose>
-                                            <c:when test="${not empty item.product_image}">
-                                                <img src="${pageContext.request.contextPath}${item.product_image}" 
+                                            <c:when test="${not empty item.product_image_url}">
+                                                <img src="${pageContext.request.contextPath}/images/products_list/${item.product_image_url}" 
                                                      alt="${item.product_name}">
                                             </c:when>
                                             <c:otherwise>
@@ -750,7 +750,6 @@
                                             </a>
                                         </div>
                                         <div class="product-detail">
-                                            브랜드: ${item.product_brand}<br>
                                             수량: ${item.product_cnt}개
                                         </div>
                                     </div>
@@ -854,12 +853,12 @@
 					        </c:when>
 					        
 					        <c:when test="${order.order_status == '배송완료'}">
-					            <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" 
-					               class="btn-primary-custom">
-					                리뷰작성
-					            </a>
+					            <c:if test="${not empty orderItems and orderItems.size() > 0}">
+					                <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${orderItems[0].product_idx}&order_item_id=${orderItems[0].order_item_id}" 
+					                   class="btn-primary-custom">리뷰작성</a>
+					            </c:if>
 					        </c:when>
-					        
+					                                                
 					        <c:when test="${order.order_status == '환불'}">
 					            <div class="alert alert-info">
 					                <i class="lni lni-information"></i> 

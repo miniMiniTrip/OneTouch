@@ -718,9 +718,11 @@
                                                     <button class="btn btn-outline-danger" onclick="cancelOrder(${order.order_id})">주문취소</button>
                                                 </c:when>
                                                 <c:when test="${order.order_status == '배송완료'}">
-                                                    <a href="${pageContext.request.contextPath}/review/write.do?order_id=${order.order_id}" 
-                                                       class="btn btn-primary">리뷰작성</a>
-                                                </c:when>
+												    <c:if test="${not empty order.order_items and order.order_items.size() > 0}">
+												        <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${order.order_items[0].product_idx}&order_item_id=${order.order_items[0].order_item_id}" 
+												           class="btn btn-primary">리뷰작성</a>
+												    </c:if>
+												</c:when>
                                                 <c:when test="${order.order_status == '배송중' and not empty order.order_tracking}">
                                                     <button class="btn btn-outline-primary" 
                                                             onclick="trackShipping('${order.order_courier}', '${order.order_tracking}')">

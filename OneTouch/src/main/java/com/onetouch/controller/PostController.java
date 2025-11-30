@@ -143,7 +143,7 @@ public class PostController {
 	
 	//post 등록 폼
 	@GetMapping("/post/insert")
-	public String postInsertForm(Model model,@RequestParam(defaultValue = "skin") String category,@RequestParam(defaultValue = "0") int product_idx) {
+	public String postInsertForm(Model model,@RequestParam(defaultValue = "skin") String category,@RequestParam(defaultValue = "0") int product_idx,@RequestParam(defaultValue = "0") int order_item_id) {
 		System.out.println("	[PostController] postInsertForm() ");
 		System.out.println("	리뷰 => " +category);
 		System.out.println("	상품 idx => " +product_idx);
@@ -158,13 +158,24 @@ public class PostController {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("mem_idx", mem_idx);
 			map.put("product_idx", product_idx);
-			ReviewVo reviewOrderVo=postDao.selectReviewOrderOne(map);
+			map.put("order_item_id", order_item_id);
+			ReviewVo reviewOrderVo=postDao.selectReviewOrderOne(map); // 주문 정보 가져오기
 			System.out.printf("		reviewOrderVo => %s\n",reviewOrderVo);
+			// 주문 내역이 있는지 체크
 			if(reviewOrderVo==null) {
+				System.out.printf("주문 내역이 없음 체크\n");
 				return"redirect:/product/detail?id="+product_idx+"&msg=not_order";
 			}
-			
-			model.addAttribute("reviewOrderVo", reviewOrderVo);
+			// post 에도 있는지 체크
+			PostVo postOrderItemIdCheck=postDao.selectPostOrderItemOne(reviewOrderVo.getOrder_item_id());
+			if(postOrderItemIdCheck!=null) {
+				System.out.printf("		post에 내역 있음 => %s\n",postOrderItemIdCheck);
+				return "redirect:/product/detail?id="+product_idx+"&msg=use_post_review";
+				
+			}else {
+				System.out.printf("		post에 내역 없음\n");
+				model.addAttribute("reviewOrderVo", reviewOrderVo);
+			}
 		}
 		
 		

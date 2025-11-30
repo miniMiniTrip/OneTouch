@@ -1,6 +1,7 @@
 package com.onetouch.vo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -25,4 +26,6 @@ public class OrderVo {
 	
 	String order_tracking;
 	String order_courier;
+	
+	List<OrderItemVo> order_items;
 }
