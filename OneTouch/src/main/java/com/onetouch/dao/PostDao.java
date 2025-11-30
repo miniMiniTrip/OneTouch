@@ -10,6 +10,7 @@ import com.onetouch.vo.PostPageVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
+import com.onetouch.vo.ReviewVo;
 
 @Mapper
 public interface PostDao {
@@ -51,5 +52,10 @@ public interface PostDao {
 
 	List<PostPageVo> selectPostIdxList(Map<String, Object> map);
 
+	
+	// 리뷰를 쓰기위해서 주문을 했는지 안했는지를 위해 1개 조회해오기
+	ReviewVo selectReviewOrderOne(Map<String, Object> map);
+	
+	List<PostVo> selectByIds(List<Integer> post_idx);
 
 }
