@@ -93,15 +93,13 @@ public class HashtagController {
 		model.addAttribute("search_type","hashtag");
 		
     	return "hashtag/search_result";
-   }
+	}
     
-
     // 단일 해시태그로 게시글 검색 (클릭) not yet
     public List<Integer> searchPostsByHashtag(int hashtag_idx) {
         return hashtag_dao.selectPostByHashtag(hashtag_idx);
     }
     
-
     // 여러 해시태그로 상품 추천 (문진) //test OK
 
     public List<Integer> recommendProductsByHashtags(
@@ -118,10 +116,6 @@ public class HashtagController {
         
         return hashtag_dao.selectProductsByHashtags(params);
     }
-    
-
-    
-    
     
     //여러 해시태그로 게시글 추천 (문진) not yet
 

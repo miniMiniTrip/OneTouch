@@ -492,12 +492,13 @@ body {
 				                        <c:choose>
 				                            <c:when test="${not empty item.product_image_url}">
 				                                <div class="product-image">
-				                                    <img src="${pageContext.request.contextPath}/images/${item.product_image_url}" 
-				                                         alt="${item.product_name}">
+				                                    <img src="${pageContext.request.contextPath}/images/products_list/${item.product_image_url}" 
+				                                         alt="${item.product_name}"
+				                                         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/images/default.png'; this.style.opacity='0.5';">
 				                                </div>
 				                            </c:when>
 				                            <c:otherwise>
-				                                <div class="product-image no-image">상품</div>
+				                                <div class="product-image">상품</div>
 				                            </c:otherwise>
 				                        </c:choose>
 				                        <div class="product-info">
@@ -520,8 +521,9 @@ body {
 			                            <c:choose>
 			                                <c:when test="${not empty cart.product_image_url}">
 			                                    <div class="product-image">
-			                                        <img src="${pageContext.request.contextPath}/images/${cart.product_image_url}" 
-			                                             alt="${cart.product_name}">
+			                                        <img src="${pageContext.request.contextPath}/images/products_list/${cart.product_image_url}" 
+			                                             alt="${cart.product_name}"
+			                                             onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/images/default.png'; this.style.opacity='0.5';">
 			                                    </div>
 			                                </c:when>
 			                                <c:otherwise>
@@ -549,7 +551,8 @@ body {
 			                            <c:when test="${not empty product.product_image_url}">
 			                                <div class="product-image">
 			                                    <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" 
-			                                         alt="${product.product_name}">
+			                                         alt="${product.product_name}"
+			                                         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/images/default.png'; this.style.opacity='0.5';">
 			                                </div>
 			                            </c:when>
 			                            <c:otherwise>
@@ -707,27 +710,6 @@ body {
             <aside class="order-summary">
                 <h3 class="section-title2">주문 요약</h3>
                 
-                <div class="summary-item">
-                    <span>상품 금액</span>
-                    <span id="productTotal"><fmt:formatNumber value="${total_amount}" pattern="#,###"/>원</span>
-                </div>
-                <div class="summary-item">
-                    <span>배송비</span>
-                    <span id="deliveryFee">
-                        <c:choose>
-                            <c:when test="${total_amount >= 50000}">무료</c:when>
-                            <c:otherwise>3,000원</c:otherwise>
-                        </c:choose>
-                    </span>
-                </div>
-                <c:if test="${total_amount < 50000}">
-                    <div class="delivery-message">
-                        <fmt:formatNumber value="${50000 - total_amount}" pattern="#,###"/>원 더 구매하시면 무료배송!
-                    </div>
-                </c:if>
-
-                <div class="summary-divider"></div>
-
                 <div class="summary-total">
                     <span>총 결제금액</span>
                     <span class="amount" id="totalAmount">
