@@ -15,12 +15,14 @@ public interface MemService {
 	/**아이디와 이메일로 memVo가져오기*/
 	MemVo findUserForPwReset(String mem_id, String mem_email);
 
-	
+	int userUpdate(MemVo memVo) throws Exception;
 	
 	// 관리자 회원관리 부분
 		List<MemVo> getMemberList(Map<String, Object> params);
 		int getMemberCount(Map<String, Object> params);  // 추가
 		int updateMemberRoll(Map<String, Object> params);  // 추가
+
+		int userDelete();
 	}
 	
 	

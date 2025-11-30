@@ -76,6 +76,48 @@ public class MemServiceImpl implements MemService {
 		return res;
 	}
 	
+	//회원 정보 수정처리
+	 @Transactional(rollbackFor = Exception.class)
+	 @Override
+	public int userUpdate(MemVo memVo) throws Exception {
+		String absPath=application.getRealPath("/images/mem/");
+		String mem_image_url="";
+		String OriginImageName=memVo.getMem_image_url();
+		if(memVo.getMem_image()!=null&&!memVo.getMem_image().isEmpty()) {
+			mem_image_url=memVo.getMem_image().getOriginalFilename();
+			File f = new File(absPath,mem_image_url);
+			if(f.exists()) {
+				long tm =System.currentTimeMillis();
+				mem_image_url=String.format("%d_%s",tm,mem_image_url);
+				f = new File(absPath,mem_image_url);
+			}
+			try {
+				memVo.getMem_image().transferTo(f);
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+			memVo.setMem_image_url(mem_image_url);
+		}
+		int res=memDao.updateMem(memVo);
+		if(res==0) {
+			throw new Exception();
+		}
+		if(memVo.getMem_image()!=null&&!memVo.getMem_image().isEmpty()) {
+			System.out.println("		기존 이미지 파일 삭제");
+		File ff =new File(absPath,OriginImageName);
+		ff.delete();
+		}
+		return res;
+	}
+	
+	//회원 탈퇴 삭제처리
+	 @Override
+	 public int userDelete() {
+		 int res=1;
+		 return res;
+	 }
+	 
 	// 아이디 찾기
 	@Override
 	public String findUserId(String name,String email) {

@@ -1,5 +1,6 @@
 package com.onetouch.controller;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import com.onetouch.service.EmailService;
 import com.onetouch.service.MemService;
 import com.onetouch.vo.MemVo;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -33,6 +35,9 @@ public class LoginController {
 	HttpSession session;
 	@Autowired
 	EmailService emailService; 
+	
+	@Autowired
+	ServletContext application;
 	//==========계정
 	
 	
@@ -101,7 +106,7 @@ public class LoginController {
 			System.out.println("		회원정보 1개 등록성공");
 		}
 		System.out.println("	[LoginController] return : user/register.jsp ");
-		return "redirect:/";
+		return "redirect:/user/login";
 		
 	}
 	
@@ -193,6 +198,7 @@ public class LoginController {
 	//로그아웃
 	@RequestMapping("/logout")
 	public String logout() {
+		System.out.println(		"[LoginController] logout()");
 		session.removeAttribute("user");
 		return"redirect:/";
 	}
@@ -214,7 +220,30 @@ public class LoginController {
 		
 		model.addAttribute("memVo",memVo);
 		System.out.println("	[LoginController] return :user/user_modify.jsp  ");
+		System.out.println("");
 		return"user/user_modify";
+	}
+	
+	//마이페이지에서 회원정보 수정 처리
+	@RequestMapping("/user/updateMember")
+	public String userUpdate(MemVo memVo, RedirectAttributes ra)  {
+		System.out.println("	[LoginController]  userUpdate() ");
+		
+		System.out.printf("		수정할 회원 정보 => %s\n",memVo);
+		int res=1;
+		try {
+			res =res* memService.userUpdate(memVo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("회원정보 수정실패");
+			ra.addAttribute("error", "not_mem_update");
+		}
+		
+		System.out.printf("		res => %d\n",res);
+		System.out.println("	[LoginController]  return: redirect:/user/user_modify  ");
+		System.out.println("");
+		
+		return "redirect:/user/user_modify";
 	}
 	
 	
@@ -344,4 +373,17 @@ public class LoginController {
     }
 	
 	
+    
+    //회원탈퇴처리
+    @RequestMapping("/user/delete")
+    public String userDelete(@RequestParam(name="idx") int mem_idx, String image) {
+    	System.out.println("	[LoginController] userDelete()  ");
+    	System.out.printf("		삭제할 mem_idx => %d\n",mem_idx);
+    	memDao.userDelete(mem_idx);
+    	File f=new File(application.getRealPath("/images/mem/"),image);
+    	f.delete();
+    	System.out.println("	[LoginController] return :   ");
+    	System.out.println();
+    	return"redirect:/main";
+    }
 }
