@@ -294,4 +294,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    ORDER BY p.post_idx DESC
 	</select>
 	
+	<select id="selectPostOrderItemOne" resultType="PostVo">
+		SELECT * FROM otdb.post
+		WHERE order_item_id=#{order_item_id};
+	</select>
 </mapper>

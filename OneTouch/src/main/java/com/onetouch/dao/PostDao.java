@@ -58,4 +58,6 @@ public interface PostDao {
 	
 	List<PostVo> selectByIds(List<Integer> post_idx);
 
+	// order_item_id로 post 있는지 체크
+	PostVo selectPostOrderItemOne(int order_item_id);
 }

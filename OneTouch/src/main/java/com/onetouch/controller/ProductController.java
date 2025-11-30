@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.onetouch.common.MyConstant;
 import com.onetouch.dao.CategoryDao;
+import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.ProductService;
 import com.onetouch.vo.ProductVo;
@@ -41,6 +42,9 @@ public class ProductController {
     
     @Autowired
     ProductService productService;
+    
+    @Autowired
+    PostDao postDao;
     
     
 
@@ -145,7 +149,10 @@ public class ProductController {
         for(String detail : lowerdetailImages) {
         	System.out.println("[" + detail +"]");
         }
-	
+        
+        //상품 리뷰 가져오기
+        //postDao.selectProductReviewList();
+        
         System.out.printf("상세페이지 이미지 => %s\n",lowerdetailImages);
         System.out.printf("서브 이미지 => %s\n",subImages);
         System.out.printf("상세페이지 product => %s\n",product);
