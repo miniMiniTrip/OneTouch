@@ -233,9 +233,7 @@
             <div class="row hashtag-div">
                             <div class="hashtag-list">
                 <c:forEach var="hashtag" items="${hashtagRank}">
-                            	<a class="hashtag-btn" href="${pageContext.request.contextPath}/product/list?keyword=${hashtag.hashtag_name}&sort=popular">#${hashtag.hashtag_name }</a>
-                                <%-- <a href="${pageContext.request.contextPath}/product/list?keyword=${hashtag.hashtag_name}&sort=popular" 
-                                   class="btn"  style="margin-top: 8px">더보기</a> --%>
+                            	<a class="hashtag-btn" href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}">#${hashtag.hashtag_name }</a>
                 </c:forEach>
                             </div>
                         <!-- End Single Category -->
