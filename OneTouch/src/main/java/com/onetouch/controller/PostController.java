@@ -20,12 +20,12 @@ import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ReplyDao;
 import com.onetouch.service.PostService;
 import com.onetouch.service.ReplyService;
-import com.onetouch.vo.HashtagVo;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
 import com.onetouch.vo.ReplyVo;
+import com.onetouch.vo.ReviewVo;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
@@ -143,14 +143,38 @@ public class PostController {
 	
 	//post 등록 폼
 	@GetMapping("/post/insert")
-	public String postInsertForm(Model model) {
+	public String postInsertForm(Model model,@RequestParam(defaultValue = "skin") String category,@RequestParam(defaultValue = "0") int product_idx) {
 		System.out.println("	[PostController] postInsertForm() ");
+		System.out.println("	리뷰 => " +category);
+		System.out.println("	상품 idx => " +product_idx);
+		
+		// 주문 내역 확인하기
+		// mem_idx product_idx
+		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
+		int mem_idx=memVo.getMem_idx();
+		System.out.println("	회원idx => " +mem_idx);
+		if(category.equals("review")) {
+			//오더 정보 가져오기 
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("mem_idx", mem_idx);
+			map.put("product_idx", product_idx);
+			ReviewVo reviewOrderVo=postDao.selectReviewOrderOne(map);
+			System.out.printf("		reviewOrderVo => %s\n",reviewOrderVo);
+			if(reviewOrderVo==null) {
+				return"redirect:/product/detail?id="+product_idx+"&msg=not_order";
+			}
+			
+			model.addAttribute("reviewOrderVo", reviewOrderVo);
+		}
+		
 		
 		//등록 페이지 갈때 상품 목록데이터 보내주기
 		List<ProductVo> product_list_array=postDao.selectProductList();
 		System.out.printf("		productList(%d):%s\n",product_list_array.size(),product_list_array);
 		model.addAttribute("product_list_array", product_list_array);
-		
+		model.addAttribute("mem_idx", mem_idx);
+		model.addAttribute("review_product_idx", product_idx);
+		model.addAttribute("category",category);
 		System.out.println("	[PostController] /post/post_insert.jsp ");
 		System.out.println("");
 		return "/post/post_insert";
@@ -158,14 +182,18 @@ public class PostController {
 	
 	//post 등록하기
 	@PostMapping("/post/insert")
-	public String postInsert(PostVo postVo,String[] post_hashtag_array) throws Exception {
+	public String postInsert(PostVo postVo,String[] post_hashtag_array,int review_product_idx,@RequestParam(defaultValue = "0") int order_item_id ) throws Exception {
 		System.out.println("	[PostController] postInsert() ");
-		//받아온 해시정보 체크
-		
+		if(postVo.getPost_category().equals("review")) {
+		//받아온 오더 아이템 정보 체크
+		System.out.printf("		order_item_id => %d\n",order_item_id);
+		postVo.setOrder_item_id(order_item_id);
+		}
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		postVo.setMem_idx(memVo.getMem_idx());
 		postVo.setPost_content(postVo.getPost_content().replaceAll("\n", "<br>"));
 		System.out.println("		"+postVo);
+		//받아온 해시정보 체크
 		postService.postInsert(postVo,post_hashtag_array);
 		
 		

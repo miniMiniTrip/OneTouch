@@ -44,8 +44,8 @@ public class PostVo {
 	/** 댓글 갯수*/
 	int post_comment_count;
 	
-	/** 주문번호*/
-	int order_id;
+	/** 주문상세번호*/
+	Integer order_item_id;
 	
 	/** 리뷰여부(구매확정했을때 true*/
 	String post_review;

@@ -289,6 +289,8 @@ function postInsert(f) {
     let post_title = f.post_title.value.trim();
     let post_content = f.post_content.value.trim();
     let post_images = f.post_images.value.trim();
+    let mem_idx = f.mem_idx.value.trim();
+    let review_product_idx = f.review_product_idx.value.trim();
     
     // 상품 선택 검증
     let product_idx_array = [];
@@ -392,14 +394,23 @@ function postInsert(f) {
 
 	<div class="container">
 		<form class="write-form">
+			<input type="hidden" id="mem_idx" name="mem_idx" value="${mem_idx }">
+			<input type="hidden" id="review_product_idx" name="review_product_idx" value="${review_product_idx }">
+			<input type="hidden" id="order_item_id" name="order_item_id" value="${reviewOrderVo.order_item_id }">
+			
 			<div class="form-group">
-				<label for="board-type">게시판 선택</label> 
+				<label for="board-type">게시판 선택</label>
 				<select id="post_category" name="post_category"
-					class="form-control">
+				class="form-control">
+				<c:if test="${category!='review' }">
 					<option value="skin">스킨에디터</option>
-					<option value="review">구매자리뷰</option>
 					<option value="free">자유게시판</option>
+				</c:if> 
+				<c:if test="${category=='review'}">
+					<option value="review">구매자리뷰</option>
+				</c:if>
 				</select>
+				
 			</div>
 
 			<div class="form-group">
@@ -440,7 +451,9 @@ function postInsert(f) {
 			        </div>
 			    </div>
 			    
-			    <div class="form-group">
+			</div>
+			<div>
+			    <div class="form-group" id="hashtag-div1">
 			        <label for="skin-category">해시태그</label>
 			        <%--  
 			            <select id="skin-category" name="product_idx" class="form-control">
@@ -451,7 +464,7 @@ function postInsert(f) {
 			            </select>
 			        --%>
 			    </div>
-			    <div class="container mt-4">
+			    <div class="container mt-4" id="hashtag-div2">
 			        <!-- 해시 선택 폼을 추가하는 버튼 -->
 			        <button type="button" class="btn btn-primary" id="add-hashtag-btn">+</button>
 			
@@ -461,7 +474,6 @@ function postInsert(f) {
 			        </div>
 			    </div>
 			</div>
-			
 			<script>
 			    $(document).ready(function() {
 			<!-- ----------------- 상품 추가 js ------------------ -->
@@ -648,12 +660,15 @@ function postInsert(f) {
 
 		/* end : 선택한 이미지 미리보기 ------------------------ */
 		
+
         // 게시판 유형에 따른 필드 표시/숨김
         document.getElementById('post_category').addEventListener('change', function() {
             const boardType = this.value;
             const reviewFields = document.getElementById('review-fields');
             const skinFields = document.getElementById('skin-fields');
             const productAddFields = document.getElementById('product-add');
+            const hashtagDiv1 = document.getElementById('hashtag-div1');
+            const hashtagDiv2 = document.getElementById('hashtag-div2');
             
             // 모든 필드 숨기기
             reviewFields.style.display = 'none';
@@ -671,6 +686,8 @@ function postInsert(f) {
                 reviewFields.style.display = 'block';
                 skinFields.style.display = 'block';
             	productAddFields.style.display='none';
+            	hashtagDiv1.style.display = 'none';
+            	hashtagDiv2.style.display = 'none';
             } else if (boardType === 'skin') {
             	productAddFields.style.display='block';
                 skinFields.style.display = 'block';
@@ -679,6 +696,11 @@ function postInsert(f) {
                 skinFields.style.display = 'block';
             }
         });
+        // ⭐ 페이지 로딩 후 현재 선택된 옵션으로 change 이벤트 실행
+		window.addEventListener('DOMContentLoaded', function() {
+		    document.getElementById('post_category').dispatchEvent(new Event('change'));
+		    
+		});
         
         // 파일 업로드 표시
         document.getElementById('post_images').addEventListener('change', function() {
@@ -703,7 +725,7 @@ function postInsert(f) {
         
         // 페이지 로드 시 초기 상태 설정
         window.addEventListener('load', function() {
-            document.getElementById('review-fields').style.display = 'none';
+            //document.getElementById('review-fields').style.display = 'none';
            // document.getElementById('skin-fields').style.display = 'none';
         });
     </script>
