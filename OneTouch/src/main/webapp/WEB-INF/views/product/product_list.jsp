@@ -700,11 +700,9 @@
 						                                <c:if test="${not empty product.hashtag_list}">
 						                                    <div class="product-hashtags">
 						                                        <c:forEach var="hashtag" items="${product.hashtag_list}">
-						                                            <a href="${pageContext.request.contextPath}/product/list?keyword=${hashtag.hashtag_name}&sort=popular"
-						                                                class="hashtag-badge" title="#${hashtag.hashtag_name} 상품 보기">
-						                                                #${hashtag.hashtag_name}
-						                                            </a>
-						                                        </c:forEach>
+																    <a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}" 
+																       class="badge bg-primary">#${hashtag.hashtag_name}</a>
+																</c:forEach>
 						                                    </div>
 						                                </c:if>
 						

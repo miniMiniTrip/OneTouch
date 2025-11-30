@@ -284,7 +284,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        , h.hashtag_name
 	    FROM post p
 	    JOIN mem m ON p.mem_idx = m.mem_idx
-	    LEFT JOIN like l ON p.post_idx = l.post_idx
+	    LEFT JOIN `like` l ON p.post_idx = l.post_idx
 	    LEFT JOIN post_hashtag as ph on p.post_idx = ph.post_idx
 	    LEFT JOIN hashtag as h on ph.hashtag_idx = h.hashtag_idx
 	    WHERE p.post_idx IN
