@@ -201,9 +201,10 @@
                                 <div class="product-item">
                                 <c:choose>
                                     <c:when test="${not empty item.product_image_url}">
-                                    <img src="${pageContext.request.contextPath}/images/${item.product_image_url}" alt="${item.product_name}">
+                                    <img src="${pageContext.request.contextPath}/images/products_list/${item.product_image_url}" alt="${item.product_name}">
                                    	</c:when>
                                    	<c:otherwise>
+                                   	${pageContext.request.contextPath}/images/products_list/${product.product_image_url}" alt="${product.product_name}
                                    	<!-- 이미지 경로 확인 실패시 -->
                                    	<img src="${pageContext.request.contextPath}/images/default.png"/>
                                    	</c:otherwise>
