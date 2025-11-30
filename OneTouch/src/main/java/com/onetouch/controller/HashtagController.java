@@ -73,6 +73,13 @@ public class HashtagController {
 			product_list = product_dao.selectByIds(product_idx_list);
 		}
 		
+		for(ProductVo p : product_list) {
+			System.out.printf("      - 상품 [%d] %s, 이미지: %s\n", 
+				p.getProduct_idx(), 
+				p.getProduct_name(), 
+				p.getProduct_image_url());
+		}
+		
 		//커뮤니티 글 리스트 조회
 	    List<Integer> post_idx_list = hashtag_dao.selectPostByHashtag(hashtag_idx);
 	    List<PostVo> post_list = new ArrayList<>();

@@ -46,9 +46,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        p.product_cnt,
 	        p.product_time,
 	        p.product_update,
-	        c.category_name
+	        c.category_name,
+	        pi.product_image_url
 	    from product p
 	    left join category c on p.category_idx = c.category_idx
+	    left join (
+        select product_idx, product_image_url 
+        from product_image 
+        where product_image_level = 1
+	    ) pi on p.product_idx = pi.product_idx
 	    where p.product_idx in
 	    <foreach collection="list" item="id" open="(" separator="," close=")">
 	        #{id}
