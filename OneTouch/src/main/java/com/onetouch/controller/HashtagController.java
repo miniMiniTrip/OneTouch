@@ -61,32 +61,32 @@ public class HashtagController {
 		return "redirect:list.do";
 	};
 
-//	@RequestMapping("/hashtag/search.do")
-//    public String searchProductsByHashtag(@RequestParam("hashtag_idx") int hashtag_idx, 
-//            Model model) {
-//		HashtagVo hashtag = hashtag_dao.selectOne(hashtag_idx);
-//		
-//		//상품 리스트 조회
-//		List<Integer> product_idx_list = hashtag_dao.selectProductByHashtag(hashtag_idx);
-//		List<ProductVo> product_list = new ArrayList<>();
-//		if(product_idx_list != null && !product_idx_list.isEmpty()) {
-//			product_list = product_dao.selectByIds(product_idx_list);
-//		}
-//		
-//		//커뮤니티 글 리스트 조회
-//	    List<Integer> post_idx_list = hashtag_dao.selectPostByHashtag(hashtag_idx);
-//	    List<PostVo> post_list = new ArrayList<>();
-//	    if(post_idx_list != null && !post_idx_list.isEmpty()) {
-//	        post_list = post_dao.selectByIds(post_idx_list); // 이 메서드 필요
-//	    }
-//		
-//		model.addAttribute("hashtag",hashtag);
-//		model.addAttribute("product_list",product_list);
-//		model.addAttribute("post_list", post_list);
-//		model.addAttribute("search_type","hashtag");
-//		
-//    	return "product/product_list";
-//    }
+	@RequestMapping("/hashtag/search.do")
+    public String searchProductsByHashtag(@RequestParam("hashtag_idx") int hashtag_idx, 
+            Model model) {
+		HashtagVo hashtag = hashtag_dao.selectOne(hashtag_idx);
+		
+		//상품 리스트 조회
+		List<Integer> product_idx_list = hashtag_dao.selectProductByHashtag(hashtag_idx);
+		List<ProductVo> product_list = new ArrayList<>();
+		if(product_idx_list != null && !product_idx_list.isEmpty()) {
+			product_list = product_dao.selectByIds(product_idx_list);
+		}
+		
+		//커뮤니티 글 리스트 조회
+	    List<Integer> post_idx_list = hashtag_dao.selectPostByHashtag(hashtag_idx);
+	    List<PostVo> post_list = new ArrayList<>();
+	    if(post_idx_list != null && !post_idx_list.isEmpty()) {
+	        post_list = post_dao.selectByIds(post_idx_list); // 이 메서드 필요
+	    }
+		
+		model.addAttribute("hashtag",hashtag);
+		model.addAttribute("product_list",product_list);
+		model.addAttribute("post_list", post_list);
+		model.addAttribute("search_type","hashtag");
+		
+    	return "hashtag/search_result";
+   }
     
 
     // 단일 해시태그로 게시글 검색 (클릭) not yet
@@ -113,6 +113,9 @@ public class HashtagController {
     }
     
 
+    
+    
+    
     //여러 해시태그로 게시글 추천 (문진) not yet
 
     public List<Integer> recommendPostsByHashtags(
