@@ -33,6 +33,8 @@
 	flex-wrap: wrap;
 	gap: 3px;
 	margin: 10px 0;
+	max-height: 50px;
+	overflow: hidden;
 }
 
 .hashtag-badge {
@@ -58,17 +60,17 @@
 
 /* ==================== 전체 레이아웃 ==================== */
 .product-grids {
-	padding: 0;
+	padding: 50px 0;
 	background-color: #fff;
 }
 
 .product-container {
-	display: flex;
-	max-width: 100%;
-	margin: 0;
+	width: 100%;
+	margin: 0 auto;
 }
 
-/* ==================== 사이드바 스타일 ==================== */
+/* ==================== 사이드바 스타일 (사용 안 함) ==================== */
+/*
 .sidebar {
 	width: 250px;
 	background: #fafafa;
@@ -123,7 +125,6 @@
 	border-left: 3px solid #5c6bc0;
 }
 
-/* 검색 위젯 스타일 */
 .search-widget {
 	padding: 0 30px 30px;
 	border-bottom: 1px solid #e0e0e0;
@@ -172,11 +173,12 @@
 .search-widget button:hover {
 	color: #5c6bc0;
 }
+*/
 
 /* ==================== 컨텐츠 영역 ==================== */
 .content {
-	flex: 1;
-	padding: 50px 60px;
+	width: 100%;
+	padding: 0;
 	background: #fff;
 }
 
@@ -213,6 +215,9 @@
 .single-product {
 	margin-bottom: 30px;
 	transition: all 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .single-product:hover {
@@ -282,7 +287,7 @@
 /* 상품 정보 영역 */
 .product-info {
 	padding: 10px 15px;
-	height: 250px;
+	min-height: 250px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -418,6 +423,7 @@
 	font-weight: 600;
 	color: #333;
 	margin-bottom: 20px;
+	margin-left: 0px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -551,7 +557,7 @@
 
 <!-- Product Grids -->
 <section class="product-grids section">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="product-container">
 			<!-- Content -->
 			<div class="content">
@@ -600,8 +606,9 @@
 										<div class="product-image">
 											<c:choose>
 												<c:when test="${not empty product.product_image_url}">
-													<img src="${pageContext.request.contextPath}/images/products_list/${product.product_image_url}" 
-														alt="${product.product_name}">
+													<img src="${pageContext.request.contextPath}/images/products_list/${product.product_image_url}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'"
+						                                             alt="${product.product_name}"
+						                                             onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/images/default.png'; this.style.opacity='0.5';">
 												</c:when>
 												<c:otherwise>
 													<div class="no-image">이미지 준비중</div>

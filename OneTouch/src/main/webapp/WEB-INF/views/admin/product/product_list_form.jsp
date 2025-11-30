@@ -914,7 +914,7 @@
                                                     <td>P${String.format("%03d", product.product_idx)}</td>
                                                     <td>C${product.category_idx}</td>
                                                     <td>
-                                                        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" 
+                                                        <img src="${pageContext.request.contextPath}/images/products_list/${product.product_image_url}" 
                                                              class="product-image" alt="상품이미지">
                                                     </td>
                                                     <td class="text-left">${product.product_name}</td>

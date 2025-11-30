@@ -351,10 +351,8 @@
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
-                                <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" 
+                                <img src="${pageContext.request.contextPath}/images/products_list/${product.product_image_url}" 
                                      alt="${product.product_name}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'">
-                                <img src="" 
-                                     alt="">
                                 <span class="new-tag">NEW</span>
                                 <div class="button">
                                     <a href="" 
