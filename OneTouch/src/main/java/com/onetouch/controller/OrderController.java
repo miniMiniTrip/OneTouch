@@ -1,10 +1,12 @@
 package com.onetouch.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +53,11 @@ public class OrderController {
 	
 	@Autowired
 	PaymentService payment_service;
+	
+	@Value("${toss.client.key}")
+	private String tossClientKey;  // 클래스 상단에 추가
 
+	
 	//단건 구매(무통장 입금)
 	@RequestMapping("/order/direct_form.do")
 	public String order_direct_form(
@@ -147,7 +153,6 @@ public class OrderController {
 		return "redirect:/order/complete.do";
 	}
 	
-	//결제대기 (토스)
 	@RequestMapping("/order/create_ready.do")
 	@ResponseBody
 	public Map<String, Object> createOrderReady(
@@ -185,10 +190,11 @@ public class OrderController {
 	                return result;
 	            }
 	            
-	            // 결제대기 상태만 재결제 가능
-	            if(!"결제대기".equals(order.getOrder_status())) {
+	            // 결제실패/결제취소 상태만 재결제 가능
+	            if(!"결제실패".equals(order.getOrder_status()) && 
+	               !"결제취소".equals(order.getOrder_status())) {
 	                result.put("success", false);
-	                result.put("message", "결제 대기 중인 주문만 결제할 수 있습니다.");
+	                result.put("message", "결제 실패 또는 취소된 주문만 재결제할 수 있습니다.");
 	                return result;
 	            }
 	            
@@ -206,7 +212,7 @@ public class OrderController {
 	            // 주문 정보 업데이트 (DB)
 	            order_dao.update(order);
 	            
-	            session.setAttribute("orderType", "repay");
+	            session.setAttribute("orderType", "retry");
 	            session.setAttribute("order_id", order_id);
 	            
 	        } else {
@@ -252,18 +258,59 @@ public class OrderController {
 	            order.setTotal_amount(totalAmount);
 	            order.setOrder_name(orderName);
 	            order.setOrder_no("OT" + System.currentTimeMillis());
-	            order.setOrder_status("결제대기"); 
+	            // order_status 제거 - NULL로 저장 (결제대기 없음)
 	            
 	            System.out.println(order.getOrder_no());
 	            
+	            // order 생성
 	            order_service.insert(order);
 	            System.out.println("생성된 order_id: " + order.getOrder_id());
+	            
+	            // 결제 전에 order_item 미리 생성
+	            if("direct".equals(orderType)) {
+	                int product_idx = Integer.parseInt((String)params.get("product_idx"));
+	                int product_cnt = Integer.parseInt((String)params.get("product_cnt"));
+	                ProductVo pVo = product_dao.selectOne(product_idx);
+	                
+	                OrderItemVo itemVo = new OrderItemVo();
+	                itemVo.setOrder_id(order.getOrder_id());
+	                itemVo.setProduct_idx(product_idx);
+	                itemVo.setProduct_name(pVo.getProduct_name());
+	                itemVo.setProduct_cnt(product_cnt);
+	                itemVo.setProduct_amount(pVo.getProduct_price());
+	                itemVo.setTotal_amount(totalAmount);
+	                
+	                order_item_dao.insert(itemVo);
+	                System.out.println("order_item 생성 완료 (단건)");
+	                
+	            } else if("cart".equals(orderType)) {
+	                String[] cart_id_array = request.getParameterValues("cart_id");
+	                Map<String, Object> map = new HashMap<String, Object>();
+	                map.put("cart_id_array", cart_id_array);
+	                List<CartVo> cartList = cart_dao.selectPaymentList(map);
+	                
+	                List<OrderItemVo> order_items = new ArrayList<>();
+	                for(CartVo cVo : cartList) {
+	                    OrderItemVo itemVo = new OrderItemVo();
+	                    itemVo.setOrder_id(order.getOrder_id());
+	                    itemVo.setProduct_idx(cVo.getProduct_idx());
+	                    itemVo.setProduct_name(cVo.getProduct_name());
+	                    itemVo.setProduct_cnt(cVo.getCart_cnt());
+	                    itemVo.setProduct_amount(cVo.getProduct_price());
+	                    itemVo.setTotal_amount(cVo.getTotal_amount());
+	                    order_items.add(itemVo);
+	                }
+	                
+	                order_item_dao.insertProducts(order_items);
+	                System.out.println("order_item 생성 완료 (장바구니 " + order_items.size() + "개)");
+	            }
 	            
 	            session.setAttribute("order_id", order.getOrder_id());
 	        }
 	        
 	        // Payment 정보 생성 (신규/재결제 공통)
-	        String payment_key = "OTPAY" + System.currentTimeMillis();
+	        String payment_key = "OT_" + System.currentTimeMillis();
+	        
 	        PaymentVo payment = new PaymentVo();
 	        payment.setPayment_key(payment_key);
 	        payment.setOrder_id(order.getOrder_id());
@@ -271,19 +318,23 @@ public class OrderController {
 	        payment.setMethod("카드");
 	        
 	        // 재결제 payment 업데이트, 신규 insert
-	        if("repay".equals(orderType)) {
-	            // 기존 payment 조회
+	        if("retry".equals(orderType)) {
+	            // 기존 payment 조회 후 업데이트
 	            PaymentVo existingPayment = payment_service.getPaymentByOrderId(order.getOrder_id());
 	            if(existingPayment != null) {
 	                existingPayment.setPayment_key(payment_key);
 	                existingPayment.setAmount(totalAmount);
 	                existingPayment.setStatus("READY");
-	                payment_service.createPaymentReady(existingPayment);
+	                existingPayment.setFailed_reason(null);
+	                payment_service.updatePaymentForRetry(existingPayment);
+	                System.out.println("payment 업데이트 완료 (재결제)");
 	            } else {
 	                payment_service.createPaymentReady(payment);
+	                System.out.println("payment 생성 완료 (재결제-신규)");
 	            }
 	        } else {
 	            payment_service.createPaymentReady(payment);
+	            System.out.println("payment 생성 완료 (신규)");
 	        }
 	        
 	        System.out.println(payment);
@@ -302,6 +353,7 @@ public class OrderController {
 	    
 	    return result;
 	}
+
 	
 	@RequestMapping("/order/complete.do")
 	public String orderComplete(@RequestParam int order_id, Model model) {
@@ -332,7 +384,7 @@ public class OrderController {
 		
 		int mem_idx = memVo.getMem_idx();
 			
-		List<OrderVo> order_list = order_dao.selectList(mem_idx);
+		List<OrderVo> order_list = order_service.selectList(mem_idx);
 		
 		// 각 주문의 order_items 조회 (리뷰 작성용)
 		for(OrderVo order : order_list) {
@@ -370,16 +422,84 @@ public class OrderController {
 		return "order/order_detail";
 	}
 	
+	@RequestMapping("/order/retry_payment.do")
+	public String retryPayment(
+	        @RequestParam int order_id,
+	        HttpSession session,
+	        Model model) {
+	    
+	    try {
+	        // 로그인 체크
+	        MemVo memVo = (MemVo) session.getAttribute("user");
+	        if (memVo == null) {
+	            return "redirect:/user/login";
+	        }
+	        
+	        // 주문 정보 조회
+	        OrderVo order_vo = order_service.selectOneByOrderId(order_id);
+	        
+	        // 주문 검증
+	        if (order_vo == null || order_vo.getMem_idx() != memVo.getMem_idx()) {
+	            model.addAttribute("error", "잘못된 접근입니다.");
+	            return "order/order_fail";
+	        }
+	        
+	        // 재결제 가능한 상태인지 확인
+	        if (!"결제실패".equals(order_vo.getOrder_status()) && 
+	            !"결제취소".equals(order_vo.getOrder_status())) {
+	            model.addAttribute("error", "재결제가 불가능한 주문입니다.");
+	            return "order/order_fail";
+	        }
+	        
+	        // 주문 아이템 정보 조회
+	        List<OrderItemVo> order_items = order_item_dao.selectListByOrderId(order_id);
+	        
+	        // 기존 결제 정보 조회
+	        PaymentVo payment_vo = payment_service.getPaymentByOrderId(order_id);
+	        
+	        // 새로운 payment_key 생성하여 기존 레코드 업데이트
+	        String new_payment_key = "OT_RETRY_" + System.currentTimeMillis();
+	        payment_vo.setPayment_key(new_payment_key);
+	        payment_vo.setStatus("READY");
+	        payment_vo.setFailed_reason(null);  // 실패 사유 초기화
+	        
+	        // 기존 payment 업데이트 (새로 생성하지 않음)
+	        payment_service.updatePaymentForRetry(payment_vo);
+	        
+	        // 세션에 재결제 정보 저장
+	        session.setAttribute("order_id", order_id);
+	        session.setAttribute("orderType", "retry");
+	        
+	        // 모델에 데이터 전달
+	        model.addAttribute("order", order_vo);
+	        model.addAttribute("order_items", order_items);
+	        model.addAttribute("payment_key", new_payment_key);
+	        model.addAttribute("tossClientKey", tossClientKey);
+	        
+	        // 재결제 전용 페이지로 이동
+	        return "order/order_retry_payment";
+	        
+	    } catch (Exception e) {
+	        System.err.println("=== 재결제 준비 중 오류 발생 ===");
+	        e.printStackTrace();
+	        model.addAttribute("error", "재결제 준비 중 오류가 발생했습니다: " + e.getMessage());
+	        return "order/order_fail";
+	    }
+	}
+
+	
 	//환불
 	@RequestMapping("/order/refund.do")
 	public String refund(int order_id,
 			RedirectAttributes ra) {
 		
-		MemVo memVo =  
-				(MemVo)session.getAttribute("user");
-		if(memVo==null) {return "redirect:/user/login";}
-		
-		Integer mem_idx = memVo.getMem_idx();
+        // 로그인 체크
+        MemVo login_user = (MemVo) session.getAttribute("login_user");
+        if (login_user == null) {
+            return "redirect:/member/login_form.do";
+        }
+        
+		Integer mem_idx = login_user.getMem_idx();
 		
 		//주문 찾기
 		OrderVo order = order_dao.selectOneByOrderId(order_id);

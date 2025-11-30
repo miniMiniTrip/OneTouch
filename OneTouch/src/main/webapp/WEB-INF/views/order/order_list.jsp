@@ -616,7 +616,7 @@
                     <!-- 필터 탭 -->
 					<div class="filter-tabs">
 					    <button class="active" data-filter="all">전체</button>
-					    <button data-filter="pending">결제대기</button>
+					    <button data-filter="pending">결제실패/취소</button>
 					    <button data-filter="confirmed">상품확인중</button>
 					    <button data-filter="preparing">배송준비중</button>
 					    <button data-filter="shipping">배송중</button>
@@ -650,13 +650,14 @@
                                         </div>
 										<span class="order-status 
 										    <c:choose>
-										        <c:when test="${order.order_status == '결제대기'}">status-pending</c:when>
+										        <c:when test="${order.order_status == '결제실패' or order.order_status == '결제취소'}">status-pending</c:when>
 										        <c:when test="${order.order_status == '상품확인중'}">status-confirmed</c:when>
 										        <c:when test="${order.order_status == '배송준비중'}">status-preparing</c:when>
 										        <c:when test="${order.order_status == '배송중'}">status-shipping</c:when>
 										        <c:when test="${order.order_status == '배송완료'}">status-completed</c:when>
 										        <c:when test="${order.order_status == '환불'}">status-refund</c:when>
 										        <c:when test="${order.order_status == '취소'}">status-cancelled</c:when>
+										        <c:when test="${order.order_status == '결제완료'}">status-confirmed</c:when>
 										    </c:choose>
 										">
 										    ${order.order_status}
@@ -713,9 +714,8 @@
                                                class="btn btn-outline-primary">상세보기</a>
                                             
                                             <c:choose>
-                                                <c:when test="${order.order_status == '결제대기'}">
-                                                    <button class="btn btn-primary" onclick="payOrder(${order.order_id})">결제하기</button>
-                                                    <button class="btn btn-outline-danger" onclick="cancelOrder(${order.order_id})">주문취소</button>
+                                                <c:when test="${order.order_status == '결제실패' or order.order_status == '결제취소'}">
+                                                    <button class="btn btn-primary" onclick="retryPayment(${order.order_id})">재결제하기</button>
                                                 </c:when>
                                                 <c:when test="${order.order_status == '배송완료'}">
 												    <c:if test="${not empty order.order_items and order.order_items.size() > 0}">
@@ -784,7 +784,7 @@
 	            
 	            if (filter === 'all') {
 	                card.style.display = 'block';
-	            } else if (filter === 'pending' && status === '결제대기') {
+	            } else if (filter === 'pending' && (status === '결제실패' || status === '결제취소')) {
 	                card.style.display = 'block';
 	            } else if (filter === 'confirmed' && status === '상품확인중') {
 	                card.style.display = 'block';
@@ -858,7 +858,14 @@
         window.open(trackingUrl, 'shipping', 'width=800,height=700');
     }
     
-    // 결제하기
+    // 재결제하기
+    function retryPayment(orderId) {
+        if (confirm('재결제를 진행하시겠습니까?')) {
+            location.href = '${pageContext.request.contextPath}/order/retry_payment.do?order_id=' + orderId;
+        }
+    }
+    
+    // 결제하기 (삭제 가능)
     function payOrder(orderId) {
         location.href = '${pageContext.request.contextPath}/order/payment.do?order_id=' + orderId;
     }

@@ -41,5 +41,10 @@ public class PaymentService {
 	public PaymentVo getPaymentByOrderId(int order_id) {
 	    return payment_dao.selectPaymentByOrderId(order_id);
 	}
+	
+	@Transactional
+	public int updatePaymentForRetry(PaymentVo vo) {
+	    return payment_dao.updatePaymentForRetry(vo);
+	}
 		 
 }

@@ -216,8 +216,20 @@ public class OrderService {
 		return order_dao.searchOrders(map);
 	}
 	
+	//재결제를 위한 order
+
+	public OrderVo selectOneByOrderId(int order_id) {
+	    return order_dao.selectOneByOrderId(order_id);
+	}
+	
 	//주문상태만 변경
 	public int updateStatus(int order_id, String order_status){
 		return order_dao.updateStatus(order_id,order_status);
 	}
+
+	public List<OrderVo> selectList(int mem_idx) {
+		return order_dao.selectList(mem_idx);
+	}
+
+
 }
