@@ -82,16 +82,16 @@
     </div>
     <div class="header-right">
         <span class="header-user">관리자님</span>
-        <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
+        <button class="btn-logout" onclick="adminLogout()">로그아웃</button>
     </div>
 </header>
 
 <script>
     // 로그아웃
-    function handleLogout() {
+    function adminLogout() {
         if (confirm('로그아웃 하시겠습니까?')) {
             alert('로그아웃되었습니다.');
-            window.location.href = '/';
+            location.href = "${pageContext.request.contextPath}/logout";
         }
     }
 </script>
