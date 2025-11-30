@@ -382,6 +382,7 @@ public class LoginController {
     	memDao.userDelete(mem_idx);
     	File f=new File(application.getRealPath("/images/mem/"),image);
     	f.delete();
+    	session.removeAttribute("user");
     	System.out.println("	[LoginController] return :   ");
     	System.out.println();
     	return"redirect:/main";
