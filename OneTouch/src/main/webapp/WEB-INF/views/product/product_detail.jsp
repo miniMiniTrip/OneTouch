@@ -2046,6 +2046,7 @@ function updateProductImageByIdx(imageFilename) {
 <!-- ================= 	//모달수정	=================== -->
 
 <!-- ================= 상품 내용 이미지 삭제 ================-->
+
 <script type="text/javascript">
 function deleteProductImageByIdx(){
     let contentImagesName = [
@@ -2158,42 +2159,69 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
 
         
         
-        // SweetAlert 기능
-        document.addEventListener('DOMContentLoaded', function() {
-            // 장바구니 버튼
-            document.getElementById('btnCart').addEventListener('click', function() {
-                Swal.fire({
-                    title: '장바구니에 담으시겠습니까?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: '예',
-                    cancelButtonText: '아니오',
-                    confirmButtonColor: '#2a5298',
-                    cancelButtonColor: '#d33'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire('완료!', '장바구니에 추가되었습니다.', 'success');
-                    }
-                });
-            });
-            
-            // 구매하기 버튼
-            document.getElementById('btnBuy').addEventListener('click', function() {
-                Swal.fire({
-                    title: '구매하시겠습니까?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: '예',
-                    cancelButtonText: '아니오',
-                    confirmButtonColor: '#1e3c72',
-                    cancelButtonColor: '#d33'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire('완료!', '주문이 접수되었습니다.', 'success');
-                    }
-                });
-            });
-        });
+			// SweetAlert 기능
+			document.addEventListener('DOMContentLoaded', function() {
+			    // 장바구니 버튼
+			    document.getElementById('btnCart').addEventListener('click', function() {
+			        Swal.fire({
+			            title: '장바구니에 담으시겠습니까?',
+			            icon: 'question',
+			            showCancelButton: true,
+			            confirmButtonText: '예',
+			            cancelButtonText: '아니오',
+			            confirmButtonColor: '#2a5298',
+			            cancelButtonColor: '#d33'
+			        }).then((result) => {
+			            if (result.isConfirmed) {
+			                Swal.fire({
+			                    title: '완료!',
+			                    text: '장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?',
+			                    icon: 'success',
+			                    showCancelButton: true,
+			                    confirmButtonText: '이동',
+			                    cancelButtonText: '계속 쇼핑',
+			                    confirmButtonColor: '#2a5298',
+			                    cancelButtonColor: '#6c757d'
+			                }).then((result2) => {
+			                    if (result2.isConfirmed) {
+			                        location.href = '${pageContext.request.contextPath}/cart/list.do';
+			                    }
+			                });
+			            }
+			        });
+			    });
+
+			    // 구매하기 버튼
+			    document.getElementById('btnBuy').addEventListener('click', function() {
+			        Swal.fire({
+			            title: '구매하시겠습니까?',
+			            icon: 'question',
+			            showCancelButton: true,
+			            confirmButtonText: '예',
+			            cancelButtonText: '아니오',
+			            confirmButtonColor: '#1e3c72',
+			            cancelButtonColor: '#d33'
+			        }).then((result) => {
+			            if (result.isConfirmed) {
+			                Swal.fire({
+			                    title: '완료!',
+			                    text: '주문이 접수되었습니다. 지금 주문하시겠습니까?',
+			                    icon: 'success',
+			                    showCancelButton: true,
+			                    confirmButtonText: '주문하기',
+			                    cancelButtonText: '나중에',
+			                    confirmButtonColor: '#1e3c72',
+			                    cancelButtonColor: '#6c757d'
+			                }).then((result2) => {
+			                    if (result2.isConfirmed) {
+			                        location.href = '${pageContext.request.contextPath}/cart/list.do';
+			                    }
+			                });
+			            }
+			        });
+			    });
+			});
+			
         
      // 이미지 업로드 관련
         document.addEventListener('DOMContentLoaded', function() {
