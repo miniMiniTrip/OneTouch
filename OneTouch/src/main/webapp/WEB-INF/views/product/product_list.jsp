@@ -653,7 +653,7 @@
 						                            <div class="product-image">
 						                                <c:choose>
 						                                    <c:when test="${not empty product.product_image_url}">
-						                                        <img src="${pageContext.request.contextPath}/images/${product.product_image_url}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'"
+						                                        <img src="${pageContext.request.contextPath}/images/products_list/${product.product_image_url}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'"
 						                                             alt="${product.product_name}"
 						                                             onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/images/default.png'; this.style.opacity='0.5';">
 						                                    </c:when>
@@ -701,7 +701,7 @@
 						                                    <div class="product-hashtags">
 						                                        <c:forEach var="hashtag" items="${product.hashtag_list}">
 																    <a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}" 
-																       class="badge bg-primary">#${hashtag.hashtag_name}</a>
+																       class="hashtag-badge">#${hashtag.hashtag_name}</a>
 																</c:forEach>
 						                                    </div>
 						                                </c:if>
