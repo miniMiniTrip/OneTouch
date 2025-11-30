@@ -54,7 +54,7 @@ public interface PostDao {
 
 	
 	// 리뷰를 쓰기위해서 주문을 했는지 안했는지를 위해 1개 조회해오기
-//	ReviewVo selectReviewOrderOne(Map<String, Object> map);
+	ReviewVo selectReviewOrderOne(Map<String, Object> map);
 	
 	List<PostVo> selectByIds(List<Integer> post_idx);
 
