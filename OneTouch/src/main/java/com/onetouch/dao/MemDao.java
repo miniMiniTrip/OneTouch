@@ -21,7 +21,9 @@ public interface MemDao {
 	
 	/**아이디와 이메일로 memVo 정보가져오기*/
     MemVo findUserForPwReset(Map<String, Object> map);
-
+    
+    //회원 삭제처리
+    int userDelete(int mem_idx); 
     
     
  // 관리자 회원관리 부분
