@@ -358,7 +358,7 @@ public class OrderController {
 		PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
 		
 		model.addAttribute("order", order);
-		model.addAttribute("order_items", order_items);
+		model.addAttribute("orderItems", order_items);  // JSP와 일치하도록 camelCase로 변경
 		model.addAttribute("payment", payment);
 		
 		return "order/order_detail";
