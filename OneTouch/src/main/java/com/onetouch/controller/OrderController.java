@@ -334,6 +334,12 @@ public class OrderController {
 			
 		List<OrderVo> order_list = order_dao.selectList(mem_idx);
 		
+		// 각 주문의 order_items 조회 (리뷰 작성용)
+		for(OrderVo order : order_list) {
+			List<OrderItemVo> items = order_item_dao.selectListByOrderId(order.getOrder_id());
+			order.setOrder_items(items);
+		}
+		
 		model.addAttribute("order_list",order_list);
 		
 		return "order/order_list";
@@ -358,7 +364,7 @@ public class OrderController {
 		PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
 		
 		model.addAttribute("order", order);
-		model.addAttribute("orderItems", order_items);  // JSP와 일치하도록 camelCase로 변경
+		model.addAttribute("order_items", order_items);
 		model.addAttribute("payment", payment);
 		
 		return "order/order_detail";
