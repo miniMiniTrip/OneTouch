@@ -591,7 +591,7 @@
                                                 <a href="/product/detail?product_idx=${cart.product_idx}">
                                                     <c:choose>
                                                         <c:when test="${not empty cart.product_image_url}">
-                                                            <img src="${pageContext.request.contextPath}/images/${cart.product_image_url}" 
+                                                            <img src="${pageContext.request.contextPath}/images/products_list/${cart.product_image_url}" 
                                                                  alt="${cart.product_name}"
                                                                  onerror="this.src='${pageContext.request.contextPath}/images/default.png'">
                                                         </c:when>

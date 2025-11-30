@@ -438,7 +438,7 @@
                                     <div class="product-image-wrapper">
                                         <c:choose>
                                             <c:when test="${not empty wishlist.product_image_url}">
-                                                <img src="${pageContext.request.contextPath}/images/${wishlist.product_image_url}" 
+                                                <img src="${pageContext.request.contextPath}/images/products_list/${wishlist.product_image_url}" 
                                                      alt="${wishlist.product_name}">
                                             </c:when>
                                             <c:otherwise>
