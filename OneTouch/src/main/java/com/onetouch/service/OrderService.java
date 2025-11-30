@@ -54,7 +54,6 @@ public class OrderService {
 		vo.setTotal_amount(total_amount);
 		vo.setOrder_name(pVo.getProduct_name());
 		vo.setOrder_no("OT" + System.currentTimeMillis());//OT+시간 = 주문번호
-		vo.setOrder_status("결제대기");
 		
 		order_dao.insert(vo);
 		
@@ -96,7 +95,6 @@ public class OrderService {
         }	
         vo.setOrder_name(order_name);
         vo.setOrder_no("OT" + System.currentTimeMillis());
-        vo.setOrder_status("결제대기");
         
 		order_dao.insert(vo);
 		

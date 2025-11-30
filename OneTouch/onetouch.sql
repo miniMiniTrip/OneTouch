@@ -225,7 +225,7 @@ CREATE TABLE `order` (
     order_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '주문번호(내부)',
     mem_idx INT NOT NULL COMMENT '회원FK',
     order_no VARCHAR(50) NOT NULL UNIQUE COMMENT '주문번호(고객용)',
-    order_status VARCHAR(20) NOT NULL DEFAULT '상품확인중' COMMENT '주문상태',
+    order_status VARCHAR(20) NULL COMMENT '주문상태',
     total_amount INT NOT NULL COMMENT '총금액',
     order_name VARCHAR(100) NOT NULL COMMENT '주문명',
     order_mem_name VARCHAR(255) NOT NULL COMMENT '수령자명',
@@ -253,6 +253,13 @@ ALTER TABLE `order`
 ADD COLUMN order_tracking VARCHAR(50) COMMENT '송장번호',
 ADD COLUMN order_courier VARCHAR(50) COMMENT '택배사명';
 CREATE INDEX idx_order_tracking ON `order`(order_tracking);
+
+--주문상태 스테이터스 수정
+ALTER TABLE `order`
+MODIFY COLUMN order_status VARCHAR(20) NULL 
+COMMENT '주문상태';
+-- 결제완료|결제실패|결제취소|배송준비중|배송중|배송완료|환불요청|환불완료
+
 
 -- ========================================
 -- 11. 주문 상세 테이블
