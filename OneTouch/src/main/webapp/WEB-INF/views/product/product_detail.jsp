@@ -96,7 +96,7 @@
 	background: white;
 	padding: 15px;
 	border-radius: 10px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	/* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
 }
 
 /* 이미지 스타일은 별도로 */
@@ -1345,8 +1345,29 @@ background
     border-radius: 8px;
     display: inline-block; /* inline-block으로 여러 이미지도 가운데 정렬 */
 }
+.reviews {
+    text-align: center;
+    margin: 15px 0;
+}
 
+.reviews button {
+    background-color: #3d5a98;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+    min-width: 80px;
+}
+
+.reviews button:hover {
+    background-color: #2d4373;
+}
 </style>
+
+
 </head>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp"%>
@@ -1554,7 +1575,7 @@ background
 			<!-- 상세 이미지들 -->
 			<c:forEach var="detailImage" items="${lowerdetailImages}"
 				varStatus="status">
-				<div class="image-item">
+		 <div class="image-item"> 
 					<img src="${pageContext.request.contextPath}/images/${detailImage}"
 						alt="상품 상세 이미지" />
 					<c:if test="${sessionScope.user.mem_roll == 'admin'}">
@@ -1563,7 +1584,7 @@ background
 							<button onclick="deleteProductImageByIdx()">삭제</button>
 						</div>
 					</c:if>
-				</div>
+				 </div> 
 			</c:forEach>
 		</div>
 	</div>
@@ -1650,6 +1671,7 @@ background
 			<div class="review-list">
 				<div class="review-header-section">
 					<div class="review-tabs">
+					
 						<!--회신순/ 베스트순/ 별점 연결해주세요! -->
 						<a href="?sort=rating"
 							class="tab-btn ${param.sort == 'rating' || empty param.sort ? 'active' : ''}">베스트순</a>
@@ -1657,6 +1679,10 @@ background
 							class="tab-btn ${param.sort == 'date' ? 'active' : ''}">최신순</a>
 					</div>
 					<!--불필요해보여서 뷰에 나타내지 않음 -->
+					
+					<div class="reviews">
+					 <button onclick="location.href='/post/insert?category=review&product_idx=${product.product_idx}';">✎ 리뷰쓰기</button>
+					 </div>
 			<%-- 		<div class="review-search"> 
 						<input type="text" placeholder="검색어를 입력하세요" class="search-input">
 						<select class="sort-select">
