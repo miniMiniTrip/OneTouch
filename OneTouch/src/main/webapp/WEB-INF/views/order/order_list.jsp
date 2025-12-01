@@ -659,12 +659,12 @@
                                                 <c:when test="${order.order_status == '결제실패' or order.order_status == '결제취소'}">
                                                     <button class="btn btn-primary" onclick="retryPayment(${order.order_id})">재결제하기</button>
                                                 </c:when>
-                                                <c:when test="${order.order_status == '배송완료'}">
+                                             <%--    <c:when test="${order.order_status == '배송완료'}">
 												    <c:if test="${not empty order.order_items and order.order_items.size() > 0}">
 												        <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${order.order_items[0].product_idx}&order_item_id=${order.order_items[0].order_item_id}" 
 												           class="btn btn-primary">리뷰작성</a>
 												    </c:if>
-												</c:when>
+												</c:when> --%>
                                                 <c:when test="${order.order_status == '배송중' and not empty order.order_tracking}">
                                                     <button class="btn btn-outline-primary" 
                                                             onclick="trackShipping('${order.order_courier}', '${order.order_tracking}')">
