@@ -246,7 +246,7 @@
         <!-- 로그아웃 -->
         <div class="mypage-menu-section">
             <div class="mypage-menu-item">
-                <a href="${pageContext.request.contextPath}/user/logout">📝 로그아웃</a>
+                <a href="${pageContext.request.contextPath}/logout">📝 로그아웃</a>
             </div>
         </div>
     </div>
