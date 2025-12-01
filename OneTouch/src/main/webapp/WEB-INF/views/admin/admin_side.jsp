@@ -110,7 +110,7 @@
          <script type="text/javascript">
                   //alert('${ pageContext.request.requestURI }');
                 </script> 
-                <a href="${pageContext.request.contextPath}/order/management"
+                <a href="${pageContext.request.contextPath}/admin/order/list"
                    class="${pageContext.request.requestURI.contains('/order_management') ? 'active' : ''}">
                     🚚 주문관리
                 </a>
