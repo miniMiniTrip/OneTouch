@@ -504,7 +504,6 @@
 }
     </style>
 </head>
-<body>
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
