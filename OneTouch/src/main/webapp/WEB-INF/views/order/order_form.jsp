@@ -859,8 +859,16 @@ body {
 	        $('input[name="cart_id"]').each(function() {
 	            cartIds.push($(this).val());
 	        });
-	        orderData.cart_id = cartIds;
-	        console.log("장바구니 결제 - cart_ids:", cartIds);
+	        
+	        // 수정: 배열을 쉼표로 join해서 문자열로 전달
+	        if (cartIds.length === 0) {
+	            alert('선택된 상품이 없습니다.');
+	            resetPaymentButton();
+	            return;
+	        }
+	        
+	        orderData.cart_ids = cartIds.join(',');  // cart_ids (복수), 문자열로 변환
+	        console.log("장바구니 결제 - cart_ids:", orderData.cart_ids);
 	        
 	    } else {
 	        // 단건 결제
@@ -908,30 +916,23 @@ body {
             console.log("order_name:", orderData.order_name);
             console.log("amount:", orderData.amount);
             
-            const customerName = '${order.order_mem_name}';
-            const customerPhone = '${order.order_phone}'.replace(/-/g, '');
+            const paymentMethod = selectedPaymentMethod;  // ⭐ 수정: 전역변수 사용
+            const customerName = $('input[name="order_mem_name"]').val();
+            const customerPhone = $('input[name="order_phone"]').val().replace(/-/g, '');
             
-            // ✅ order_name이 없으면 기본값 사용
-            const orderName = orderData.order_name || '${order.order_name}' || '재결제 주문';
-            
-            if (!orderName || orderName === '' || orderName === 'null') {
-                console.error("❌ orderName이 비어있습니다!");
-                alert('주문명을 불러올 수 없습니다. 페이지를 새로고침해주세요.');
-                resetPaymentButton();
-                return;
-            }
-            
-            console.log("최종 orderName:", orderName);
+            console.log("method:", paymentMethod);
+            console.log("customer:", customerName, customerPhone);
             
             try {
-                await payment.requestPayment({
-                    method: selectedPaymentMethod,
+                // payment.requestPayment()
+                await payment.requestPayment({	
+                    method: paymentMethod,
                     amount: {
                         currency: "KRW",
                         value: orderData.amount
                     },
                     orderId: orderData.payment_key,
-                    orderName: orderName,  // ✅ 검증된 orderName 사용
+                    orderName: orderData.order_name, 
                     successUrl: window.location.origin + '${pageContext.request.contextPath}/payment/success.do',
                     failUrl: window.location.origin + '${pageContext.request.contextPath}/payment/fail.do',
                     customerEmail: "${user.mem_email}",
@@ -945,30 +946,30 @@ body {
                     }
                 });
                 
-                console.log("✅ 결제 요청 완료");
+                console.log("결제 요청 완료");
                 
             } catch (error) {
-                console.error("❌ TossPayments 에러:", error);
-                
-                // ✅ 에러 발생 시 직접 failUrl로 리다이렉트
-                const failUrl = window.location.origin + '${pageContext.request.contextPath}/payment/fail.do';
-                const params = new URLSearchParams({
-                    code: error.code || 'UNKNOWN_ERROR',
-                    message: error.message || '알 수 없는 오류',
-                    orderId: orderData.payment_key
-                });
+                console.error("TossPayments 에러");
+                console.error("Error:", error);
+                console.error("Error code:", error.code);
+                console.error("Error message:", error.message);
                 
                 if (error.code === 'USER_CANCEL') {
-                    console.log('사용자가 결제를 취소했습니다.');
+                    alert('결제를 취소하셨습니다.');
+                } else if (error.code === 'INVALID_CARD_COMPANY') {
+                    alert('유효하지 않은 카드사입니다.');
                 } else {
                     alert('결제 중 오류가 발생했습니다: ' + (error.message || '알 수 없는 오류'));
                 }
                 
-                // ✅ failUrl로 리다이렉트
-                window.location.href = failUrl + '?' + params.toString();
+                resetPaymentButton();
             }
         }
-
+        
+        // 결제 버튼 초기화
+        function resetPaymentButton() {
+            $('#paymentBtn').prop('disabled', false).html('<fmt:formatNumber value="${total_amount}" pattern="#,###"/>원 결제하기');
+        }
     </script>
 </body>
 </html>

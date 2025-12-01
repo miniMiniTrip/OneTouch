@@ -1,6 +1,5 @@
 package com.onetouch.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,13 +243,44 @@ public class OrderController {
 	                session.setAttribute("product_idx", product_idx);
 	                session.setAttribute("product_cnt", product_cnt);
 	                
-	            } else if("cart".equals(orderType)) {
-	                // 장바구니
-	                String cart_ids = (String)params.get("cart_ids");
-	                String[] cart_id_array = cart_ids.split(",");
-	                
-	                Map<String, Object> map = new HashMap<>();
-	                map.put("cart_id_array", cart_id_array);
+            } else if("cart".equals(orderType)) {
+                // 장바구니
+                String[] cart_id_array = null;
+                
+                //cart_ids 다양한 형식 처리
+                Object cart_ids_obj = params.get("cart_ids");
+                
+                if(cart_ids_obj == null) {
+                    // cart_ids가 없으면 cart_id로 시도
+                    cart_ids_obj = params.get("cart_id");
+                }
+                
+                if(cart_ids_obj == null) {
+                    result.put("success", false);
+                    result.put("message", "장바구니 정보가 없습니다.");
+                    return result;
+                }
+                
+                // String으로 전달된 경우 (예: "1,2,3" 또는 "1")
+                if(cart_ids_obj instanceof String) {
+                    String cart_ids = (String)cart_ids_obj;
+                    cart_id_array = cart_ids.split(",");
+                } 
+                // 배열로 전달된 경우
+                else if(cart_ids_obj instanceof String[]) {
+                    cart_id_array = (String[])cart_ids_obj;
+                }
+                // 기타 형식
+                else {
+                    result.put("success", false);
+                    result.put("message", "장바구니 데이터 형식이 올바르지 않습니다.");
+                    return result;
+                }
+                
+                System.out.println("cart_id_array: " + String.join(",", cart_id_array));
+                
+                Map<String, Object> map = new HashMap<>();
+                map.put("cart_id_array", cart_id_array);
 	                
 	                List<CartVo> cart_list = cart_dao.selectPaymentList(map);
 	                if(cart_list == null || cart_list.isEmpty()) {
