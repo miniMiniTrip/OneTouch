@@ -214,11 +214,11 @@
             </div>
             
             <div class="mypage-menu-item">
-                <a href="${pageContext.request.contextPath}/mypage/skinprofile.do">🔬 피부 프로필</a>
+                <a href="${pageContext.request.contextPath}/mypage/skinprofile">🔬 피부 프로필</a>
             </div>
             
             <div class="mypage-menu-item">
-                <a href="${pageContext.request.contextPath}/skin/form.do">🔬 피부 진단</a>
+                <a href="${pageContext.request.contextPath}/skinprofile/form">🔬 피부 진단</a>
             </div>
         </div>
         
