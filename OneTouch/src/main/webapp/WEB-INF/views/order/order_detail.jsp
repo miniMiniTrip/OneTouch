@@ -837,10 +837,7 @@
 					    </a>
 					    
 					    <c:choose>
-					        <c:when test="${order.order_status == '결제대기'}">
-					            <button class="btn-primary-custom" onclick="payOrder(${order.order_id})">
-					                결제하기
-					            </button>
+						        <c:when test="${order.order_status == '결제취소' || order.order_status == '결제실패'}">
 					            <button class="btn-danger-custom" onclick="cancelOrder(${order.order_id})">
 					                주문취소
 					            </button>

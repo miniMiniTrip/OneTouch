@@ -228,7 +228,7 @@ body {
             배송지 정보는 기존 주문 내용과 동일하게 유지됩니다.
         </div>
 
-        <!-- ✅ order_items가 비어있을 때 경고 -->
+        <!--order_items가 비어있을 때 경고 -->
         <c:if test="${empty order_items}">
             <div class="alert-warning">
                 <strong>⚠️ 주문 상품 정보를 불러올 수 없습니다.</strong><br>
@@ -320,7 +320,7 @@ body {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
     <script>
-        // ✅ TossPayments 초기화 (기존 order_form.jsp와 동일)
+        //TossPayments 초기화 (기존 order_form.jsp와 동일)
         const clientKey = "test_ck_AQ92ymxN34R7WM667J94rajRKXvd";
         const customerKey = "CUSTOMER_${user.mem_idx}";
         
@@ -332,14 +332,14 @@ body {
         
         let selectedPaymentMethod = 'CARD';  // 기본 카드 결제
         
-        // ✅ 결제 요청 함수 (기존 order_form.jsp와 동일)
+        //결제 요청 함수 (기존 order_form.jsp와 동일)
         async function requestPayment() {
             console.log("결제 요청 시작");
             
             // 중복 클릭 방지
             $('#paymentBtn').prop('disabled', true).text('처리 중...');
             
-            // ✅ 재결제 데이터
+            //재결제 데이터
             const orderData = {
                 order_type: 'repay',  // 재결제 플래그
                 order_id: '${order.order_id}',  // 기존 주문 ID
@@ -353,7 +353,7 @@ body {
             
             console.log("서버 전송 데이터:", orderData);
             
-            // ✅ 서버에 주문 준비 요청
+            //서버에 주문 준비 요청
             try {
                 const response = await $.ajax({
                     url: '${pageContext.request.contextPath}/order/create_ready.do',
@@ -379,7 +379,7 @@ body {
             }
         }
         
-        // ✅ TossPayments 결제창 호출 (기존 order_form.jsp와 동일)
+        //TossPayments 결제창 호출 (기존 order_form.jsp와 동일)
         async function callTossPayments(orderData) {
             console.log("========================================");
             console.log("TossPayments 결제창 호출");

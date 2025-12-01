@@ -36,6 +36,18 @@ public class OrderService {
 	//상품생성
 	@Transactional
 	public int insert(OrderVo vo) {
+		if(vo.getOrder_status() == null || vo.getOrder_status().isEmpty()) {
+			vo.setOrder_status("결제취소");
+		}
+		
+		if(vo.getOrder_name() == null || vo.getOrder_name().isEmpty()) {
+			vo.setOrder_name("주문");
+		}
+		
+		if(vo.getTotal_amount() == 0) {
+			vo.setTotal_amount(0);
+		}
+		
 	    return order_dao.insert(vo);
 	}
 	
