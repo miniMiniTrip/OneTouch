@@ -21,8 +21,19 @@ public class PaymentService {
 	 
 	@Transactional
 	public int approvePayment(PaymentVo vo) {
-	    return payment_dao.updatePaymentApproved(vo);
-	}	
+	    //디버깅: 전달받은 PaymentVo 확인
+	    System.out.println("=== PaymentService.approvePayment 호출됨 ===");
+	    System.out.println("전달받은 payment_key: " + vo.getPayment_key());
+	    System.out.println("전달받은 method: " + vo.getMethod());
+	    System.out.println("전달받은 approved_at: " + vo.getApproved_at());
+	    System.out.println("전달받은 receipt_url: " + vo.getReceipt_url());
+	    System.out.println("전달받은 PaymentVo: " + vo);
+	    
+	    int result = payment_dao.updatePaymentApproved(vo);
+	    
+	    System.out.println("=== updatePaymentApproved 실행 결과: " + result + "행 업데이트 ===");
+	    return result;
+	}
 	
 	@Transactional
 	public int failPayment(PaymentVo vo) {

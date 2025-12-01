@@ -40,7 +40,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- order_id로 조회 -->
-	<!-- ✅ 수정: payment_id → order_id -->
 	<select id="selectPaymentByOrderId" parameterType="int" resultType="payment">
 		select 
 			payment_id,
@@ -62,11 +61,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 결제 승인 처리 -->
 	<update id="updatePaymentApproved" parameterType="payment">
 		update payment set
+			payment_key = #{payment_key},
 			status = 'DONE',
 			approved_at = #{approved_at},
 			receipt_url = #{receipt_url},
 			method = #{method}
-		where payment_key = #{payment_key} 
+		where payment_id = #{payment_id}
 	</update>
 
 	<!-- 결제 실패 처리 -->
@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update payment set 
             status = 'FAILED',
             failed_reason = #{failed_reason}
-        where payment_key = #{payment_key}
+        where payment_id = #{payment_id}
     </update>
     
     <!-- 결제 취소 처리 -->
@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update payment set
             status = 'CANCELED',
             cancel_reason = #{cancel_reason}
-        where payment_key = #{payment_key}
+        where payment_id = #{payment_id}
     </update>
     
     <!-- 재결제용 -->
