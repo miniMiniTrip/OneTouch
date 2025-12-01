@@ -10,6 +10,10 @@
     
     <!-- TossPayments SDK v2 -->
     <script src="https://js.tosspayments.com/v2/standard"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     
     <style>
 body {
@@ -450,6 +454,398 @@ body {
     cursor: not-allowed;
     transform: none;
 }
+
+
+
+.custom-swal-popup {
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+    padding: 0 !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+}
+
+.custom-swal-title {
+    color: #2c3e50 !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.custom-swal-content {
+    color: #5a6c7d !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 20px !important;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* SweetAlert2 버튼 스타일링 */
+.swal2-confirm {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 12px 30px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5) !important;
+}
+
+.swal2-cancel {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 12px 30px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 8px 25px rgba(245, 87, 108, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.swal2-cancel:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 35px rgba(245, 87, 108, 0.4) !important;
+}
+
+/* 약관 모달 스타일 대폭 개선 */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    animation: fadeInBackdrop 0.3s ease;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+    margin: 3% auto;
+    padding: 0;
+    border: none;
+    width: 85%;
+    max-width: 700px;
+    border-radius: 25px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+    animation: slideInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+}
+
+.modal-header {
+    padding: 30px 30px 20px;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.close {
+    color: #aaa;
+    font-size: 32px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.close:hover {
+    color: #f5576c;
+    background: rgba(245, 87, 108, 0.1);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 30px;
+    max-height: 55vh;
+    overflow-y: auto;
+    line-height: 1.8;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #4a5568;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 10px;
+}
+
+.modal-body h4 {
+    color: #2d3748;
+    margin: 25px 0 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    padding-left: 15px;
+    border-left: 4px solid #667eea;
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+    padding: 10px 15px;
+    border-radius: 0 8px 8px 0;
+}
+
+.modal-body p {
+    margin-bottom: 12px;
+    color: #4a5568;
+    font-size: 15px;
+    line-height: 1.7;
+    padding-left: 10px;
+}
+
+.modal-body p strong {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.modal-footer {
+    padding: 25px 30px 30px;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    border-top: 1px solid rgba(102, 126, 234, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.5s ease;
+    transform: translate(-50%, -50%);
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #a8a8a8 0%, #7b7b7b 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(171, 171, 171, 0.3);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(171, 171, 171, 0.4);
+}
+
+
+/* 약관 동의 섹션 - 보기 버튼 오른쪽 배치 */
+.section-title {
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+/* 전체 동의 박스 */
+.agreement-all {
+    background: #e8f4fd;
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.agreement-all label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* 개별 약관 박스 - 중요! 이게 핵심 */
+.agreement {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 이게 중요! */
+}
+
+.agreement:hover {
+    border-color: #007bff;
+    background: #ffffff;
+}
+
+.agreement label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+    flex: 1; /* 라벨이 남은 공간을 모두 차지 */
+}
+
+/* 체크박스 스타일 */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: #007bff;
+    flex-shrink: 0; /* 체크박스 크기 고정 */
+}
+
+/* 텍스트 스타일 */
+.agreement-text {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    flex: 1; /* 텍스트가 남은 공간 차지 */
+}
+
+.agreement-all .agreement-text {
+    font-weight: 600;
+    color: black;
+}
+
+/* 보기 버튼 - 오른쪽에 위치 */
+/* 보기 버튼을 네모 모양으로 변경 */
+.btn-view-terms {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px; /* 25px에서 6px로 변경 */
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-view-terms::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.5s ease;
+    transform: translate(-50%, -50%);
+}
+
+.btn-view-terms:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+.btn-view-terms:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-view-terms:active {
+    transform: translateY(0) scale(1);
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .agreement {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .agreement label {
+        width: 100%;
+    }
+    
+    .btn-view-terms {
+        align-self: flex-end;
+        margin-left: 0;
+        margin-top: 8px;
+    }
+}
     </style>
 </head>
 <body>
@@ -675,54 +1071,83 @@ body {
                     </div>
                 </div>
 
-                <!-- 약관 동의 -->
-                <div class="section">
-                    <h2 class="section-title">약관 동의</h2>
-                    
-                    <div class="agreement-all">
-                        <label>
-                            <input type="checkbox" id="agreeAll" onchange="toggleAllAgreements()">
-                            <strong>전체 동의</strong>
-                        </label>
-                    </div>
-
-                    <div class="agreement">
-                        <label>
-                            <input type="checkbox" class="agreement-checkbox" id="agreeTerms" required>
-                            [필수] 구매조건 확인 및 결제진행 동의
-                        </label>
-                    </div>
-                    <div class="agreement">
-                        <label>
-                            <input type="checkbox" class="agreement-checkbox" id="agreePrivacy" required>
-                            [필수] 개인정보 제3자 제공 동의
-                        </label>
-                    </div>
-                    <div class="agreement">
-                        <label>
-                            <input type="checkbox" class="agreement-checkbox" id="agreeMarketing">
-                            [선택] 마케팅 정보 수신 동의
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <aside class="order-summary">
-                <h3 class="section-title2">주문 요약</h3>
-                
-                <div class="summary-total">
-                    <span>총 결제금액</span>
-                    <span class="amount" id="totalAmount">
-                         <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원
-                    </span>
-                </div>
-
-                <button type="button" class="btn-payment" id="paymentBtn" onclick="requestPayment()">
-                    <span id="paymentAmount">
-                         <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원
-                    </span> 결제하기
-                </button>
-            </aside>
+       <!-- 약관 동의 HTML 구조 수정 -->
+				<div class="section">
+				    <h2 class="section-title">약관 동의</h2>
+				
+				    <div class="agreement-all">
+				        <label>
+				            <input type="checkbox" id="agreeAll" onchange="toggleAllAgreements()">
+				            <span class="agreement-text"><strong>전체 동의</strong></span>
+				        </label>
+				    </div>
+				
+				    <div class="agreement">
+				        <label>
+				            <input type="checkbox" class="agreement-checkbox" id="agreeTerms" required>
+				            <span class="agreement-text">[필수] 구매조건 확인 및 결제진행 동의</span>
+				        </label>
+				        <button type="button" class="btn-view-terms" onclick="openTermsModal('terms')">보기</button>
+				    </div>
+				    
+				    <div class="agreement">
+				        <label>
+				            <input type="checkbox" class="agreement-checkbox" id="agreePrivacy" required>
+				            <span class="agreement-text">[필수] 개인정보 제3자 제공 동의</span>
+				        </label>
+				        <button type="button" class="btn-view-terms" onclick="openTermsModal('privacy')">보기</button>
+				    </div>
+				    
+				    <div class="agreement">
+				        <label>
+				            <input type="checkbox" class="agreement-checkbox" id="agreeMarketing">
+				            <span class="agreement-text">[선택] 마케팅 정보 수신 동의</span>
+				        </label>
+				        <button type="button" class="btn-view-terms" onclick="openTermsModal('marketing')">보기</button>
+				    </div>
+				</div>
+				
+			</div>
+			
+			
+				
+				<aside class="order-summary">
+				    <h3 class="section-title2">주문 요약</h3>
+				
+				    <div class="summary-total">
+				        <span>총 결제금액</span>
+				        <span class="amount" id="totalAmount">
+				             <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원
+				        </span>
+				    </div>
+				
+				    <button type="button" class="btn-payment" id="paymentBtn" onclick="requestPayment()">
+				        <span id="paymentAmount">
+				             <fmt:formatNumber value="${total_amount}" pattern="#,###"/>원
+				        </span> 결제하기
+				    </button>
+				</aside>
+				
+				<!-- 약관 모달 -->
+				<div id="termsModal" class="modal" style="display: none;">
+				    <div class="modal-content">
+				        <div class="modal-header">
+				            <h3 id="modalTitle">약관 내용</h3>
+				            <span class="close" onclick="closeTermsModal()">&times;</span>
+				        </div>
+				        <div class="modal-body">
+				            <div id="modalContent">
+				                <!-- 약관 내용이 여기에 표시됩니다 -->
+				            </div>
+				        </div>
+				        <div class="modal-footer">
+				            <button type="button" class="btn btn-secondary" onclick="closeTermsModal()">취소</button>
+				            <button type="button" class="btn btn-primary" id="agreeBtn" onclick="agreeToTerms()">동의</button>
+				        </div>
+				    </div>
+				</div>
+				           
+            
         </div>
     </div>
 
@@ -970,6 +1395,147 @@ body {
         function resetPaymentButton() {
             $('#paymentBtn').prop('disabled', false).html('<fmt:formatNumber value="${total_amount}" pattern="#,###"/>원 결제하기');
         }
+        
+        let currentTermsType = '';
+
+        
+        
+     // 약관 내용
+     const termsContent = {
+         terms: {
+             title: '구매조건 확인 및 결제진행 동의',
+             content: `
+                 <h4>제1조 (목적)</h4>
+                 <p>본 약관은 OneTouch(이하 "회사")가 제공하는 전자상거래 서비스 이용에 관한 기본적인 사항을 규정함을 목적으로 합니다.</p>
+                 
+                 <h4>제2조 (구매조건)</h4>
+                 <p>1. 구매자는 상품 주문 전 상품정보, 가격, 배송비, 배송기간 등을 확인해야 합니다.</p>
+                 <p>2. 주문 완료 후 구매취소는 결제완료 후 30분 이내에만 가능합니다.</p>
+                 <p>3. 배송 시작 후에는 단순 변심에 의한 취소가 불가능합니다.</p>
+                 
+                 <h4>제3조 (결제)</h4>
+                 <p>1. 결제는 신용카드, 무통장입금, 간편결제 등을 통해 가능합니다.</p>
+                 <p>2. 결제 완료 후 주문이 확정됩니다.</p>
+             `
+         },
+         privacy: {
+             title: '개인정보 제3자 제공 동의',
+             content: `
+                 <h4>개인정보 제3자 제공 동의</h4>
+                 <p>회사는 다음과 같이 개인정보를 제3자에게 제공합니다.</p>
+                 
+                 <h4>1. 제공받는 자</h4>
+                 <p>- 배송업체 (CJ대한통운, 로젠택배 등)</p>
+                 <p>- PG사 (토스페이먼츠, KG이니시스 등)</p>
+                 
+                 <h4>2. 제공되는 개인정보 항목</h4>
+                 <p>- 성명, 전화번호, 주소 (배송을 위해)</p>
+                 <p>- 결제정보 (결제처리를 위해)</p>
+                 
+                 <h4>3. 제공받는 자의 이용목적</h4>
+                 <p>- 상품배송, 결제처리, 고객상담</p>
+                 
+                 <h4>4. 보유 및 이용기간</h4>
+                 <p>- 배송완료 후 1개월, 결제처리 후 5년</p>
+             `
+         },
+         marketing: {
+             title: '마케팅 정보 수신 동의',
+             content: `
+                 <h4>마케팅 정보 수신 동의</h4>
+                 <p>회사에서 제공하는 혜택 정보 및 마케팅 정보를 받아보시겠습니까?</p>
+                 
+                 <h4>1. 수신 정보</h4>
+                 <p>- 신상품 정보</p>
+                 <p>- 할인 이벤트 정보</p>
+                 <p>- 쿠폰 및 적립금 정보</p>
+                 
+                 <h4>2. 발송 방법</h4>
+                 <p>- 이메일, SMS, 앱 푸시알림</p>
+                 
+                 <h4>3. 동의 철회</h4>
+                 <p>언제든지 마이페이지에서 수신 거부할 수 있습니다.</p>
+                 
+                 <p><strong>※ 마케팅 정보 수신에 동의하지 않아도 서비스 이용이 가능합니다.</strong></p>
+             `
+         }
+     };
+
+     // 모달 열기
+     function openTermsModal(type) {
+         currentTermsType = type;
+         const modal = document.getElementById('termsModal');
+         const title = document.getElementById('modalTitle');
+         const content = document.getElementById('modalContent');
+         
+         title.textContent = termsContent[type].title;
+         content.innerHTML = termsContent[type].content;
+         
+         modal.style.display = 'block';
+         document.body.style.overflow = 'hidden'; // 스크롤 방지
+     }
+
+     // 모달 닫기
+     function closeTermsModal() {
+         document.getElementById('termsModal').style.display = 'none';
+         document.body.style.overflow = 'auto'; // 스크롤 복원
+         currentTermsType = '';
+     }
+
+     // 약관 동의
+     function agreeToTerms() {
+         if (currentTermsType === 'terms') {
+             document.getElementById('agreeTerms').checked = true;
+         } else if (currentTermsType === 'privacy') {
+             document.getElementById('agreePrivacy').checked = true;
+         } else if (currentTermsType === 'marketing') {
+             document.getElementById('agreeMarketing').checked = true;
+         }
+         
+         updateAllAgreementStatus();
+         closeTermsModal();
+     }
+
+     // 전체 동의 토글
+     function toggleAllAgreements() {
+         const agreeAll = document.getElementById('agreeAll');
+         const checkboxes = document.querySelectorAll('.agreement-checkbox');
+         
+         checkboxes.forEach(checkbox => {
+             checkbox.checked = agreeAll.checked;
+         });
+     }
+
+     // 전체 동의 상태 업데이트
+     function updateAllAgreementStatus() {
+         const agreeAll = document.getElementById('agreeAll');
+         const checkboxes = document.querySelectorAll('.agreement-checkbox');
+         const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+         
+         agreeAll.checked = allChecked;
+     }
+
+  
+
+     // 페이지 로드 시 이벤트 리스너 추가
+     document.addEventListener('DOMContentLoaded', function() {
+         const checkboxes = document.querySelectorAll('.agreement-checkbox');
+         checkboxes.forEach(checkbox => {
+             checkbox.addEventListener('change', updateAllAgreementStatus);
+         });
+         
+         // 모달 외부 클릭 시 닫기
+         window.onclick = function(event) {
+             const modal = document.getElementById('termsModal');
+             if (event.target === modal) {
+                 closeTermsModal();
+             }
+         }
+     });
+        
+        
+        
+        
     </script>
 </body>
 </html>
