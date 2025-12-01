@@ -177,61 +177,71 @@ public class PaymentController {
     }
 
 	
-	@RequestMapping("/payment/fail.do")
-	public String paymentFail(
-	            @RequestParam String code,
-	            @RequestParam String message,
-	            @RequestParam String orderId,
-	            HttpSession session,
-	            Model model) {
-	    
-	    try {
-	        //System.out.println("=== 결제 실패/취소 ===");
-	        //System.out.println("code: " + code);
-	        //System.out.println("message: " + message);
-	        //System.out.println("orderId(payment_key): " + orderId);
-	        
-	        // payment_key로 결제 정보 조회
-	        PaymentVo payment_vo = payment_service.getPaymentByKey(orderId);
-	        Integer order_id = (Integer) session.getAttribute("order_id");
-	        
-	        if (payment_vo != null && order_id != null) {
-	            // 실패 사유 저장
-	            payment_vo.setFailed_reason(code + ": " + message);
-	            payment_service.failPayment(payment_vo);
-	            //System.out.println("결제 실패 정보 저장 완료");
-	            
-	            // ✅ 사용자 취소인지 실패인지 구분하여 주문 상태 변경
-	            String order_status;
-	            if ("USER_CANCEL".equals(code) || code.contains("CANCEL")) {
-	                order_status = "결제취소";
-	                //System.out.println("사용자 결제 취소");
-	            } else {
-	                order_status = "결제실패";
-	                //System.out.println("결제 시스템 오류");
-	            }
-	            
-	            order_service.updateStatus(order_id, order_status);
-	            //System.out.println("주문 상태 '" + order_status + "'로 변경 완료");
-	        }
-	        
-	        // 세션 정리
-	        session.removeAttribute("orderType"); 
-	        session.removeAttribute("product_idx");
-	        session.removeAttribute("product_cnt");
-	        session.removeAttribute("cart_ids");
-	        session.removeAttribute("order_id");
-	        
-	        model.addAttribute("errorCode", code);
-	        model.addAttribute("errorMessage", message);
-	        
-	        return "order/order_fail";
-	        
-	    } catch (Exception e) {
-	        System.err.println("=== 결제 실패/취소 처리 중 오류 발생 ===");
-	        e.printStackTrace();
-	        model.addAttribute("error", "결제 처리 중 오류가 발생했습니다.");
-	        return "order/order_fail";
-	    }
-	}
+    @RequestMapping("/payment/fail.do")
+    public String paymentFail(
+                @RequestParam String code,
+                @RequestParam String message,
+                @RequestParam String orderId,
+                HttpSession session,
+                Model model) {
+        
+        try {
+            System.out.println("=== 결제 실패/취소 ===");
+            System.out.println("code: " + code);
+            System.out.println("message: " + message);
+            System.out.println("orderId(payment_key): " + orderId);
+            
+            // payment_key로 결제 정보 조회
+            PaymentVo payment_vo = payment_service.getPaymentByKey(orderId);
+            Integer order_id = (Integer) session.getAttribute("order_id");
+            
+            System.out.println("payment_vo: " + payment_vo);
+            System.out.println("order_id from session: " + order_id);
+            
+            if (payment_vo != null && order_id != null) {
+                // 실패 사유 저장
+                payment_vo.setFailed_reason(code + ": " + message);
+                payment_service.failPayment(payment_vo);
+                System.out.println("결제 실패 정보 저장 완료");
+                
+                // 사용자 취소인지 실패인지 구분하여 주문 상태 변경
+                String order_status;
+                if ("USER_CANCEL".equals(code) || code.contains("CANCEL")) {
+                    order_status = "결제취소";
+                    System.out.println("사용자 결제 취소");
+                } else {
+                    order_status = "결제실패";
+                    System.out.println("결제 시스템 오류");
+                }
+                
+                System.out.println("주문 상태를 '" + order_status + "'로 변경 시도...");
+                int updateResult = order_service.updateStatus(order_id, order_status);
+                System.out.println("주문 상태 변경 결과: " + updateResult + "행 업데이트됨");
+                
+            } else {
+                System.err.println("❌ payment_vo 또는 order_id가 NULL입니다!");
+                System.err.println("payment_vo == null? " + (payment_vo == null));
+                System.err.println("order_id == null? " + (order_id == null));
+            }
+            
+            // 세션 정리
+            session.removeAttribute("orderType"); 
+            session.removeAttribute("product_idx");
+            session.removeAttribute("product_cnt");
+            session.removeAttribute("cart_ids");
+            session.removeAttribute("order_id");
+            
+            model.addAttribute("errorCode", code);
+            model.addAttribute("errorMessage", message);
+            
+            return "order/order_fail";
+            
+        } catch (Exception e) {
+            System.err.println("=== 결제 실패/취소 처리 중 오류 발생 ===");
+            e.printStackTrace();
+            model.addAttribute("error", "결제 처리 중 오류가 발생했습니다.");
+            return "order/order_fail";
+        }
+    }
+
 }

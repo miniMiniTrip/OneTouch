@@ -730,7 +730,7 @@
                                 상품 정보
                             </div>
                             
-                            <c:forEach var="item" items="${orderItems}">
+                            <c:forEach var="item" items="${order_items}">
                                 <div class="product-item">
                                     <div class="product-image ${empty item.product_image_url ? 'no-image' : ''}">
                                         <c:choose>
@@ -853,8 +853,8 @@
 					        </c:when>
 					        
 					        <c:when test="${order.order_status == '배송완료'}">
-					            <c:if test="${not empty orderItems and orderItems.size() > 0}">
-					                <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${orderItems[0].product_idx}&order_item_id=${orderItems[0].order_item_id}" 
+					            <c:if test="${not empty order_items and order_items.size() > 0}">
+					                <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${order_items[0].product_idx}&order_item_id=${order_items[0].order_item_id}" 
 					                   class="btn-primary-custom">리뷰작성</a>
 					            </c:if>
 					        </c:when>

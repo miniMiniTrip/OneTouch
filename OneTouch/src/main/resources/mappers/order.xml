@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	) values (
 		#{mem_idx},
 		#{order_no},
-		'결제대기',
+		#{order_status},
 		#{total_amount},
 		#{order_name},
 		#{order_mem_name},
@@ -50,78 +50,76 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where o.order_no = #{order_no}
 </select>
 
-<!-- parameterType을 int로 변경 -->
+<!-- 주문 ID로 조회 -->
 <select id="selectOneByOrderId" parameterType="int" resultType="order">
-	select * from `order` o
-		left join mem m on o.mem_idx = m.mem_idx
-	where o.order_id = #{order_id}
+	select * from `order` where order_id = #{order_id}
 </select>
 
-<!-- 주문 내용 수정 -->
-<update id="update" parameterType="order">
-	update `order` set
-		order_mem_name = #{order_mem_name},
-		order_phone = #{order_phone},
-		order_postal = #{order_postal},
-		order_address = #{order_address},
-		order_address_more = #{order_address_more},
-		order_update = now()
+<!-- 주문 상태 업데이트 -->
+<update id="updateStatus">
+	update `order` 
+	set order_status = #{order_status},
+	    order_update = now()
 	where order_id = #{order_id}
 </update>
 
-<!-- 주문 상태 수정 -->
-<update id="updateStatus">
-    update `order` set 
-        order_status = #{param2},
-        order_update = now()
-    where order_id = #{param1}
-</update>
-
-<!-- 관리자용 쿼리 -->
-
-<!-- 상태 전체 변경 -->
+<!-- 배송 정보 업데이트 -->
 <update id="updateDeliveryInfo" parameterType="map">
-    update `order` set
-        order_tracking = #{order_tracking},
-        order_courier = #{order_courier},
-        order_status = #{order_status},
-        order_update = now()
-    where order_id = #{order_id}
+	update `order`
+	set order_status = #{order_status},
+	    order_tracking = #{order_tracking},
+	    order_courier = #{order_courier},
+	    order_update = now()
+	where order_id = #{order_id}
 </update>
 
-<!-- 송장 변경 -->
+<!-- 송장 번호 업데이트 -->
 <update id="updateTracking" parameterType="map">
-    update `order` set
-        order_tracking = #{order_tracking},
-        order_courier = #{order_courier},
-        order_update = now()
-    where order_id = #{order_id}
+	update `order`
+	set order_tracking = #{order_tracking},
+	    order_courier = #{order_courier},
+	    order_update = now()
+	where order_id = #{order_id}
 </update>
 
-<!-- 관리자 모든 오더 조회 -->
-<select id="selectAllOrdersforAdmin" parameterType="order">
+<!-- 주문 정보 수정 -->
+<update id="update" parameterType="order">
+	update `order`
+	set order_mem_name = #{order_mem_name},
+	    order_phone = #{order_phone},
+	    order_postal = #{order_postal},
+	    order_address = #{order_address},
+	    order_address_more = #{order_address_more},
+	    order_update = now()
+	where order_id = #{order_id}
+</update>
+
+<!-- 관리자: 전체 주문 조회 -->
+<select id="selectAllOrdersforAdmin" resultType="order">
 	select * from `order`
 	order by order_time desc
 </select>
-	
-<!-- 배송상태별 조회 -->
-<select id="selectOrdersByStatus" parameterType="order">
+
+<!-- 관리자: 배송 상태별 조회 -->
+<select id="selectOrdersByStatus" parameterType="string" resultType="order">
 	select * from `order`
 	where order_status = #{order_status}
 	order by order_time desc
 </select>
 
-<!-- 검색 쿼리문 -->
+<!-- 관리자: 검색 -->
 <select id="searchOrders" parameterType="map" resultType="order">
 	select * from `order`
-	where 1 = 1
-	<if test="searchKeyword != null and searchKeyword != ''">
-		and	(order_no like concat ('%', #{searchKeyword}, '%'))
-		or order_mem_name like concat ('%', #{searchKeyword}, '%'))
+	where 1=1
+	<if test="search_keyword != null and search_keyword != ''">
+		and (order_no like concat('%', #{search_keyword}, '%')
+		     or order_mem_name like concat('%', #{search_keyword}, '%')
+		     or order_phone like concat('%', #{search_keyword}, '%'))
 	</if>
-	<if test="order_status != null and order_status !=''">
+	<if test="order_status != null and order_status != ''">
 		and order_status = #{order_status}
 	</if>
 	order by order_time desc
 </select>
+
 </mapper>

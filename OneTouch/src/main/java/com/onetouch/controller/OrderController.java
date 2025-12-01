@@ -376,27 +376,30 @@ public class OrderController {
 	
 	@RequestMapping("/order/list.do")
 	public String orderList(Model model) {
-		
-		MemVo memVo =  
-				(MemVo)session.getAttribute("user");
-		
-		if(memVo==null) {return "redirect:/user/login";}
-		
-		int mem_idx = memVo.getMem_idx();
-			
-		List<OrderVo> order_list = order_service.selectList(mem_idx);
-		
-		// 각 주문의 order_items 조회 (리뷰 작성용)
-		for(OrderVo order : order_list) {
-			List<OrderItemVo> items = order_item_dao.selectListByOrderId(order.getOrder_id());
-			order.setOrder_items(items);
-		}
-		
-		model.addAttribute("order_list",order_list);
-		
-		return "order/order_list";
+	    MemVo memVo = (MemVo)session.getAttribute("user");
+	    if(memVo==null) {return "redirect:/user/login";}
+	    
+	    int mem_idx = memVo.getMem_idx();
+	    List<OrderVo> order_list = order_service.selectList(mem_idx);
+	    
+	    System.out.println("===== 주문 목록 디버깅 =====");
+	    System.out.println("mem_idx: " + mem_idx);
+	    System.out.println("order_list size: " + order_list.size());
+	    
+	    for(OrderVo order : order_list) {
+	        System.out.println("order_id: " + order.getOrder_id() + 
+	                         ", order_name: " + order.getOrder_name() + 
+	                         ", order_status: " + order.getOrder_status());
+	        
+	        List<OrderItemVo> items = order_item_dao.selectListByOrderId(order.getOrder_id());
+	        System.out.println("  order_items size: " + items.size());
+	        order.setOrder_items(items);
+	    }
+	    
+	    model.addAttribute("order_list",order_list);
+	    return "order/order_list";
 	}
-	
+
 	@RequestMapping("/order/detail.do")
 	public String orderDetail(@RequestParam int order_id, Model model) {
 		
