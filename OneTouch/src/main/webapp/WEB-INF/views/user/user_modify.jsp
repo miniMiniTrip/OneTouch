@@ -438,7 +438,7 @@
                                             <input type="file" id="photoFileInput" name="mem_image" accept="image/*">
                                             <input type="hidden" name="mem_image_url" value="${memVo.mem_image_url }">
                                             <button type="button" class="btn btn-submit" onclick="triggerFileInput();">사진 업로드</button>
-                                            <button type="button" class="btn btn-cancel" onclick="deletePhoto();">삭제</button>
+                                            <!-- <button type="button" class="btn btn-cancel" onclick="deletePhoto();">삭제</button> -->
                                         </div>
                                     </div>
                                 </div>

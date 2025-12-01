@@ -104,9 +104,11 @@ public class MemServiceImpl implements MemService {
 			throw new Exception();
 		}
 		if(memVo.getMem_image()!=null&&!memVo.getMem_image().isEmpty()) {
-			System.out.println("		기존 이미지 파일 삭제");
-		File ff =new File(absPath,OriginImageName);
-		ff.delete();
+			if (OriginImageName != null && !OriginImageName.trim().isEmpty()) {
+				System.out.println("		기존 이미지 파일 삭제");
+				File ff =new File(absPath,OriginImageName);
+				ff.delete();
+			}
 		}
 		return res;
 	}

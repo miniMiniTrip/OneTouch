@@ -16,51 +16,51 @@ INSERT INTO category (category_name) VALUES
 -- ========================================
 -- 관리자 계정 (비밀번호: 1234 - 실제로는 암호화 필요)
 -- mem_idx = 1
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
-('admin', '1234', '관리자', '06945', 'admin@onetouch.com', 'admin', '010-8282-8282','서울 동작구 여의대방로 지하 218','101동 1001호');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
+('admi', '1234', '관리자', '06945', 'admi@onetouch.com', 'admin', '010-8282-8282','서울 동작구 여의대방로 지하 218','101동 1001호','2000-12-04');
 
 -- mem_idx = 2
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
-('user1', '1234', '김유저', '36526', 'user1@onetouch.com', 'user', '010-6262-6262','경북 영양군 수비면 판사길 5','201동 1502호');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
+('user1', '1234', '김유저', '36526', 'user1@onetouch.com', 'user', '010-6262-6262','경북 영양군 수비면 판사길 5','201동 1502호','2000-12-04');
 
 -- mem_idx = 3
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
-('a1234', '123', '서경원', '54628', 'suh0007@naver.com', 'admin', '010-7171-7171','전북특별자치도 익산시 고봉로 156','501동 701호');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
+('a1234', '123', '서경원', '54628', 'suh0007@naver.com', 'admin', '010-7171-7171','전북특별자치도 익산시 고봉로 156','501동 701호','2000-12-04','newborn-photography-9292505_640.jpg');
 
 -- mem_idx = 4
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
-('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
+('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호','2000-12-04');
 
 -- mem_idx = 5
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
-('admin91', '1234', '고유빈', '06035', 'admin91@onetouch.com', 'admin', '010-6666-5555','서울 강남구 가로수길 9','107동 1301호');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
+('admin91', '1234', '고유빈', '06035', 'admin91@onetouch.com', 'admin', '010-6666-5555','서울 강남구 가로수길 9','107동 1301호','2000-12-04');
 
 -- mem_idx = 6
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more) VALUES 
-('sw5080', '1234', '이시원', '06035', 'sw5080@onetouch.com', 'admin', '010-2211-5775','서울 강남구 가로수길 13','106동 1101호');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
+('sw5080', '1234', '이시원', '06035', 'sw5080@onetouch.com', 'admin', '010-2211-5775','서울 강남구 가로수길 13','106동 1101호','2000-12-04');
 
 -- mem_idx = 7~25
 -- 좋아요를 위한 무의미한 유저 더미추가
-INSERT INTO mem (mem_id,mem_pw,mem_name,mem_email,mem_roll,mem_phone)VALUES
- ('u1231','123','유저01','user0@onetouch.com','user','010-1111-1110')
-,('u1232','123','유저02','user2@onetouch.com','user','010-1111-1112')
-,('u1233','123','유저03','user3@onetouch.com','user','010-1111-1113')
-,('u1234','123','유저04','user4@onetouch.com','user','010-1111-1114')
-,('u1235','123','유저05','user5@onetouch.com','user','010-1111-1115')
-,('u1236','123','유저06','user6@onetouch.com','user','010-1111-1116')
-,('u1237','123','유저07','user7@onetouch.com','user','010-1111-1117')
-,('u1238','123','유저08','user8@onetouch.com','user','010-1111-1118')
-,('u1239','123','유저09','user9@onetouch.com','user','010-1111-1119')
-,('u1221','123','유저10','user01@onetouch.com','user','010-1111-1110')
-,('u1222','123','유저11','user02@onetouch.com','user','010-1111-1120')
-,('u1223','123','유저12','user03@onetouch.com','user','010-1111-1130')
-,('u1224','123','유저13','user04@onetouch.com','user','010-1111-1140')
-,('u1225','123','유저14','user05@onetouch.com','user','010-1111-1150')
-,('u1226','123','유저15','user06@onetouch.com','user','010-1111-1160')
-,('u1227','123','유저16','user07@onetouch.com','user','010-1111-1170')
-,('u1228','123','유저17','user08@onetouch.com','user','010-1111-1180')
-,('u1229','123','유저18','user09@onetouch.com','user','010-1111-1190')
-,('u1220','123','유저19','user00@onetouch.com','user','010-1111-1100');
+INSERT INTO mem (mem_id,mem_pw,mem_name,mem_email,mem_roll,mem_phone,mem_birth)VALUES
+ ('u1231','123','유저01','user0@onetouch.com','user','010-1111-1110','2000-12-04')
+,('u1232','123','유저02','user2@onetouch.com','user','010-1111-1112','2000-12-04')
+,('u1233','123','유저03','user3@onetouch.com','user','010-1111-1113','2000-12-04')
+,('u1234','123','유저04','user4@onetouch.com','user','010-1111-1114','2000-12-04')
+,('u1235','123','유저05','user5@onetouch.com','user','010-1111-1115','2000-12-04')
+,('u1236','123','유저06','user6@onetouch.com','user','010-1111-1116','2000-12-04')
+,('u1237','123','유저07','user7@onetouch.com','user','010-1111-1117','2000-12-04')
+,('u1238','123','유저08','user8@onetouch.com','user','010-1111-1118','2000-12-04')
+,('u1239','123','유저09','user9@onetouch.com','user','010-1111-1119','2000-12-04')
+,('u1221','123','유저10','user01@onetouch.com','user','010-1111-1110','2000-12-04')
+,('u1222','123','유저11','user02@onetouch.com','user','010-1111-1120','2000-12-04')
+,('u1223','123','유저12','user03@onetouch.com','user','010-1111-1130','2000-12-04')
+,('u1224','123','유저13','user04@onetouch.com','user','010-1111-1140','2000-12-04')
+,('u1225','123','유저14','user05@onetouch.com','user','010-1111-1150','2000-12-04')
+,('u1226','123','유저15','user06@onetouch.com','user','010-1111-1160','2000-12-04')
+,('u1227','123','유저16','user07@onetouch.com','user','010-1111-1170','2000-12-04')
+,('u1228','123','유저17','user08@onetouch.com','user','010-1111-1180','2000-12-04')
+,('u1229','123','유저18','user09@onetouch.com','user','010-1111-1190','2000-12-04')
+,('u1220','123','유저19','user00@onetouch.com','user','010-1111-1100','2000-12-04');
 
 
 -- ========================================

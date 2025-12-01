@@ -236,6 +236,7 @@ public class LoginController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("회원정보 수정실패");
+			System.out.println(e.getMessage());
 			ra.addAttribute("error", "not_mem_update");
 		}
 		
