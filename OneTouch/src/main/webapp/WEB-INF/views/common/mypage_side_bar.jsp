@@ -231,7 +231,7 @@
             </div>
             
             <div class="mypage-menu-item">
-                <a href="${pageContext.request.contextPath}/post/mypost_list">💬 내 커뮤니티</a>
+                <a href="${pageContext.request.contextPath}/post/mypost_list">👨‍👨‍👧‍내커뮤니티</a>
             </div>
         </div>
         

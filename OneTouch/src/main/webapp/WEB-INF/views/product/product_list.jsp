@@ -522,7 +522,7 @@
 				<div class="menu-section">
 					<div class="menu-title">카테고리</div>
 					<a href="${pageContext.request.contextPath}/product/list"
-						class="menu-item ${empty category ? 'active' : ''}">전체보기</a>
+						class="menu-item ${empty category ? 'active' : ''}">전체상품</a>
 					<a href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
 						class="menu-item ${category eq '1' ? 'active' : ''}">스킨케어</a>
 					<a href="${pageContext.request.contextPath}/product/list?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"

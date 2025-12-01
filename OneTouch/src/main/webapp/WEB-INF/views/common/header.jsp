@@ -530,25 +530,25 @@ document.addEventListener('click', function(e) {
                                     <a href="${pageContext.request.contextPath}/">홈</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="${pageContext.request.contextPath}/product/list">전체 상품</a>
+                                </li>
+                                <li class="nav-item">
 								    <a class="dd-menu collapsed" href="javascript:void(0)">카테고리</a>
 								    <ul class="sub-menu collapse" id="submenu-1-1">
+								       <%--  <li class="nav-item">
+								            <a href="${pageContext.request.contextPath}/product/list">전체보기</a>
+								        </li> --%>
 								        <li class="nav-item">
-								            <a href="${pageContext.request.contextPath}/products?category=skincare">스킨케어</a>
+								            <a href="${pageContext.request.contextPath}/product/list?category=1&sort=popular">스킨케어</a>
 								        </li>
 								        <li class="nav-item">
-								            <a href="${pageContext.request.contextPath}/products?category=cleansing">클렌징</a>
+								            <a href="${pageContext.request.contextPath}/product/list?category=2&sort=popular">메이크업/선케어</a>
 								        </li>
 								        <li class="nav-item">
-								            <a href="${pageContext.request.contextPath}/products?category=haircare">헤어케어</a>
-								        </li>
-								        <li class="nav-item">
-								            <a href="${pageContext.request.contextPath}/products?category=bodycare">바디케어</a>
+								            <a href="${pageContext.request.contextPath}/product/list?category=3&sort=popular">클렌징케어</a>
 								        </li>
 								    </ul>
 								</li>
-                                <li class="nav-item">
-                                    <a href="${pageContext.request.contextPath}/product/list">전체 상품</a>
-                                </li>
                                 <li class="nav-item">
                                     <a href="${pageContext.request.contextPath}/post/list">커뮤니티</a>
                                 </li>
