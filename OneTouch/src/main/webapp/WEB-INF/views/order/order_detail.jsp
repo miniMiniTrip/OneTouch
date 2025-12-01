@@ -533,6 +533,7 @@
     </style>
 </head>
 <body>
+</div>
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
