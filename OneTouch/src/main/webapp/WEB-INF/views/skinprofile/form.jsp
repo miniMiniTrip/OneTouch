@@ -567,7 +567,7 @@
     <!-- /End Preloader -->
     
     <!-- Start Header Area -->
-    <c:import url="../common/header.jsp" />
+    <%@include file="${pageContext.request.contextPath}/common/header.jsp" %>
     <!-- End Header Area -->
     
     <!-- Start Breadcrumbs -->
@@ -595,51 +595,12 @@
     <section class="mypage-section">
         <div class="container">
             <div class="mypage-container">
-                
+
                 <!-- 사이드바 -->
-                <%-- <div class="sidebar">
-                    <div class="sidebar-header">
-                        마이페이지
-                    </div>
-                    <div class="sidebar-subtitle">
-                        ${user.mem_name}님 환영합니다
-                    </div>
-                    
-                    <div class="menu-section">
-                        <div class="menu-title">쇼핑 정보</div>
-                        <a href="${pageContext.request.contextPath}/mypage/order.do" class="menu-item">
-                            주문 · 배송 조회
-                        </a>
-                        <a href="${pageContext.request.contextPath}/mypage/wishlist.do" class="menu-item">
-                            찜 목록
-                        </a>
-                    </div>
-                    
-                    <div class="menu-section">
-                        <div class="menu-title">피부 관리</div>
-                        <a href="${pageContext.request.contextPath}/skinprofile/form.do" class="menu-item active">
-                            피부 진단
-                        </a>
-                        <a href="${pageContext.request.contextPath}/mypage/skinprofile.do" class="menu-item">
-                            내 피부 프로필
-                        </a>
-                    </div>
-                    
-                    <div class="menu-section">
-                        <div class="menu-title">회원 정보</div>
-                        <a href="${pageContext.request.contextPath}/mypage/modify.do" class="menu-item">
-                            회원정보 수정
-                        </a>
-                    </div>
-                </div>
-                 --%>
-                 
-                 <!-- 사이드바 인크루드 -->
-                    <%@include file="../common/mypage_side_bar.jsp" %>
-                    
+                <%@include file="${pageContext.request.contextPath}/common/mypage_side_bar.jsp" %>
+				
                 <!-- 컨텐츠 영역 -->
                 <div class="content">
-                    
                     <div class="content-header">
                         <div>
                             <h2>🔍 피부 진단</h2>

@@ -22,6 +22,7 @@ import com.onetouch.service.PaymentService;
 import com.onetouch.vo.CartVo;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.OrderItemVo;
+import com.onetouch.vo.OrderReviewVo;
 import com.onetouch.vo.OrderVo;
 import com.onetouch.vo.PaymentVo;
 import com.onetouch.vo.ProductVo;
