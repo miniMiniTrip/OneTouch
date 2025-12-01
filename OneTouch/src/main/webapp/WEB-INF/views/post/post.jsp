@@ -1453,7 +1453,7 @@ function carousels(){
  // 2. 좋아요 하트 토글 기능
  // =========================
 document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.interaction-btn');
+    const btn = e.target.closest('.heart-btn');
     if (!btn) return;
 
     const icon = btn.querySelector('i');
@@ -1491,7 +1491,7 @@ document.addEventListener('click', function(e) {
                 }
                 // 같은 post_idx 버튼 모두 동기화
                 
-                const allBtns = document.querySelectorAll(`.interaction-btn[data-post-idx="\${d.post_idx}"]`);
+                const allBtns = document.querySelectorAll(`.heart-btn[data-post-idx="\${d.post_idx}"]`);
                 allBtns.forEach(otherBtn => {
                     const otherIcon = otherBtn.querySelector('i');
                     otherBtn.classList.toggle('active', isLiked);  // isLiked는 클릭한 버튼 상태
@@ -1693,7 +1693,7 @@ document.addEventListener('click', function(e) {
 				//alert(`\${!isLiked}`);
 				if(isLiked){
 					html=html+`
-					    <button class="interaction-btn active" data-post-idx="\${postVo.post_idx}">
+					    <button class="interaction-btn heart-btn active" data-post-idx="\${postVo.post_idx}">
 					        <i class="fas fa-heart"></i> <!-- 채워진 하트 -->
 					    </button>
 					`
@@ -1703,7 +1703,7 @@ document.addEventListener('click', function(e) {
 				`
 				if(!isLiked){
 					html=html+`
-					    <button class="interaction-btn" data-post-idx="\${postVo.post_idx}">
+					    <button class="interaction-btn heart-btn" data-post-idx="\${postVo.post_idx}">
 					        <i class="far fa-heart"></i> <!-- 빈 하트 -->
 					    </button>
 					    `
