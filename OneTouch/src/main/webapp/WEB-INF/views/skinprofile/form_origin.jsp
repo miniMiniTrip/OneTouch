@@ -36,7 +36,7 @@
 }
 
 /* ==================== 사이드바 스타일 ==================== */
-/* .sidebar {
+.sidebar {
     width: 250px;
     background: #fafafa;
     border-right: 1px solid #e0e0e0;
@@ -93,7 +93,7 @@
     color: #5c6bc0;
     font-weight: 600;
     border-left: 3px solid #5c6bc0;
-} */
+}
 
 /* ==================== 컨텐츠 영역 ==================== */
 .content {
@@ -597,7 +597,7 @@
             <div class="mypage-container">
                 
                 <!-- 사이드바 -->
-                <%-- <div class="sidebar">
+                <div class="sidebar">
                     <div class="sidebar-header">
                         마이페이지
                     </div>
@@ -632,11 +632,7 @@
                         </a>
                     </div>
                 </div>
-                 --%>
-                 
-                 <!-- 사이드바 인크루드 -->
-                    <%@include file="../common/mypage_side_bar.jsp" %>
-                    
+                
                 <!-- 컨텐츠 영역 -->
                 <div class="content">
                     
