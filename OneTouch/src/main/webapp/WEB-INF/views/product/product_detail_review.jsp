@@ -8,6 +8,41 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+/* 프로필 사진 */
+.comment-profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+@media (max-width: 767px) {
+    .reviewer-profile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70px;          /* 고정 너비 줘야 함! */
+        height: 70px;         /* 고정 높이 필수!! */
+        margin: 0 auto;       /* 이 div 자체를 가운데로 (부모가 flex 아니면) */
+    }
+
+    .comment-profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+	.review-images{
+		display: flex;
+        justify-content: center;
+        align-items: center
+        }
+	.review-text{
+	    text-align: center;        /* 혹시 모를 안전장치 */
+	}
+	
+}
+</style>
 </head>
 <body>
 <div class="review-container">
@@ -91,10 +126,10 @@
 					<div class="review-tabs">
 					
 						<!--회신순/ 베스트순/ 별점 연결해주세요! -->
-						<a href="?sort=rating"
+						<%-- <a href="?sort=rating"
 							class="tab-btn ${param.sort == 'rating' || empty param.sort ? 'active' : ''}">베스트순</a>
 						<a href="?sort=date"
-							class="tab-btn ${param.sort == 'date' ? 'active' : ''}">최신순</a>
+							class="tab-btn ${param.sort == 'date' ? 'active' : ''}">최신순</a> --%>
 					</div>
 					<!--불필요해보여서 뷰에 나타내지 않음 -->
 					
@@ -124,8 +159,9 @@
 						<c:if test="${postVo.order_item_id !=0 }">
 						<div class="review-item">
 							<div class="reviewer-info">
-								<div class="reviewer-avatar">
-									<span>뷰</span>
+								<div class="reviewer-profile">
+									<img src="${pageContext.request.contextPath}/images/mem/${postVo.mem_image_url}" 
+		                                  alt="프로필" class="comment-profile-img"> 
 								</div>
 								<div class="reviewer-details">
 									<div class="reviewer-name">${postVo.mem_id }</div>
