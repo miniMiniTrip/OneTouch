@@ -362,54 +362,54 @@ document.addEventListener('click', function(e) {
                         </ul>
                     </div> --%>
                 </div>
-                <div class="col-lg-4 col-md-4 col-12">
-    <div class="top-end">
-        <c:choose>
-            <c:when test="${not empty sessionScope.user}">
-                <div class="user">
-                    <i class="lni lni-user"></i> ${sessionScope.user.mem_name}님
-                </div>
-                <ul class="user-login">
-                    
-                    
-                    <!-- 마이페이지 드롭다운 - 햄버거 스타일 -->
-                    <li class="user-dropdown">
-                        <a href="javascript:void(0)" onclick="toggleDropdown('mypage-menu')">
-                            마이페이지 <i class="lni lni-chevron-down"></i>
-                        </a>
-                        <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
-                            <li><a href="${pageContext.request.contextPath}/user/check_password">내 정보</a></li>
-                            <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
-                            <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
-                            <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품</a></li>
-                        </ul>
-                    </li>
-                    
-                    <!-- 관리자 드롭다운 -->
-                    <c:if test="${sessionScope.user.mem_roll == 'admin'}">
-                        <li class="user-dropdown">
-                            <a href="javascript:void(0)" onclick="toggleDropdown('admin-menu')">
-                                관리자 <i class="lni lni-chevron-down"></i>
-                            </a>
-                            <ul class="user-dropdown-menu" id="admin-menu" style="display: none;">
-                                <li><a href="${pageContext.request.contextPath}/adminpage/dashboard">대시보드</a></li>
-                                <li><a href="${pageContext.request.contextPath}/adminpage/product">상품 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/admin_members">회원 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/order/management">주문 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/admin/qna_list">Q&A 관리</a></li>
-                            </ul>
-                        </li>
-                    </c:if>
-                    
-                    
-                    <li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
-                </ul>
-            </c:when>
-            <c:otherwise>
-                <div class="user">
-                    <i class="lni lni-user"></i> 환영합니다
-                </div>
-                <ul class="user-login">
+	                <div class="col-lg-4 col-md-4 col-12">
+				    	<div class="top-end">
+					        <c:choose>
+					            <c:when test="${not empty sessionScope.user}">
+					                <div class="user">
+					                    <i class="lni lni-user"></i> ${sessionScope.user.mem_name}님
+					                </div>
+					                <ul class="user-login">
+					                    
+					                    
+					                    <!-- 마이페이지 드롭다운 - 햄버거 스타일 -->
+					                    <li class="user-dropdown">
+					                        <a href="javascript:void(0)" onclick="toggleDropdown('mypage-menu')">
+					                            마이페이지 <i class="lni lni-chevron-down"></i>
+					                        </a>
+					                        <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
+					                            <li><a href="${pageContext.request.contextPath}/user/check_password">내 정보</a></li>
+					                            <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
+					                            <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
+					                            <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품</a></li>
+					                        </ul>
+					                    </li>
+					                    
+					                    <!-- 관리자 드롭다운 -->
+					                    <c:if test="${sessionScope.user.mem_roll == 'admin'}">
+					                        <li class="user-dropdown">
+					                            <a href="javascript:void(0)" onclick="toggleDropdown('admin-menu')">
+					                                관리자 <i class="lni lni-chevron-down"></i>
+					                            </a>
+					                            <ul class="user-dropdown-menu" id="admin-menu" style="display: none;">
+					                                <li><a href="${pageContext.request.contextPath}/adminpage/dashboard">대시보드</a></li>
+					                                <li><a href="${pageContext.request.contextPath}/adminpage/product">상품 관리</a></li>
+					                                <li><a href="${pageContext.request.contextPath}/admin/admin_members">회원 관리</a></li>
+					                                <li><a href="${pageContext.request.contextPath}/order/management">주문 관리</a></li>
+					                                <li><a href="${pageContext.request.contextPath}/admin/qna_list">Q&A 관리</a></li>
+					                            </ul>
+					                        </li>
+					                    </c:if>
+					                    
+					                    
+					                    <li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
+					                </ul>
+					            </c:when>
+					            <c:otherwise>
+	                	<div class="user">
+	                    <i class="lni lni-user"></i> 환영합니다
+	                </div>
+	                <ul class="user-login">
                 
                     <li><a href="${pageContext.request.contextPath}/user/login?url=" id="loginBtn">로그인</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/register">회원가입</a></li>
