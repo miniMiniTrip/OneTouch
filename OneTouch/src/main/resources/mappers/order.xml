@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <!-- 회원별 주문 목록 조회 -->
-<select id="selectList" parameterType="int" resultType="TestVo">
+<select id="selectList" parameterType="int" resultType="OrderReviewVo">
 SELECT 
 o.order_id as order_id
 ,o.order_no as order_no
