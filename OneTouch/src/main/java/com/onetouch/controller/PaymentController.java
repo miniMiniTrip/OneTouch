@@ -139,21 +139,35 @@ public class PaymentController {
                 order_service.updateStatus(order_id, "결제완료");
                 
             } else {
-                // 신규 결제: order_item은 create_ready.do에서 이미 생성됨
-                // 장바구니 결제인 경우 장바구니 삭제만 수행
-                System.out.println("신규 결제 처리 - 주문 상태 업데이트");
+                // ✅ 신규 결제: order_item 생성 필요!
+                System.out.println("신규 결제 처리 - order_item 생성");
                 
                 if ("cart".equals(order_type)) {
+                    // 장바구니 결제
                     String[] cart_ids = (String[]) session.getAttribute("cart_ids");
                     if (cart_ids != null && cart_ids.length > 0) {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("cart_id_array", cart_ids);
-                        cart_dao.deletePaymentComplete(map);
-                        System.out.println("장바구니 삭제 완료");
+                        // ✅ order_item 생성 + 장바구니 삭제 + 주문 상태 업데이트
+                        order_service.insertOrderCartByToss(order_id, cart_ids);
+                        System.out.println("장바구니 order_item 생성 완료");
+                    } else {
+                        System.err.println("⚠️ 장바구니 정보가 세션에 없습니다!");
                     }
+                    
+                } else if ("direct".equals(order_type)) {
+                    // 단건 결제
+                    Integer product_idx = (Integer) session.getAttribute("product_idx");
+                    Integer product_cnt = (Integer) session.getAttribute("product_cnt");
+                    
+                    if (product_idx != null && product_cnt != null) {
+                        // ✅ order_item 생성 + 주문 상태 업데이트
+                        order_service.insertOrderToss(order_id, product_idx, product_cnt);
+                        System.out.println("단건 order_item 생성 완료");
+                    } else {
+                        System.err.println("⚠️ 상품 정보가 세션에 없습니다!");
+                    }
+                } else {
+                    System.err.println("⚠️ 알 수 없는 주문 타입: " + order_type);
                 }
-                
-                order_service.updateStatus(order_id, "결제완료");
             }
             
             // 세션 정리
@@ -175,7 +189,6 @@ public class PaymentController {
             return "order/order_fail";
         }
     }
-
 	
     @RequestMapping("/payment/fail.do")
     public String paymentFail(
