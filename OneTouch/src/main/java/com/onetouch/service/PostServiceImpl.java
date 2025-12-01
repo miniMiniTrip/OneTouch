@@ -290,68 +290,67 @@ public class PostServiceImpl implements PostService {
 		}
 		
 		
-		//해시태그 name으로 조회 해서 있으면 넘어가고 없으면 새로 추가
-		res=res*hashtagDao.deletePostHashtagByPost(postVo.getPost_idx());
-		if(res==0) { 
-			throw new Exception("deletePostHashtagByPost()_not");
-		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("post_idx", postVo.getPost_idx());
-		
-		List<String> hashtagNameList= new ArrayList<String>();
-		List<HashtagVo> hashtagIdxList =new ArrayList<>();
-				
-		for(String hashtag : post_hashtag_array) {
-			if(hashtag==null ||hashtag.trim().isEmpty()) {
-				continue;
-			}
-			String cleanTag = hashtag.trim().replaceFirst("^#", "");
-			hashtagNameList.add(cleanTag);
-		}
-		
-		if(hashtagNameList.isEmpty()) {
-			return res;
-		}
-		
-		// 유저가준 해시키워드로 해시테이블에 뭐있는지 조회
-		List<HashtagVo> existingTags = hashtagDao.selectByNames(hashtagNameList);
-		Map<String, HashtagVo> existingMap = new HashMap<>();
-		for (HashtagVo vo : existingTags) {
-		    existingMap.put(vo.getHashtag_name(), vo); // {해시태그이름, vo}
-		}
-		
-		// 없는 해시태그만 골라서 insert
-		List<String> newTagsToInsert = new ArrayList<>();
-		for(String name:hashtagNameList) {
-			if(!existingMap.containsKey(name)) {
-				System.out.printf("존재하지 않는 해시태그 발견 → 등록 예정: %s\n", name);
-		        newTagsToInsert.add(name);
-			}else {
-		        System.out.printf("이미 존재하는 해시태그: %s\n", name);
-		        // 바로 idx 저장 (INSERT 안 해도 됨)
-		        hashtagIdxList.add(existingMap.get(name));
-		    }
-		}
-		
-		// 새로운 해시태그들만 한 번에 INSERT
-		if (!newTagsToInsert.isEmpty()) {
-		    hashtagDao.insert(newTagsToInsert); 
+		//해시태그 name으로 조회 해서 있으면 넘어가고 없으면 새로 추가 (수정된 버전)
+		System.out.printf(" 카테고리 => %s\n", postVo.getPost_category());
 
-		    // 방금 넣은 애들 다시 조회해서 idx 가져오기
-		    List<HashtagVo> justInserted = hashtagDao.selectByNames(newTagsToInsert);
-		    for (HashtagVo vo : justInserted) {
-		        hashtagIdxList.add(vo);
+		if (!postVo.getPost_category().equals("review")) {
+		    // 1. 기존 해시태그 모두 삭제 (항상 실행)
+		    res = res * hashtagDao.deletePostHashtagByPost(postVo.getPost_idx());
+		    if (res == 0) {
+		        throw new Exception("deletePostHashtagByPost()_not");
+		    }
+
+		    // 2. 새로 받은 해시태그 처리 (null이어도 안전)
+		    List<String> hashtagNameList = new ArrayList<>();
+		    List<HashtagVo> hashtagIdxList = new ArrayList<>();
+		    Map<String, Object> map = new HashMap<>();
+		    map.put("post_idx", postVo.getPost_idx());
+
+		    if (post_hashtag_array != null && post_hashtag_array.length > 0) {
+		        for (String hashtag : post_hashtag_array) {
+		            if (hashtag != null && !hashtag.trim().isEmpty()) {
+		                String cleanTag = hashtag.trim().replaceFirst("^#", "");
+		                hashtagNameList.add(cleanTag);
+		            }
+		        }
+		    }
+
+		    // 해시태그가 하나도 없으면 → 삭제만 하고 끝! (insert 안 함)
+		    if (hashtagNameList.isEmpty()) {
+		        System.out.println("해시태그 없음 → 기존 삭제만 하고 추가 안 함 (정상 동작)");
+		    } else {
+		        // 해시태그 있을 때만 기존 로직 실행
+		        List<HashtagVo> existingTags = hashtagDao.selectByNames(hashtagNameList);
+		        Map<String, HashtagVo> existingMap = new HashMap<>();
+		        for (HashtagVo vo : existingTags) {
+		            existingMap.put(vo.getHashtag_name(), vo);
+		        }
+
+		        List<String> newTagsToInsert = new ArrayList<>();
+		        for (String name : hashtagNameList) {
+		            if (!existingMap.containsKey(name)) {
+		                System.out.printf("존재하지 않는 해시태그 발견 → 등록 예정: %s\n", name);
+		                newTagsToInsert.add(name);
+		            } else {
+		                System.out.printf("이미 존재하는 해시태그: %s\n", name);
+		                hashtagIdxList.add(existingMap.get(name));
+		            }
+		        }
+
+		        if (!newTagsToInsert.isEmpty()) {
+		            hashtagDao.insert(newTagsToInsert);
+		            List<HashtagVo> justInserted = hashtagDao.selectByNames(newTagsToInsert);
+		            hashtagIdxList.addAll(justInserted);
+		        }
+
+		        map.put("hashtag_list", hashtagIdxList);
+		        System.out.printf(" hashtag_list : %s\n", hashtagIdxList);
+		        res = res * hashtagDao.insertPostHashtag(map);
+		        if (res == 0) {
+		            throw new Exception("insertPostHashtag()_not");
+		        }
 		    }
 		}
-		
-		
-		map.put("hashtag_list",hashtagIdxList);
-		System.out.printf("		hashtag_list : %s\n",hashtagIdxList);
-		res = res * hashtagDao.insertPostHashtag(map);
-		if(res==0) { 
-			throw new Exception("insertPostHashtag()_not");
-		}
-		
 		System.out.printf("		수정할 postVo:%s\n",postVo);
 		res=res*postDao.updatePostVo(postVo);
 		if(res==0) { 

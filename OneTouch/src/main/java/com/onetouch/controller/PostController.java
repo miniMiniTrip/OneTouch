@@ -296,7 +296,8 @@ public class PostController {
 	public String postModify(PostVo postVo,String[] post_hashtag_array,RedirectAttributes ra)  {
 		System.out.printf("	[PostController] postModify()\n");
 		System.out.printf("		postVo => %s\n",postVo);
-		System.out.printf("		post_hashtag_array => %d\n",post_hashtag_array.length);
+		int hashtagLength = (post_hashtag_array != null) ? post_hashtag_array.length : 0;
+	    System.out.printf(" 	post_hashtag_array 갯수 => %d (null 가능)\n", hashtagLength);
 		
 		try {
 			int res=postService.updatePostVo(postVo,post_hashtag_array);

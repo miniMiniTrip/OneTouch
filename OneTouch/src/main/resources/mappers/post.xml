@@ -351,8 +351,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		;
 	</select>
 	
-	<!-- post idx 기준으로 댓글 갯수 가져오기 -->
-	<select id="selectReplyCount">
-		SELECT count(*) as count FROM otdb.reply WHERE post_idx=#{post_idx};
-	</select>
+
 </mapper>
