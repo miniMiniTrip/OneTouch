@@ -18,4 +18,6 @@ public class OrderItemVo {
 	int total_amount;
 	Timestamp order_time; 
 	String product_image_url;
+	
+	int use_review;
 }

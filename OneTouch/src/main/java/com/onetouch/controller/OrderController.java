@@ -16,15 +16,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.onetouch.dao.CartDao;
 import com.onetouch.dao.OrderDao;
 import com.onetouch.dao.OrderItemDao;
+import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.OrderService;
 import com.onetouch.service.PaymentService;
 import com.onetouch.vo.CartVo;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.OrderItemVo;
-import com.onetouch.vo.OrderReviewVo;
 import com.onetouch.vo.OrderVo;
 import com.onetouch.vo.PaymentVo;
+import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,6 +54,9 @@ public class OrderController {
 	
 	@Autowired
 	PaymentService payment_service;
+	
+	@Autowired
+	PostDao postDao;
 	
 	@Value("${toss.client.key}")
 	private String tossClientKey;  // 클래스 상단에 추가
@@ -415,6 +419,18 @@ public class OrderController {
 		
 		PaymentVo payment = payment_service.getPaymentByOrderId(order_id);
 		
+		for(int i=0;i<order_items.size();i++) {
+			PostVo postVo=postDao.selectPostOrderItemOne(order_items.get(i).getOrder_item_id());
+			if(postVo==null) {
+				order_items.get(i).setUse_review(1);
+				continue;
+			}else
+			if(postVo.getOrder_item_id().equals(order_items.get(i).getOrder_item_id())) {
+				order_items.get(i).setUse_review(2);
+			}
+			
+		}
+		System.out.println(order_items);
 		model.addAttribute("order", order);
 		model.addAttribute("order_items", order_items);
 		model.addAttribute("payment", payment);

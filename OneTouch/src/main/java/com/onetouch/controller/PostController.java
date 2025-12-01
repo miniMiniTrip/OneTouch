@@ -183,6 +183,7 @@ public class PostController {
 		
 		//등록 페이지 갈때 상품 목록데이터 보내주기
 		List<ProductVo> product_list_array=postDao.selectProductList();
+		model.addAttribute("product_idx",product_idx);
 		System.out.printf("		productList(%d):%s\n",product_list_array.size(),product_list_array);
 		model.addAttribute("product_list_array", product_list_array);
 		model.addAttribute("mem_idx", mem_idx);
@@ -210,6 +211,11 @@ public class PostController {
 		postService.postInsert(postVo,post_hashtag_array);
 		
 		
+		if(order_item_id>0) {
+			System.out.println("	[PostController] redirect:/product/detail?id=product_idx");
+			System.out.println("");
+			return "redirect:/product/detail?id="+review_product_idx;
+		}
 		System.out.println("	[PostController] redirect:/post/list");
 		System.out.println("");
 		return"redirect:/post/list";

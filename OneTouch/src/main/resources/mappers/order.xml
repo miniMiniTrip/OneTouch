@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	order by order_time desc
 </select>
 
-<!-- 회원별 상세페이지에서 리뷰처리를 위한 코드 -->
+<!-- 상세페이지에서 리뷰처리를 위한 코드 -->
 <select id="s" parameterType="int" resultType="OrderReviewVo">
 SELECT 
 o.order_id as order_id
@@ -62,10 +62,10 @@ otdb.order o
 LEFT JOIN order_item oi ON o.order_id = oi.order_id
 LEFT JOIN mem m ON o.mem_idx = m.mem_idx
 LEFT JOIN post p ON p.order_item_id = oi.order_item_id
-WHERE m.mem_idx = #{mem_idx}
 ORDER BY o.order_time desc
 ;
 </select>
+
 
 <!-- 주문번호로 조회 -->
 <select id="selectOneByOrderNo" parameterType="string" resultType="order">

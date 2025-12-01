@@ -60,4 +60,6 @@ public interface PostDao {
 
 	// order_item_id로 post 있는지 체크
 	PostVo selectPostOrderItemOne(int order_item_id);
+	
+
 }
