@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ import com.onetouch.dao.CategoryDao;
 import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.ProductService;
+import com.onetouch.vo.OrderReviewPostVo;
 import com.onetouch.vo.ProductVo;
 
 import jakarta.servlet.ServletContext;
@@ -151,9 +151,11 @@ public class ProductController {
         }
         
         //상품 리뷰 가져오기
-        //postDao.selectProductReviewList();
+        List<OrderReviewPostVo> orderReviewPostVo=postDao.selectReviewPostList(product_idx);
+        System.out.printf("		상품리뷰]orderReviewPostVo => %s\n",orderReviewPostVo);
+        model.addAttribute("orderReviewPostVo",orderReviewPostVo);
         
-        System.out.printf("상세페이지 이미지 => %s\n",lowerdetailImages);
+        System.out.printf("내용 이미지 => %s\n",lowerdetailImages);
         System.out.printf("서브 이미지 => %s\n",subImages);
         System.out.printf("상세페이지 product => %s\n",product);
         model.addAttribute("product", product);

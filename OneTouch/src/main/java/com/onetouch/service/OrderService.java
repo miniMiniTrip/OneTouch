@@ -15,7 +15,7 @@ import com.onetouch.dao.OrderItemDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.vo.CartVo;
 import com.onetouch.vo.OrderItemVo;
-import com.onetouch.vo.OrderReviewVo;
+import com.onetouch.vo.OrderReviewPostVo;
 import com.onetouch.vo.OrderVo;
 import com.onetouch.vo.ProductVo;
 

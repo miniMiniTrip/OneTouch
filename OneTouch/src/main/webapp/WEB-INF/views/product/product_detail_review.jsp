@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,9 +98,9 @@
 					</div>
 					<!--불필요해보여서 뷰에 나타내지 않음 -->
 					
-					<div class="reviews">
+					<%-- <div class="reviews">
 					 <button onclick="location.href='/post/insert?category=review&product_idx=${product.product_idx}';">✎ 리뷰쓰기</button>
-					 </div>
+					 </div> --%>
 			<%-- 		<div class="review-search"> 
 						<input type="text" placeholder="검색어를 입력하세요" class="search-input">
 						<select class="sort-select">
@@ -117,103 +120,79 @@
 				<div class="review-items">
 
 					<!-- 개별 리뷰 아이템 -->
-					<div class="review-item">
-						<div class="reviewer-info">
-							<div class="reviewer-avatar">
-								<span>뷰</span>
+					<c:forEach var="postVo" items="${orderReviewPostVo }">
+						<c:if test="${postVo.order_item_id !=0 }">
+						<div class="review-item">
+							<div class="reviewer-info">
+								<div class="reviewer-avatar">
+									<span>뷰</span>
+								</div>
+								<div class="reviewer-details">
+									<div class="reviewer-name">${postVo.mem_id }</div>
+									
+									<!-- 별점 -->
+									<div class="review-rating">
+									    <c:set var="rating" value="${postVo.post_rating}" />
+									    
+									    <!-- 정수 부분 -->
+									    <c:set var="fullStars" value="${fn:split(rating, '.')[0]}" />
+									    
+									    <!-- 소수 부분 (0~1 사이 값) -->
+									    <c:set var="decimal" value="${rating - fullStars}" />
+									
+									    <!-- 채워진 별 출력 -->
+									    <c:forEach var="i" begin="1" end="${fullStars}">
+									        ★
+									    </c:forEach>
+									
+									    <!-- 반 별 출력 (소수점 0.5 이상일 경우) -->
+									    <c:if test="${decimal >= 0.5}">
+									        ⯨ <!-- 반 별 기호, 원하는 기호나 이미지로 변경 가능 -->
+									    </c:if>
+									
+									    <!-- 빈 별 출력 -->
+									    <c:forEach var="i" begin="1" end="${5 - fullStars - (decimal >= 0.5 ? 1 : 0)}">
+									        ☆
+									    </c:forEach>
+									
+									    (${rating})
+									</div>
+									<!-- /별점 -->
+
+
+									<div class="review-date">${postVo.post_time }</div>
+									<div class="reviewer-type">구매상품 : ${postVo.product_name}</div>
+								</div>
 							</div>
-							<div class="reviewer-details">
-								<div class="reviewer-name">뷰티리뷰어</div>
-								<div class="review-rating">★★★★★</div>
-								<div class="review-date">2025.11.28</div>
-								<div class="reviewer-type">구매상품 : ${product.product_name}</div>
+	
+							<div class="review-content">
+	
+	
+								<!--  커뮤니티에 있는 사진 연결해 주세여 --> <!--  커뮤니티에 있는 사진 연결해 주세여 -->
+								<div class="review-images">
+								    <c:if test="${not empty postVo.post_image}">
+								        <c:set var="imgList" value="${fn:split(postVo.post_image, '*')}" />
+								
+								        <c:forEach var="img" items="${imgList}">
+								            <img src="${pageContext.request.contextPath }/images/posts/${img}" alt="리뷰이미지">
+								        </c:forEach>
+								    </c:if>
+								</div>
+	
+								<div class="review-text">
+									<p>${postVo.product_name } 사용 리뷰</p>
+									<p>[${postVo.post_title }]</p>
+									<p>${postVo.post_content }</p>
+								</div>
 							</div>
 						</div>
-
-						<div class="review-content">
-
-
-							<!--  커뮤니티에 있는 사진 연결해 주세여 --> <!--  커뮤니티에 있는 사진 연결해 주세여 -->
-							<div class="review-images">
-								<img src="review-img1.jpg" alt="리뷰이미지"> 
-								<img src="review-img2.jpg" alt="리뷰이미지"> 
-							    <img src="review-img3.jpg" alt="리뷰이미지"> 
-								<img src="review-img4.jpg" alt="리뷰이미지"> 
-								<img src="review-img5.jpg" alt="리뷰이미지"> 
-								<img src="review-img6.jpg" alt="리뷰이미지"> 
-								<img src="review-img7.jpg" alt="리뷰이미지">
-							</div>
-
-							<div class="review-text">
-								<p>데일리 수분 세럼 사용 리뷰</p>
-								<p>[구매 동기 및 제품 특징]</p>
-								<p>요즘 환절기라 피부가 푸석해져서 수분감을 채워줄 세럼을 찾던 중, 성분이 순하고 보습력이 좋다는 후기를
-									보고 선택했습니다. 실제로 발림성이 매우 부드럽고 끈적임 없이 빠르게 흡수됩니다. 메이크업 전에 사용해도 밀림
-									없이 잘 올라가요.</p>
-							</div>
-						</div>
-					</div>
-
-				
-
-					<div class="review-item">
-						<div class="reviewer-info">
-							<div class="reviewer-avatar">
-								<span>김</span>
-							</div>
-							<div class="reviewer-details">
-								<div class="reviewer-name">김**님</div>
-								<div class="review-rating">★★★★★</div>
-								<div class="review-date">2024.11.15</div>
-							</div>
-						</div>
-						<div class="review-content">
-							<div class="review-text">
-								<p>촉촉한데 끈적이지 않아서 정말 좋아요! 세럼인데도 가볍고 흡수력도 빨라서 데일리로 쓰기 딱 좋습니다.
-									향도 은은해서 계속 손이 가네요.</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="review-item">
-						<div class="reviewer-info">
-							<div class="reviewer-avatar">
-								<span>박</span>
-							</div>
-							<div class="reviewer-details">
-								<div class="reviewer-name">박**님</div>
-								<div class="review-rating">★★★★☆</div>
-								<div class="review-date">2024.11.10</div>
-							</div>
-						</div>
-						<div class="review-content">
-							<div class="review-text">
-								<p>민감성 피부인데도 트러블 없이 잘 맞아요. 바르자마자 피부가 편안해지는 느낌이에요. 보습도 꽤
-									오래갑니다.</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="review-item">
-						<div class="reviewer-info">
-							<div class="reviewer-avatar">
-								<span>이</span>
-							</div>
-							<div class="reviewer-details">
-								<div class="reviewer-name">이**님</div>
-								<div class="review-rating">★★★★★</div>
-								<div class="review-date">2024.11.05</div>
-							</div>
-						</div>
-						<div class="review-content">
-							<div class="review-text">
-								<p>배송도 빠르고 제품 상태도 완벽했어요. 사용감도 너무 좋고 수분감이 오래 지속되네요. 재구매 의사
-									100%입니다.</p>
-							</div>
-						</div>
-					</div>
+						</c:if>
+					</c:forEach>
 
 				</div>
+
+
+
 
 			</div>
 		</div>
