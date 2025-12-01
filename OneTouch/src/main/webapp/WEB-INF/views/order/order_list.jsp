@@ -614,7 +614,7 @@
                                             </svg>
                                         </div>
                                         <div class="order-info">
-                                            <div class="order-product-name">${order.product_name}</div>
+                                            <div class="order-product-name">${order.order_name}</div>
                                             <div class="order-product-detail">
                                                 주문일시: <fmt:formatDate value="${order.order_time}" pattern="yyyy.MM.dd HH:mm"/>
                                             </div>
@@ -660,21 +660,11 @@
                                                     <button class="btn btn-primary" onclick="retryPayment(${order.order_id})">재결제하기</button>
                                                 </c:when>
                                                 <c:when test="${order.order_status == '배송완료'}">
-    <c:set var="hasWritableItem" value="false" />
-        <!-- 리뷰 안 쓴 상품만 리뷰작성 버튼 보이기 -->
-        <c:if test="${order.order_item_id == 0}">
-            <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${order.product_idx }&order_item_id=${order.order_item_id}"
-               class="btn btn-primary me-2">
-                리뷰작성
-            </a>
-            <c:set var="hasWritableItem" value="true" />
-        </c:if>
-
-    <!-- 모든 상품에 리뷰를 썼다면 버튼 대신 "리뷰완료" 표시 (선택) -->
-    <c:if test="${!hasWritableItem && order.order_item_id!=0}">
-        <span class="text-success small fw-bold">리뷰 완료</span>
-    </c:if>
-</c:when>
+												    <c:if test="${not empty order.order_items and order.order_items.size() > 0}">
+												        <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${order.order_items[0].product_idx}&order_item_id=${order.order_items[0].order_item_id}" 
+												           class="btn btn-primary">리뷰작성</a>
+												    </c:if>
+												</c:when>
                                                 <c:when test="${order.order_status == '배송중' and not empty order.order_tracking}">
                                                     <button class="btn btn-outline-primary" 
                                                             onclick="trackShipping('${order.order_courier}', '${order.order_tracking}')">

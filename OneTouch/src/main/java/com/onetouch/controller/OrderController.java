@@ -22,6 +22,7 @@ import com.onetouch.service.PaymentService;
 import com.onetouch.vo.CartVo;
 import com.onetouch.vo.MemVo;
 import com.onetouch.vo.OrderItemVo;
+import com.onetouch.vo.OrderReviewVo;
 import com.onetouch.vo.OrderVo;
 import com.onetouch.vo.PaymentVo;
 import com.onetouch.vo.ProductVo;
@@ -385,11 +386,11 @@ public class OrderController {
 			
 		List<OrderVo> order_list = order_service.selectList(mem_idx);
 		
-//		// 각 주문의 order_items 조회 (리뷰 작성용)
-//		for(OrderVo order : order_list) {
-//			List<OrderItemVo> items = order_item_dao.selectListByOrderId(order.getOrder_id());
-//			order.setOrder_items(items);
-//		}
+		// 각 주문의 order_items 조회 (리뷰 작성용)
+		for(OrderVo order : order_list) {
+			List<OrderItemVo> items = order_item_dao.selectListByOrderId(order.getOrder_id());
+			order.setOrder_items(items);
+		}
 		System.out.printf("		오더 리스트 => %s\n",order_list);
 		model.addAttribute("order_list",order_list);
 		
