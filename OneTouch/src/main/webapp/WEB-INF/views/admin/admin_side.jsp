@@ -101,7 +101,7 @@
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/adminpage/product" 
-                   class="${pageContext.request.requestURI.contains('/products') ? 'active' : ''}">
+                   class="${pageContext.request.requestURI.contains('/product') ? 'active' : ''}">
                     📦 상품관리
                 </a>
             </li>
@@ -111,7 +111,7 @@
                   //alert('${ pageContext.request.requestURI }');
                 </script> 
                 <a href="${pageContext.request.contextPath}/admin/order/list"
-                   class="${pageContext.request.requestURI.contains('/order_management') ? 'active' : ''}">
+                   class="${pageContext.request.requestURI.contains('/order_list') ? 'active' : ''}">
                     🚚 주문관리
                 </a>
             </li>
