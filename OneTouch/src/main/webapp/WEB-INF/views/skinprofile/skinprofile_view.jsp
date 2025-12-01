@@ -585,79 +585,9 @@
     <section class="mypage-section">
         <div class="container">
             <div class="mypage-container">
-                
-                <!-- ==================== Sidebar ==================== -->
-               <%--  <div class="sidebar">
-                    <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
-                    
-                    <!-- 쇼핑 메뉴 -->
-                    <div class="menu-section">
-                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            🛒 장바구니
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            💝 찜
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            🎯 주문/배송 조회
-                        </a>
-                    </div>
-                    
-                    <!-- 나의 활동 -->
-                    <div class="menu-section">
-                        <div class="menu-title">나의 활동</div>
-                        
-                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            💬 상품 Q&A
-                        </a>
-                        
-                        <!-- 피부 진단 - 현재 페이지 -->
-                        <a href="${pageContext.request.contextPath}/mypage/skinprofile.do" 
-                           class="menu-item active">
-                            🔬 피부 프로필
-                        </a>
-                    </div>
-                    
-                    <!-- 회원 정보 -->
-                    <div class="menu-section">
-                        <div class="menu-title">회원 정보</div>
-                        
-                        <a href="${pageContext.request.contextPath}/member/modify.do" 
-                           class="menu-item">
-                            👥 회원정보 수정
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/member/address.do" 
-                           class="menu-item">
-                            🔒 배송지 관리
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/member/notification.do" 
-                           class="menu-item">
-                            📧 알림톡신청 관리
-                        </a>
-                    </div>
-                    
-                    <!-- 로그아웃 -->
-                    <div class="menu-section">
-                        <a href="${pageContext.request.contextPath}/member/logout.do" 
-                           class="menu-item"
-                           onclick="return confirm('로그아웃 하시겠습니까?');">
-                            📝 로그아웃
-                        </a>
-                    </div>
-                </div> --%>
-                
-               <!--   /*사이드바 주소*/ -->
+
+               <!--  사이드바 주소 -->
      				<%@include file="../common/mypage_side_bar.jsp" %>
-                
                 
                 <!-- ==================== Content ==================== -->
                 <div class="content">
@@ -788,10 +718,10 @@
                             
                             <!-- 액션 버튼 -->
                             <div class="action-buttons">
-                                <a href="${pageContext.request.contextPath}/mypage/main.do" class="btn-secondary-custom">
+                                <a href="${pageContext.request.contextPath}/cart/list.do" class="btn-secondary-custom">
                                     마이페이지로
                                 </a>
-                                <a href="${pageContext.request.contextPath}/product/list.do" class="btn-primary-custom">
+                                <a href="${pageContext.request.contextPath}/product/list" class="btn-primary-custom">
                                     전체 상품 보기
                                 </a>
                             </div>
