@@ -96,13 +96,15 @@ public class PostController {
 	@RequestMapping("/post/all_list")
 	@ResponseBody
 	public Map<String,Object> postFormAllList(Model model,@RequestParam(name="page",defaultValue="1")int nowPage
-			,String tabType) {
+			,String tabType,String mypage) {
 		System.out.println("	[PostController-@ResponseBody] postFormList() ");
 		System.out.printf("		카테고리:%s\n",tabType);
 		System.out.printf("		페이지:%s\n",nowPage);
+		System.out.printf("		마이페이지 여부 => %s\n",mypage);
 		Map<String,Object>map =new HashMap<String, Object>();
 		map.put("post_category",tabType);
 		map.put("login_mem_idx", 0);
+		map.put("mypage",mypage);
 		MemVo memVo=(MemVo)httpsesion.getAttribute("user");
 		if(memVo!=null) {
 		int mem_idx=memVo.getMem_idx();
@@ -404,10 +406,12 @@ public class PostController {
 		
 	}
 	
-	//댓글 테스트화면
-	@RequestMapping("tt")
-	public String tt() {
-		return "/post/comments";
+	// 나의 post 목록
+	@RequestMapping("/post/mypost_list")
+	public String myPostList() {
+		System.out.printf("	[PostController] myPostList()\n");
+		System.out.printf("	[PostController] return : /post/post_mypage_list\n");
+		return "/post/post_mypage_list";
 	}
 	
 	

@@ -37,7 +37,7 @@
 }
 
 /* ==================== 사이드바 스타일 ==================== */
-/* .sidebar {
+.sidebar {
     width: 250px;
     background: #fafafa;
     border-right: 1px solid #e0e0e0;
@@ -94,7 +94,7 @@
     color: #5c6bc0;
     font-weight: 600;
     border-left: 3px solid #5c6bc0;
-} */
+}
 
 /* ==================== 컨텐츠 영역 ==================== */
 .content {
@@ -587,7 +587,7 @@
             <div class="mypage-container">
                 
                 <!-- ==================== Sidebar ==================== -->
-               <%--  <div class="sidebar">
+                <div class="sidebar">
                     <div class="sidebar-header">마이페이지</div>
                     <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
                     
@@ -653,11 +653,7 @@
                             📝 로그아웃
                         </a>
                     </div>
-                </div> --%>
-                
-               <!--   /*사이드바 주소*/ -->
-     				<%@include file="../common/mypage_side_bar.jsp" %>
-                
+                </div>
                 
                 <!-- ==================== Content ==================== -->
                 <div class="content">
@@ -676,7 +672,7 @@
                                     간단한 5개 질문으로 당신의 피부 타입을 분석하고<br>
                                     맞춤형 화장품을 추천받아보세요.
                                 </p>
-                                <a href="${pageContext.request.contextPath}/skinprofile/form" class="btn">
+                                <a href="${pageContext.request.contextPath}/skinprofile/form.do" class="btn">
                                     피부 진단 시작하기
                                 </a>
                             </div>

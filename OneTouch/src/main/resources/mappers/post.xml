@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    </if>
 	    <if test="postPageVo ==null or postPageVo.size() == 0">
 	    WHERE 1=0
-	    </if>	
+	    </if>
 	    ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
@@ -84,8 +84,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectPostIdxList" parameterType="map" resultType="PostPageVo">
 	SELECT p.post_idx
 	FROM post p
-	<if test="post_category != 'all'">
-	WHERE post_category=#{post_category}
+	where 1=1	
+	<if test="post_category != null and post_category != '' and post_category != 'all'">
+	and post_category=#{post_category}
+	</if>
+	<if test="mypage=='mypost'">
+	AND mem_idx=#{login_mem_idx}
 	</if>
 	ORDER BY p.post_idx DESC
 	LIMIT #{page}, #{block_list};
@@ -149,6 +153,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	#{vo.post_idx}
 	    </foreach>
 	    </if>	
+   	    <if test="postPageVo == null or postPageVo.size() == 0">
+		  and 1=0
+		</if>
 		ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
@@ -175,6 +182,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	#{vo.post_idx}
 	    </foreach>	
 	    </if>
+	    <if test="postPageVo == null or postPageVo.size() == 0">
+		  and 1=0
+		</if>
 		ORDER BY p.post_idx DESC,r.reply_idx DESC
 	</select>
 	
@@ -257,11 +267,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- post Total Count (페이지 처리를 위한 sql) -->
 	<select id="selectPostTotalCount" resultType="int" parameterType="map">
-		SELECT (count(p.post_idx)) as postTotalCount
-		FROM post p
-		<if test="post_category!='all'">
-		WHERE p.post_category=#{post_category}
-		</if>
+	    SELECT COUNT(p.post_idx) as postTotalCount
+	    FROM post p
+	    <where>
+	        <if test="post_category != 'all'">
+	            p.post_category = #{post_category}
+	        </if>
+	
+	        <if test="mypage == 'mypost'">
+	            AND p.mem_idx = #{login_mem_idx}
+	        </if>
+	    </where>
 	</select>
 	
 	<!-- order 테이블과 order_item -->

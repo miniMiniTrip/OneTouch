@@ -1435,10 +1435,9 @@ background
 					<c:if test="${not empty product.hashtag_list}">
 						<div class="product-hashtags">
 							<c:forEach var="hashtag" items="${product.hashtag_list}">
-								<a
-									href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
-									class="hashtag-badge" title="#${hashtag.hashtag_name} 상품 보기">
-									#${hashtag.hashtag_name} </a>
+								<a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}" 
+								class="hashtag-badge">#${hashtag.hashtag_name}</a>
+								</a>
 							</c:forEach>
 						</div>
 					</c:if>

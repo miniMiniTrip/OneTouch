@@ -421,13 +421,13 @@
                     <div class="success-message" id="successMsg"></div>
                     
                     <div class="member-detail">
-                        <form id="memberForm" action="${pageContext.request.contextPath}/mypage/updateMember" method="post" enctype="multipart/form-data">
+                        <form id="memberForm" action="${pageContext.request.contextPath}/user/updateMember" method="post" enctype="multipart/form-data">
                             
                             <div class="profile-photo-section">
                                 <div class="profile-photo-container">
                                     <div class="profile-photo-preview">
                                         <div class="profile-photo-circle" id="photoPreview">
-                                            <i class="lni lni-user profile-photo-placeholder"></i>
+                                            <img alt="${memVo.mem_image_url}" src="${pageContext.request.contextPath }/images/mem/${memVo.mem_image_url}">
                                         </div>
                                     </div>
                                     <div class="profile-photo-info">
@@ -435,7 +435,8 @@
                                         <p>JPG, PNG 파일 (최대 5MB)</p>
                                         <p>권장 크기: 400x400px</p>
                                         <div class="profile-photo-buttons">
-                                            <input type="file" id="photoFileInput" name="profilePhoto" accept="image/jpeg,image/png">
+                                            <input type="file" id="photoFileInput" name="mem_image" accept="image/*">
+                                            <input type="hidden" name="mem_image_url" value="${memVo.mem_image_url }">
                                             <button type="button" class="btn btn-submit" onclick="triggerFileInput();">사진 업로드</button>
                                             <button type="button" class="btn btn-cancel" onclick="deletePhoto();">삭제</button>
                                         </div>
@@ -448,40 +449,41 @@
                             <div class="form-group">
                                 <label class="form-label">아이디</label>
                                 <input type="text" class="form-input" value="${memVo.mem_id}" disabled>
+                                <input type="hidden" class="form-input" name="mem_id" value="${memVo.mem_id}" >
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">이름</label>
-                                <input type="text" class="form-input" name="name" value="${memVo.mem_name}" required>
+                                <input type="text" class="form-input" name="mem_name" value="${memVo.mem_name}" required>
                                 <div class="error-message" id="nameError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">이메일</label>
-                                <input type="email" class="form-input" name="email" value="${memVo.mem_email}" required>
+                                <input type="email" class="form-input" name="mem_email" value="${memVo.mem_email}" required>
                                 <div class="error-message" id="emailError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">휴대폰번호</label>
-                                <input type="tel" class="form-input" name="phone" value="${memVo.mem_phone}" required>
+                                <input type="tel" class="form-input" name="mem_phone" value="${memVo.mem_phone}" required>
                                 <div class="error-message" id="phoneError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">생년월일</label>
-                                <input type="date" class="form-input" name="birthDate" value="${memVo.mem_birth}">
+                                <input type="date" class="form-input" name="mem_birth" value="${memVo.mem_birth}">
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">새 비밀번호 (변경 시에만 입력)</label>
-                                <input type="password" class="form-input" name="newPassword" placeholder="8자 이상">
+                                <input type="password" class="form-input" name="mem_new_pw" placeholder="8자 이상">
                                 <div class="error-message" id="passwordError"></div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">새 비밀번호 확인</label>
-                                <input type="password" class="form-input" name="confirmPassword" placeholder="비밀번호 재입력">
+                                <input type="password" class="form-input" name="mem_pw" placeholder="비밀번호 재입력">
                                 <div class="error-message" id="confirmPasswordError"></div>
                             </div>
                             
@@ -492,19 +494,19 @@
                             <div class="form-group">
                                 <label class="form-label">우편번호</label>
                                 <div class="zipcode-container">
-                                    <input type="text" class="form-input zipcode-input" name="zipcode" value="${memVo.mem_postal}" readonly>
+                                    <input type="text" class="form-input zipcode-input" name="mem_postal" value="${memVo.mem_postal}" readonly>
                                     <button type="button" class="btn btn-outline-primary" onclick="searchZipcode();">검색</button>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">기본배송지</label>
-                                <input type="text" class="form-input" name="address" value="${memVo.mem_addr}" readonly>
+                                <input type="text" class="form-input" name="mem_addr" value="${memVo.mem_addr}" readonly>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">상세주소</label>
-                                <input type="text" class="form-input" name="detailAddress" value="${memVo.mem_addr_more}">
+                                <input type="text" class="form-input" name="mem_addr_more" value="${memVo.mem_addr_more}">
                             </div>
                             
                             <div class="btn-group">
@@ -536,14 +538,14 @@
             
             document.querySelectorAll('.error-message').forEach(msg => msg.style.display = 'none');
             
-            const name = form.querySelector('input[name="name"]').value.trim();
+            const name = form.querySelector('input[name="mem_name"]').value.trim();
             if (name === '') {
                 document.getElementById('nameError').textContent = '이름을 입력해주세요.';
                 document.getElementById('nameError').style.display = 'block';
                 isValid = false;
             }
             
-            const email = form.querySelector('input[name="email"]').value.trim();
+            const email = form.querySelector('input[name="mem_email"]').value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (email === '' || !emailRegex.test(email)) {
                 document.getElementById('emailError').textContent = '유효한 이메일을 입력해주세요.';
@@ -551,7 +553,7 @@
                 isValid = false;
             }
             
-            const phone = form.querySelector('input[name="phone"]').value.trim();
+            const phone = form.querySelector('input[name="mem_phone"]').value.trim();
             const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
             if (phone === '' || !phoneRegex.test(phone)) {
                 document.getElementById('phoneError').textContent = '휴대폰번호를 올바른 형식으로 입력해주세요. (예: 010-1234-5678)';
@@ -559,8 +561,8 @@
                 isValid = false;
             }
             
-            const newPassword = form.querySelector('input[name="newPassword"]').value;
-            const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
+            const newPassword = form.querySelector('input[name="mem_new_pw"]').value.trim();
+            const confirmPassword = form.querySelector('input[name="mem_pw"]').value.trim();
             
             if (newPassword !== '' || confirmPassword !== '') {
                 if (newPassword.length < 8) {
@@ -586,9 +588,9 @@
                 oncomplete: function(data) {
                     let addr = (data.userSelectedType === 'R') ? data.roadAddress : data.jibunAddress;
 
-                    document.querySelector('input[name="zipcode"]').value = data.zonecode;
-                    document.querySelector('input[name="address"]').value = addr;
-                    document.querySelector('input[name="detailAddress"]').focus();
+                    document.querySelector('input[name="mem_postal"]').value = data.zonecode;
+                    document.querySelector('input[name="mem_addr"]').value = addr;
+                    document.querySelector('input[name="mem_addr_more"]').focus();
                 }
             }).open();
             
@@ -602,7 +604,8 @@
         
         function confirmWithdraw() {
             if (confirm('정말로 회원을 탈퇴하시겠습니까?\n탈퇴 후 복구할 수 없습니다.')) {
-                location.href = '${pageContext.request.contextPath}/mypage/withdraw';
+                location.href = '${pageContext.request.contextPath}/user/delete?idx=${memVo.mem_idx}&image=${memVo.mem_image_url}';
+                
             }
         }
         

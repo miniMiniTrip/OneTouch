@@ -41,18 +41,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateMem" parameterType="MemVo">
 		UPDATE mem 
 			SET
-				mem_pw=#{mem_pw}
-				,mem_name=#{mem_name}
+				mem_name=#{mem_name}
 				,mem_postal=#{mem_postal}
 				,mem_addr=#{mem_addr}
 				,mem_addr_more=#{mem_addr_more}
 				,mem_email=#{mem_email}
-				,mem_roll=#{mem_roll}
 				,mem_birth=#{mem_birth}
 				,mem_phone=#{mem_phone}
 				,mem_update_time=now()
-			WHERE mem_idx=#{mem_idx}
+				,mem_image_url=#{mem_image_url}
+				<if test="mem_pw!=null and mem_pw!=''">
+				,mem_pw=#{mem_pw}
+				</if>
+			WHERE mem_id=#{mem_id}
 	</update>
+	
+	<delete id="userDelete">
+		delete from mem where mem_idx=#{mem_idx};
+	</delete>
 	
 	
 	<!-- 이름과 이메일로 아이디 찾기를 위한 유저 조회 -->

@@ -14,4 +14,6 @@ public interface PaymentDao {
 	int updatePaymentApproved(PaymentVo vo);
 	int updatePaymentFailed(PaymentVo vo);
 	int updatePaymentCanceled(PaymentVo vo);
+
+	int updatePaymentForRetry(PaymentVo vo);
 }

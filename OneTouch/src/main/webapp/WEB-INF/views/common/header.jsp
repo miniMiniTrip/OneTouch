@@ -379,7 +379,7 @@ document.addEventListener('click', function(e) {
                         </a>
                         <ul class="user-dropdown-menu" id="mypage-menu" style="display: none;">
                             <li><a href="${pageContext.request.contextPath}/user/check_password">내 정보</a></li>
-                            <li><a href="${pageContext.request.contextPath}/orders">주문 내역</a></li>
+                            <li><a href="${pageContext.request.contextPath}/order/list.do">주문 내역</a></li>
                             <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
                             <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품</a></li>
                         </ul>
@@ -395,7 +395,7 @@ document.addEventListener('click', function(e) {
                                 <li><a href="${pageContext.request.contextPath}/adminpage/dashboard">대시보드</a></li>
                                 <li><a href="${pageContext.request.contextPath}/adminpage/product">상품 관리</a></li>
                                 <li><a href="${pageContext.request.contextPath}/admin/admin_members">회원 관리</a></li>
-                                <li><a href="${pageContext.request.contextPath}/order/management">주문 관리</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/order/list">주문 관리</a></li>
                                 <li><a href="${pageContext.request.contextPath}/admin/qna_list">Q&A 관리</a></li>
                             </ul>
                         </li>
@@ -493,7 +493,7 @@ document.addEventListener('click', function(e) {
                                             <span class="total-amount" id="cart-dropdown-total">0원</span>
                                         </div>
                                         <div class="button">
-                                            <a href="${pageContext.request.contextPath}/checkout" class="btn animate">결제하기</a>
+                                            <a href="${pageContext.request.contextPath}/cart/list.do" class="btn animate">결제하기</a>
                                         </div>
                                     </div>
                                 </div>
@@ -667,12 +667,12 @@ function renderCartDropdown(cartList, totalAmount, count) {
     
     displayList.forEach(function(item) {
         const imageUrl = item.product_image_url 
-            ? '${pageContext.request.contextPath}/images/' + item.product_image_url
+            ? '${pageContext.request.contextPath}/images/products_list/' + item.product_image_url
             : '${pageContext.request.contextPath}/images/default.png';
         
         const li = $('<li></li>');
         li.html(`
-            <a href="${pageContext.request.contextPath}/product/detail?product_idx=\${item.product_idx}">
+            <a href="${pageContext.request.contextPath}/product/detail?id=\${item.product_idx}">
                 <img src="\${imageUrl}" alt="\${item.product_name}" 
                      style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
                 <h4>\${item.product_name}</h4>

@@ -84,4 +84,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             cancel_reason = #{cancel_reason}
         where payment_key = #{payment_key}
     </update>
+    
+    <!-- 재결제용 -->
+    <update id="updatePaymentForRetry" parameterType="payment">
+	    update payment 
+	    set 
+	        payment_key = #{payment_key},
+	        status = #{status},
+	        failed_reason = NULL,
+	        approved_at = NULL,
+	        receipt_url = NULL,
+	        method = NULL,
+	        order_update = CURRENT_TIMESTAMP
+	    where order_id = #{order_id}
+	</update>
 </mapper>
