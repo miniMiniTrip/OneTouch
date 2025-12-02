@@ -247,7 +247,8 @@ public class ProductServiceImpl implements ProductService {
         }
         
         // 2-1. 상품 삭제 (CASCADE 설정으로 product_image도 자동 삭제됨)
-        int res = product_dao.delete(product_idx);
+        int res = product_dao.deleteProductRemainOne(product_idx);
+        res = res*product_dao.delete(product_idx);
         System.out.printf("[ProductServiceImpl-delete] 삭제 결과: %d\n", res);
         
         return res;

@@ -335,6 +335,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM product
         WHERE product_idx = #{product_idx}
     </delete>
+    
+    <delete id="deleteProductRemainOne" parameterType="int">
+        DELETE FROM product_remain
+        WHERE product_idx = #{product_idx}
+    </delete>
 
     <!-- 상품 일괄 삭제 -->
     <delete id="deleteBatch" parameterType="list">

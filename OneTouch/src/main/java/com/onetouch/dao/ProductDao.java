@@ -53,6 +53,7 @@ public interface ProductDao {
     int deleteContentImage(String image_url);
     
     // 단일상품삭제
+    int deleteProductRemainOne(int product_idx);
     int delete(int product_idx);
     
     // 다중 삭제
