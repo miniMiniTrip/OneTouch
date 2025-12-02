@@ -140,16 +140,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    
 	    <!-- ORDER BY 처리 -->
 	    <choose>
-	        <when test="orderByNew != null and orderByNew != ''">
-	            ORDER BY ${orderByNew}
-	        </when>
-	        <when test="orderByBest != null and orderByBest != ''">
-	            ORDER BY ${orderByBest}
-	        </when>
-	        <otherwise>
-	            ORDER BY p.product_idx DESC
-	        </otherwise>
-	    </choose>
+			    <when test="orderBy != null and orderBy != ''">
+			        <choose>
+			            <when test="orderBy.contains('product_price')">
+			                ORDER BY CAST(p.product_price AS SIGNED) 
+			                <if test="orderBy.contains('ASC')">ASC</if>
+			                <if test="orderBy.contains('DESC')">DESC</if>
+			            </when>
+			            <otherwise>
+			                ORDER BY ${orderBy}
+			            </otherwise>
+			        </choose>
+			    </when>
+			    <otherwise>
+			        ORDER BY p.product_idx DESC
+			    </otherwise>
+			</choose>
+	    
+
 	    
 	    <!-- 페이징 처리 -->
 	    <if test="startRow != null and pageSize != null">
