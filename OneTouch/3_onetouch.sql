@@ -458,12 +458,18 @@ CREATE TABLE qna (
     qna_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성시간',
     qna_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     qna_answer_time TIMESTAMP NULL COMMENT '답변시간',
+    product_idx INT NULL COMMENT '상품번호'
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
     
 --    ,CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
 ) COMMENT '고객센터';
+
+-- product_idx 컬럼 추가
+-- ALTER TABLE `otdb`.`qna` 
+-- ADD COLUMN `product_idx` INT NULL AFTER `qna_answer_time`;
+
 
 -- CREATE INDEX idx_qna_member ON qna(mem_idx);
 -- CREATE INDEX idx_qna_category ON qna(qna_category);
