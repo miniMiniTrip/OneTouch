@@ -15,196 +15,192 @@
    <style>
 /* 상품 Q&A 전용 스타일 */
 .product-qna-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 
 .product-qna-content {
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+	background: white;
+	border-radius: 12px;
+	padding: 30px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .product-qna-content-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #5c6bc0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 30px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #5c6bc0;
 }
 
 .product-qna-content-header h2 {
-    font-size: 18px;
-    color: #1A237E;
-    font-weight: 600;
-    margin: 0;
+	infont-size: 18px;
+	color: #1A237E;
+	font-weight: 600;
+	margin: 0;
 }
 
 .product-qna-btn-write {
-    background: #1A237E;
-    color: white;
-    padding: 10px 24px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: background 0.3s;
-    white-space: nowrap;
-    height: 40px;
+	background: #1A237E;
+	color: white;
+	padding: 10px 24px;
+	border: none;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	transition: background 0.3s;
+	white-space: nowrap;
+	height: 40px;
 }
 
 .product-qna-btn-write:hover {
-    background: #4a5aaf;
-    color: white;
+	background: #4a5aaf;
+	color: white;
 }
 
 .product-qna-btn-write::before {
-    content: '✎';
-    font-size: 16px;
+	content: '✎';
+	font-size: 16px;
 }
 
 /* 게시판 테이블 */
 .product-qna-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
 }
 
 .product-qna-table thead {
-    background: #f8f9fa;
-    border-top: 2px solid #5c6bc0;
-    border-bottom: 1px solid #dee2e6;
+	background: #f8f9fa;
+	border-top: 2px solid #5c6bc0;
+	border-bottom: 1px solid #dee2e6;
 }
 
 .product-qna-table th {
-    padding: 15px 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
+	padding: 15px 10px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	text-align: center;
 }
 
 .product-qna-table tbody tr {
-    border-bottom: 1px solid #dee2e6;
-    transition: background 0.2s;
+	border-bottom: 1px solid #dee2e6;
+	transition: background 0.2s;
 }
 
 .product-qna-table tbody tr:hover {
-    background: #f8f9fa;
+	background: #f8f9fa;
 }
 
 .product-qna-table td {
-    padding: 15px 10px;
-    font-size: 14px;
-    color: #666;
-    text-align: center;
+	padding: 15px 10px;
+	font-size: 14px;
+	color: #666;
+	text-align: center;
 }
 
 .product-qna-table td.title {
-    text-align: center;
-    vertical-align: middle;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .product-qna-table td.title a {
-    color: #5c6bc0;
-    text-decoration: none;
-    font-weight: 500;
+	color: #5c6bc0;
+	text-decoration: none;
+	font-weight: 500;
 }
 
 .product-qna-table td.title a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .product-qna-status-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 600;
 }
 
 .product-qna-status-waiting {
-    background: #fff3e0;
-    color: #f57c00;
+	background: #fff3e0;
+	color: #f57c00;
 }
 
 .product-qna-status-completed {
-    background: #e8f5e9;
-    color: #388e3c;
+	background: #e8f5e9;
+	color: #388e3c;
 }
 
 .product-qna-empty-state {
-    text-align: center;
-    padding: 80px 20px;
+	text-align: center;
+	padding: 80px 20px;
 }
 
 .product-qna-empty-state-message {
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 14px;
+	color: #666;
+	margin-bottom: 30px;
+	font-size: 14px;
 }
 
 /* 페이징 스타일 */
 .product-qna-pagination {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	gap: 5px;
+	margin-top: 30px;
 }
 
-.product-qna-pagination a,
-.product-qna-pagination span {
-    min-width: 36px;
-    height: 36px;
-    padding: 0 12px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #666;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.product-qna-pagination a, .product-qna-pagination span {
+	min-width: 36px;
+	height: 36px;
+	padding: 0 12px;
+	border: 1px solid #dee2e6;
+	border-radius: 4px;
+	font-size: 14px;
+	color: #666;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .product-qna-pagination a:hover {
-    background: #f8f9fa;
-    border-color: #5c6bc0;
+	background: #f8f9fa;
+	border-color: #5c6bc0;
 }
 
 .product-qna-pagination .active {
-    background: #5c6bc0;
-    color: white;
+	background: #5c6bc0;
+	color: white;
 }
 
 .product-qna-pagination .disabled {
-    color: #ccc;
-    cursor: not-allowed;
+	color: #ccc;
+	cursor: not-allowed;
 }
 
 /* 반응형 */
-@media (max-width: 768px) {
-    .product-qna-wrapper {
-        padding: 0 10px;
-    }
-    
-    .product-qna-content {
-        padding: 20px 15px;
-    }
-    
-    .product-qna-table th,
-    .product-qna-table td {
-        padding: 10px 5px;
-        font-size: 13px;
-    }
+@media ( max-width : 768px) {
+	.product-qna-wrapper {
+		padding: 0 10px;
+	}
+	.product-qna-content {
+		padding: 20px 15px;
+	}
+	.product-qna-table th, .product-qna-table td {
+		padding: 10px 5px;
+		font-size: 13px;
+	}
 }
 </style>
 </head>

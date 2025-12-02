@@ -325,16 +325,6 @@
 </head>
 
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="preloader-inner">
-            <div class="preloader-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-    <!-- /End Preloader -->
 
     <!-- Start Header Area -->
     <c:import url="../common/header.jsp" />

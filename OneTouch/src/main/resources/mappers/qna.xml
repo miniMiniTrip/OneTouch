@@ -43,7 +43,7 @@
   FROM qna
   JOIN mem ON qna.mem_idx = mem.mem_idx
   WHERE qna.qna_delete = 0
-    <if test="mem_roll != 'admin'">
+    <if test="mem_roll == 'user' ">
       AND qna.mem_idx = #{mem_idx}
     </if>
   ORDER BY qna.qna_idx DESC

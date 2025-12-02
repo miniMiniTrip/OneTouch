@@ -22,11 +22,15 @@ import com.onetouch.common.MyConstant;
 import com.onetouch.dao.CategoryDao;
 import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ProductDao;
+import com.onetouch.dao.QnaDao;
 import com.onetouch.service.ProductService;
+import com.onetouch.vo.MemVo;
 import com.onetouch.vo.OrderReviewPostVo;
 import com.onetouch.vo.ProductVo;
+import com.onetouch.vo.QnaVo;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProductController {
@@ -45,7 +49,10 @@ public class ProductController {
     
     @Autowired
     PostDao postDao;
-    
+    @Autowired
+    HttpSession session;
+    @Autowired
+    QnaDao qnaDao;
     
 
     // 상품 리스트 페이지
@@ -161,6 +168,38 @@ public class ProductController {
         model.addAttribute("product", product);
         model.addAttribute("subImages", subImages); 
         model.addAttribute("lowerdetailImages", lowerdetailImages); 
+       
+        
+        
+        
+		/* 상품별 qna리스트 */
+        // 세션에서 로그인 정보 가져오기
+        Map<String, Object> map = new HashMap<String, Object>();
+        MemVo user = (MemVo) session.getAttribute("user");
+        
+        // ✅ 로그인하지 않은 경우 - 로그인 안내만 표시
+        if (user == null) {
+            //model.addAttribute("needLogin", true);
+            //return "redirect:/user/login";
+        }else {
+        	// 로그인한 사용자의 글만 조회
+        	int mem_idx = user.getMem_idx();
+        	String mem_roll = user.getMem_roll();
+        	map.put("mem_idx", mem_idx);
+        	map.put("mem_roll", mem_roll);
+        	
+        }
+        
+        map.put("userinformation", 1);
+        List<QnaVo> qna_list = qnaDao.selectQnaList(map);
+        
+        System.out.println("QnA 목록 개수: " + qna_list.size());
+        
+        model.addAttribute("qna_list", qna_list);
+        model.addAttribute("needLogin", false);
+        
+        
+        
         System.out.printf("=== [ProductController] return : product/product_detail.jsp  ===\n");
         System.out.printf("\n");
         return "product/product_detail";
