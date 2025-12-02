@@ -1633,7 +1633,19 @@ let postsArray="${postsArray}"
          /* alert(`\${img}`); */
          html=html+`
                      <div class="carousel-item \${i==0 ? 'active' : ''}"  >
+                     `
+                     if(postVo.post_category=='review'){
+          					html=html+` 
+                         <img src="${pageContext.request.contextPath }/images/posts/reviews/\${img}" alt="\${img}" class="post-image d-block w-100 h-100">
+          					
+          					`          	 
+                     }else{
+         html=html+`
                          <img src="${pageContext.request.contextPath }/images/posts/\${img}" alt="\${img}" class="post-image d-block w-100 h-100">
+                         `
+                     }
+                         
+         html=html+`
                      </div>
                      `
          }
