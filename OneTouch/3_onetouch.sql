@@ -77,7 +77,7 @@ CREATE TABLE product (
     product_cnt INT NOT NULL DEFAULT 0 COMMENT '재고수량',
     product_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록시간',
     product_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
-    product_sell INT NOT NULL DEFAULT COMMENT '판매량',
+    product_sell INT NOT NULL DEFAULT 0 COMMENT '판매량',
     
     FOREIGN KEY (category_idx) REFERENCES category(category_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
