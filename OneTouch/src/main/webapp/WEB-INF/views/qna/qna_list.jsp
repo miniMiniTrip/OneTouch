@@ -411,7 +411,7 @@
 							<div class="empty-state-message">작성하신 상품 문의 내역을 확인하실 수
 								있습니다.</div>
 							<button class="btn-write"
-								onclick="location.href='${pageContext.request.contextPath}/qna/write'">
+								onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'">
 								Q&A 쓰기</button>
 
 						</div>

@@ -351,5 +351,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		;
 	</select>
 	
+	<!-- 키워드로 셀렉트 -->
+	<select id="searchByKeyword" resultType="PostVo">
+	    SELECT 
+	        p.*,
+	        m.mem_id,
+	        m.mem_image_url,
+	        COALESCE(lc.like_count, 0) as post_like,
+	        COALESCE(rc.reply_count, 0) as post_comment_count
+	    FROM post p
+	    LEFT JOIN mem m ON p.mem_idx = m.mem_idx
+	    LEFT JOIN (
+	        SELECT post_idx, COUNT(*) as like_count 
+	        FROM `like`
+	        GROUP BY post_idx
+	    ) lc ON p.post_idx = lc.post_idx
+	    LEFT JOIN (
+	        SELECT post_idx, COUNT(*) as reply_count 
+	        FROM reply 
+	        WHERE reply_delete = 0
+	        GROUP BY post_idx
+	    ) rc ON p.post_idx = rc.post_idx
+	    WHERE p.post_delete = 0
+	      AND (
+	          p.post_title LIKE CONCAT('%', #{keyword}, '%')
+	          OR p.post_content LIKE CONCAT('%', #{keyword}, '%')
+	          OR EXISTS (
+	              SELECT 1 
+	              FROM post_hashtag ph
+	              INNER JOIN hashtag h ON ph.hashtag_idx = h.hashtag_idx
+	              WHERE ph.post_idx = p.post_idx
+	                AND h.hashtag_name LIKE CONCAT('%', #{keyword}, '%')
+	          )
+	      )
+	    ORDER BY p.post_time DESC
+	    LIMIT #{startRow}, #{pageSize}
+	</select>
+
+	
+	<!-- 포스트 결과 개수 -->
+	<select id="searchCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM post p
+	    WHERE p.post_delete = 0
+	      AND (
+	          p.post_title LIKE CONCAT('%', #{keyword}, '%')
+	          OR p.post_content LIKE CONCAT('%', #{keyword}, '%')
+	          OR EXISTS (
+	              SELECT 1 
+	              FROM post_hashtag ph
+	              INNER JOIN hashtag h ON ph.hashtag_idx = h.hashtag_idx
+	              WHERE ph.post_idx = p.post_idx
+	                AND h.hashtag_name LIKE CONCAT('%', #{keyword}, '%')
+	          )
+	      )
+	</select>
 
 </mapper>

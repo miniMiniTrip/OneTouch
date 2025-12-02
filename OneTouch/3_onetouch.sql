@@ -1,4 +1,4 @@
-select * from hashtag
+-- select * from hashtag
 
 -- ================= 주의사항 ===================
 -- 추가되는 조건, Column이 생기는 경우 각 테이블 아래에,
@@ -6,8 +6,8 @@ select * from hashtag
 -- ============================================
 
 -- 데이터베이스 생성
-CREATE DATABASE IF NOT EXISTS otdb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE otdb;
+-- CREATE DATABASE IF NOT EXISTS otdb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE otdb;
 
 -- ========================================
 -- 1. 회원 테이블
@@ -37,15 +37,16 @@ CREATE TABLE mem (
 ) COMMENT '회원';
 
 -- !중요 mem에 mem_postal 컬럼 추가 하기
-ALTER TABLE mem
-ADD COLUMN mem_postal VARCHAR(10) NULL;
+-- ALTER TABLE mem
+-- ADD COLUMN mem_postal VARCHAR(10) NULL;
+
 -- !중요합니다 mem_postal 컬럼이 추가하고 컬럼 위치 변경하는 명령어 
-ALTER TABLE `otdb`.`mem` 
-CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
+-- ALTER TABLE `otdb`.`mem` 
+-- CHANGE COLUMN `mem_postal` `mem_postal` VARCHAR(10) NULL DEFAULT NULL AFTER `mem_name`;
 
 -- ! 회원 프로필 이미지를 위한 컬럼추가
-ALTER TABLE `otdb`.`mem` 
-ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
+-- ALTER TABLE `otdb`.`mem` 
+-- ADD COLUMN `mem_image_url` VARCHAR(500) NULL AFTER `mem_update_time`;
 
 -- CREATE INDEX idx_mem_email ON mem(mem_email);
 -- CREATE INDEX idx_mem_phone ON mem(mem_phone);
@@ -76,6 +77,7 @@ CREATE TABLE product (
     product_cnt INT NOT NULL DEFAULT 0 COMMENT '재고수량',
     product_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록시간',
     product_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
+    product_sell INT NOT NULL DEFAULT COMMENT '판매량',
     
     FOREIGN KEY (category_idx) REFERENCES category(category_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
@@ -92,12 +94,11 @@ CREATE TABLE product (
 -- CREATE INDEX idx_product_time ON product(product_time DESC);
 
 
---============ 배송상태값 예시
+-- ============ 배송상태값 예시
 
-ALTER TABLE product 
-ADD COLUMN product_sell INT DEFAULT 0,
-ADD COLUMN tracking_number VARCHAR(50),
-ADD COLUMN delivery_status VARCHAR(20) DEFAULT '준비중';
+-- ALTER TABLE product 
+-- ADD COLUMN tracking_number VARCHAR(50),
+-- ADD COLUMN delivery_status VARCHAR(20) DEFAULT '준비중';
 
 -- ========================================
 -- 4. 상품 이미지 테이블
@@ -195,7 +196,7 @@ CREATE TABLE cart (
 	CREATE INDEX idx_cart_member ON cart(mem_idx);
 	
 	ALTER TABLE cart
-		ADD CONSTRAINT chk_cart_cnt CHECK (cart_cnt > 0)
+		ADD CONSTRAINT chk_cart_cnt CHECK (cart_cnt > 0);
 
 -- ========================================
 -- 9. 찜 테이블
@@ -236,30 +237,19 @@ CREATE TABLE `order` (
     order_address_more VARCHAR(255) COMMENT '상세주소',
     order_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문시간',
     order_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
+    order_tracking VARCHAR(50) COMMENT '송장번호',
+    order_courier VARCHAR(50) COMMENT '택배사명',
     
+    FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
     
-    FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0),
     
-
+    INDEX idx_order_member (mem_idx),
+    INDEX idx_order_status (order_status),
+    INDEX idx_order_time (order_time DESC),
+    INDEX idx_order_tracking (order_tracking)
 ) COMMENT '주문';
--- 테이블 조건 추가
-ALTER TABLE `order`
-		ADD CONSTRAINT chk_order_total_amount CHECK (total_amount >= 0) 
- CREATE INDEX idx_order_member ON `order`(mem_idx);
- CREATE INDEX idx_order_status ON `order`(order_status);
- CREATE INDEX idx_order_time ON `order`(order_time DESC);
-
-ALTER TABLE `order`
-ADD COLUMN order_tracking VARCHAR(50) COMMENT '송장번호',
-ADD COLUMN order_courier VARCHAR(50) COMMENT '택배사명';
-CREATE INDEX idx_order_tracking ON `order`(order_tracking);
-
---주문상태 스테이터스 수정
-ALTER TABLE `order`
-MODIFY COLUMN order_status VARCHAR(20) NULL 
-COMMENT '주문상태';
--- 결제완료|결제실패|결제취소|배송준비중|배송중|배송완료|환불요청|환불완료
 
 
 -- ========================================
@@ -282,11 +272,11 @@ CREATE TABLE order_item (
 ) COMMENT '주문상세';
 -- 테이블 조건 추가
 ALTER TABLE order_item
-		ADD CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0)
+		ADD CONSTRAINT chk_order_item_cnt CHECK (product_cnt > 0);
 ALTER TABLE order_item
-		ADD CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0)
+		ADD CONSTRAINT chk_order_item_amount CHECK (product_amount >= 0);
 ALTER TABLE order_item
-		ADD CONSTRAINT chk_order_item_total CHECK (total_amount >= 0)
+		ADD CONSTRAINT chk_order_item_total CHECK (total_amount >= 0);
 
 CREATE INDEX idx_order_item_order ON order_item(order_id);
 
@@ -315,7 +305,7 @@ CREATE TABLE payment (
 ) COMMENT '결제';
 -- 테이블 조건 추가
 ALTER TABLE payment
-		ADD CONSTRAINT chk_payment_amount CHECK (amount >= 0)
+		ADD CONSTRAINT chk_payment_amount CHECK (amount >= 0);
 
 CREATE INDEX idx_payment_order ON payment(order_id);
 CREATE INDEX idx_payment_status ON payment(status);
@@ -333,7 +323,7 @@ CREATE TABLE post (
     post_image VARCHAR(200) COMMENT '이미지',
     post_like INT NOT NULL DEFAULT 0 COMMENT '좋아요수',
     post_comment_count INT NOT NULL DEFAULT 0 COMMENT '댓글수',
-    order_item_id INT COMMENT '',
+    order_item_id INT NULL DEFAULT NULL COMMENT '주문상세',
     post_review BOOLEAN NOT NULL DEFAULT FALSE COMMENT '리뷰여부',
     post_rating INT COMMENT '별점',
     post_delete INT NOT NULL DEFAULT 0 COMMENT '삭제여부', -- 0 정상, 1 유저 삭제, 2 관리자 삭제
@@ -341,9 +331,7 @@ CREATE TABLE post (
     post_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (order_id) REFERENCES `order`(order_id) 
-        ON DELETE SET NULL ON UPDATE CASCADE
+        ON DELETE CASCADE ON UPDATE CASCADE
     
 --    ,CONSTRAINT chk_post_like CHECK (post_like >= 0),
 --    CONSTRAINT chk_post_comment_count CHECK (post_comment_count >= 0),
@@ -351,20 +339,25 @@ CREATE TABLE post (
 ) COMMENT '게시글';
 
 -- post 카테고리 컬럼 1개 추가되었습니다
-ALTER TABLE post ADD COLUMN post_category VARCHAR(100) NOT NULL;
+-- ALTER TABLE post ADD COLUMN post_category VARCHAR(100) NOT NULL;
+
 -- post 제목 컬럼 1개 추가되었습니다
-ALTER TABLE post ADD COLUMN post_title VARCHAR(200) NOT NULL;
+-- ALTER TABLE post ADD COLUMN post_title VARCHAR(200) NOT NULL;
+
 -- post_category컬럼 위치 변경하는 sql
-ALTER TABLE post 
-CHANGE COLUMN `post_category` `post_category` VARCHAR(100) NOT NULL AFTER `mem_idx`;
+-- ALTER TABLE post 
+-- CHANGE COLUMN `post_category` `post_category` VARCHAR(100) NOT NULL AFTER `mem_idx`;
+
 -- post_title컬럼 위치 변경하는 sql
-ALTER TABLE post 
-CHANGE COLUMN `post_title` `post_title` VARCHAR(200) NOT NULL AFTER `post_category`;
+-- ALTER TABLE post 
+-- CHANGE COLUMN `post_title` `post_title` VARCHAR(200) NOT NULL AFTER `post_category`;
+
 -- post order_id 외래키 제거
-ALTER TABLE post DROP FOREIGN KEY post_ibfk_2;
+-- ALTER TABLE post DROP FOREIGN KEY post_ibfk_2;
+
 -- post order_id 컬럼 => order_item_id 로 변경 
-ALTER TABLE `otdb`.`post` 
-CHANGE COLUMN `order_id` `order_item_id` INT NULL DEFAULT NULL ;
+-- ALTER TABLE `otdb`.`post` 
+-- CHANGE COLUMN `order_id` `order_item_id` INT NULL DEFAULT NULL ;
 
 
 -- CREATE INDEX idx_post_member ON post(mem_idx);
@@ -466,12 +459,18 @@ CREATE TABLE qna (
     qna_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성시간',
     qna_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     qna_answer_time TIMESTAMP NULL COMMENT '답변시간',
+    product_idx INT NULL COMMENT '상품번호'
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
     
 --    ,CONSTRAINT chk_qna_category CHECK (qna_category BETWEEN 0 AND 5)
 ) COMMENT '고객센터';
+
+-- product_idx 컬럼 추가
+-- ALTER TABLE `otdb`.`qna` 
+-- ADD COLUMN `product_idx` INT NULL AFTER `qna_answer_time`;
+
 
 -- CREATE INDEX idx_qna_member ON qna(mem_idx);
 -- CREATE INDEX idx_qna_category ON qna(qna_category);
@@ -481,18 +480,18 @@ CREATE TABLE qna (
 -- 19. 입고 테이블
 -- ========================================
 
-CREATE TABLE product_in (
-    in_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '입고번호',
-    product_idx INT NOT NULL COMMENT '상품FK',
-    in_name VARCHAR(100) NOT NULL COMMENT '담당자/업체',
-    in_cnt INT NOT NULL COMMENT '입고수량',
-    in_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '입고일시',
-    
-    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-    
-    CONSTRAINT chk_in_cnt CHECK (in_cnt > 0)
-) COMMENT '입고이력';
+-- CREATE TABLE product_in (
+--    in_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '입고번호',
+--    product_idx INT NOT NULL COMMENT '상품FK',
+--    in_name VARCHAR(100) NOT NULL COMMENT '담당자/업체',
+--    in_cnt INT NOT NULL COMMENT '입고수량',
+--    in_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '입고일시',
+--    
+--    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
+--        ON DELETE RESTRICT ON UPDATE CASCADE,
+--    
+--    CONSTRAINT chk_in_cnt CHECK (in_cnt > 0)
+-- ) COMMENT '입고이력';
 
 -- CREATE INDEX idx_product_in_product ON product_in(product_idx);
 -- CREATE INDEX idx_product_in_regdate ON product_in(in_regdate DESC);
@@ -501,18 +500,18 @@ CREATE TABLE product_in (
 -- 20. 출고 테이블
 -- ========================================
 
-CREATE TABLE product_out (
-    out_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '출고번호',
-    product_idx INT NOT NULL COMMENT '상품FK',
-    out_name VARCHAR(100) NOT NULL COMMENT '담당자/사유',
-    out_cnt INT NOT NULL COMMENT '출고수량',
-    out_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '출고일시',
-    
-    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-    
-    CONSTRAINT chk_out_cnt CHECK (out_cnt > 0)
-) COMMENT '출고이력';
+-- CREATE TABLE product_out (
+--    out_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '출고번호',
+--    product_idx INT NOT NULL COMMENT '상품FK',
+--    out_name VARCHAR(100) NOT NULL COMMENT '담당자/사유',
+--    out_cnt INT NOT NULL COMMENT '출고수량',
+--    out_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '출고일시',
+--    
+--    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
+--        ON DELETE RESTRICT ON UPDATE CASCADE,
+--    
+--    CONSTRAINT chk_out_cnt CHECK (out_cnt > 0)
+-- ) COMMENT '출고이력';
 
 -- CREATE INDEX idx_product_out_product ON product_out(product_idx);
 -- CREATE INDEX idx_product_out_regdate ON product_out(out_regdate DESC);
@@ -521,39 +520,39 @@ CREATE TABLE product_out (
 -- 21. 재고 스냅샷 테이블
 -- ========================================
 
-CREATE TABLE product_remain (
-    remain_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '재고번호',
-    product_idx INT NOT NULL COMMENT '상품FK',
-    remain_name VARCHAR(100) NOT NULL COMMENT '담당자/메모',
-    remain_cnt INT NOT NULL COMMENT '재고수량',
-    remain_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '기록일시',
-    
-    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-    
-    CONSTRAINT chk_remain_cnt CHECK (remain_cnt >= 0)
-) COMMENT '재고스냅샷';
+-- CREATE TABLE product_remain (
+--    remain_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '재고번호',
+--    product_idx INT NOT NULL COMMENT '상품FK',
+--    remain_name VARCHAR(100) NOT NULL COMMENT '담당자/메모',
+--    remain_cnt INT NOT NULL COMMENT '재고수량',
+--    remain_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '기록일시',
+--    
+--    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
+--        ON DELETE RESTRICT ON UPDATE CASCADE,
+--    
+--    CONSTRAINT chk_remain_cnt CHECK (remain_cnt >= 0)
+-- ) COMMENT '재고스냅샷';
 
 -- CREATE INDEX idx_product_remain_product ON product_remain(product_idx);
 -- CREATE INDEX idx_product_remain_regdate ON product_remain(remain_regdate DESC);
 
 -- 테이블 존재 확인
-SHOW TABLES LIKE 'product_remain';
+-- SHOW TABLES LIKE 'product_remain';
 
 -- 테이블 구조 확인  
-DESC product_remain;
+-- DESC product_remain;
 
 -- 데이터 확인
-SELECT * FROM product_remain;
+-- SELECT * FROM product_remain;
 
 
-SELECT * FROM product_image WHERE product_idx = 30;
+-- SELECT * FROM product_image WHERE product_idx = 30;
 
-SELECT 
-    p.product_idx,
-    p.product_name,
-    pi.product_image_url,
-    pi.product_image_level
-FROM product p
-LEFT JOIN product_image pi ON p.product_idx = pi.product_idx AND pi.product_image_level = 1
-WHERE p.product_idx = 30;
+-- SELECT 
+--    p.product_idx,
+--    p.product_name,
+--    pi.product_image_url,
+--    pi.product_image_level
+-- FROM product p
+-- LEFT JOIN product_image pi ON p.product_idx = pi.product_idx AND pi.product_image_level = 1
+-- WHERE p.product_idx = 30;

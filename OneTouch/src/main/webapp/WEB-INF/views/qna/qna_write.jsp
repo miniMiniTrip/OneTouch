@@ -325,16 +325,6 @@
 </head>
 
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="preloader-inner">
-            <div class="preloader-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-    <!-- /End Preloader -->
 
     <!-- Start Header Area -->
     <c:import url="../common/header.jsp" />
@@ -417,16 +407,23 @@
                     </div>
                     
                     <form class="write-form" method="post" action="${pageContext.request.contextPath}/mypage/qna_write">
+                    <c:if test="${not empty product_idx }">
+	                    <input type="hidden" name="product_idx" value="${product_idx }">
+                    </c:if>
     <!-- 카테고리 -->
     <div class="form-group">
         <label class="form-label">문의 유형<span class="required">*</span></label>
         <select class="form-select" name="qna_category" required>
             <option value="">선택하세요</option>
-            <option value="0">상품 문의</option>
-            <option value="1">배송 문의</option>
-            <option value="2">교환/반품</option>
-            <option value="3">재입고 문의</option>
-            <option value="4">기타</option>
+            <c:if test="${product_idx > 0 }">
+            <option value="0" ${qna.qna_category == 0 ? 'selected' : ''}>상품 문의</option>
+            <option value="1" ${qna.qna_category == 1 ? 'selected' : ''}>배송 문의</option>
+            <option value="2" ${qna.qna_category == 2 ? 'selected' : ''}>교환/반품</option>
+            <option value="3" ${qna.qna_category == 3 ? 'selected' : ''}>재입고 문의</option>
+            </c:if>
+            <c:if test="${product_idx == 0 }">
+            <option value="4" ${qna.qna_category == 4 ? 'selected' : ''}>기타</option>
+            </c:if>
         </select>
     </div>
 

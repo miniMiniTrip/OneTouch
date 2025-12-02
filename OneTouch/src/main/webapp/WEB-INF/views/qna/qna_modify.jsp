@@ -322,7 +322,7 @@
                 <div class="content">
                     <div class="content-header">
                         <h2>✎ Q&A 수정하기</h2>
-                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}'">취소</button>
+                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}&product_idx=${product_idx }'">취소</button>
                     </div>
                     
                     <div class="form-notice">
@@ -337,17 +337,22 @@
                         <!-- 숨겨진 필드 -->
                         <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
                         <input type="hidden" name="mem_idx" value="${qna.mem_idx}">
+                        <input type="hidden" name="product_idx" value="${product_idx}">
                         
                         <!-- 카테고리 -->
                         <div class="form-group">
                             <label class="form-label">문의 유형<span class="required">*</span></label>
                             <select class="form-select" name="qna_category" required>
                                 <option value="">선택하세요</option>
+                                <c:if test="${product_idx > 0 }">
                                 <option value="0" ${qna.qna_category == 0 ? 'selected' : ''}>상품 문의</option>
                                 <option value="1" ${qna.qna_category == 1 ? 'selected' : ''}>배송 문의</option>
                                 <option value="2" ${qna.qna_category == 2 ? 'selected' : ''}>교환/반품</option>
                                 <option value="3" ${qna.qna_category == 3 ? 'selected' : ''}>재입고 문의</option>
+                                </c:if>
+                                <c:if test="${product_idx == 0 }">
                                 <option value="4" ${qna.qna_category == 4 ? 'selected' : ''}>기타</option>
+                                </c:if>
                             </select>
                         </div>
 
@@ -382,7 +387,7 @@
                         <div class="btn-group">
                             <button type="submit" class="btn btn-submit">수정완료</button>
                             <button type="button" class="btn btn-cancel" 
-                                    onclick="location.href='${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}'">취소</button>
+                                    onclick="location.href='${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}&product_idx=${product_idx }'">취소</button>
                         </div>
                     </form>
                 </div>

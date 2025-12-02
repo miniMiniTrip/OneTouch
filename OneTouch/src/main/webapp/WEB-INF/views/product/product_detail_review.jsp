@@ -16,6 +16,26 @@
     border-radius: 50%;
 }
 
+  /* 부모 div 스타일 */
+  .reviews-container {
+    display: flex;
+    justify-content: center; /* 가로 가운데 */
+    align-items: center;     /* 세로 가운데 */
+    height: 200px;           /* 원하는 높이로 조정 */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* 메시지 스타일 */
+  .no-review {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+  }
+
+
 @media (max-width: 767px) {
     .reviewer-profile {
         display: flex;
@@ -153,7 +173,11 @@
 
 
 				<div class="review-items">
-
+					<c:if test="${ orderReviewPostVo ==null or empty orderReviewPostVo}">
+							<div class="reviews-container">
+							  <div class="no-review">등록된 리뷰가 없습니다.</div>
+							</div>
+					</c:if>					
 					<!-- 개별 리뷰 아이템 -->
 					<c:forEach var="postVo" items="${orderReviewPostVo }">
 						<c:if test="${postVo.order_item_id !=0 }">
