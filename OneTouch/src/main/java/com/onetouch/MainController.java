@@ -46,13 +46,19 @@ public class MainController {
 		List<HashtagVo> hashtagRank=hashtagService.updatePostProductHashtagTotalConut();
 		
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("orderBy","product_cnt DESC, product_idx DESC");
+		map.put("orderByNew","product_time DESC");
 		map.put("startRow", 0);
 		map.put("pageSize", 3);
-		List<ProductVo> ProductVoList = product_dao.selectList(map);
-		System.out.printf("		뉴상품 3개 => %s\n",ProductVoList);
+		List<ProductVo> newProductVoList = product_dao.selectList(map);
+		System.out.printf("		뉴상품 3개 => %s\n",newProductVoList);
+		map.put("orderByNew",null);
+		map.put("orderByBest","product_sell DESC");
+		List<ProductVo> bestProductVoList = product_dao.selectList(map);
+		System.out.printf("		베스트상품 3개 => %s\n",bestProductVoList);
+		
+		model.addAttribute("bestProductVoList",bestProductVoList);
 		model.addAttribute("hashtagRank", hashtagRank);
-		model.addAttribute("ProductVoList", ProductVoList);
+		model.addAttribute("ProductVoList", newProductVoList);
 		System.out.println("	[oneTouchMain] return : main.jsp ");
 		return "main";
 	}
