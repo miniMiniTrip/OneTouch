@@ -567,7 +567,7 @@
     <!-- /End Preloader -->
     
     <!-- Start Header Area -->
-    <%@include file="${pageContext.request.contextPath}/common/header.jsp" %>
+    <%@include file="../common/header.jsp" %>
     <!-- End Header Area -->
     
     <!-- Start Breadcrumbs -->
@@ -597,7 +597,7 @@
             <div class="mypage-container">
 
                 <!-- 사이드바 -->
-                <%@include file="${pageContext.request.contextPath}/common/mypage_side_bar.jsp" %>
+                <%@include file="../common/mypage_side_bar.jsp" %>
 				
                 <!-- 컨텐츠 영역 -->
                 <div class="content">

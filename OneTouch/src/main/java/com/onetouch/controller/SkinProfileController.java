@@ -37,24 +37,24 @@ public class SkinProfileController {
 	HttpSession session;
 	
 	@RequestMapping("/skinprofile/form")
-	public String SkinProfileForm(Model model) {
-	    // 로그인 체크
+	public String SkinProfileForm(@RequestParam(value = "renew", defaultValue = "false") boolean renew,
+	                               Model model) {
+		
 	    MemVo memVo = (MemVo)session.getAttribute("user");
 	    
 	    if(memVo == null) {
 	        return "redirect:/user/login";
 	    }
-		
-		SkinProfileVo skinProfile = skin_profile_dao.selectOne(memVo.getMem_idx());
-		
-	    if(skinProfile != null) {
-	        // 아직 진단 안 한 경우
+	    
+	    SkinProfileVo skinProfile = skin_profile_dao.selectOne(memVo.getMem_idx());
+	    
+	    // 재진단 요청이 아니고, 기존 진단이 있으면 choice로
+	    if(!renew && skinProfile != null) {
 	        model.addAttribute("skinProfile", skinProfile);
 	        return "skinprofile/choice";
 	    }
 	    
-	    
-		return "skinprofile/form";
+	    return "skinprofile/form";
 	}
 	
 	@RequestMapping("/skinprofile/insert.do")
