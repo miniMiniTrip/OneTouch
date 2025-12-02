@@ -15,6 +15,9 @@ public interface QnaDao {
 
     // 2️⃣ 특정 문의글 상세보기
     QnaVo selectQnaDetail(int qna_idx);
+    
+    // 상품 상세페이지에서 보이는 qna List 불러오기
+    List<QnaVo> selectProductQnaList(int product_idx);
 //----------------------------------------------------------------------------------
 
 	

@@ -1599,14 +1599,14 @@ background
 
 	<!-- 상품 Q&A  --> <!-- 상품 Q&A  --> <!-- 상품 Q&A  --> <!-- 상품 Q&A  -->
 	<div id="qna-content" class="tab-panel">
-    <div class="content">
+    <%-- <div class="content">
         <div class="content-header">
             <h2>💬상품 Q&A</h2>
         </div>
-        <%-- <c:if test="${not empty qna_list}"> --%>
+        <c:if test="${not empty qna_list}">
         <button class="qna-btn-write"
-       <%--  onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'" --%>>Q&A 쓰기</button>
-    	<%-- </c:if> --%>
+        onclick="location.href='${pageContext.request.contextPath}/mypage/qna_write'">Q&A 쓰기</button>
+    	</c:if>
     </div>
     
     <div class="qna-table-container">
@@ -1624,7 +1624,7 @@ background
             </thead>
             
             <tbody>
-            	<%-- <c:forEach var="qna" items="${qna_list}" varStatus="status"> --%>
+            	<c:forEach var="qna" items="${qna_list}" varStatus="status">
                 <tr>
                     <td>1</td>
                     <td>
@@ -1705,10 +1705,11 @@ background
                         <span class="status-badge completed">답변완료</span>
                     </td>
                 </tr>
-               <%--  </c:forEach> --%>
+                </c:forEach>
             </tbody>
         </table>
-    </div>
+    </div> --%>
+      <%@ include file="product_qna_list.jsp" %>
 </div>
 
 
