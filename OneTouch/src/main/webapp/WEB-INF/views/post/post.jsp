@@ -457,6 +457,10 @@ body {
 .count-num{
 	margin-top: 10px;
 }
+.count-reply-num{
+	margin-top: 10px;
+}
+
 
 /* 데스크탑에서 드래그 슬라이드 */
 @media (min-width: 768px) {
@@ -674,6 +678,10 @@ body {
 
 /* 점3개버튼 , 수정 삭제 버튼 css --------------------------------*/
 /* 점 3개 버튼 (ellipsis) */
+.more-options-wrapper {
+    position: relative;
+    display: inline-block;
+}
 .more-options {
     background: none;
     border: none;
@@ -687,26 +695,34 @@ body {
 
 /* 수정/삭제 메뉴 */
 .more-options-menu {
+display: none;
     position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 5px;
-    padding: 10px;
-    display: none;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+    min-width: 100px;
+    font-size: 14px;
 }
 
 .more-options-menu button {
+display: block;
+    width: 100%;
+    padding: 10px 15px;
+    text-align: left;
     background: none;
     border: none;
-    padding: 10px;
-    width: 100%;
-    text-align: left;
     cursor: pointer;
 }
 
 .more-options-menu button:hover {
-    background-color: #f0f0f0;
+    background-color: #fafafa;
+}
+.more-options-wrapper.active .more-options-menu {
+    display: block;
 }
 /* end: 점3개버튼 , 수정 삭제 버튼 css --------------------------------------*/
 	
@@ -1249,6 +1265,8 @@ body {
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
+    
+    
  // =========================
  // 0. 프리로더 제거
  // =========================
@@ -1260,6 +1278,7 @@ body {
      }
  });
 
+ 
 //=========================
 //1. 이미지 캐러셀 기능 (데스크탑 + 모바일 통합)
 //=========================
@@ -1655,7 +1674,7 @@ document.addEventListener('click', function(e) {
 					html=html+`	                    	
                      <div class="product-card">
                      	<a href="/product/detail?id=\${productVo.product_idx}" class="product-link">
-			                            <img src="${pageContext.request.contextPath }/images/\${productVo.product_image_url}" alt="제품" class="product-img">
+			                            <img src="${pageContext.request.contextPath }/images/products_list/\${productVo.product_image_url}" alt="제품" class="product-img">
 			                            <p class="product-name">\${productVo.product_name }</p>
 			                            <p class="product-price">₩\${price_formatted}</p>
 	                        </a>    
@@ -1713,6 +1732,7 @@ document.addEventListener('click', function(e) {
 				    <button class="interaction-btn">
 				        <i class="far fa-comment"></i>
 				    </button>
+				    <p class="count-reply-num" data-post-idx="\${postVo.post_idx }">0</p>  
 			<!-- 	    <button class="interaction-btn">
 				        <i class="far fa-share-square"></i>
 				    </button> -->
@@ -1731,18 +1751,20 @@ document.addEventListener('click', function(e) {
 				//post 수정 삭제 부분
 				if(postVo.mem_idx==`${user.mem_idx}`){
 				html=html+`
-				    <!-- 추가된 점 3개 버튼 (ellipsis) -->
-				    <button class="interaction-btn more-options">
-				        <i class="fas fa-ellipsis-h"></i> <!-- 점 3개 아이콘 -->
-				    </button>
-				
-				    <!-- 숨겨진 수정/삭제 버튼 -->
-				    <div class="more-options-menu" style="display: none;">
-				        <button class="edit-btn" data-post-idx="\${postVo.post_idx }" data-mem-idx="\${postVo.mem_idx }">수정</button>
-				        <button class="delete-btn" data-post-idx="\${postVo.post_idx }">삭제</button>
+				    <div class="more-options-wrapper">
+				        <button class="interaction-btn more-options">
+				            <i class="fas fa-ellipsis-h"></i>
+				        </button>
+
+				        <div class="more-options-menu">
+				            <button class="edit-btn" data-post-idx="\${postVo.post_idx}" data-mem-idx="\${postVo.mem_idx}">수정</button>
+				            <button class="delete-btn" data-post-idx="\${postVo.post_idx}">삭제</button>
+				        </div>
 				    </div>
-				`
+				`;
 				}
+				
+				
 				html=html+
 				`
 				</div>
@@ -1873,6 +1895,8 @@ document.addEventListener('click', function(e) {
 		 url:"/post/reply_list"
 		 ,data:{"post_idx":post_idx,"post_category":post_category,"nowReplyPage":nowReplyPage}
 		 ,success:function(d){
+			 //alert(d.postIdxReplyTotalCount);
+			 $('p.count-reply-num[data-post-idx="'+d.post_idx+'"]').text(d.postIdxReplyTotalCount);
 			 //alert("댓글list 성공");
 			 //댓글부분 List
 		    let html=""
@@ -2259,15 +2283,31 @@ document.addEventListener('click', function(e) {
 
  $(document).ready(function() {
     // 점 3개 버튼 클릭 시 수정/삭제 메뉴 토글
-    $('.more-options').click(function(e) {
-        e.stopPropagation(); // 클릭 이벤트가 부모 요소로 전달되지 않게 함
-        $(this).siblings('.more-options-menu').toggle(); // 해당 메뉴를 보이거나 숨김
-    });
+document.querySelectorAll('.more-options').forEach(btn => {
+    btn.onclick = function(e) {
+        e.stopPropagation();
 
-    // 메뉴 바깥 영역 클릭 시 메뉴 숨기기
-    $(document).click(function(e) {
-        if (!$(e.target).closest('.post-interactions').length) {
-            $('.more-options-menu').hide(); // .post-interactions 외 클릭 시 숨김
+        const wrapper = this.closest('.more-options-wrapper');
+
+        // 이미 열려있으면 → 닫기 (토글 기능!)
+        if (wrapper.classList.contains('active')) {
+            wrapper.classList.remove('active');
+        } else {
+            // 모든 메뉴 닫고 현재 것만 열기
+            document.querySelectorAll('.more-options-wrapper').forEach(w => {
+                w.classList.remove('active');
+            });
+            wrapper.classList.add('active');
+        }
+    };
+});
+
+    // 바깥 클릭하면 모든 메뉴 닫기
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.more-options-wrapper')) {
+            document.querySelectorAll('.more-options-wrapper').forEach(w => {
+                w.classList.remove('active');
+            });
         }
     });
 

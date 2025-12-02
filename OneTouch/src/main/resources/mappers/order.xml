@@ -44,28 +44,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	order by order_time desc
 </select>
 
-<!-- 상세페이지에서 리뷰처리를 위한 코드 -->
-<select id="s" parameterType="int" resultType="OrderReviewVo">
-SELECT 
-o.order_id as order_id
-,o.order_no as order_no
-,o.mem_idx as mem_idx
-,o.order_status as order_status
-,oi.product_name as product_name
-,o.order_time as order_time
-,o.total_amount as total_amount
-,o.order_address as order_address
-,p.order_item_id as order_item_id
-,oi.product_idx as product_idx
-FROM 
-otdb.order o
-LEFT JOIN order_item oi ON o.order_id = oi.order_id
-LEFT JOIN mem m ON o.mem_idx = m.mem_idx
-LEFT JOIN post p ON p.order_item_id = oi.order_item_id
-ORDER BY o.order_time desc
-;
-</select>
-
 
 <!-- 주문번호로 조회 -->
 <select id="selectOneByOrderNo" parameterType="string" resultType="order">

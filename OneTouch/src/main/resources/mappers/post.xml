@@ -320,4 +320,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM otdb.post
 		WHERE order_item_id=#{order_item_id};
 	</select>
+	
+	<!-- 상세페이지에서 리뷰처리를 위한 코드 -->
+	<select id="selectReviewPostList" parameterType="int" resultType="OrderReviewPostVo">
+		SELECT 
+		o.order_id as order_id
+		,o.order_no as order_no
+		,o.mem_idx as mem_idx
+		,m.mem_image_url as mem_image_url
+		,m.mem_id as mem_id
+		,o.order_status as order_status
+		,oi.product_name as product_name
+		,oi.product_idx as product_idx
+		,o.order_time as order_time
+		,o.total_amount as total_amount
+		,o.order_address as order_address
+		,p.order_item_id as order_item_id
+		,p.post_rating as post_rating
+		,p.post_image as post_image
+		,p.post_title as post_title
+		,p.post_content as post_content
+		,p.post_time as post_time
+		FROM 
+		otdb.order o
+		LEFT JOIN order_item oi ON o.order_id = oi.order_id
+		LEFT JOIN mem m ON o.mem_idx = m.mem_idx
+		LEFT JOIN post p ON p.order_item_id = oi.order_item_id
+		WHERE product_idx = #{product_idx}
+		ORDER BY o.order_time desc
+		;
+	</select>
+	
+
 </mapper>

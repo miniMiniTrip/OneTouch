@@ -115,16 +115,20 @@
                                 <li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</a></li>
                                 <li><a href="${pageContext.request.contextPath}/wishlist/list.do">찜한 상품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</a></li>
                                 <li><a href="${pageContext.request.contextPath}/mypage/qna_list">문의하기</a></li>
+                               
+                                <li><a href="${pageContext.request.contextPath}/privacy">개인정보처리방침</a></li>
+                                <li><a href="${pageContext.request.contextPath}/terms">이용약관</a></li>
+                              
                            		</ul>
                         		<ul>
                                 <li>&nbsp;&nbsp;평일: 오전 9:00 - 오후 6:00 &nbsp;&nbsp;
-                                서울시 관악구 봉천동&nbsp;&nbsp;이메일: support@onetouch.com<br>
-                              &nbsp;&nbsp;365고객섹터&nbsp;&nbsp;|&nbsp;&nbsp;전자금융거래분쟁처리담당&nbsp;&nbsp;1577-1234 
+                               서울특별시 관악구 남부순환로 1820&nbsp;&nbsp;이메일: support@onetouch.com<br>
+                              &nbsp;&nbsp;365고객센터&nbsp;&nbsp;|&nbsp;&nbsp;전자금융거래분쟁처리담당&nbsp;&nbsp;1577-1234 
                                 </li> </ul>
                                 <ul>
                                 <br>
                                 <li>&nbsp;&nbsp;상호명 및 호스팅 서비스 제공 : 원터치(주)<br>
-                                &nbsp;&nbsp;서울시 관악구 봉천동 123<br>
+                                &nbsp;&nbsp;서울특별시 관악구 남부순환로 1820 7층<br>
                                 &nbsp;&nbsp;사업자 등록번호:123-45-6789<br>
                                 &nbsp;&nbsp;통신판매업신고:2025-서울관악-1234
                                 </li>
