@@ -344,6 +344,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    <!-- 상품 일괄 삭제전 remain 삭제 -->
+    <delete id="deleteProductRemain" parameterType="list">
+    	DELETE FROM product_remain
+        WHERE product_idx IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
     <!-- 관리자용 상품 총 개수 조회 (통합 검색) -->
 	<select id="selectCountAdmin" parameterType="map" resultType="int">
 	    SELECT COUNT(DISTINCT product.product_idx)

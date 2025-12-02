@@ -120,7 +120,8 @@ public class ProductServiceImpl implements ProductService {
             String product_main_image_name=product_image_level1.getProduct_image_url();
             File f=new File(application.getRealPath("/images/products_list"),product_main_image_name);
             res = res*product_dao.updateProductImage(productVo);
-            if(res==1) {
+            if(res==1 && productVo.getMain_image_url()!=null) {
+            	System.out.printf("	메인이미지삭제\n");
             	f.delete();
             }
             System.out.printf("[ProductServiceImpl-update] product_image 테이블 업데이트 결과: %d\n", res);
@@ -264,7 +265,8 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("[ProductServiceImpl-deleteBatch] 모든 해시태그 연결 삭제 완료");
         
         // 2. 상품 일괄 삭제 (CASCADE 설정으로 product_image도 자동 삭제됨)
-        int res = product_dao.deleteBatch(product_idx_list);
+        int res = product_dao.deleteProductRemain(product_idx_list);
+        res = res*product_dao.deleteBatch(product_idx_list);
         System.out.printf("[ProductServiceImpl-deleteBatch] 삭제된 개수: %d\n", res);
         
         return res;
