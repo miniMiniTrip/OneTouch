@@ -296,9 +296,9 @@ VALUES
 
 
 
-INSERT INTO `order`(order_id,mem_idx,order_no,order_status)
+INSERT INTO `order`(order_id,mem_idx,order_no,order_status,total_amount)
 VALUES
-(1,7,'OT156498421',)
+(1,7,'OT156498421','결제완료',)
 
 
 
