@@ -463,7 +463,7 @@ CREATE TABLE qna (
     qna_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성시간',
     qna_update TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '수정시간',
     qna_answer_time TIMESTAMP NULL COMMENT '답변시간',
-    product_idx INT NULL COMMENT '상품번호'
+    product_idx INT NULL COMMENT '상품번호',
     
     FOREIGN KEY (mem_idx) REFERENCES mem(mem_idx) 
         ON DELETE RESTRICT ON UPDATE CASCADE
