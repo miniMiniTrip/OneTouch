@@ -484,18 +484,18 @@ CREATE TABLE qna (
 -- 19. 입고 테이블
 -- ========================================
 
--- CREATE TABLE product_in (
---    in_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '입고번호',
---    product_idx INT NOT NULL COMMENT '상품FK',
---    in_name VARCHAR(100) NOT NULL COMMENT '담당자/업체',
---    in_cnt INT NOT NULL COMMENT '입고수량',
---    in_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '입고일시',
---    
---    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
---        ON DELETE RESTRICT ON UPDATE CASCADE,
---    
---    CONSTRAINT chk_in_cnt CHECK (in_cnt > 0)
--- ) COMMENT '입고이력';
+ CREATE TABLE product_in (
+    in_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '입고번호',
+    product_idx INT NOT NULL COMMENT '상품FK',
+    in_name VARCHAR(100) NOT NULL COMMENT '담당자/업체',
+    in_cnt INT NOT NULL COMMENT '입고수량',
+    in_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '입고일시',
+    
+    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    
+    CONSTRAINT chk_in_cnt CHECK (in_cnt > 0)
+ ) COMMENT '입고이력';
 
 -- CREATE INDEX idx_product_in_product ON product_in(product_idx);
 -- CREATE INDEX idx_product_in_regdate ON product_in(in_regdate DESC);
@@ -504,18 +504,18 @@ CREATE TABLE qna (
 -- 20. 출고 테이블
 -- ========================================
 
--- CREATE TABLE product_out (
---    out_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '출고번호',
---    product_idx INT NOT NULL COMMENT '상품FK',
---    out_name VARCHAR(100) NOT NULL COMMENT '담당자/사유',
---    out_cnt INT NOT NULL COMMENT '출고수량',
---    out_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '출고일시',
---    
---    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
---        ON DELETE RESTRICT ON UPDATE CASCADE,
---    
---    CONSTRAINT chk_out_cnt CHECK (out_cnt > 0)
--- ) COMMENT '출고이력';
+ CREATE TABLE product_out (
+    out_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '출고번호',
+    product_idx INT NOT NULL COMMENT '상품FK',
+    out_name VARCHAR(100) NOT NULL COMMENT '담당자/사유',
+    out_cnt INT NOT NULL COMMENT '출고수량',
+    out_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '출고일시',
+    
+    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    
+    CONSTRAINT chk_out_cnt CHECK (out_cnt > 0)
+ ) COMMENT '출고이력';
 
 -- CREATE INDEX idx_product_out_product ON product_out(product_idx);
 -- CREATE INDEX idx_product_out_regdate ON product_out(out_regdate DESC);
@@ -524,18 +524,18 @@ CREATE TABLE qna (
 -- 21. 재고 스냅샷 테이블
 -- ========================================
 
--- CREATE TABLE product_remain (
---    remain_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '재고번호',
---    product_idx INT NOT NULL COMMENT '상품FK',
---    remain_name VARCHAR(100) NOT NULL COMMENT '담당자/메모',
---    remain_cnt INT NOT NULL COMMENT '재고수량',
---    remain_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '기록일시',
---    
---    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
---        ON DELETE RESTRICT ON UPDATE CASCADE,
---    
---    CONSTRAINT chk_remain_cnt CHECK (remain_cnt >= 0)
--- ) COMMENT '재고스냅샷';
+ CREATE TABLE product_remain (
+    remain_idx INT AUTO_INCREMENT PRIMARY KEY COMMENT '재고번호',
+    product_idx INT NOT NULL COMMENT '상품FK',
+    remain_name VARCHAR(100) NOT NULL COMMENT '담당자/메모',
+    remain_cnt INT NOT NULL COMMENT '재고수량',
+    remain_regdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '기록일시',
+    
+    FOREIGN KEY (product_idx) REFERENCES product(product_idx) 
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    
+    CONSTRAINT chk_remain_cnt CHECK (remain_cnt >= 0)
+ ) COMMENT '재고스냅샷';
 
 -- CREATE INDEX idx_product_remain_product ON product_remain(product_idx);
 -- CREATE INDEX idx_product_remain_regdate ON product_remain(remain_regdate DESC);
