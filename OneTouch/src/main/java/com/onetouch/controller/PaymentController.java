@@ -94,8 +94,24 @@ public class PaymentController {
             Map<String, Object> confirmResult = confirmPayment(paymentKey, orderId, amount);
             System.out.println("=== TossPayments 승인 완료 ===");
             
-            // 결제 정보 업데이트
-            PaymentVo payment_vo = new PaymentVo();
+            //디버깅: TossPayments 응답 전체 확인
+            System.out.println("=== TossPayments 응답 상세 ===");
+            System.out.println("전체 응답: " + confirmResult);
+            System.out.println("method 값: " + confirmResult.get("method"));
+            System.out.println("type 값: " + confirmResult.get("type"));
+            
+            //orderId(우리의 payment_key)로 기존 payment 조회
+            System.out.println("=== 기존 payment 조회 (orderId: " + orderId + ") ===");
+            PaymentVo payment_vo = payment_service.getPaymentByKey(orderId);
+            
+            if (payment_vo == null) {
+                System.err.println("❌ payment를 찾을 수 없습니다! orderId: " + orderId);
+                throw new RuntimeException("결제 정보를 찾을 수 없습니다.");
+            }
+            
+            System.out.println("✅ 기존 payment 찾음: payment_id=" + payment_vo.getPayment_id());
+            
+            //토스의 paymentKey로 업데이트 (나중에 토스 API 호출 시 필요)
             payment_vo.setPayment_key(paymentKey);
             payment_vo.setApproved_at(new Timestamp(System.currentTimeMillis()));
             
@@ -106,11 +122,52 @@ public class PaymentController {
                 payment_vo.setReceipt_url(receipt.get("url"));
             }
             
-            // 결제 수단 저장
+            //결제 수단 저장 (여러 가능성 고려)
+            String paymentMethod = null;
+            
+            // 1. method 필드 확인
             if (confirmResult.get("method") != null) {
-                payment_vo.setMethod(confirmResult.get("method").toString());
+                paymentMethod = confirmResult.get("method").toString();
+                System.out.println("✅ method 필드에서 가져옴: " + paymentMethod);
+            }
+            // 2. type 필드 확인 (일부 API 버전)
+            else if (confirmResult.get("type") != null) {
+                paymentMethod = confirmResult.get("type").toString();
+                System.out.println("✅ type 필드에서 가져옴: " + paymentMethod);
+            }
+            // 3. card, virtualAccount 등 객체 존재 여부로 판단
+            else {
+                if (confirmResult.get("card") != null) {
+                    paymentMethod = "카드";
+                    System.out.println("✅ card 객체 존재 → 카드 결제");
+                } else if (confirmResult.get("virtualAccount") != null) {
+                    paymentMethod = "가상계좌";
+                    System.out.println("✅ virtualAccount 객체 존재 → 가상계좌");
+                } else if (confirmResult.get("transfer") != null) {
+                    paymentMethod = "계좌이체";
+                    System.out.println("✅ transfer 객체 존재 → 계좌이체");
+                } else if (confirmResult.get("mobilePhone") != null) {
+                    paymentMethod = "휴대폰";
+                    System.out.println("✅ mobilePhone 객체 존재 → 휴대폰 결제");
+                } else {
+                    paymentMethod = "기타";
+                    System.err.println("결제 수단을 특정할 수 없음, '기타'로 저장");
+                }
             }
             
+            if (paymentMethod != null) {
+                payment_vo.setMethod(paymentMethod);
+                System.out.println("=== 결제 수단 저장 완료: " + paymentMethod + " ===");
+            }
+            
+            
+            //디버깅: PaymentVo 객체 내용 확인
+            System.out.println("=== approvePayment 호출 직전 PaymentVo 확인 ===");
+            System.out.println("payment_key: " + payment_vo.getPayment_key());
+            System.out.println("method: " + payment_vo.getMethod());
+            System.out.println("approved_at: " + payment_vo.getApproved_at());
+            System.out.println("receipt_url: " + payment_vo.getReceipt_url());
+            System.out.println("PaymentVo 전체: " + payment_vo);
             payment_service.approvePayment(payment_vo);
             System.out.println("=== 결제 승인 완료 ===");
             
@@ -139,21 +196,35 @@ public class PaymentController {
                 order_service.updateStatus(order_id, "결제완료");
                 
             } else {
-                // 신규 결제: order_item은 create_ready.do에서 이미 생성됨
-                // 장바구니 결제인 경우 장바구니 삭제만 수행
-                System.out.println("신규 결제 처리 - 주문 상태 업데이트");
+                //신규 결제: order_item 생성 필요!
+                System.out.println("신규 결제 처리 - order_item 생성");
                 
                 if ("cart".equals(order_type)) {
+                    // 장바구니 결제
                     String[] cart_ids = (String[]) session.getAttribute("cart_ids");
                     if (cart_ids != null && cart_ids.length > 0) {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("cart_id_array", cart_ids);
-                        cart_dao.deletePaymentComplete(map);
-                        System.out.println("장바구니 삭제 완료");
+                        //order_item 생성 + 장바구니 삭제 + 주문 상태 업데이트
+                        order_service.insertOrderCartByToss(order_id, cart_ids);
+                        System.out.println("장바구니 order_item 생성 완료");
+                    } else {
+                        System.err.println("장바구니 정보가 세션에 없습니다!");
                     }
+                    
+                } else if ("direct".equals(order_type)) {
+                    // 단건 결제
+                    Integer product_idx = (Integer) session.getAttribute("product_idx");
+                    Integer product_cnt = (Integer) session.getAttribute("product_cnt");
+                    
+                    if (product_idx != null && product_cnt != null) {
+                        //order_item 생성 + 주문 상태 업데이트
+                        order_service.insertOrderToss(order_id, product_idx, product_cnt);
+                        System.out.println("단건 order_item 생성 완료");
+                    } else {
+                        System.err.println("상품 정보가 세션에 없습니다!");
+                    }
+                } else {
+                    System.err.println("알 수 없는 주문 타입: " + order_type);
                 }
-                
-                order_service.updateStatus(order_id, "결제완료");
             }
             
             // 세션 정리

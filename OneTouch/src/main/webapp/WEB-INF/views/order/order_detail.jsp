@@ -285,13 +285,18 @@
 
 .product-info {
     flex: 1;
+        display: flex;
+    flex-direction: column;   /* 세로 정렬 */
+    align-items: center;      /* 가로 가운데 정렬 */
 }
 
 .product-name {
     font-size: 16px;
     font-weight: 600;
+    margin-top:30px;
     margin-bottom: 8px;
     color: #333;
+
 }
 
 .product-name a {
@@ -313,6 +318,10 @@
 .product-price {
     text-align: right;
     min-width: 120px;
+        display: flex;
+    flex-direction: column;   /* 세로 정렬 */
+    align-items: center;      /* 가로 가운데 정렬 */
+    
 }
 
 .product-price .price {
@@ -320,6 +329,7 @@
     font-weight: 700;
     color: #5c6bc0;
     margin-bottom: 4px;
+    
 }
 
 .product-price .qty {
@@ -382,6 +392,7 @@
     transition: all 0.3s;
     text-decoration: none;
     display: inline-block;
+    margin-top: 10px;
 }
 
 .btn-primary-custom:hover {
@@ -465,6 +476,33 @@
     color: white;
 }
 
+/* 리뷰 버튼 div 영역 */
+.product-review{
+	display: flex;
+    justify-content: center;
+    align-items: center;   /* 세로 정렬도 필요하면 추가 */
+}
+
+/* 리뷰완료버튼 css */
+.btn-green {
+    background-color: #28a745;   /* 초록색 */
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-green:hover {
+    background-color: #218838;
+}
+/* 비활성화 */
+.btn-disabled {
+    background-color: #ccc;
+    color: #666;
+    pointer-events: none; /* 클릭 막기 */
+    cursor: default;
+}
+
 /* ==================== 반응형 ==================== */
 @media (max-width: 1200px) {
     .content {
@@ -533,6 +571,7 @@
     </style>
 </head>
 <body>
+</div>
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
@@ -758,6 +797,28 @@
                                             <fmt:formatNumber value="${item.total_amount}" pattern="#,###"/>원
                                         </div>
                                         <div class="qty">수량: ${item.product_cnt}개</div>
+                                    <c:if test="${order.order_status == '배송완료' }">
+	                                    <div class="product-review">
+		                                    <c:if test="${item.use_review == 1}">
+							               		<a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${item.product_idx}&order_item_id=${item.order_item_id}" 
+							                   class="btn-primary-custom">리뷰작성</a>
+		                                    </c:if>
+	                                    </div>
+                                    </c:if>
+                                    <c:if test="${order.order_status == '배송완료' }">
+	                                    <div class="product-review ">
+		                                    <c:if test="${item.use_review == 2}">
+							               		<a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${item.product_idx}&order_item_id=${item.order_item_id}" 
+							                   class="btn-primary-custom btn-green btn-disabled">리뷰완료</a>
+		                                    </c:if>
+	                                    </div>
+                                    </c:if>
+                                    <c:if test="${order.order_status != '배송완료' }">
+	                                    <div class="product-review ">
+							               		<a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${item.product_idx}&order_item_id=${item.order_item_id}" 
+							                   class="btn-primary-custom btn-green btn-disabled">${order.order_status }</a>
+	                                    </div>
+                                    </c:if>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -849,12 +910,12 @@
 					            </button>
 					        </c:when>
 					        
-					        <c:when test="${order.order_status == '배송완료'}">
+					  <%--       <c:when test="${order.order_status == '배송완료'}">
 					            <c:if test="${not empty order_items and order_items.size() > 0}">
 					                <a href="${pageContext.request.contextPath}/post/insert?category=review&product_idx=${order_items[0].product_idx}&order_item_id=${order_items[0].order_item_id}" 
 					                   class="btn-primary-custom">리뷰작성</a>
 					            </c:if>
-					        </c:when>
+					        </c:when> --%>
 					                                                
 					        <c:when test="${order.order_status == '환불'}">
 					            <div class="alert alert-info">

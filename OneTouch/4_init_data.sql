@@ -70,9 +70,9 @@ INSERT INTO mem (mem_id,mem_pw,mem_name,mem_email,mem_roll,mem_phone,mem_birth)V
 INSERT INTO hashtag (hashtag_name) VALUES
 ('지성'),('복합성'),('건성'),('민감성'),('저항성'),('색소성'),('비색소성'),('주름성'),('탄력성'),('밝은톤'),('중간톤'),('어두운톤');
 
------------------------------------------------------------------------------------------------------
---해시 추가데이터 11/26 추가
------------------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------------------
+-- 해시 추가데이터 11/26 추가
+-- ---------------------------------------------------------------------------------------------------
 INSERT INTO hashtag (hashtag_name) VALUES
 
 ('무기자차'), ('순한선크림'), ('민감선케어'),
@@ -102,89 +102,15 @@ INSERT INTO hashtag (hashtag_name) VALUES
 -- select * from hashtag
 
 
-INSERT INTO hashtag (hashtag_name) VALUES
-SELECT LAST_INSERT_ID();
--- product_hashtag sample data
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(1, 1), (1, 4), (1, 6);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(2, 3), (2, 7), (2, 9); 
--- 25.11.18 추가
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(3, 1), (3, 2), (3, 7);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(4, 3), (4, 8), (4, 9);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(5, 1), (5, 5), (5, 6);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(6, 2), (6, 4), (6, 7);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(7, 3), (7, 2), (7, 7);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(8, 4), (8, 5), (8, 7);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(9, 1), (9, 2), (9, 9);
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-(10, 3), (10, 8), (10, 9);
-
------------------------------------------------------------------------------------------------------
---해시 추가데이터 11/26 추가  위에꺼 삽입하고 해야 실행됨
------------------------------------------------------------------------------------------------------
-INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
-
-(11, 13), (11, 14), (11, 15),
-
-(12, 16), (12, 17), (12, 18),
-
-(13, 19), (13, 20), (13, 21),
-
-(14, 22), (14, 23), (14, 24),
-
-(15, 25), (15, 26), (15, 27),
-
-(16, 28), (16, 29), (16, 30),
-
-(17, 31), (17, 32), (17, 33),
-
-(18, 34), (18, 35), (18, 36),
-
-(19, 37), (19, 38), (19, 39),
-
-(20, 40), (20, 41), (20, 42),
-
-(21, 43), (21, 44), (21, 45),
-
-(22, 46), (22, 47), (22, 48),
-
-(23, 49), (23, 50), (23, 51),
-
-(24, 52), (24, 53), (24, 54),
-
-(25, 55), (25, 56), (25, 57),
-
-(26, 58), (26, 59), (26, 60),
-
-(27, 61), (27, 62), (27, 63),
-
-(28, 64), (28, 65), (28, 66),
-
-(29, 67), (29, 68), (29, 69),
-
-(30, 70), (30, 71), (30, 72);
------------------------------------------------------------------------------------------------------
---해시 추가데이터 11/26 추가
------------------------------------------------------------------------------------------------------
-
-
---=============================================================================================================
--- 상품(product) 초기 더미 데이터
---=============================================================================================================
+-- ===================================
+-- 	상품(product) 초기 더미 데이터
+-- ===================================
 
 
 -- 30개 상품 INSERT
-DROP TABLE IF EXISTS product_image;
+-- DROP TABLE IF EXISTS product_image;
 
---product dummy_file
+-- product dummy_file
 
 INSERT INTO product
 (category_idx, product_wishlist, product_price, product_name, product_brand, product_comment, product_cnt, product_time, product_update)
@@ -292,7 +218,7 @@ INSERT INTO product_image (product_idx, product_image_url, product_image_level) 
 -- C3_P10_이니스프리_화산송이_모공흡착.jpg
 
 
---==상세페이지 dummy data ==
+-- ==상세페이지 dummy data ==
 
 INSERT INTO product_image (product_idx, product_image_url, product_image_level) VALUES
 -- C1 상세 이미지
@@ -354,16 +280,96 @@ INSERT INTO product_image (product_idx, product_image_url, product_image_level) 
 
 
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- SET FOREIGN_KEY_CHECKS = 1;
 
-SELECT * FROM product_image 
-WHERE product_idx = #{id} 
-ORDER BY product_image_level ASC;
+-- SELECT * FROM product_image 
+-- WHERE product_idx = #{id} 
+-- ORDER BY product_image_level ASC;
 
 
-SELECT * FROM product_image 
-WHERE product_idx = 28
-ORDER BY product_image_level ASC;
+-- SELECT * FROM product_image 
+-- WHERE product_idx = 28
+-- ORDER BY product_image_level ASC;
+
+-- =======
+--  상품 해시 태그 더미
+-- =======
+
+
+-- INSERT INTO hashtag (hashtag_name) VALUES
+-- SELECT LAST_INSERT_ID();
+-- product_hashtag sample data
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(1, 1), (1, 4), (1, 6);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(2, 3), (2, 7), (2, 9); 
+-- 25.11.18 추가
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(3, 1), (3, 2), (3, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(4, 3), (4, 8), (4, 9);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(5, 1), (5, 5), (5, 6);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(6, 2), (6, 4), (6, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(7, 3), (7, 2), (7, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(8, 4), (8, 5), (8, 7);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(9, 1), (9, 2), (9, 9);
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+(10, 3), (10, 8), (10, 9);
+
+-- ---------------------------------------------------------------------------------------------------
+-- 해시 추가데이터 11/26 추가  위에꺼 삽입하고 해야 실행됨
+-- ---------------------------------------------------------------------------------------------------
+INSERT INTO product_hashtag (product_idx, hashtag_idx) VALUES
+
+(11, 13), (11, 14), (11, 15),
+
+(12, 16), (12, 17), (12, 18),
+
+(13, 19), (13, 20), (13, 21),
+
+(14, 22), (14, 23), (14, 24),
+
+(15, 25), (15, 26), (15, 27),
+
+(16, 28), (16, 29), (16, 30),
+
+(17, 31), (17, 32), (17, 33),
+
+(18, 34), (18, 35), (18, 36),
+
+(19, 37), (19, 38), (19, 39),
+
+(20, 40), (20, 41), (20, 42),
+
+(21, 43), (21, 44), (21, 45),
+
+(22, 46), (22, 47), (22, 48),
+
+(23, 49), (23, 50), (23, 51),
+
+(24, 52), (24, 53), (24, 54),
+
+(25, 55), (25, 56), (25, 57),
+
+(26, 58), (26, 59), (26, 60),
+
+(27, 61), (27, 62), (27, 63),
+
+(28, 64), (28, 65), (28, 66),
+
+(29, 67), (29, 68), (29, 69),
+
+(30, 70), (30, 71), (30, 72);
+-- ---------------------------------------------------------------------------------------------------
+-- 해시 추가데이터 11/26 추가
+-- ---------------------------------------------------------------------------------------------------
+
+
 
 
 
@@ -562,7 +568,7 @@ INSERT INTO post_product
 post_idx, product_idx, post_product_time
 )
 VALUES 
-(5,17,now())
+(5,17,now());
 
 -- post_idx=6
 INSERT INTO post 
@@ -654,3 +660,7 @@ VALUES
 
 -- insert into post values(null, 회원_idx, free, 제목, 내용, 이미지, 좋아요갯수,0,null,0,0,0,now(),null);
 
+
+-- ========================================
+--				주문내역 더미 
+-- ========================================

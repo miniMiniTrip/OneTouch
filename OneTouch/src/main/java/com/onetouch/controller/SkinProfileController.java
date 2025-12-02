@@ -37,7 +37,23 @@ public class SkinProfileController {
 	HttpSession session;
 	
 	@RequestMapping("/skinprofile/form")
-	public String SkinProfileForm() {
+	public String SkinProfileForm(Model model) {
+	    // 로그인 체크
+	    MemVo memVo = (MemVo)session.getAttribute("user");
+	    
+	    if(memVo == null) {
+	        return "redirect:/user/login";
+	    }
+		
+		SkinProfileVo skinProfile = skin_profile_dao.selectOne(memVo.getMem_idx());
+		
+	    if(skinProfile != null) {
+	        // 아직 진단 안 한 경우
+	        model.addAttribute("skinProfile", skinProfile);
+	        return "skinprofile/choice";
+	    }
+	    
+	    
 		return "skinprofile/form";
 	}
 	
@@ -48,11 +64,13 @@ public class SkinProfileController {
 									@RequestParam("skin4") int skin4,
 									@RequestParam("skin5") int skin5,
 									Model model){
-		MemVo memVo =  
-				(MemVo)session.getAttribute("user");
-		
-		if(memVo==null) {return "redirect:/user/login";}
-		
+	    // 로그인 체크
+	    MemVo memVo = (MemVo)session.getAttribute("user");
+	    
+	    if(memVo == null) {
+	        return "redirect:/user/login";
+	    }
+	    
 		List<Integer> list = new ArrayList<>();
 
 		switch(skin1)

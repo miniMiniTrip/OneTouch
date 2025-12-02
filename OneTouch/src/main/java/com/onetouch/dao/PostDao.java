@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.onetouch.vo.LikeVo;
+import com.onetouch.vo.OrderReviewPostVo;
 import com.onetouch.vo.PostPageVo;
 import com.onetouch.vo.PostProductVo;
 import com.onetouch.vo.PostVo;
@@ -60,4 +61,9 @@ public interface PostDao {
 
 	// order_item_id로 post 있는지 체크
 	PostVo selectPostOrderItemOne(int order_item_id);
+	
+	// 상품 리뷰 정보 가져오기
+	List<OrderReviewPostVo> selectReviewPostList(int product_idx);
+	
+
 }

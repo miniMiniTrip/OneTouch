@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.onetouch.vo.OrderReviewPostVo;
 import com.onetouch.vo.OrderVo;
 
 //주문서 작성
