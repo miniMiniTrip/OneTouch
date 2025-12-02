@@ -105,11 +105,11 @@ public class PaymentController {
             PaymentVo payment_vo = payment_service.getPaymentByKey(orderId);
             
             if (payment_vo == null) {
-                System.err.println("❌ payment를 찾을 수 없습니다! orderId: " + orderId);
+                System.err.println("payment를 찾을 수 없습니다! orderId: " + orderId);
                 throw new RuntimeException("결제 정보를 찾을 수 없습니다.");
             }
             
-            System.out.println("✅ 기존 payment 찾음: payment_id=" + payment_vo.getPayment_id());
+            System.out.println("기존 payment 찾음: payment_id=" + payment_vo.getPayment_id());
             
             //토스의 paymentKey로 업데이트 (나중에 토스 API 호출 시 필요)
             payment_vo.setPayment_key(paymentKey);

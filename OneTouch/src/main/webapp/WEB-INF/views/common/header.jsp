@@ -231,11 +231,12 @@ margin-top: 10px !important;
 </style>
 
 <script type="text/javascript">
-//검색 기능
+//검색 기능 - 통합 검색 (상품 + 포스트)
 function performSearch() {
     const keyword = document.getElementById('search-input')?.value.trim();
     if (keyword) {
-        location.href = "${pageContext.request.contextPath}/product/list?keyword=" + encodeURIComponent(keyword) + "&sort=popular";
+        // MainController의 /search 엔드포인트로 이동 (통합 검색: 상품 + 포스트)
+        location.href = "${pageContext.request.contextPath}/search?keyword=" + encodeURIComponent(keyword);
     }
 }
 

@@ -65,5 +65,7 @@ public interface PostDao {
 	// 상품 리뷰 정보 가져오기
 	List<OrderReviewPostVo> selectReviewPostList(int product_idx);
 	
-
+	// 검색 로직용 
+	List<PostVo> searchByKeyword(Map<String, Object> map);
+	int searchCount(Map<String, Object> map);
 }
