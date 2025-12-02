@@ -29,7 +29,7 @@ INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_
 
 -- mem_idx = 4
 INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
-('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호','2000-12-04','호랑이1.png');
+('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호','2000-12-04','호랑이1.jpg');
 
 -- mem_idx = 5
 INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
@@ -42,7 +42,7 @@ INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_
 -- mem_idx = 7~25
 -- 좋아요를 위한 무의미한 유저 더미추가
 INSERT INTO mem (mem_id,mem_pw,mem_name,mem_email,mem_roll,mem_phone,mem_birth)VALUES
- ('u1231','123','유저01','user0@onetouch.com','user','010-1111-1110','2000-12-04')
+ ('u1231','123','고민자','user0@onetouch.com','user','010-1111-1110','2000-12-04')
 ,('u1232','123','유저02','user2@onetouch.com','user','010-1111-1112','2000-12-04')
 ,('u1233','123','유저03','user3@onetouch.com','user','010-1111-1113','2000-12-04')
 ,('u1234','123','유저04','user4@onetouch.com','user','010-1111-1114','2000-12-04')
@@ -61,6 +61,26 @@ INSERT INTO mem (mem_id,mem_pw,mem_name,mem_email,mem_roll,mem_phone,mem_birth)V
 ,('u1228','123','유저17','user08@onetouch.com','user','010-1111-1180','2000-12-04')
 ,('u1229','123','유저18','user09@onetouch.com','user','010-1111-1190','2000-12-04')
 ,('u1220','123','유저19','user00@onetouch.com','user','010-1111-1100','2000-12-04');
+
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 강남구 가로수길 9', `mem_addr_more` = '102호' WHERE (`mem_idx` = '7');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 여의도 166-1', `mem_addr_more` = '201호' WHERE (`mem_idx` = '8');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 강남구 가로수길 13', `mem_addr_more` = '501호' WHERE (`mem_idx` = '9');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 중랑구 망우로 166-11', `mem_addr_more` = '101동 1001호' WHERE (`mem_idx` = '10');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '경북 영양군 수비면 판사길 5', `mem_addr_more` = 'A동 401호' WHERE (`mem_idx` = '11');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 강남구 가로수길 13', `mem_addr_more` = '11호' WHERE (`mem_idx` = '12');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 강남구 가로수길 13', `mem_addr_more` = '15호' WHERE (`mem_idx` = '13');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '경북 영양군 수비면 판사길 5', `mem_addr_more` = '201동 101호' WHERE (`mem_idx` = '14');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 중랑구 망우로 166-11', `mem_addr_more` = '101동 605호' WHERE (`mem_idx` = '15');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '전북특별자치도 익산시 고봉로 156', `mem_addr_more` = '504동 301호' WHERE (`mem_idx` = '16');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '경북 영양군 수비면 판사길 5', `mem_addr_more` = '101동 1001호' WHERE (`mem_idx` = '17');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '전북특별자치도 익산시 고봉로 156', `mem_addr_more` = '901동 901호' WHERE (`mem_idx` = '18');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 강남구 가로수길 11', `mem_addr_more` = '1층 2호' WHERE (`mem_idx` = '19');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '전북특별자치도 익산시 고봉로 156', `mem_addr_more` = '3층 1호' WHERE (`mem_idx` = '20');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 중랑구 망우로 166-11', `mem_addr_more` = '반지하' WHERE (`mem_idx` = '21');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '경북 영양군 수비면 판사길 5', `mem_addr_more` = '5층 501호' WHERE (`mem_idx` = '22');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 강남구 가로수길 13', `mem_addr_more` = '마루빌라 5층' WHERE (`mem_idx` = '23');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '서울 중랑구 망우로 166-11', `mem_addr_more` = '망우빌라 2층' WHERE (`mem_idx` = '24');
+UPDATE `otdb`.`mem` SET `mem_postal` = '06035', `mem_addr` = '전북특별자치도 익산시 고봉로 156', `mem_addr_more` = '고봉산 1000m' WHERE (`mem_idx` = '25');
 
 
 -- ========================================
@@ -359,7 +379,7 @@ INSERT INTO product_image (product_idx, product_image_url, product_image_level) 
 (30, 'C3_P30_이니스프리3.jpg', 3),
 (30, 'C3_P30_이니스프리4.jpg', 4),
 (30, 'C3_P30_이니스프리5.jpg', 5),
-(30, 'C3_P30_이니스프리_1.jpg', -1);
+(30, 'C3_P30_이니스프리화산송이_1.jpg', -1);
 --===========================================================================
 -- product_image_dummy //12월2일 업데이트
 --===========================================================================
@@ -748,3 +768,92 @@ VALUES
 -- ========================================
 --				주문내역 더미 
 -- ========================================
+INSERT INTO `otdb`.`order` (`order_id`, `mem_idx`, `order_no`, `order_status`, `total_amount`, `order_name`, `order_mem_name`, `order_phone`, `order_postal`, `order_address`, `order_address_more`) VALUES ('1', '7', 'OT65491556', '결제완료', '11500', '데일리 바디&페이스 로션', '고민자', '010-8282-8282', '06035', '서울 강남구 가로수길 9', '102호');
+UPDATE `otdb`.`order` SET `order_name` = '데일리 바디&페이스 로션 외2건' WHERE (`order_id` = '1');
+INSERT INTO `otdb`.`order` (`order_id`, `mem_idx`, `order_no`, `order_status`, `total_amount`, `order_name`, `order_mem_name`, `order_phone`, `order_postal`, `order_address`, `order_address_more`) VALUES ('2', '9', 'OT913246489', '결제완료', '11500', '데일리 바디&페이스 로션', '천일렴', '010-2244-2124', '08956', '서울 강남구 가로수길 13', '501호');
+INSERT INTO `otdb`.`order` (`order_id`, `mem_idx`, `order_no`, `order_status`, `total_amount`, `order_name`, `order_mem_name`, `order_phone`, `order_postal`, `order_address`, `order_address_more`) VALUES ('3', '10', 'OT432156489', '결제완료', '11500', '데일리 바디&페이스 로션', '이하나', '010-4245-7897', '72478', '서울 중랑구 망우로 166-11', '101동 1001호');
+UPDATE `otdb`.`order` SET `order_name` = '데일리 바디&페이스 로션' WHERE (`order_id` = '1');
+
+-- ========================================
+--				주문상세내역 더미 
+-- ========================================
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('1', '1', '10', '데일리 바디&페이스 로션', '10', '11500', '115000');
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('2', '2', '10', '데일리 바디&페이스 로션', '1', '11500', '11500');
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('3', '3', '10', '데일리 바디&페이스 로션', '5', '11500', '57500');
+
+
+
+-- ========================================
+--				  리뷰 더미 
+-- ========================================
+
+-- product_idx = 10 상품 리뷰
+INSERT INTO post 
+(mem_idx,post_category, post_title, post_content, post_image, post_rating,order_item_id)
+VALUES
+(7,'review', '촉촉함이 오래가는 로션', '더마비 로션 바르고 나니 하루 종일 피부가 촉촉하고 부드럽네요. 산뜻하면서도 보습력이 좋아서 만족합니다.', '24_더마비로션.jpg*25_더마비로션2.jpg', 5,1),
+(9,'review', '민감 피부에도 부담 없어요', '평소 민감한 피부인데, 자극 없이 잘 흡수되고 진정되는 느낌이에요. 남자 피부용으로 딱이에요.', '26_더마비로션3.jpg*27_더마비로션4.jpg*28_더마비로션5.jpg', 5,2),
+(10,'review', '가벼운 질감, 깊은 보습', '가벼운 발림성인데, 피부 속까지 촉촉함이 유지돼서 좋네요. 끈적이지 않고 산뜻합니다.', '29_더마비로션6.jpg*30_더마비로션7.jpg', 4,3);
+
+
+INSERT INTO `otdb`.`order` (`order_id`, `mem_idx`, `order_no`, `order_status`, `total_amount`, `order_name`, `order_mem_name`, `order_phone`, `order_postal`, `order_address`, `order_address_more`) VALUES ('4', '11', 'OT981651351', '결제완료', '9500', '화산송이 모공 흡착 폼', '하송이', '010-4959-4576', '08956', '경북 영양군 수비면 판사길 5', 'A동 401호');
+
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('4', '4', '30', '화산송이 모공 흡착 폼', '1', '9500', '9500');
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('5', '4', '10', '데일리 바디&페이스 로션', '1', '11500', '11500');
+
+INSERT INTO `otdb`.`post` (`post_idx`, `mem_idx`, `post_category`, `post_title`, `post_content`, `post_image`, `order_item_id`, `post_rating`) VALUES ('12', '11', 'review', '진짜 개운하게 씻겨요', '폼이 되게 쫀쫀하고 세정력 좋아요. 모공이 좀 정리되는 느낌이라 만족!', '1_화산송이1.jpg*3_화산송이3.jpg*4_화산송이4.jpg', '4', '5');
+INSERT INTO `otdb`.`post` (`post_idx`, `mem_idx`, `post_category`, `post_title`, `post_content`, `post_image`, `order_item_id`, `post_rating`) VALUES ('13', '11', 'review', '재구매 의사 있음', '피부 건조할 때 바르기 딱 좋아요. 흡수력도 좋고 남자 피부에 잘 맞아요.', '30_더마비로션8.jpg*31_더마비로션9.jpg', '5', '5');
+
+INSERT INTO `otdb`.`order` (`order_id`, `mem_idx`, `order_no`, `order_status`, `total_amount`, `order_name`, `order_mem_name`, `order_phone`, `order_postal`, `order_address`, `order_address_more`) VALUES ('5', '12', 'OT65498312', '결제완료', '21000', '건성 보습 클렌징폼', '김성수', '010-4654-8764', '01689', '서울 동작구 대방동 105-1', '103호');
+
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('6', '5', '29', '건성 보습 클렌징폼', '1', '21000', '21000');
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('7', '5', '30', '화산송이 모공 흡착 폼', '1', '9500', '9500');
+INSERT INTO `otdb`.`post` (`post_idx`, `mem_idx`, `post_category`, `post_title`, `post_content`, `post_image`, `order_item_id`, `post_rating`) VALUES ('14', '12', 'review', '민감 피부 추천', '카밍진정 기능 덕분인지 얼굴 붉은기와 가려움이 줄었어요. 꾸준히 사용하면 피부가 안정될 것 같아요.', '21_카밍9.png*22_카밍10.png', '6', '3');
+UPDATE `otdb`.`order_item` SET `product_name` = '카밍 진정 선크림', `product_amount` = '17000', `total_amount` = '17000' WHERE (`order_item_id` = '6');
+UPDATE `otdb`.`order_item` SET `product_idx` = '20' WHERE (`order_item_id` = '6');
+INSERT INTO `otdb`.`post` (`post_idx`, `mem_idx`, `post_category`, `post_title`, `post_content`, `post_image`, `order_item_id`, `post_rating`) VALUES ('15', '12', 'review', '기대 이상이에요', '건조할 줄 알았는데 생각보다 덜 당기고 깔끔하게 씻겨요.', '9_화산송이9.jpg*10_화산송이10.jpg', '7', '5');
+UPDATE `otdb`.`order` SET `order_name` = '카밍 진정 선크림' WHERE (`order_id` = '5');
+INSERT INTO `otdb`.`order` (`order_id`, `mem_idx`, `order_no`, `order_status`, `total_amount`, `order_name`, `order_mem_name`, `order_phone`, `order_postal`, `order_address`, `order_address_more`) VALUES ('6', '2', 'OT532132132', '배송중', '21000', '건성 보습 클렌징폼', '김장군', '010-9798-7845', '83185', '제주 서귀포구 서귀포동 100', '1호');
+UPDATE `otdb`.`order` SET `total_amount` = '26500', `order_name` = '카밍 진정 선크림 외 1건' WHERE (`order_id` = '5');
+UPDATE `otdb`.`order` SET `total_amount` = '21000', `order_name` = '화산송이 모공 흡착 폼 외 1건' WHERE (`order_id` = '4');
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('8', '6', '29', '건성 보습 클렌징폼', '3', '21000', '63000');
+
+INSERT INTO `otdb`.`order_item` (`order_item_id`, `order_id`, `product_idx`, `product_name`, `product_cnt`, `product_amount`, `total_amount`) VALUES ('9', '6', '28', '마일드 필링 젤', '1', '19000', '19000');
+UPDATE `otdb`.`order` SET `total_amount` = '19000', `order_name` = '아쿠아 비비 로션' WHERE (`order_id` = '6');
+
+UPDATE `otdb`.`order_item` SET `product_idx` = '16', `product_name` = '아쿠아 비비 로션', `product_amount` = '19000', `total_amount` = '57000' WHERE (`order_item_id` = '8');
+UPDATE `otdb`.`order_item` SET `product_idx` = '10', `product_name` = '카밍 진정 선크림', `product_cnt` = '2', `product_amount` = '11500', `total_amount` = '23000' WHERE (`order_item_id` = '9');
+
+INSERT INTO `otdb`.`post` (`post_idx`, `mem_idx`, `post_category`, `post_title`, `post_content`, `post_image`, `order_item_id`, `post_rating`) VALUES ('16', '2', 'review', '피부톤 자연스럽게 커버', '아침에 간단하게 바르기 좋고 피부톤이 자연스럽게 정리돼요.', '57_다슈비비로션.jpg*58_다슈비비로션2.jpg', '8', '4');
+
+UPDATE `otdb`.`order_item` SET `product_idx` = '20' WHERE (`order_item_id` = '9');
+INSERT INTO `otdb`.`post` (`post_idx`, `mem_idx`, `post_category`, `post_title`, `post_content`, `post_image`, `order_item_id`, `post_rating`) VALUES ('17', '2', 'review', '여름철 필수템', '햇빛 강한 날에도 피부가 당기지 않고 진정되는 느낌. SPF도 있어서 외출할 때 든든합니다.', '17_카밍5.png*18_카밍6.png', '9', '1');
+DELETE FROM `otdb`.`post` WHERE (`post_idx` = '17');
+
+
+
+-- ================
+--      qna
+-- ================
+
+  -- 30번 화산송이 폼  
+INSERT INTO qna (
+    qna_idx, mem_idx, qna_title, qna_content, qna_category,
+    qna_private, qna_answered, qna_answer_content, qna_delete,
+    qna_time, qna_update, qna_answer_time, product_idx
+) VALUES
+(NULL, 3, '사용 방법 문의', '세안할 때 얼마나 짜야 하나요?', 1, 0, 1, '적당량(1cm 정도) 사용하시면 됩니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 5, '지성 피부에 좋아요?', '지성피부인데 괜찮나요?', 1, 0, 0, '', 0, NOW(), NOW(), NULL, 30),
+(NULL, 7, '건성인데 사용 가능?', '건성 피부도 사용해도 되나요?', 1, 0, 1, '건성은 주 2~3회 사용을 권장드립니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 9, '트러블 진정되나요?', '요즘 트러블이 올라오는데 도움되나요?', 1, 0, 0, '', 0, NOW(), NOW(), NULL, 30),
+(NULL, 12, '민감성도 괜찮나요?', '피부가 예민한 편인데 괜찮을까요?', 1, 1, 1, '민감성은 소량 테스트 후 사용 권장드립니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 4, '향이 강한가요?', '향이 강한 편인지 궁금해요.', 3, 0, 0, '', 0, NOW(), NOW(), NULL, 30),
+(NULL, 8, '사용감 문의', '거품 잘 나나요?', 1, 0, 1, '거품 풍성하게 잘 납니다!', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 10, '얼굴 당김?', '세안 후에 많이 당기나요?', 1, 0, 0, '', 0, NOW(), NOW(), NULL, 30),
+(NULL, 2, '배송 문의', '배송 얼마나 걸리나요?', 2, 0, 1, '보통 1~2일 소요됩니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 6, '유통기한 문의', '유통기한 넉넉한가요?', 3, 0, 0, '', 0, NOW(), NOW(), NULL, 30),
+(NULL, 11, '재구매 의사 있음?', '재구매 많이 하는 제품인가요?', 1, 0, 1, '재구매율이 높은 인기 상품입니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 13, '세정력 강한가요?', '메이크업도 지워지나요?', 1, 0, 1, '클렌징폼이라 메이크업 제거보단 2차 세안용입니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 14, '피부 자극?', '자극감 있는 편인가요?', 1, 0, 0, '', 0, NOW(), NOW(), NULL, 30),
+(NULL, 15, '여드름에 효과 있음?', '블랙헤드/화이트헤드 제거되나요?', 1, 0, 1, '모공 각질/피지 케어에 효과적입니다.', 0, NOW(), NOW(), NOW(), 30),
+(NULL, 16, '얼마나 오래 쓰나요?', '하나 사면 얼마나 사용할 수 있나요?', 3, 0, 0, '', 0, NOW(), NOW(), NULL, 30);
