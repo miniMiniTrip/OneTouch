@@ -380,7 +380,9 @@
     
     function confirmDeleteAnswer() {
         if(confirm('답변을 삭제하시겠습니까?')) {
-            location.href = '${pageContext.request.contextPath}/mypage/qna_deleteAnswer?qna_idx=${qna.qna_idx}';
+            location.href = '${pageContext.request.contextPath}/mypage/qna_deleteAnswer?qna_idx=${qna.qna_idx}&product_idx=${product_idx}';
+        	
+        	
         }
         
         
@@ -480,7 +482,12 @@
                 <div class="content">
                     <div class="content-header">
                         <h2>💬 상품 Q&A 상세보기</h2>
+                        <c:if test="${product_idx==0 }">
                         <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/mypage/qna_list'">목록으로</button>
+                        </c:if>
+                        <c:if test="${product_idx > 0 }">
+                        <button class="btn-list" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product_idx }'">목록으로</button>
+                        </c:if>
                     </div>
                     
                     <!-- Q&A 상세 -->
@@ -576,6 +583,8 @@
                     </div>
                     <form action="${pageContext.request.contextPath}/mypage/qna_answer" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="qna_idx" value="${qna.qna_idx}">
+                        <input type="hidden" name="product_idx" value="${product_idx}">
+                        
 
                         <textarea name="qna_answer_content"
                                   class="answer-textarea"
@@ -606,7 +615,7 @@
         <!-- 답변이 없는 경우에만 수정 버튼 표시 -->
         <c:if test="${not qna.qna_answered}">
             <button class="btn btn-edit" 
-                    onclick="location.href='${pageContext.request.contextPath}/mypage/qna_modify?qna_idx=${qna.qna_idx}'">
+                    onclick="location.href='${pageContext.request.contextPath}/mypage/qna_modify?qna_idx=${qna.qna_idx}&product_idx=${product_idx }'">
                 수정
             </button>
         </c:if>
@@ -636,7 +645,7 @@
     <script>
         function confirmDelete() {
             if(confirm('정말 삭제하시겠습니까?')) {
-                location.href = '${pageContext.request.contextPath}/mypage/qna_delete?qna_idx=${qna.qna_idx}';
+                location.href = '${pageContext.request.contextPath}/mypage/qna_delete?qna_idx=${qna.qna_idx}&product_idx=${product_idx}';
             }
         }
         

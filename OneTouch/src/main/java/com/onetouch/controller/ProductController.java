@@ -188,15 +188,16 @@ public class ProductController {
         	map.put("mem_idx", mem_idx);
         	map.put("mem_roll", mem_roll);
         	
+        	model.addAttribute("userO", 1);
         }
         
         map.put("userinformation", 1);
-        List<QnaVo> qna_list = qnaDao.selectQnaList(map);
+        List<QnaVo> qna_list = qnaDao.selectProductQnaList(product_idx);
         
         System.out.println("QnA 목록 개수: " + qna_list.size());
-        
         model.addAttribute("qna_list", qna_list);
         model.addAttribute("needLogin", false);
+        model.addAttribute("product_idx", product_idx);
         
         
         

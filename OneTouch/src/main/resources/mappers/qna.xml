@@ -48,6 +48,28 @@
     </if>
   ORDER BY qna.qna_idx DESC
 </select>
+<select id="selectProductQnaList" resultType="com.onetouch.vo.QnaVo" parameterType="int">
+  SELECT 
+    qna.qna_idx,
+    qna.mem_idx,
+    mem.mem_name,          
+    qna.qna_title,
+    qna.qna_content,
+    qna.qna_category,
+    qna.qna_private,
+    qna.qna_answered,
+    qna.qna_answer_content,
+    qna.qna_delete,
+    qna.qna_time,
+    qna.qna_update,
+    qna.qna_answer_time,
+    qna.product_idx
+  FROM qna
+  JOIN mem ON qna.mem_idx = mem.mem_idx
+  WHERE qna.qna_delete = 0
+      AND qna.product_idx = #{product_idx}
+  ORDER BY qna.qna_idx DESC
+</select>
 
 
     <!-- ✅ Q&A 상세보기 -->
@@ -133,7 +155,8 @@
         qna_private,
         qna_answered,
         qna_answer_content,
-        qna_delete
+        qna_delete,
+        product_idx
     )
     VALUES (
         #{mem_idx}, 
@@ -143,7 +166,8 @@
         #{qna_private},
         #{qna_answered},
         #{qna_answer_content},
-        #{qna_delete}
+        #{qna_delete},
+        #{product_idx}
     )
 </insert>
 

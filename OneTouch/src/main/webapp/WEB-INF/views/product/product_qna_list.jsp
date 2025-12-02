@@ -230,11 +230,13 @@
             <h2>💬 상품 Q&A</h2>
             
             <!-- 로그인한 경우에만 버튼 표시 -->
-            <c:if test="${userOne}">
+            <c:if test="${user.mem_roll != 'admin' }">
+            <c:if test="${ userO == 1 and not empty qna_list}">
                 <button class="product-qna-btn-write" 
                         onclick="location.href='${pageContext.request.contextPath}/product/qna_write?product_idx=${product_idx}'">
                     Q&A 쓰기
                 </button>
+            </c:if>
             </c:if>
         </div>
         
@@ -255,9 +257,16 @@
                         <tr>
                             <td>${qna.qna_idx}</td>
                             <td class="title">
-                                <a href="${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}">
+                               <c:if test="${qna.qna_private == false }">
+                                <a href="${pageContext.request.contextPath}/mypage/detail?qna_idx=${qna.qna_idx}&product_idx=${product_idx}">
                                     ${qna.qna_title}
                                 </a>
+                               </c:if>
+                               <c:if test="${qna.qna_private == true }">
+                                <a style="color: red; text-decoration: none;">
+                                    비공개
+                                </a>
+                               </c:if>
                             </td>
                             <td>${qna.mem_name}</td>
                             <td>${qna.qna_time}</td>
@@ -318,11 +327,13 @@
                 <div class="product-qna-empty-state-message">
                     작성된 상품 문의가 없습니다.
                 </div>
-                <c:if test="${userOne}">
+                <c:if test="${user.mem_roll != 'admin' }">
+                <c:if test="${userO == 1}">
                     <button class="product-qna-btn-write" 
                             onclick="location.href='${pageContext.request.contextPath}/product/qna_write?product_idx=${product_idx}'">
                         Q&A 작성하러 가기
                     </button>
+                </c:if>
                 </c:if>
             </div>
         </c:if>

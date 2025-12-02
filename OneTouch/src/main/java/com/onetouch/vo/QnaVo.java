@@ -21,4 +21,6 @@ public class QnaVo {
     private Timestamp qna_update;       // 수정 시간
     private Timestamp qna_answer_time;  // 답변 시간
     private String mem_name; 			// 회원이름
+    private int product_idx; 			// 상품번호
+    
 }

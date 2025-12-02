@@ -67,6 +67,7 @@ public class UserQnaController {
     // 관리자 Q&A 답변 작성 폼 이동
     @GetMapping("/mypage/qna_write")
     public String qnaWrite(HttpSession session,@RequestParam(defaultValue = "0") int product_idx,Model model) {
+    	System.out.println("		[QnaController] qnaWrite()");
         // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
         
@@ -74,6 +75,8 @@ public class UserQnaController {
             return "redirect:/user/login";
         }
         model.addAttribute("product_idx",product_idx);
+        System.out.println("		[QnaController] retrun : ");
+        System.out.println("");
         return "qna/qna_write"; // 관리자용 글쓰기 / 답변 폼
     }
     
@@ -102,7 +105,7 @@ public class UserQnaController {
    
     // mypage Q&A 상세 페이지
     @GetMapping("/mypage/detail")
-    public String detail(@RequestParam int qna_idx, Model model, RedirectAttributes redirectAttributes) {
+    public String detail(@RequestParam int qna_idx,@RequestParam(defaultValue = "0") int product_idx, Model model, RedirectAttributes redirectAttributes) {
         System.out.println("   [UserQnaController]detail()");
         // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
@@ -129,6 +132,7 @@ public class UserQnaController {
         }
         
         model.addAttribute("qna", qna);
+        model.addAttribute("product_idx",product_idx);
         System.out.println("   [UserQnaController] return : /qna/qna_detail.jsp ");
         System.out.println("");
         return "/qna/qna_detail";
@@ -139,7 +143,8 @@ public class UserQnaController {
     public String answerQna(
             @RequestParam("qna_idx") int qna_idx,
             @RequestParam("qna_answer_content") String qna_answer_content,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes
+            ,@RequestParam(defaultValue = "0")int product_idx) {
         System.out.println("   [UserQnaController]answerQna()");
         // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
@@ -163,13 +168,18 @@ public class UserQnaController {
        
         System.out.println("   [UserQnaController] redirect:/mypage/detail?qna_idx=" + qna_idx);
         System.out.println("");
+        redirectAttributes.addAttribute("product_idx",product_idx);
+        if(product_idx > 0) {
+        	return "redirect:/product/detail?id=" + product_idx;
+        }
+        	
         return "redirect:/mypage/detail?qna_idx=" + qna_idx;
     }
     
     // 관리자 Q&A 답변 삭제
     @GetMapping("/mypage/qna_deleteAnswer")
     public String deleteAnswer(@RequestParam("qna_idx") int qna_idx,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes,@RequestParam(defaultValue = "0") int product_idx) {
         
         try {
             int result = qnaService.deleteAnswer(qna_idx);
@@ -182,13 +192,17 @@ public class UserQnaController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
         }
-
-        return "redirect:/mypage/detail?qna_idx=" + qna_idx;
+        redirectAttributes.addAttribute("product_idx",product_idx);
+        if(product_idx==0) {
+        	return "redirect:/mypage/detail?qna_idx=" + qna_idx;
+        }
+        
+        return "redirect:/product/detail?id=" + product_idx;
     }
     
     // 수정 폼 보기
     @GetMapping("/mypage/qna_modify")
-    public String modifyForm(@RequestParam int qna_idx, Model model, RedirectAttributes redirectAttributes) {
+    public String modifyForm(@RequestParam int qna_idx,@RequestParam(defaultValue = "0") int product_idx, Model model, RedirectAttributes redirectAttributes) {
         
         System.out.println("   [UserQnaController]/mypage/qna_modify() 수정폼 보기");
         
@@ -212,7 +226,7 @@ public class UserQnaController {
             redirectAttributes.addFlashAttribute("errorMessage", "답변 완료된 문의는 수정할 수 없습니다.");
             return "redirect:/mypage/qna_detail?qna_idx=" + qna_idx;
         }
-        
+        model.addAttribute("product_idx", product_idx);
         model.addAttribute("qna", qna);
         return "qna/qna_modify";
     }
@@ -238,12 +252,12 @@ public class UserQnaController {
         }
         System.out.println("   [UserQnaController]/mypage/qna_modify 수정 처리하기111()");
         qnaDao.updateQna(vo);
-        return "redirect:/mypage/detail?qna_idx=" + vo.getQna_idx();
+        return "redirect:/mypage/detail?qna_idx=" + vo.getQna_idx() +"&product_idx="+vo.getProduct_idx();
     }
     
     // 마이페이지 삭제 처리
     @GetMapping("/mypage/qna_delete")
-    public String delete(@RequestParam int qna_idx, RedirectAttributes redirectAttributes) {
+    public String delete(@RequestParam int qna_idx,@RequestParam(defaultValue = "0")int product_idx, RedirectAttributes redirectAttributes) {
         // 로그인 체크
         MemVo user = (MemVo) session.getAttribute("user");
         
@@ -261,9 +275,12 @@ public class UserQnaController {
         
         System.out.println("=== QnA 삭제 ===");
         System.out.println("삭제할 번호: " + qna_idx);
-        
         qnaDao.deleteQna(qna_idx);
-        return "redirect:/mypage/qna_list";
+        if(product_idx==0) {
+        	
+        	return "redirect:/mypage/qna_list";
+        }
+        return "redirect:/product/detail?id="+product_idx;
     }
     
     @GetMapping("tt")
