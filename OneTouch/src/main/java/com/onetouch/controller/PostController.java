@@ -1,6 +1,7 @@
 package com.onetouch.controller;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,9 +62,13 @@ public class PostController {
 	        Model model,
 	        @RequestParam(name="page", defaultValue="1") int nowPage,
 	        @RequestParam(name="tab", required=false) String tab,
-	        @RequestParam(name="post_idx", required=false) Integer targetPostIdx) {
+	        @RequestParam(name="post_idx", required=false) Integer targetPostIdx
+	        ,@RequestParam(name="posts" ,defaultValue = "") String posts) {
 	    
 	    System.out.println("[PostController] postFormList()");
+
+	    System.out.printf("		posts => %s\n",posts);
+//	    String[] postsArray = posts.split(",");
 	    
 	    // JSP에 전달할 데이터만 설정
 	    if (tab != null && !tab.isEmpty()) {
@@ -73,9 +78,10 @@ public class PostController {
 	    
 	    if (targetPostIdx != null) {
 	        model.addAttribute("targetPostIdx", targetPostIdx);
+	        
 	        System.out.println("타겟 포스트: " + targetPostIdx);
 	    }
-	    
+	    model.addAttribute("postsArray", posts);
 	    System.out.println("[PostController] return : /post/post.jsp");
 	    System.out.println("");
 	    return "/post/post";
@@ -86,12 +92,38 @@ public class PostController {
 	@RequestMapping("/post/all_list")
 	@ResponseBody
 	public Map<String,Object> postFormAllList(Model model,@RequestParam(name="page",defaultValue="1")int nowPage
-			,String tabType,String mypage) {
+			,String tabType,String mypage, String postsArray) {
 		System.out.println("	[PostController-@ResponseBody] postFormList() ");
 		System.out.printf("		카테고리:%s\n",tabType);
 		System.out.printf("		페이지:%s\n",nowPage);
 		System.out.printf("		마이페이지 여부 => %s\n",mypage);
+		System.out.printf("		postsArray => %s\n",postsArray);
+		
+		List<String> postsList =  Arrays.asList(postsArray.split(","));  
+		System.out.printf("		postsList.size() => %d\n",postsList.size());
+		System.out.printf("		postsList.isEmpty => %s\n",postsList.isEmpty());
+		boolean hasValue = false;
+
+		if (postsList != null) {
+		    for (int i = 0; i < postsList.size(); i++) {
+		        String s = postsList.get(i);
+		        if (s != null && !s.isEmpty()) {
+		            hasValue = true;
+		            break; // 하나라도 값이 있으면 확인 끝
+		        }
+		    }
+		}
+
+		if (hasValue) {
+		    System.out.println("실제 값 있음");
+		} else {
+		    System.out.println("값 없음 또는 빈 리스트");
+		    postsList=null;
+		}
+
+		System.out.printf("		postsList => %s\n",postsList);
 		Map<String,Object>map =new HashMap<String, Object>();
+		map.put("postsList",postsList );
 		map.put("post_category",tabType);
 		map.put("login_mem_idx", 0);
 		map.put("mypage",mypage);

@@ -1222,8 +1222,7 @@ display: block;
                     <div class="community-tab-item" data-tab="review" id="post-review">리뷰</div>
                     <div class="community-tab-item" data-tab="free" id="post-free">자유게시판</div>
                 </div>
-
-                
+                <a href="#" id="click_in" data-target="in${targetPostIdx }" style="display:none;">리뷰로 이동</a>
                 <!-- 커뮤니티 전체 목록 ============================================================= -->
                 
                 <div class="community-post" id="posts-container-all" data-tab="all">
@@ -1578,9 +1577,14 @@ document.addEventListener('click', function(e) {
  });
  
  //ajax를 이용해서 html 영역 가져오는 함수
- function listHtml(tabType,page){ $.ajax({
+ function listHtml(tabType,page){ 
+let postsArray="${postsArray}"
+//alert(postsArray);
+	 $.ajax({
     	url : "/post/all_list"
-    	,data:{"tabType":tabType,"page":page}
+    	,data:{"tabType":tabType,"page":page,
+    		"postsArray":postsArray
+ 				}
     	,success:function(d){
     		let loop =1;
     		let html = "";
@@ -1608,6 +1612,7 @@ document.addEventListener('click', function(e) {
     		
     		//프로필 부분
     		html = html+`
+    		<div id="in\${postVo.post_idx}"></div>
              <div class="post-header">
                  <img src="${pageContext.request.contextPath}/images/mem/\${postVo.mem_image_url}" alt="프로필" class="profile-img">
                  <p class="username">\${postVo.mem_id }</p>
@@ -1801,7 +1806,6 @@ document.addEventListener('click', function(e) {
              html=html+`
              <br>
              <br>
-             
 				`
     			
     		loop=loop+1;
@@ -1866,8 +1870,10 @@ document.addEventListener('click', function(e) {
      		    replyHtml(postVo.post_idx, d.post_category, d.nowReplyPage);
      		}
     	    
-
-    	     
+     		window.addEventListener("load", function() {
+     		    goToTarget(); // 일단 한번 시도
+     		});
+     		
     	}//end : success
      ,error:function(e){
      	
@@ -2360,8 +2366,35 @@ document.querySelectorAll('.more-options').forEach(btn => {
     }
 });
 
-
+ document.querySelectorAll('[data-target]').forEach(link => {
+	    link.addEventListener('click', function(e) {
+	        e.preventDefault();
+	        const targetId = this.dataset.target;
+	        const target = document.getElementById(targetId);
+	        target.scrollIntoView({ behavior: 'smooth' }); // 부드러운 스크롤
+	    });
+	});
  
+ /* 검색후 post 페이지로 넘어올때 유저가 찾는 post가 나오게 처리 */
+ function goToTarget() {
+	    const btn = document.getElementById("click_in");
+	    const targetId = btn.dataset.target;
+	    const target = document.getElementById(targetId);
+
+	    if (target) {
+	        target.scrollIntoView({ behavior: 'smooth' });
+	        return true;
+	    }
+	    return false;
+	}
+ /* 검색후 post 페이지로 넘어왔을때 post 위치 다시찾기 */
+ const observer = new MutationObserver(() => {
+	    if (goToTarget()) {
+	        observer.disconnect(); // 성공하면 감시 종료
+	    }
+	});
+
+	observer.observe(document.body, { childList: true, subtree: true });
     </script>
 </body>
 </html>

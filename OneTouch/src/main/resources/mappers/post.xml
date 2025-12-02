@@ -70,9 +70,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    LEFT JOIN hashtag as h on ph.hashtag_idx=h.hashtag_idx
 	    <if test="postPageVo !=null and postPageVo.size()>0">
 	    WHERE p.post_idx IN
-	    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
-	    	#{vo.post_idx}
-	    </foreach>
+	    <if test="postsList ==null">
+		    <foreach collection="postPageVo" item="vo" open="(" separator="," close=")">
+		    	#{vo.post_idx}
+		    </foreach>
+	    </if>
+	    <if test="postsList !=null">
+		    <foreach collection="postsList" item="post_idx" open="(" separator="," close=")">
+		    	#{post_idx}
+		    </foreach>
+	    </if>
 	    </if>
 	    <if test="postPageVo ==null or postPageVo.size() == 0">
 	    WHERE 1=0

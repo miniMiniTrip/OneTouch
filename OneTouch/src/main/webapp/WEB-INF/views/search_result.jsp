@@ -625,6 +625,13 @@
 							</div>
 						</c:when>
 						<c:otherwise>
+							<!-- post idx 배열에 넣기 이후 a태그에 넣어서 사용 -->
+							<c:set var="postList" value="" />
+							<c:forEach var="p" items="${post_list}">
+							        <c:set var="postList" value="${postList},${p.post_idx}" />
+							</c:forEach>
+							<c:set var="postList" value="${postList.substring(1)}" />
+							
 							<ul class="post-list">
 								<c:forEach var="post" items="${post_list}">
 									<li class="post-item">
@@ -642,7 +649,7 @@
 												<c:set var="tabParam" value="free" />
 											</c:if>
 											
-											<a href="${pageContext.request.contextPath}/post/list?tab=${tabParam}&post_idx=${post.post_idx}">
+											<a href="${pageContext.request.contextPath}/post/list?tab=${tabParam}&post_idx=${post.post_idx}&posts=${postList}">
 												${post.post_title}
 											</a>
 										</h3>
