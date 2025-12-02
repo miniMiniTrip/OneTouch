@@ -78,7 +78,7 @@
 </style>
 
 <aside class="sidebar">
-    <div class="sidebar-section">
+   <%--  <div class="sidebar-section">
         <div class="sidebar-title">대시보드</div>
         <ul class="sidebar-menu">
             <li>
@@ -88,7 +88,7 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </div> --%>
 
     <div class="sidebar-section">
         <div class="sidebar-title">관리</div>

@@ -62,6 +62,7 @@ public class ProductController {
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "sort", required = false, defaultValue = "popular") String sort,
             @RequestParam(name = "page", defaultValue = "1") int currentPage,
+            @RequestParam(name = "view", required=false, defaultValue="grid") String view,
             Model model) {
         
         System.out.println("=== [ProductController] productList() 시작 ===");
@@ -121,6 +122,7 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
         model.addAttribute("sort", sort);
+        model.addAttribute("view", view);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalCount", totalCount);

@@ -282,12 +282,23 @@
 /* 상품 정보 영역 */
 .product-info {
 	padding: 10px 15px;
-	height: 250px;
+	height: 250px; 
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start; ;
-	gap: 5px;
+	justify-content:  space-between;
+	align-items: stretch;
+	gap: 4px;
 }
+
+/* 리스트뷰 전용 product-info */
+.single-product.list-view .product-info {
+    display: flex;
+    flex-direction: column;   /* 세로 정렬 */
+    justify-content: space-between; /* 내용 위 / 버튼 아래 */
+    height: 270px;  /* 고정 높이 (원하는 대로 조절 가능) */
+    padding: 10px 15px;
+}
+
 
 .product-info .category {
 	font-size: 12px;
@@ -300,6 +311,7 @@
 .product-info .title {
 	font-size: 14px;
 	margin: 5px 0;
+	margin-top:5px;
 	height: 250px;
 	overflow:visible;
 	display: -webkit-box;
@@ -338,6 +350,8 @@
 	font-size: 13px;
 	color: #666;
 	margin-top: 5px;
+	margin-bottom: 5px;
+	
 }
 
 .product-stats .stat-item {
@@ -361,7 +375,8 @@
 .button-group {
 	display: flex;
 	justify-content: center;
-	gap: 15px;
+	gap: 50px;
+	margin-bottom:5px;
 }
 
 .btn {
@@ -504,31 +519,34 @@
 				<!-- 검색 위젯 -->
 				<div class="search-widget">
 					<h3>검색</h3>
+					
 					<form action="${pageContext.request.contextPath}/product/list" method="get">
-						<input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
-						<c:if test="${not empty category}">
-							<input type="hidden" name="category" value="${category}">
-						</c:if>
-						<c:if test="${not empty sort}">
-							<input type="hidden" name="sort" value="${sort}">
-						</c:if>
-						<button type="submit">
-							<i class="lni lni-search-alt"></i>
-						</button>
+					    <input type="text" name="keyword" placeholder="제품명 검색..." value="${keyword}">
+					    <c:if test="${not empty category}">
+					        <input type="hidden" name="category" value="${category}">
+					    </c:if>
+					    <c:if test="${not empty sort}">
+					        <input type="hidden" name="sort" value="${sort}">
+					    </c:if>
+					    <!-- 이 줄 추가! -->
+					    <input type="hidden" name="view" value="${param.view != null ? param.view : 'grid'}">
+					    <button type="submit">
+					        <i class="lni lni-search-alt"></i>
+					    </button>
 					</form>
 				</div>
 
 				<!-- 카테고리 메뉴 -->
 				<div class="menu-section">
-					<div class="menu-title">카테고리</div>
-					<a href="${pageContext.request.contextPath}/product/list"
-						class="menu-item ${empty category ? 'active' : ''}">전체상품</a>
-					<a href="${pageContext.request.contextPath}/product/list?category=1${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
-						class="menu-item ${category eq '1' ? 'active' : ''}">스킨케어</a>
-					<a href="${pageContext.request.contextPath}/product/list?category=2${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
-						class="menu-item ${category eq '2' ? 'active' : ''}">메이크업/선케어</a>
-					<a href="${pageContext.request.contextPath}/product/list?category=3${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
-						class="menu-item ${category eq '3' ? 'active' : ''}">클렌징케어</a>
+				    <div class="menu-title">카테고리</div>
+				    <a href="${pageContext.request.contextPath}/product/list?view=${view}${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+					    class="menu-item ${empty category ? 'active' : ''}">전체상품</a>
+					<a href="${pageContext.request.contextPath}/product/list?category=1&view=${view}${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+					    class="menu-item ${category eq '1' ? 'active' : ''}">스킨케어</a>
+					<a href="${pageContext.request.contextPath}/product/list?category=2&view=${view}${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+					    class="menu-item ${category eq '2' ? 'active' : ''}">메이크업/선케어</a>
+					<a href="${pageContext.request.contextPath}/product/list?category=3&view=${view}${not empty keyword ? '&keyword='.concat(keyword) : ''}${not empty sort ? '&sort='.concat(sort) : ''}"
+					    class="menu-item ${category eq '3' ? 'active' : ''}">클렌징케어</a>
 				</div>
 			</div>
 			<!-- End Product Sidebar -->
@@ -559,18 +577,18 @@
                 <div class="col-lg-5 col-md-4 col-12">
                     <div class="product-sorting text-end">
                         <label for="sorting"></label>
-                        <select class="form-control" id="sorting" onchange="location.href=this.value;">
-                            <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=popular"
-                                ${sort eq 'popular' or empty sort ? 'selected' : ''}>인기순</option>
-                            <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=newest"
-                                ${sort eq 'newest' ? 'selected' : ''}>최신순</option>
-                            <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-low"
-                                ${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
-                            <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high"
-                                ${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
-                            <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating"
-                                ${sort eq 'rating' ? 'selected' : ''}>평점순</option>
-                        </select>
+                       <select class="form-control" id="sorting" onchange="location.href=this.value;">
+						    <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=popular&view=${view}"
+						        ${sort eq 'popular' or empty sort ? 'selected' : ''}>인기순</option>
+						    <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=newest&view=${view}"
+						        ${sort eq 'newest' ? 'selected' : ''}>최신순</option>
+						    <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-low&view=${view}"
+						        ${sort eq 'price-low' ? 'selected' : ''}>가격 낮은순</option>
+						    <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=price-high&view=${view}"
+						        ${sort eq 'price-high' ? 'selected' : ''}>가격 높은순</option>
+						    <option value="${pageContext.request.contextPath}/product/list?${not empty category ? 'category='.concat(category).concat('&') : ''}${not empty keyword ? 'keyword='.concat(keyword).concat('&') : ''}sort=rating&view=${view}"
+						        ${sort eq 'rating' ? 'selected' : ''}>평점순</option>
+						</select>
                     </div>
                 </div>
             </div>
@@ -682,9 +700,7 @@
 						                                        ${product.product_name}
 						                                    </a>
 						                                </h4>
-						                                <p class="description">${product.product_comment}</p>
-						
-						                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+						                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom:3px;">
 						                                    <!-- ⭐ 품절임박 알림 -->
 						                                    <c:if test="${product.product_cnt <= 30}">
 						                                        <div class="low-stock-alert">품절임박</div>
@@ -698,7 +714,7 @@
 						
 						                                <!-- 해시태그 -->
 						                                <c:if test="${not empty product.hashtag_list}">
-						                                    <div class="product-hashtags">
+						                                    <div class="product-hashtags" style= "margin-bottom:5px;" >
 						                                        <c:forEach var="hashtag" items="${product.hashtag_list}">
 																    <a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}" 
 																       class="hashtag-badge">#${hashtag.hashtag_name}</a>
@@ -706,12 +722,12 @@
 						                                    </div>
 						                                </c:if>
 						
-						                                <div class="product-bottom-info" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 5px 0;">
+						                                <div class="product-bottom-info" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 10px 0;">
 						                                    <div class="wishlist-section" style="display: flex; align-items: center; color: #999; font-size: 13px;">
 						                                        <i class="lni lni-heart" style="color: #ff6b6b; margin-right: 4px; font-size: 14px;"></i>
 						                                        <span>찜 ${product.product_wishlist}</span>
 						                                    </div>
-						                                    <div class="price-section" style="color: #007bff; font-size: 16px; font-weight: bold;">
+						                                    <div class="price-section" style="color: #007bff; font-size: 16px; font-weight: bold; margin-bottom: 5px;">
 						                                        <fmt:formatNumber value="${product.product_price}" pattern="#,###" />원
 						                                    </div>
 						                                </div>
@@ -723,35 +739,36 @@
 						        </c:choose>
 						    </div>
 
+							
 							<!-- Grid View Pagination -->
 							<c:if test="${totalPage > 0}">
-								<div class="row">
-									<div class="col-12">
-										<div class="pagination center">
-											<ul class="pagination-list">
-												<c:if test="${startPage > 1}">
-													<li><a href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-														<i class="lni lni-chevron-left"></i>
-													</a></li>
-												</c:if>
-
-												<c:forEach var="i" begin="${startPage}" end="${endPage}">
-													<li class="${i eq currentPage ? 'active' : ''}"><a href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-														${i}
-													</a></li>
-												</c:forEach>
-
-												<c:if test="${endPage < totalPage}">
-													<li><a href="${pageContext.request.contextPath}/product/list?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-														<i class="lni lni-chevron-right"></i>
-													</a></li>
-												</c:if>
-											</ul>
-										</div>
-									</div>
-								</div>
+							    <div class="row">
+							        <div class="col-12">
+							            <div class="pagination center">
+							                <ul class="pagination-list">
+							                    <c:if test="${startPage > 1}">
+							                        <li><a href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}&view=grid<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+							                            <i class="lni lni-chevron-left"></i>
+							                        </a></li>
+							                    </c:if>
+							
+							                    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+							                        <li class="${i eq currentPage ? 'active' : ''}"><a href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}&view=grid<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+							                            ${i}
+							                        </a></li>
+							                    </c:forEach>
+							
+							                    <c:if test="${endPage < totalPage}">
+							                        <li><a href="${pageContext.request.contextPath}/product/list?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}&view=grid<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+							                            <i class="lni lni-chevron-right"></i>
+							                        </a></li>
+							                    </c:if>
+							                </ul>
+							            </div>
+							        </div>
+							    </div>
 							</c:if>
-						</div>
+													</div>
 						<!-- ========== End Grid View ========== -->
 
 						<!-- ========== List View ========== -->
@@ -831,6 +848,7 @@
 																	</a>
 																	<a href="javascript:void(0);" onclick="buyNow(${product.product_idx})"  class="btn btn-secondary">즉시구매</a>
 																</div>
+																
 															</div>
 														</div>
 													</div>
@@ -843,31 +861,33 @@
 
 							<!-- List View Pagination -->
 							<c:if test="${totalPage > 0}">
-								<div class="row">
-									<div class="col-12">
-										<div class="pagination center">
-											<ul class="pagination-list">
-												<c:if test="${startPage > 1}">
-													<li><a href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-														<i class="lni lni-chevron-left"></i>
-													</a></li>
-												</c:if>
-
-												<c:forEach var="i" begin="${startPage}" end="${endPage}">
-													<li class="${i eq currentPage ? 'active' : ''}"><a href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-														${i}
-													</a></li>
-												</c:forEach>
-
-												<c:if test="${endPage < totalPage}">
-													<li><a href="${pageContext.request.contextPath}/product/list?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
-														<i class="lni lni-chevron-right"></i>
-													</a></li>
-												</c:if>
-											</ul>
-										</div>
-									</div>
-								</div>
+							    <div class="row">
+							        <div class="col-12">
+							            <div class="pagination center">
+							                <ul class="pagination-list">
+							                    <c:if test="${startPage > 1}">
+							                        <li><a href="${pageContext.request.contextPath}/product/list?page=${startPage-1}&pageSize=${pageSize}&sort=${sort}&view=list<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+							                            <i class="lni lni-chevron-left"></i>
+							                        </a></li>
+							                    </c:if>
+							
+							                    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+							                        <li class="${i eq currentPage ? 'active' : ''}">
+							                            <a href="${pageContext.request.contextPath}/product/list?page=${i}&pageSize=${pageSize}&sort=${sort}&view=list<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+							                                ${i}
+							                            </a>
+							                        </li>
+							                    </c:forEach>
+							
+							                    <c:if test="${endPage < totalPage}">
+							                        <li><a href="${pageContext.request.contextPath}/product/list?page=${endPage+1}&pageSize=${pageSize}&sort=${sort}&view=list<c:if test='${not empty keyword}'>&keyword=${keyword}</c:if><c:if test='${not empty category}'>&category=${category}</c:if>">
+							                            <i class="lni lni-chevron-right"></i>
+							                        </a></li>
+							                    </c:if>
+							                </ul>
+							            </div>
+							        </div>
+							    </div>
 							</c:if>
 						</div>
 						<!-- ========== End List View ========== -->
@@ -1053,6 +1073,60 @@ function buyNow(product_idx) {
     
     location.href = '${pageContext.request.contextPath}/order/direct_form.do?product_idx=' + product_idx + '&product_cnt=1';
 }
+
+
+//========== 뷰 모드 관리 기능 (개선된 버전) ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // URL에서 view 파라미터 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewMode = urlParams.get('view') || 'grid';
+    
+    // 리스트 뷰면 리스트 탭을 조용히 활성화 (클릭하지 않고)
+    if (viewMode === 'list') {
+        const gridTab = document.getElementById('nav-grid-tab');
+        const listTab = document.getElementById('nav-list-tab');
+        const gridContent = document.getElementById('nav-grid');
+        const listContent = document.getElementById('nav-list');
+        
+        if (gridTab && listTab && gridContent && listContent) {
+            // 탭 상태 변경 (클릭 이벤트 발생시키지 않음)
+            gridTab.classList.remove('active');
+            listTab.classList.add('active');
+            gridTab.setAttribute('aria-selected', 'false');
+            listTab.setAttribute('aria-selected', 'true');
+            
+            // 콘텐츠 상태 변경
+            gridContent.classList.remove('show', 'active');
+            listContent.classList.add('show', 'active');
+        }
+    }
+    
+    // 탭 클릭 시에만 URL 업데이트 (부드럽게)
+    const gridTab = document.getElementById('nav-grid-tab');
+    const listTab = document.getElementById('nav-list-tab');
+    
+    if (gridTab) {
+        gridTab.addEventListener('shown.bs.tab', function() {
+            updateViewModeQuietly('grid');
+        });
+    }
+    
+    if (listTab) {
+        listTab.addEventListener('shown.bs.tab', function() {
+            updateViewModeQuietly('list');
+        });
+    }
+});
+
+// 조용한 URL 업데이트 (페이지 리로드 없음)
+function updateViewModeQuietly(view) {
+    const url = new URL(window.location);
+    url.searchParams.set('view', view);
+    // 페이지는 첫 번째로 리셋하지 않음 (사용자 경험 개선)
+    window.history.replaceState({}, '', url);
+}
+
+
 
 </script>
 

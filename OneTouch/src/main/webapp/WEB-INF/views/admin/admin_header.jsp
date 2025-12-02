@@ -78,7 +78,7 @@
 <header class="header">
     <div>
         <a href="/" class="logo">One<span>Touch</span></a>
-        <span class="admin-badge">관리자</span>
+       <!--  <span class="admin-badge">관리자</span> -->
     </div>
     <div class="header-right">
         <span class="header-user">관리자님</span>
