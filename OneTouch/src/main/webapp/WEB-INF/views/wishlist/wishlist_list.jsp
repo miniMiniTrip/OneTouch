@@ -503,7 +503,7 @@
                         <i class="lni lni-heart"></i>
                         <h4>찜한 상품이 없습니다</h4>
                         <p>마음에 드는 상품을 찜해보세요!</p>
-                        <a href="${pageContext.request.contextPath}/product/list.do" class="btn">
+                        <a href="${pageContext.request.contextPath}/product/list" class="btn">
                             상품 둘러보기
                         </a>
                     </div>
