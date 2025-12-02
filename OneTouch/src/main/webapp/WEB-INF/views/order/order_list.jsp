@@ -574,7 +574,7 @@
                                 <i class="lni lni-package"></i>
                                 <h4>주문 내역이 없습니다</h4>
                                 <p>원하는 상품을 장바구니에 담고 주문해보세요!</p>
-                                <button class="btn" onclick="location.href='${pageContext.request.contextPath}/product/list.do'">
+                                <button class="btn" onclick="location.href='${pageContext.request.contextPath}/product/list'">
                                     쇼핑하러 가기
                                 </button>
                             </div>
