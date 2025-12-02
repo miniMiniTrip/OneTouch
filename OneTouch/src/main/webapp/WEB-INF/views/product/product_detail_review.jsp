@@ -234,7 +234,7 @@
 								        <c:set var="imgList" value="${fn:split(postVo.post_image, '*')}" />
 								
 								        <c:forEach var="img" items="${imgList}">
-								            <img src="${pageContext.request.contextPath }/images/posts/${img}" alt="리뷰이미지">
+								            <img src="${pageContext.request.contextPath }/images/posts/reviews/${img}" alt="리뷰이미지">
 								        </c:forEach>
 								    </c:if>
 								</div>
@@ -250,6 +250,11 @@
 					</c:forEach>
 
 				</div>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
 
 
 
