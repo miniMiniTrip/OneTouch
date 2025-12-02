@@ -1575,7 +1575,7 @@ background
 			<c:forEach var="detailImage" items="${lowerdetailImages}"
 				varStatus="status">
 		 <div class="image-item"> 
-					<img src="${pageContext.request.contextPath}/images/${detailImage}"
+					<img src="${pageContext.request.contextPath}/images/products_detail/${detailImage}"
 						alt="상품 상세 이미지" />
 					<c:if test="${sessionScope.user.mem_roll == 'admin'}">
 						<div class="image-actions">
