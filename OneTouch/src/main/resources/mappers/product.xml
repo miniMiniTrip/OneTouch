@@ -140,8 +140,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    
 	    <!-- ORDER BY 처리 -->
 	    <choose>
-	        <when test="orderBy != null and orderBy != ''">
-	            ORDER BY ${orderBy}
+	        <when test="orderByNew != null and orderByNew != ''">
+	            ORDER BY ${orderByNew}
+	        </when>
+	        <when test="orderByBest != null and orderByBest != ''">
+	            ORDER BY ${orderByBest}
 	        </when>
 	        <otherwise>
 	            ORDER BY p.product_idx DESC

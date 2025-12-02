@@ -254,13 +254,13 @@
                 </div>
             </div>
             <div class="row">
-                <c:forEach var="product" items="${bestProducts}">
+                <c:forEach var="bestProductVo" items="${bestProductVoList}">
                     <div class="col-lg-3 col-md-6 col-12">
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
-                                <img src="${pageContext.request.contextPath}${product.imageUrl}" 
-                                     alt="${product.name}">
+                                <img src="${pageContext.request.contextPath}/images/products_list/${bestProductVo.product_image_url}" 
+                                     alt="${bestProductVo.product_name}">
                                 
                                 <!-- 할인 태그 -->
                                 <c:if test="${product.discountRate > 0}">
@@ -283,7 +283,7 @@
                                 <span class="category">${product.categoryName}</span>
                                 <h4 class="title">
                                     <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
-                                        ${product.name}
+                                        ${bestProductVo.product_name}
                                     </a>
                                 </h4>
                                 
@@ -294,7 +294,7 @@
                                             <i class="lni lni-star${i <= product.avgRating ? '-filled' : ''}"></i>
                                         </li>
                                     </c:forEach>
-                                    <li><span>${product.avgRating} (${product.reviewCount})</span></li>
+                                    <li><span>${product_rating} (${product_reviewCount})</span></li>
                                 </ul>
                                 
                                 <!-- 가격 -->
