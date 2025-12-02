@@ -302,14 +302,14 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
                     <div>
                         <h4 style="color: #213997; margin-bottom: 10px;">개인정보 보호책임자</h4>
-                        <p><strong>성명:</strong> 이시원</p>
+                        <p><strong>성명:</strong> 김길동</p>
                         <p><strong>직책:</strong> 개인정보보호팀장</p>
                         <p><strong>연락처:</strong> 1588-0000 (내선 101)</p>
                         <p><strong>이메일:</strong> privacy@onetouch.co.kr</p>
                     </div>
                     <div>
                         <h4 style="color: #213997; margin-bottom: 10px;">개인정보 보호담당자</h4>
-                        <p><strong>성명:</strong> 하민지</p>
+                        <p><strong>성명:</strong> 이길동</p>
                         <p><strong>직책:</strong> 개인정보보호팀 팀장</p>
                         <p><strong>연락처:</strong> 1588-0000 (내선 102)</p>
                         <p><strong>이메일:</strong> privacy@onetouch.co.kr</p>
