@@ -119,8 +119,10 @@ public class ProductServiceImpl implements ProductService {
             ProductVo product_image_level1=product_dao.selectProductImageLevel1(productVo.getProduct_idx());
             String product_main_image_name=product_image_level1.getProduct_image_url();
             File f=new File(application.getRealPath("/images/products_list"),product_main_image_name);
-            f.delete();
             res = res*product_dao.updateProductImage(productVo);
+            if(res==1) {
+            	f.delete();
+            }
             System.out.printf("[ProductServiceImpl-update] product_image 테이블 업데이트 결과: %d\n", res);
         } else {
             System.out.println("[ProductServiceImpl-update] 이미지 변경 없음");
