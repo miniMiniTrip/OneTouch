@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.onetouch.dao.MemDao;
@@ -91,7 +93,7 @@ public class LoginController {
 
 	/* 회원가입 등록 */
 	@RequestMapping("/user/insert")
-	public String registerInsert(MemVo memVo) {
+	public String registerInsert(MemVo memVo, RedirectAttributes ra) {
 		System.out.println("	[LoginController] register() ");
 		System.out.printf("				[회원가입등록요청정보]%s",memVo);
 		int res=1;
@@ -104,6 +106,7 @@ public class LoginController {
 		
 		if(res==1) {
 			System.out.println("		회원정보 1개 등록성공");
+			ra.addAttribute("register","success");
 		}
 		System.out.println("	[LoginController] return : user/register.jsp ");
 		return "redirect:/user/login";

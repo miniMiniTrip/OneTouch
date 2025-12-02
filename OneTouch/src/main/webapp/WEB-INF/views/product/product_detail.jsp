@@ -1487,8 +1487,8 @@ background
 					</div>
 
 					<div class="button-group">
-						<button type="button" id="btnCart" class="btn btn-cart">장바구니담기</button>
-						<button type="button" id="btnBuy" class="btn btn-buy">바로구매 > </button> <!-- 로그인 해주세요 연결 -->
+						<button type="button" id="btnCart" class="btn btn-cart" >장바구니담기</button>
+						<button type="button" id="btnBuy" class="btn btn-buy" >바로구매 </button> <!-- 로그인 해주세요 연결 -->
 					</div>
 				</div>
 			</div>
@@ -1964,6 +1964,7 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
 			            cancelButtonColor: '#d33'
 			        }).then((result) => {
 			            if (result.isConfirmed) {
+			                    	addToCart("${product.product_idx}");
 			                Swal.fire({
 			                    title: '완료!',
 			                    text: '장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?',
@@ -1994,6 +1995,7 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
 			            cancelButtonColor: '#d33'
 			        }).then((result) => {
 			            if (result.isConfirmed) {
+			            	addToCart("${product.product_idx}");
 			                Swal.fire({
 			                    title: '완료!',
 			                    text: '주문이 접수되었습니다. 지금 주문하시겠습니까?',
@@ -2164,7 +2166,42 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
             });
         }
         
- 
+        const mem_idx = ${sessionScope.user != null ? sessionScope.user.mem_idx : 'null'}; 
+        //장바구니
+        function addToCart(product_idx) {
+            if (!mem_idx || mem_idx === null) {
+                alert('로그인이 필요한 서비스입니다.');
+                location.href = '${pageContext.request.contextPath}/user/login';
+                return;
+            }
+            
+            fetch('${pageContext.request.contextPath}/cart/insert.do', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'mem_idx=' + mem_idx + '&product_idx=' + product_idx + '&cart_cnt=1'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    //if (confirm('장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
+                        //location.href = '${pageContext.request.contextPath}/cart/list.do?mem_idx=' + mem_idx;
+                    //}
+                } else if (data.result === 'exist') {
+                    alert('이미 장바구니에 담긴 상품입니다.');
+                } else if (data.result === 'not_login') {
+                    alert('로그인이 필요한 서비스입니다.');
+                    location.href = '${pageContext.request.contextPath}/user/login';
+                } else {
+                    alert('장바구니 추가 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('장바구니 추가 중 오류가 발생했습니다.');
+            });
+        }
         
     </script>
 
