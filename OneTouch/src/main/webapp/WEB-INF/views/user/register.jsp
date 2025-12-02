@@ -516,22 +516,22 @@
                     <input type="checkbox" name="agreeTerms" id="agreeTerms" required>
                     <label for="agreeTerms">
                         <span class="required">*</span> 이용약관 동의
-                        <a href="terms.jsp" target="_blank">(보기)</a>
+                        <a href="${pageContext.request.contextPath}/terms" target="_blank">(보기)</a>
                     </label>
                 </div>
                 <div class="checkbox-item">
                     <input type="checkbox" name="agreePrivacy" id="agreePrivacy" required>
                     <label for="agreePrivacy">
                         <span class="required">*</span> 개인정보 수집 및 이용 동의
-                        <a href="privacy.jsp" target="_blank">(보기)</a>
+                        <a href="${pageContext.request.contextPath}/privacy" target="_blank">(보기)</a>
                     </label>
                 </div>
-                <div class="checkbox-item">
+               <!--  <div class="checkbox-item">
                     <input type="checkbox" name="agreeMarketing" id="agreeMarketing">
                     <label for="agreeMarketing">
                         마케팅 정보 수신 동의 (선택)
                     </label>
-                </div>
+                </div> -->
             </div>
 
             <!-- 회원가입 버튼 -->
