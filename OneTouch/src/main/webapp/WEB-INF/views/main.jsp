@@ -253,7 +253,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row product-div" >
                 <c:forEach var="bestProductVo" items="${bestProductVoList}">
                     <div class="col-lg-3 col-md-6 col-12">
                         <!-- Start Single Product -->
@@ -280,7 +280,7 @@
                                 </div>
                             </div>
                             <div class="product-info">
-                                <span class="category">${product.categoryName}</span>
+                                <span class="category">${bestProductVo.category_name}</span>
                                 <h4 class="title">
                                     <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
                                         ${bestProductVo.product_name}
@@ -291,7 +291,7 @@
                                 <ul class="review">
                                     <c:forEach begin="1" end="5" var="i">
                                         <li>
-                                            <i class="lni lni-star${i <= product.avgRating ? '-filled' : ''}"></i>
+                                            <i class="lni lni-star${i <= 3 ? '-filled' : ''}"></i>
                                         </li>
                                     </c:forEach>
                                     <li><span>${product_rating} (${product_reviewCount})</span></li>
@@ -299,26 +299,20 @@
                                 
                                 <!-- 가격 -->
                                 <div class="price">
-                                    <c:choose>
-                                        <c:when test="${product.discountRate > 0}">
-                                            <span><fmt:formatNumber value="${product.salePrice}" pattern="#,###"/>원</span>
-                                            <span class="discount-price">
-                                                <fmt:formatNumber value="${product.price}" pattern="#,###"/>원
-                                            </span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span><fmt:formatNumber value="${product.price}" pattern="#,###"/>원</span>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <div class="price">
+                                   		 <span><fmt:formatNumber value="${bestProductVo.product_price}" pattern="#,###"/>원</span>
+                                	</div>
                                 </div>
                                 
                                 <!-- 해시태그 (OneTouch 특화) -->
-                                <c:if test="${not empty product.hashtags}">
+                                <c:if test="${not empty bestProductVo.hashtag_list}">
                                     <div class="product-hashtags mt-2">
-                                        <c:forEach var="hashtag" items="${product.hashtags}" end="2">
-                                            <small class="badge bg-light text-dark me-1">
-                                                #${hashtag}
-                                            </small>
+                                  		<c:forEach var="hashtag" items="${bestProductVo.hashtag_list}">
+                                        <a
+                                            href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+                                            class="hashtag-badge"
+                                            title="#${hashtag.hashtag_name} 상품 보기">
+                                            #${hashtag.hashtag_name} </a>
                                         </c:forEach>
                                     </div>
                                 </c:if>
