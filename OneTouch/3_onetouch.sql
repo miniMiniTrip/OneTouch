@@ -93,6 +93,10 @@ CREATE TABLE product (
 -- CREATE INDEX idx_product_wishlist ON product(product_wishlist);
 -- CREATE INDEX idx_product_time ON product(product_time DESC);
 
+-- product_sell 컬럼 추가
+-- ALTER TABLE `otdb`.`product` 
+-- ADD COLUMN `product_sell` INT NOT NULL COMMENT '판매량' AFTER `product_update`;
+
 
 -- ============ 배송상태값 예시
 
