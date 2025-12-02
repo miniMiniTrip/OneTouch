@@ -16,28 +16,28 @@ INSERT INTO category (category_name) VALUES
 -- ========================================
 -- 관리자 계정 (비밀번호: 1234 - 실제로는 암호화 필요)
 -- mem_idx = 1
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
-('admi', '1234', '관리자', '06945', 'admi@onetouch.com', 'admin', '010-8282-8282','서울 동작구 여의대방로 지하 218','101동 1001호','2000-12-04');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
+('admi', '1234', '관리자', '06945', 'admi@onetouch.com', 'admin', '010-8282-8282','서울 동작구 여의대방로 지하 218','101동 1001호','2000-12-04','아기사진.jpg');
 
 -- mem_idx = 2
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
-('user1', '1234', '김유저', '36526', 'user1@onetouch.com', 'user', '010-6262-6262','경북 영양군 수비면 판사길 5','201동 1502호','2000-12-04');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
+('user1', '1234', '김유저', '36526', 'user1@onetouch.com', 'user', '010-6262-6262','경북 영양군 수비면 판사길 5','201동 1502호','2000-12-04','고양이.jpg');
 
 -- mem_idx = 3
 INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
-('a1234', '123', '서경원', '54628', 'suh0007@naver.com', 'admin', '010-7171-7171','전북특별자치도 익산시 고봉로 156','501동 701호','2000-12-04','newborn-photography-9292505_640.jpg');
+('a1234', '123', '서경원', '54628', 'suh0007@naver.com', 'admin', '010-7171-7171','전북특별자치도 익산시 고봉로 156','501동 701호','2000-12-04','원숭이.jpg');
 
 -- mem_idx = 4
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
-('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호','2000-12-04');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
+('ha1234', '1234', '하민지', '02118', 'ha1234@onetouch.com', 'admin', '010-0101-0101','서울 중랑구 망우로 166-11','103동 2001호','2000-12-04','호랑이1.png');
 
 -- mem_idx = 5
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
-('admin91', '1234', '고유빈', '06035', 'admin91@onetouch.com', 'admin', '010-6666-5555','서울 강남구 가로수길 9','107동 1301호','2000-12-04');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
+('admin91', '1234', '고유빈', '06035', 'admin91@onetouch.com', 'admin', '010-6666-5555','서울 강남구 가로수길 9','107동 1301호','2000-12-04','강아지.jpg');
 
 -- mem_idx = 6
-INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth) VALUES 
-('sw5080', '1234', '이시원', '06035', 'sw5080@onetouch.com', 'admin', '010-2211-5775','서울 강남구 가로수길 13','106동 1101호','2000-12-04');
+INSERT INTO mem (mem_id, mem_pw, mem_name, mem_postal, mem_email, mem_roll, mem_phone, mem_addr, mem_addr_more,mem_birth,mem_image_url) VALUES 
+('sw5080', '1234', '이시원', '06035', 'sw5080@onetouch.com', 'admin', '010-2211-5775','서울 강남구 가로수길 13','106동 1101호','2000-12-04','흰오목눈이.jpg');
 
 -- mem_idx = 7~25
 -- 좋아요를 위한 무의미한 유저 더미추가
