@@ -1982,9 +1982,41 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
 			            }
 			        });
 			    });
-
-			    // 구매하기 버튼
+				
+				// 바로구매 버튼 (단건 직접구매)
 			    document.getElementById('btnBuy').addEventListener('click', function() {
+			        // 수량 가져오기
+			        const productCnt = parseInt(document.getElementById('quantity').value);
+			        const productIdx = ${product.product_idx};
+			        
+			        // 수량 유효성 검사
+			        if (!productCnt || productCnt < 1) {
+			            Swal.fire({
+			                icon: 'warning',
+			                title: '최소 구매수량은 1개입니다.',
+			                confirmButtonColor: '#1e3c72'
+			            });
+			            return;
+			        }
+			        
+			        Swal.fire({
+			            title: '구매하시겠습니까??',
+			            icon: 'question',
+			            showCancelButton: true,
+			            confirmButtonText: 'Yes',
+			            cancelButtonText: 'No',
+			            confirmButtonColor: '#1e3c72',
+			            cancelButtonColor: '#d33'
+			        }).then((result) => {
+			            if (result.isConfirmed) {
+			                // 구매페이지로 직접 이동
+			                location.href = '${pageContext.request.contextPath}/order/direct_form.do?product_idx=' 
+			                    + productIdx + '&product_cnt=' + productCnt;
+			            }
+			        });
+			    });
+			    // 구매하기 버튼
+/* 			    document.getElementById('btnBuy').addEventListener('click', function() {
 			        Swal.fire({
 			            title: '구매하시겠습니까?',
 			            icon: 'question',
@@ -2012,7 +2044,7 @@ document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
 			                });
 			            }
 			        });
-			    });
+			    }); */
 			});
 			
         
