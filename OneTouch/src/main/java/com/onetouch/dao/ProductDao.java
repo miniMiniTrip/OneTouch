@@ -78,6 +78,8 @@ public interface ProductDao {
     //sw : 여러 product_idx로 상품 조회(hashtag 연동용)
     public List<ProductVo> selectByIds(List<Integer> productIds);
 	List<ProductVo> selectProductImageProductIdxList(int product_idx);
+	//sw : 결제 완료: 판매량 증가 + 재고 감소
+	int updateStockAndSell(@Param("product_idx") int product_idx, @Param("count") int count);
 
 
 }

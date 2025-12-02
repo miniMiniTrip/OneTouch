@@ -95,6 +95,7 @@ CREATE TABLE product (
 --============ 배송상태값 예시
 
 ALTER TABLE product 
+ADD COLUMN product_sell INT DEFAULT 0,
 ADD COLUMN tracking_number VARCHAR(50),
 ADD COLUMN delivery_status VARCHAR(20) DEFAULT '준비중';
 
