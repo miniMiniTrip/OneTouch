@@ -19,7 +19,7 @@
         .choice-card {
             border: 2px solid #e9ecef;
             border-radius: 10px;
-            padding: 40px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
@@ -32,28 +32,40 @@
             transform: translateY(-5px);
         }
         .choice-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 48px;
+            margin-bottom: 15px;
         }
         .choice-card h4 {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #081828;
         }
         .choice-card p {
             color: #6c757d;
             margin-bottom: 0;
-        }
-        .last-profile {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e9ecef;
-            color: #999;
             font-size: 14px;
         }
-        .section-title h2 {
-            margin-bottom: 15px;
+        .last-profile {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+            color: #999;
+            font-size: 13px;
+        }
+        .choice-section-title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .choice-section-title h4 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #081828;
+        }
+        .choice-section-title p {
+            color: #6c757d;
+            margin-bottom: 0;
         }
     </style>
 </head>
@@ -69,9 +81,9 @@
         </div>
     </div>
 
-    <!-- Header, sidebar -->
+    <!-- Header -->
     <%@include file="../common/header.jsp" %>
-    <%@include file="../common/mypage_side_bar.jsp" %>
+    
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
@@ -92,36 +104,43 @@
         </div>
     </div>
 
-    <!-- Choice Section -->
-    <section class="dashboard section" style="padding: 80px 0;">
+    <!-- Dashboard Section with Sidebar -->
+    <section class="dashboard section">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <div class="section-title text-center" style="margin-bottom: 50px;">
-                        <h2>피부 진단 선택</h2>
-                        <p>이전에 진행하신 피부 진단이 있습니다.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <!-- 기존 진단 보기 -->
-                <div class="col-lg-5 col-md-6 col-12" style="margin-bottom: 30px;">
-                    <div class="choice-card" onclick="location.href='${pageContext.request.contextPath}/mypage/skinprofile'">
-                        <div class="choice-icon">📋</div>
-                        <h4>기존 진단 결과 보기</h4>
-                        <p>저장된 피부 진단 결과를 확인합니다</p>
-                        <div class="last-profile">
-                            마지막 진단: <fmt:formatDate value="${skinProfile.sp_update}" pattern="yyyy-MM-dd HH:mm"/>
-                        </div>
-                    </div>
-                </div>
+                <!-- Sidebar -->
+                <%@include file="../common/mypage_side_bar.jsp" %>
                 
-                <!-- 새로운 진단 시작 -->
-                <div class="col-lg-5 col-md-6 col-12" style="margin-bottom: 30px;">
-                    <div class="choice-card" onclick="startNewProfile()">
-                        <div class="choice-icon">✨</div>
-                        <h4>새로운 진단 시작</h4>
-                        <p>피부 상태가 변경되었다면<br>다시 진단해보세요</p>
+                <!-- Main Content -->
+                <div class="col-lg-9 col-md-8 col-12">
+                    <div class="main-content">
+                        <div class="choice-section-title">
+                            <h4>피부 진단 선택</h4>
+                            <p>이전에 진행하신 피부 진단이 있습니다.</p>
+                        </div>
+                        
+                        <div class="row justify-content-center">
+                            <!-- 기존 진단 보기 -->
+                            <div class="col-lg-5 col-md-6 col-12 mb-4">
+                                <div class="choice-card" onclick="location.href='${pageContext.request.contextPath}/mypage/skinprofile'">
+                                    <div class="choice-icon">📋</div>
+                                    <h4>기존 진단 결과 보기</h4>
+                                    <p>저장된 피부 진단 결과를 확인합니다</p>
+                                    <div class="last-profile">
+                                        마지막 진단: <fmt:formatDate value="${skinProfile.sp_update}" pattern="yyyy-MM-dd HH:mm"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 새로운 진단 시작 -->
+                            <div class="col-lg-5 col-md-6 col-12 mb-4">
+                                <div class="choice-card" onclick="startNewProfile()">
+                                    <div class="choice-icon">✨</div>
+                                    <h4>새로운 진단 시작</h4>
+                                    <p>피부 상태가 변경되었다면<br>다시 진단해보세요</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,11 +168,12 @@
             setTimeout(() => preloader.style.display = 'none', 500);
         }
     });
-        function startNewProfile() {
-            if(confirm('새로운 진단을 시작하시겠습니까?\n기존 진단 결과는 덮어쓰여집니다.')) {
-                location.href = '${pageContext.request.contextPath}/skinprofile/form_new';
-            }
+    
+    function startNewProfile() {
+        if(confirm('새로운 진단을 시작하시겠습니까?\n기존 진단 결과는 덮어쓰여집니다.')) {
+            location.href = '${pageContext.request.contextPath}/skinprofile/form?renew=true';
         }
+    }
     </script>
 </body>
 </html>
