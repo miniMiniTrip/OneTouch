@@ -273,7 +273,7 @@
                                 </c:if>
                                 
                                 <div class="button">
-                                    <a href="${pageContext.request.contextPath}/product/detail/${product.productId}" 
+                                    <a href="${pageContext.request.contextPath}/cart/list.do" 
                                        class="btn">
                                         <i class="lni lni-cart"></i> 장바구니
                                     </a>
@@ -282,7 +282,7 @@
                             <div class="product-info">
                                 <span class="category">${bestProductVo.category_name}</span>
                                 <h4 class="title">
-                                    <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
+                                    <a href="${pageContext.request.contextPath}/product/detail?id=${bestProductVo.product_idx}">
                                         ${bestProductVo.product_name}
                                     </a>
                                 </h4>
@@ -347,7 +347,7 @@
                                      alt="${product.product_name}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${product.product_idx}'">
                                 <span class="new-tag">NEW</span>
                                 <div class="button">
-                                    <a href="" 
+                                    <a href="${pageContext.request.contextPath}/cart/list.do" 
                                        class="btn">
                                         <i class="lni lni-cart"></i> 장바구니
                                     </a>
