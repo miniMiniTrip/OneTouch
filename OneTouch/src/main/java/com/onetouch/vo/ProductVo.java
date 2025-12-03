@@ -22,6 +22,8 @@ public class ProductVo{
     private int product_cnt;
     private String product_time;
     private String product_update;
+    private String product_sell;
+    
     
     // 카테고리 정보
     private String category_name;

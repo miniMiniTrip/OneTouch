@@ -67,7 +67,7 @@
 <body>
 <div class="review-container">
 			<!-- 좌측: 리뷰 통계 -->
-			<div class="review-stats">
+			<!-- <div class="review-stats">
 				<div class="review-summary">
 					<h3>상품 리뷰</h3>
 					<div class="rating-summary">
@@ -138,7 +138,7 @@
 					</div>
 
 				</div>
-			</div>
+			</div> -->
 
 			<!-- 우측: 개별 리뷰 -->
 			<div class="review-list">
