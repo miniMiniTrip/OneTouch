@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.onetouch.vo.BestProductVo;
 import com.onetouch.vo.ProductVo;
 
 @Mapper
@@ -15,7 +16,7 @@ public interface ProductDao {
     // 카테고리별 목록조회
     List<ProductVo> selectList(@Param("category_idx") int category_idx, @Param("keyword") String keyword);
     List<ProductVo> selectList(Map<String, Object> map);
-    List<ProductVo> selectListbest(Map<String, Object> map);
+    List<BestProductVo> selectBestProductList();
     List<ProductVo> selectListAdmin(Map<String, Object> map);
     List<ProductVo> selectRemainListByProduct(int product_idx); //재고조회
     List<ProductVo> selectRemainList(Map<String, Object> map);// 전체재고 이력조회

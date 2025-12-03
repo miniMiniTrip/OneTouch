@@ -1,5 +1,6 @@
 package com.onetouch;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import com.onetouch.common.MyConstant;
 import com.onetouch.dao.PostDao;
 import com.onetouch.dao.ProductDao;
 import com.onetouch.service.HashtagService;
+import com.onetouch.vo.BestProductVo;
 import com.onetouch.vo.HashtagVo;
 import com.onetouch.vo.PostVo;
 import com.onetouch.vo.ProductVo;
@@ -53,10 +55,30 @@ public class MainController {
 		System.out.printf("		뉴상품 3개 => %s\n",newProductVoList);
 		map.put("orderBy",null);
 		map.put("bestOrderBy","product_sell DESC");
-		List<ProductVo> bestProductVoList = product_dao.selectListbest(map);
+		List<BestProductVo> bestProductVoList = product_dao.selectBestProductList();
+		for(int i =0; i<bestProductVoList.size();i++) {
+		    String[] names = bestProductVoList.get(i).getHashtag_names().split(",");
+		    String[] idxs = bestProductVoList.get(i).getHashtag_idxs().split(",");
+
+		    List<HashtagVo> hashtagList = new ArrayList<>();
+		    for (int j = 0; j < names.length; j++) {
+		        String idxStr = idxs[j].trim();  // ★ 공백 제거
+		        String nameStr = names[j].trim(); // ★ 공백 제거
+
+		        if (idxStr.isEmpty()) continue;  // 혹시 빈값이면 skip
+
+		        int idx = Integer.parseInt(idxStr);
+
+		        HashtagVo hashtagVo = new HashtagVo();
+		        hashtagVo.setHashtag_idx(idx);
+		        hashtagVo.setHashtag_name(nameStr);
+
+		        hashtagList.add(hashtagVo);
+		    }
+
+		    bestProductVoList.get(i).setHashtagsList(hashtagList);
+		}
 		System.out.printf("		베스트상품 3개 => %s\n",bestProductVoList);
-		
-		
 		
 		model.addAttribute("bestProductVoList",bestProductVoList);
 		model.addAttribute("hashtagRank", hashtagRank);

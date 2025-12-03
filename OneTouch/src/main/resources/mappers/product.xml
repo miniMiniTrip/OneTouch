@@ -165,95 +165,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    </if>
 	</select>
 	
-	<!-- 베스트 상품 조회 3개 -->
-	<select id="selectListbest" parameterType="map" resultMap="productWithHashtags">
-    SELECT 
-        p.product_idx,
-        p.product_name,
-        p.product_brand,
-        p.product_comment,
-        p.product_price,
-        p.product_cnt,
-        p.product_time,
-        p.product_update,
-        p.category_idx,
-        p.product_wishlist,
-        p.product_sell, <!-- 판매량 추가 -->
-        c.category_name,
-        pi.product_image_url
-    FROM product p
-    LEFT JOIN category c ON p.category_idx = c.category_idx
-    LEFT JOIN (
-        SELECT product_idx, product_image_url 
-        FROM product_image 
-        WHERE product_image_level = 1
-    ) pi ON p.product_idx = pi.product_idx
-
-    <where>
-        <if test="keyword != null and keyword != ''">
-            AND (
-                p.product_name LIKE CONCAT('%', #{keyword}, '%')
-                OR p.product_brand LIKE CONCAT('%', #{keyword}, '%')
-                OR p.product_comment LIKE CONCAT('%', #{keyword}, '%')
-                OR EXISTS (
-                    SELECT 1 
-                    FROM product_hashtag ph
-                    INNER JOIN hashtag h ON ph.hashtag_idx = h.hashtag_idx
-                    WHERE ph.product_idx = p.product_idx
-                      AND h.hashtag_name LIKE CONCAT('%', #{keyword}, '%')
-                )
-            )
-        </if>
-
-        <if test="category_idx != null and category_idx != ''">
-            AND p.category_idx = #{category_idx}
-        </if>
-    </where>
-
-    <!-- ORDER BY 처리 -->
-    <choose>
-        <when test="orderBy != null and orderBy != ''">
-
-            <choose>
-
-                <!-- 가격 정렬 -->
-                <when test="orderBy.contains('product_price')">
-                    ORDER BY CAST(p.product_price AS SIGNED) 
-                    <if test="orderBy.contains('ASC')">ASC</if>
-                    <if test="orderBy.contains('DESC')">DESC</if>
-                </when>
-
-                <!-- 🔥 product_sell 정렬 추가 -->
-                <when test="orderBy.contains('product_sell')">
-                    ORDER BY p.product_sell
-                    <if test="orderBy.contains('ASC')">ASC</if>
-                    <if test="orderBy.contains('DESC')">DESC</if>
-                </when>
-
-                <otherwise>
-                    <if test="orderBy!=null">
-                        ORDER BY ${orderBy}
-                    </if>
-                    <if test="newOrderBy!=null">
-                        ORDER BY ${bestOrderBy}
-                    </if>
-                </otherwise>
-
-            </choose>
-
-        </when>
-
-        <otherwise>
-            ORDER BY p.product_idx DESC
-        </otherwise>
-    </choose>
-
-    <!-- 페이징 처리 -->
-    <if test="startRow != null and pageSize != null">
-        LIMIT #{startRow}, #{pageSize}
-    </if>
-
-</select>
+	<!-- 베스트 상품 조회 3개 (판매량기준) -->
+	<select id="selectBestProductList" resultType="BestProductVo">
+		SELECT
+	    p.product_idx,
+	    p.product_name,
+	    p.product_price,
+	    c.category_name,
+	    p.product_sell,
+	    img.product_image_url,
+	    GROUP_CONCAT(h.hashtag_name ORDER BY h.hashtag_name SEPARATOR ', ') AS hashtag_names,
+        GROUP_CONCAT(h.hashtag_idx ORDER BY h.hashtag_idx SEPARATOR ', ') AS hashtag_idxs
+		FROM product p
+		LEFT JOIN category c 
+		    ON p.category_idx = c.category_idx
+		LEFT JOIN product_image img
+		    ON p.product_idx = img.product_idx
+		    AND img.product_image_level = 1
+		LEFT JOIN product_hashtag ph
+		    ON p.product_idx = ph.product_idx
+		LEFT JOIN hashtag h
+		    ON ph.hashtag_idx = h.hashtag_idx
+		GROUP BY 
+		    p.product_idx,
+		    p.product_name,
+		    p.product_price,
+		    c.category_name,
+		    img.product_image_url
+		ORDER BY 
+		    p.product_sell DESC
+		LIMIT 3;
+	</select>
+	
+	
 	
 	
 	<!-- 상품 총 개수 조회 (해시태그 포함 검색) -->

@@ -254,11 +254,13 @@
                 </div>
             </div>
             <div class="row product-div" >
+            	<!-- 베스트 상품 for  -->
                 <c:forEach var="bestProductVo" items="${bestProductVoList}">
                     <div class="col-lg-3 col-md-6 col-12">
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
+                            	<!-- 상품 이미지 -->
                                 <img src="${pageContext.request.contextPath}/images/products_list/${bestProductVo.product_image_url}" 
                                      alt="${bestProductVo.product_name}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${bestProductVo.product_idx}'">
                                 
@@ -272,16 +274,19 @@
                                     <span class="new-tag">NEW</span>
                                 </c:if>
                                 
+                                <!-- 장바구니 버튼 -->
                                 <div class="button">
                                     <a href="${pageContext.request.contextPath}/cart/list.do" 
-                                       class="btn">
+                                       class="btn" onclick="addToCart(${bestProductVo.product_idx})">
                                         <i class="lni lni-cart"></i> 장바구니
                                     </a>
                                 </div>
                             </div>
                             <div class="product-info">
+                            	<!-- 카테고리 이름 -->
                                 <span class="category">${bestProductVo.category_name}</span>
                                 <h4 class="title">
+                                	<!-- 상품 제목,상품 이름 -->
                                     <a href="${pageContext.request.contextPath}/product/detail?id=${bestProductVo.product_idx}">
                                         ${bestProductVo.product_name}
                                     </a>
@@ -305,11 +310,11 @@
                                 </div>
                                 
                                 <!-- 해시태그 (OneTouch 특화) -->
-                                <c:if test="${not empty bestProductVo.hashtag_list}">
+                                <c:if test="${not empty bestProductVo.hashtagsList}">
                                     <div class="product-hashtags mt-2">
-                                  		<c:forEach var="hashtag" items="${bestProductVo.hashtag_list}">
+                                  		<c:forEach var="hashtag" items="${bestProductVo.hashtagsList}">
                                         <a
-                                            href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+                                            href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}"
                                             class="hashtag-badge"
                                             title="#${hashtag.hashtag_name} 상품 보기">
                                             #${hashtag.hashtag_name} </a>
@@ -348,7 +353,7 @@
                                 <span class="new-tag">NEW</span>
                                 <div class="button">
                                     <a href="${pageContext.request.contextPath}/cart/list.do" 
-                                       class="btn">
+                                       class="btn" onclick="addToCart(${product.product_idx})">
                                         <i class="lni lni-cart"></i> 장바구니
                                     </a>
                                 </div>
@@ -376,7 +381,7 @@
                                     <div class="product-hashtags" style="margin: 10px 0;">
                                         <c:forEach var="hashtag" items="${product.hashtag_list}">
                                         <a
-                                            href="${pageContext.request.contextPath}/hashtag/search_products.do?hashtag_idx=${hashtag.hashtag_idx}"
+                                            href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${hashtag.hashtag_idx}"
                                             class="hashtag-badge"
                                             title="#${hashtag.hashtag_name} 상품 보기">
                                             #${hashtag.hashtag_name} </a>
@@ -502,6 +507,41 @@
                 setTimeout(() => preloader.style.display = 'none', 500);
             }
         });
+        const mem_idx = ${sessionScope.user != null ? sessionScope.user.mem_idx : 'null'};
+        function addToCart(product_idx) {
+            if (!mem_idx || mem_idx === null) {
+                alert('로그인이 필요한 서비스입니다.');
+                location.href = '${pageContext.request.contextPath}/user/login';
+                return;
+            }
+            
+            fetch('${pageContext.request.contextPath}/cart/insert.do', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'mem_idx=' + mem_idx + '&product_idx=' + product_idx + '&cart_cnt=1'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    if (confirm('장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?')) {
+                        location.href = '${pageContext.request.contextPath}/cart/list.do?mem_idx=' + mem_idx;
+                    }
+                } else if (data.result === 'exist') {
+                    alert('이미 장바구니에 담긴 상품입니다.');
+                } else if (data.result === 'not_login') {
+                    alert('로그인이 필요한 서비스입니다.');
+                    location.href = '${pageContext.request.contextPath}/user/login';
+                } else {
+                    alert('장바구니 추가 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('장바구니 추가 중 오류가 발생했습니다.');
+            });
+        }
 
         //========= Hero Slider 
         /* tns({
