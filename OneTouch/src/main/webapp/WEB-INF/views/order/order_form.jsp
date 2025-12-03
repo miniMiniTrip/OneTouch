@@ -1174,8 +1174,14 @@ input[type="checkbox"] {
         
         // 주문자 정보와 동일
         function sameAsOrderer() {
+            // 이름, 전화번호 복사
             $('#recipientName').val($('#ordererName').val());
             $('#recipientPhone').val($('#ordererPhone').val());
+            
+            // 회원 주소 정보를 배송지에 설정
+            $('#zipCode').val('${user.mem_postal}');
+            $('#address').val('${user.mem_addr}');
+            $('#addressDetail').val('${user.mem_addr_more}');
         }
         
         // 주소 검색

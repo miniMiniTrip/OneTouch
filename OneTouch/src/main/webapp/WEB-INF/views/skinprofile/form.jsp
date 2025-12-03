@@ -838,11 +838,6 @@
     </a>
 
     <!-- ========================= JS here ========================= -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
     // 프리로더 제거
@@ -870,10 +865,10 @@
                 window.answers[questionNum] = value;
                 
                 // 같은 그룹의 모든 카드에서 selected 제거
-                document.querySelectorAll(`.option-card[data-name="${name}"]`).forEach(c => {
+				document.querySelectorAll('.option-card[data-name="' + name + '"]').forEach(c => {
                     c.classList.remove('selected');
                 });
-                document.querySelectorAll(`.skin-tone-card[data-name="${name}"]`).forEach(c => {
+                document.querySelectorAll('.option-card[data-name="' + name + '"]').forEach(c => {
                     c.classList.remove('selected');
                 });
                 
@@ -907,7 +902,8 @@
                 radio.checked = true;
                 
                 // 같은 그룹의 모든 카드에서 selected 클래스 제거
-                document.querySelectorAll(`.option-card[data-name="${name}"]`).forEach(c => {
+				document.querySelectorAll('.option-card[data-name="' + name + '"]').forEach(c => {
+
                     c.classList.remove('selected');
                 });
                 

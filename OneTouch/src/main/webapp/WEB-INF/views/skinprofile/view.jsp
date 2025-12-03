@@ -28,12 +28,13 @@
 
 .mypage-container {
     display: flex;
-    max-width: 100%;
-    margin: 0;
+    max-width: 1320px;
+    margin: 0 auto;
     background: transparent;
     border-radius: 0;
     overflow: visible;
     box-shadow: none;
+    padding: 0 12px;
 }
 
 /* ==================== 사이드바 스타일 ==================== */
@@ -222,6 +223,15 @@
     box-shadow: 0 6px 16px rgba(92, 107, 192, 0.4);
 }
 
+a.hashtag-badge {
+    text-decoration: none;
+    color: white;
+}
+
+a.hashtag-badge:hover {
+    color: white;
+}
+
 .hashtag-badge::before {
     content: '#';
     margin-right: 4px;
@@ -407,7 +417,17 @@
 }
 
 /* ==================== 반응형 ==================== */
+@media (max-width: 1400px) {
+    .mypage-container {
+        max-width: 1140px;
+    }
+}
+
 @media (max-width: 1200px) {
+    .mypage-container {
+        max-width: 960px;
+    }
+    
     .content {
         padding: 40px;
     }
@@ -419,6 +439,7 @@
 
 @media (max-width: 992px) {
     .mypage-container {
+        max-width: 720px;
         flex-direction: column;
     }
     
@@ -443,6 +464,10 @@
 }
 
 @media (max-width: 768px) {
+    .mypage-container {
+        max-width: 540px;
+    }
+    
     .content-header h2 {
         font-size: 24px;
     }
@@ -464,6 +489,13 @@
     .btn-outline-custom {
         width: 100%;
         text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .mypage-container {
+        max-width: 100%;
+        padding: 0;
     }
 }
     </style>
@@ -509,75 +541,7 @@
     <section class="mypage-section">
         <div class="container">
             <div class="mypage-container">
-                
-                <!-- ==================== Sidebar ==================== -->
-                <div class="sidebar">
-                    <div class="sidebar-header">마이페이지</div>
-                    <div class="sidebar-subtitle">${sessionScope.mem_name}님 환영합니다</div>
-                    
-                    <!-- 쇼핑 메뉴 -->
-                    <div class="menu-section">
-                        <a href="${pageContext.request.contextPath}/cart/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            🛒 장바구니
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/wishlist/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            💝 찜
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/order/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            🎯 주문/배송 조회
-                        </a>
-                    </div>
-                    
-                    <!-- 나의 활동 -->
-                    <div class="menu-section">
-                        <div class="menu-title">나의 활동</div>
-                        
-                        <a href="${pageContext.request.contextPath}/qna/list.do?mem_idx=${sessionScope.mem_idx}" 
-                           class="menu-item">
-                            💬 상품 Q&A
-                        </a>
-                        
-                        <!-- 피부 진단 - 현재 페이지 -->
-                        <a href="${pageContext.request.contextPath}/skinprofile/form.do" 
-                           class="menu-item active">
-                            🔬 피부 진단
-                        </a>
-                    </div>
-                    
-                    <!-- 회원 정보 -->
-                    <div class="menu-section">
-                        <div class="menu-title">회원 정보</div>
-                        
-                        <a href="${pageContext.request.contextPath}/member/modify.do" 
-                           class="menu-item">
-                            👥 회원정보 수정
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/member/address.do" 
-                           class="menu-item">
-                            🔒 배송지 관리
-                        </a>
-                        
-                        <a href="${pageContext.request.contextPath}/member/notification.do" 
-                           class="menu-item">
-                            📧 알림톡신청 관리
-                        </a>
-                    </div>
-                    
-                    <!-- 로그아웃 -->
-                    <div class="menu-section">
-                        <a href="${pageContext.request.contextPath}/member/logout.do" 
-                           class="menu-item"
-                           onclick="return confirm('로그아웃 하시겠습니까?');">
-                            📝 로그아웃
-                        </a>
-                    </div>
-                </div>
+                <c:import url="../common/mypage_side_bar.jsp" />
                 
                 <!-- ==================== Content ==================== -->
                 <div class="content">
@@ -601,7 +565,8 @@
                         
                         <div class="hashtag-container">
                             <c:forEach var="vo" items="${hashtag_list}">
-                                <span class="hashtag-badge">${vo.hashtag_name}</span>
+                                <a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${vo.hashtag_idx}" 
+                                   class="hashtag-badge">${vo.hashtag_name}</a>
                             </c:forEach>
                         </div>
                         
