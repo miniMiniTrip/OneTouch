@@ -113,9 +113,15 @@ public class PostServiceImpl implements PostService {
 	@Override
 	/**post 등록처리*/
 	public int postInsert(PostVo postVo,String[] post_hashtag_array) throws Exception {
-		
+		String webPath="";
 		//이미지 등록처리
-		String webPath = "/images/posts/";
+		if(postVo.getPost_category().equals("review")) {
+			
+			webPath = "/images/posts/reviews";
+		}else {
+			
+			webPath = "/images/posts/";
+		}
 		String absPath = application.getRealPath(webPath);
 		//System.out.printf("		파일 저장 절대경로:%s\n",absPath);
 		String p_filename="no_file";
