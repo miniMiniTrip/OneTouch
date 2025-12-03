@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    JOIN mem m ON p.mem_idx = m.mem_idx
 	    LEFT JOIN post_product pp ON p.post_idx = pp.post_idx
 	    LEFT JOIN product pr ON pp.product_idx = pr.product_idx
-	    LEFT JOIN product_image pi ON pp.product_idx =pi.product_idx
+	    LEFT JOIN product_image pi ON pr.product_idx = pi.product_idx
 	    LEFT JOIN `like` l ON p.post_idx = l.post_idx
 	    LEFT JOIN reply as r on p.post_idx=r.post_idx
 	    LEFT JOIN post_hashtag as ph on p.post_idx = ph.post_idx

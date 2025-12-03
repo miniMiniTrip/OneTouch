@@ -1686,12 +1686,14 @@ let postsArray="${postsArray}"
              <div class="product-section">
              `
              for(let productVo of postVo.productList){
+            	 
             	 let price=productVo.product_price;
             	 let price_formatted = new Intl.NumberFormat('ko-KR').format(price);
+            	 let imgUrl = encodeURI(productVo.product_image_url);
 					html=html+`	                    	
                      <div class="product-card">
                      	<a href="/product/detail?id=\${productVo.product_idx}" class="product-link">
-			                            <img src="${pageContext.request.contextPath }/images/products_list/\${productVo.product_image_url}" alt="제품" class="product-img">
+			                            <img src="${pageContext.request.contextPath }/images/products_list/\${imgUrl}" alt="제품" class="product-img">
 			                            <p class="product-name">\${productVo.product_name }</p>
 			                            <p class="product-price">₩\${price_formatted}</p>
 	                        </a>    
@@ -2407,6 +2409,15 @@ document.querySelectorAll('.more-options').forEach(btn => {
 	});
 
 	observer.observe(document.body, { childList: true, subtree: true });
+	
+	// 상품 이미지 URL이 어떻게 넘어오는지 확인
+	document.querySelectorAll('.product-img').forEach((img, i) => {
+	    console.log(`이미지 ${i}:`, {
+	        'data-original': img.getAttribute('alt'),
+	        'src': img.src,
+	        'decoded': decodeURIComponent(img.src)
+	    });
+	});
     </script>
 </body>
 </html>

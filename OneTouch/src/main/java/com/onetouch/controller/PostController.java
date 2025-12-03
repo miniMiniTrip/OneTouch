@@ -325,7 +325,7 @@ public class PostController {
 			int res=postService.updatePostVo(postVo,post_hashtag_array);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-				
+			e.printStackTrace();
 			ra.addAttribute("error","db_not");
 			ra.addAttribute("post_idx",postVo.getPost_idx());
 			System.out.println("에러메세지"+e.getMessage());

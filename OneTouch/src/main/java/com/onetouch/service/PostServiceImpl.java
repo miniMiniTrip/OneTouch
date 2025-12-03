@@ -228,7 +228,7 @@ public class PostServiceImpl implements PostService {
 	public int updatePostVo(PostVo postVo,String[] post_hashtag_array) throws Exception{
 		System.out.println("기존이미지:"+postVo.getPost_image());
 		for(MultipartFile postVo_image:postVo.getPost_images()) {
-			System.out.println("새로받아온 이미지 :"+postVo_image);
+			System.out.println("새로받아온 이미지 :"+postVo_image.getOriginalFilename());
 		}
 		
 		//이미지 등록처리
@@ -275,6 +275,7 @@ public class PostServiceImpl implements PostService {
 		if(ppv!=null&&!ppv.isEmpty()) {
 			res =res*postDao.deletePostProduct(postVo.getPost_idx());
 			if(res==0) { 
+				System.out.println("post_product 테이블에서 삭제 실패");
 				throw new Exception("deletePostProduct()_not");
 			}
 		};
@@ -284,6 +285,7 @@ public class PostServiceImpl implements PostService {
 				// post_product 목록 테이블에저장
 				res=res * (postDao.postProductInsert(postVo));
 				if(res==0) { 
+					System.out.println("postProductInsert 실패");
 					throw new Exception("postProductInsert()_not");
 				}
 			}
