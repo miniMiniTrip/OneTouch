@@ -671,70 +671,151 @@
 					</c:choose>
 				</div>
 
-				<!-- ==================== 포스트 섹션 ==================== -->
-				<div class="section-divider"></div>
-				<div class="section-title">
-					<span>커뮤니티 포스트</span>
-					<span class="count-badge">${fn:length(post_list)}</span>
-				</div>
+					<!-- ==================== 포스트 섹션 ==================== -->
+					<div class="section-divider"></div>
+					<div class="section-title" id="post-section">
+						<i class="lni lni-comments" style="color: #5c6bc0;"></i>
+						<span>커뮤니티 포스트</span>
+						<span class="count-badge">${postTotalCount}</span>
+					</div>
 
-				<c:choose>
-					<c:when test="${empty post_list}">
-						<div class="no-results">
-							<i class="lni lni-comments"></i>
-							<p>해당 해시태그가 포함된 포스트가 없습니다.</p>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<ul class="post-list">
-							<c:forEach var="post" items="${post_list}">
-								<li class="post-item">
-									<span class="post-category">${post.post_category}</span>
-									<h3 class="post-title">
-										<a href="${pageContext.request.contextPath}/post/view?post_idx=${post.post_idx}">
-											${post.post_title}
-										</a>
-									</h3>
-									
-									<!-- 해시태그 -->
-									<c:if test="${not empty post.hashtagList}">
-										<div class="product-hashtags">
-											<c:forEach var="tag" items="${post.hashtagList}">
-												<a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${tag.hashtag_idx}"
-													class="hashtag-badge" title="#${tag.hashtag_name} 검색">
-													#${tag.hashtag_name}
-												</a>
-											</c:forEach>
+					<c:choose>
+						<c:when test="${empty post_list}">
+							<div class="no-results">
+								<i class="lni lni-comments"></i>
+								<p>검색된 포스트가 없습니다.</p>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<!-- post idx 배열에 넣기 이후 a태그에 넣어서 사용 -->
+							<c:set var="postList" value="" />
+							<c:forEach var="p" items="${post_list}">
+							        <c:set var="postList" value="${postList},${p.post_idx}" />
+							</c:forEach>
+							<c:set var="postList" value="${postList.substring(1)}" />
+							
+							<ul class="post-list">
+								<c:forEach var="post" items="${post_list}">
+									<li class="post-item">
+										<span class="post-category">${post.post_category}</span>
+										<h3 class="post-title">
+											<%-- 카테고리에 따라 tab 파라미터 설정 --%>
+											<c:set var="tabParam" value="all" />
+											<c:if test="${post.post_category == '스킨 에디터'}">
+												<c:set var="tabParam" value="skin" />
+											</c:if>
+											<c:if test="${post.post_category == '리뷰'}">
+												<c:set var="tabParam" value="review" />
+											</c:if>
+											<c:if test="${post.post_category == '자유게시판'}">
+												<c:set var="tabParam" value="free" />
+											</c:if>
+											
+											<a href="${pageContext.request.contextPath}/post/list?tab=${tabParam}&post_idx=${post.post_idx}&posts=${postList}">
+												${post.post_title}
+											</a>
+										</h3>
+										
+										<!-- 해시태그 -->
+										<c:if test="${not empty post.hashtagList}">
+											<div class="product-hashtags">
+												<c:forEach var="tag" items="${post.hashtagList}">
+													<a href="${pageContext.request.contextPath}/hashtag/search.do?hashtag_idx=${tag.hashtag_idx}"
+														class="hashtag-badge" title="#${tag.hashtag_name} 검색">
+														#${tag.hashtag_name}
+													</a>
+												</c:forEach>
+											</div>
+										</c:if>
+										
+										<div class="post-meta">
+											<span class="post-meta-item">
+												<i class="lni lni-user"></i> ${post.mem_id}
+											</span>
+											<span class="post-meta-item">
+												<i class="lni lni-heart"></i> ${post.post_like}
+											</span>
+											<span class="post-meta-item">
+												<i class="lni lni-comments"></i> ${post.post_comment_count}
+											</span>
+											<span class="post-meta-item">
+												<i class="lni lni-calendar"></i> 
+												<c:choose>
+													<c:when test="${post.post_time != null}">
+														${fn:substring(post.post_time, 0, 10)}
+													</c:when>
+													<c:otherwise>
+														-
+													</c:otherwise>
+												</c:choose>
+											</span>
 										</div>
-									</c:if>
-									
-									<div class="post-meta">
-										<span class="post-meta-item">
-											<i class="lni lni-user"></i> ${post.mem_id}
-										</span>
-										<span class="post-meta-item">
-											<i class="lni lni-heart"></i> ${post.post_like}
-										</span>
-										<span class="post-meta-item">
-											<i class="lni lni-comments"></i> ${post.post_comment_count}
-										</span>
-										<span class="post-meta-item">
-											<i class="lni lni-calendar"></i> 
+									</li>
+								</c:forEach>
+							</ul>
+							
+							<!-- 포스트 페이징 -->
+							<c:if test="${postTotalPage > 1}">
+								<div class="pagination-wrapper">
+									<ul class="pagination">
+										<!-- 이전 버튼 -->
+										<c:choose>
+											<c:when test="${postPage > 1}">
+												<li>
+													<a href="${pageContext.request.contextPath}/search?keyword=${keyword}&productPage=${productPage}&postPage=${postPage - 1}#post-section">
+														<i class="lni lni-chevron-left"></i>
+													</a>
+												</li>
+											</c:when>
+											<c:otherwise>
+												<li class="disabled">
+													<span>
+														<i class="lni lni-chevron-left"></i>
+													</span>
+												</li>
+											</c:otherwise>
+										</c:choose>
+										
+										<!-- 페이지 번호 -->
+										<c:forEach var="i" begin="${postStartPage}" end="${postEndPage}">
 											<c:choose>
-												<c:when test="${post.post_time != null}">
-													${fn:substring(post.post_time, 0, 10)}
+												<c:when test="${i == postPage}">
+													<li class="active">
+														<span>${i}</span>
+													</li>
 												</c:when>
 												<c:otherwise>
-													-
+													<li>
+														<a href="${pageContext.request.contextPath}/search?keyword=${keyword}&productPage=${productPage}&postPage=${i}#post-section">
+															${i}
+														</a>
+													</li>
 												</c:otherwise>
 											</c:choose>
-										</span>
-									</div>
-								</li>
-							</c:forEach>
-						</ul>
-					</c:otherwise>
-				</c:choose>
+										</c:forEach>
+										
+										<!-- 다음 버튼 -->
+										<c:choose>
+											<c:when test="${postPage < postTotalPage}">
+												<li>
+													<a href="${pageContext.request.contextPath}/search?keyword=${keyword}&productPage=${productPage}&postPage=${postPage + 1}#post-section">
+														<i class="lni lni-chevron-right"></i>
+													</a>
+												</li>
+											</c:when>
+											<c:otherwise>
+												<li class="disabled">
+													<span>
+														<i class="lni lni-chevron-right"></i>
+													</span>
+												</li>
+											</c:otherwise>
+										</c:choose>
+									</ul>
+								</div>
+							</c:if>
+						</c:otherwise>
+					</c:choose>
 
 			</div>
 			<!-- End Content -->
