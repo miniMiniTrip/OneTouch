@@ -260,7 +260,7 @@
                         <div class="single-product">
                             <div class="product-image">
                                 <img src="${pageContext.request.contextPath}/images/products_list/${bestProductVo.product_image_url}" 
-                                     alt="${bestProductVo.product_name}">
+                                     alt="${bestProductVo.product_name}" onclick="location.href='${pageContext.request.contextPath}/product/detail?id=${bestProductVo.product_idx}'">
                                 
                                 <!-- 할인 태그 -->
                                 <c:if test="${product.discountRate > 0}">
@@ -288,14 +288,14 @@
                                 </h4>
                                 
                                 <!-- 별점 -->
-                                <ul class="review">
+                               <%--  <ul class="review">
                                     <c:forEach begin="1" end="5" var="i">
                                         <li>
                                             <i class="lni lni-star${i <= 3 ? '-filled' : ''}"></i>
                                         </li>
                                     </c:forEach>
                                     <li><span>${product_rating} (${product_reviewCount})</span></li>
-                                </ul>
+                                </ul> --%>
                                 
                                 <!-- 가격 -->
                                 <div class="price">
@@ -360,14 +360,14 @@
                                         ${product.product_name}
                                     </a>
                                 </h4>
-                                <ul class="review">
+                                <%-- <ul class="review">
                                     <c:forEach begin="1" end="5" var="i">
                                         <li>
                                             <i class="lni lni-star${i <= 4?'-filled':''}"></i>
                                         </li>
                                     </c:forEach>
                                     <li><span>4 (?)</span></li>
-                                </ul>
+                                </ul> --%>
                                 <div class="price">
                                     <span><fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원</span>
                                 </div>
@@ -395,7 +395,7 @@
     <!-- End Banner Area -->
 
     <!-- Start Banner Area (OneTouch: 맞춤 추천 배너) -->
-    <section class="trending-product section">
+   <%--  <section class="trending-product section">
         <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-12">
@@ -426,7 +426,7 @@
                     </div>
                 </div>
             </div>
-    </section>
+    </section> --%>
     <!-- End New Arrival Product Area -->
 
     <!-- Start Shipping Info (OneTouch: 서비스 안내) -->

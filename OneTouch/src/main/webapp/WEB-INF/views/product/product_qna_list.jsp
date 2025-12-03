@@ -286,7 +286,7 @@
             </table>
             
             <!-- 페이징 처리 -->
-            <div class="product-qna-pagination">
+            <%-- <div class="product-qna-pagination">
                 <!-- 이전 -->
                 <c:choose>
                     <c:when test="${page > 1}">
@@ -318,7 +318,7 @@
                         <span class="disabled">다음</span>
                     </c:otherwise>
                 </c:choose>
-            </div>
+            </div> --%>
         </c:if>
         
         <!-- 글이 없는 경우 -->
