@@ -861,13 +861,32 @@
         window.totalQuestions = 5;
         window.answers = {};
         
-        // 라디오 버튼 선택 감지
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const questionNum = this.name.replace('skin', '');
-                window.answers[questionNum] = this.value;
+                const name = this.name;
+                const value = this.value;
                 
-                // 현재 질문의 버튼 활성화
+                window.answers[questionNum] = value;
+                
+                // 같은 그룹의 모든 카드에서 selected 제거
+                document.querySelectorAll(`.option-card[data-name="${name}"]`).forEach(c => {
+                    c.classList.remove('selected');
+                });
+                document.querySelectorAll(`.skin-tone-card[data-name="${name}"]`).forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // 선택된 카드에 selected 추가
+                const selectedCard = document.querySelector(
+                    `.option-card[data-name="${name}"][data-value="${value}"], 
+                     .skin-tone-card[data-name="${name}"][data-value="${value}"]`
+                );
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                }
+                
+                // 버튼 활성화
                 if (window.currentQuestion < window.totalQuestions) {
                     document.getElementById('nextBtn').disabled = false;
                 } else {
@@ -876,8 +895,7 @@
                 
                 updateProgress();
             });
-        });
-        
+        });        
         // 일반 카드 클릭 이벤트 (1-4번 질문)
         document.querySelectorAll('.option-card').forEach(card => {
             card.addEventListener('click', function() {
