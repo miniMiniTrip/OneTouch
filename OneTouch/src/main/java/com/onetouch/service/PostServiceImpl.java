@@ -2,9 +2,11 @@ package com.onetouch.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,32 +167,34 @@ public class PostServiceImpl implements PostService {
 			}
 		}
 		
-		if(post_hashtag_array!=null) {
-			
-			//해시태그 name으로 조회 해서 있으면 넘어가고 없으면 새로 추가
-			List<String> hashtagNameList= new ArrayList<String>();
-			for(String hashtag:post_hashtag_array) {
-				hashtagNameList.add(hashtag);
-			}
-			
-			//해시태그 name 으로 해시테이블에서 조회
-			List<HashtagVo> hashtagVoList=hashtagDao.selectByNames(hashtagNameList);
-			System.out.println(hashtagVoList);
-			//해시태그에 정보가 없으면 새로 추가
-			if(hashtagVoList.size()<=0) {
-				System.out.println("해시태그가 없습니다.");
-				
-				res=res*hashtagDao.insert(hashtagNameList);
-				// 해시태그 이름으로 해시태그 조회해오기
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("post_idx", postVo.getPost_idx());
-				List<HashtagVo> hasgtageVo=hashtagDao.selectByNames(hashtagNameList);
-				System.out.printf("해시태그 : %s\n",hasgtageVo);
-				map.put("hashtag_list",hasgtageVo);
-				res=res*hashtagDao.insertPostHashtag(map);
-				System.out.printf("res : %d\n",res);
-				
-			}
+		if(post_hashtag_array != null) {
+		    // 1. 공백 제거
+		    List<String> hashtagNameList = Arrays.stream(post_hashtag_array)
+		        .map(String::trim)
+		        .filter(h -> !h.isEmpty())
+		        .collect(Collectors.toList());
+
+		    // 2. DB에서 기존 해시태그 조회
+		    List<HashtagVo> existingHashtags = hashtagDao.selectByNames(hashtagNameList);
+
+		    // 3. DB에 없는 해시태그만 새로 insert
+		    List<String> newHashtags = hashtagNameList.stream()
+		        .filter(h -> existingHashtags.stream().noneMatch(e -> e.getHashtag_name().equals(h)))
+		        .collect(Collectors.toList());
+
+		    if(!newHashtags.isEmpty()) {
+		        res = res * hashtagDao.insert(newHashtags);
+		    }
+
+		    // 4. 현재 post와 모든 해시태그 연결
+		    Map<String,Object> map = new HashMap<>();
+		    map.put("post_idx", postVo.getPost_idx());
+
+		    // 전체 해시태그 조회 (기존 + 새로 등록된)
+		    List<HashtagVo> allHashtags = hashtagDao.selectByNames(hashtagNameList);
+		    map.put("hashtag_list", allHashtags);
+
+		    res = res * hashtagDao.insertPostHashtag(map);
 		}
 		
 		
