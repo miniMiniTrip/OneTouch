@@ -449,7 +449,7 @@
                                     
                                     <div class="product-info">
                                         <h5 class="product-name">
-                                            <a href="${pageContext.request.contextPath}/product/detail.do?product_idx=${wishlist.product_idx}">
+                                            <a href="${pageContext.request.contextPath}/product/detail?id=${wishlist.product_idx}">
                                                 ${wishlist.product_name}
                                             </a>
                                         </h5>

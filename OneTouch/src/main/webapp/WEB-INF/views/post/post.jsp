@@ -1905,7 +1905,6 @@ let postsArray="${postsArray}"
 	 //alert("댓글영역");
 	 //alert(post_idx);
 	 //alert(post_category);
-	
 	 if(!nowReplyPage){
 	 nowReplyPage=1;
 	 //alert(nowReplyPage);
@@ -1937,9 +1936,16 @@ let postsArray="${postsArray}"
 		                             
 		                             <!-- 본인 댓글일 때만 점3개 버튼 -->
 		                                 <div class="comment-actions">
+		                                 `
+		                                 		
+		                                      if("${user.mem_idx}"==replys.mem_idx){
+		                                 html=html+`
 		                                     <button class="comment-more-btn">
 		                                         <i class="fas fa-ellipsis-h"></i>
 		                                     </button>
+		                                     `
+		                                      }
+		                                     html=html+`
 		                                     <div class="comment-more-menu" style="display: none;">
 		                                         <button class="comment-edit-btn" data-reply-idx="\${replys.reply_idx}">수정</button>
 		                                         <button class="comment-delete-btn" data-reply-idx="\${replys.reply_idx}" data-now-page="\${d.nowReplyPage}" data-post-category="\${d.post_category}">삭제</button>

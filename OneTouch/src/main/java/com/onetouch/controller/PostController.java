@@ -220,6 +220,14 @@ public class PostController {
 	@PostMapping("/post/insert")
 	public String postInsert(PostVo postVo,String[] post_hashtag_array,int review_product_idx,@RequestParam(defaultValue = "0") int order_item_id ) throws Exception {
 		System.out.println("	[PostController] postInsert() ");
+		  if (post_hashtag_array != null) {
+		        for (int i = 0; i < post_hashtag_array.length; i++) {
+		            if (post_hashtag_array[i] != null) {
+		                // 앞뒤 공백 제거 + 문자 사이 공백 제거
+		                post_hashtag_array[i] = post_hashtag_array[i].trim().replaceAll("\\s+", "");
+		            }
+		        }
+		    }
 		if(postVo.getPost_category().equals("review")) {
 		//받아온 오더 아이템 정보 체크
 		System.out.printf("		order_item_id => %d\n",order_item_id);
@@ -230,6 +238,7 @@ public class PostController {
 		postVo.setPost_content(postVo.getPost_content().replaceAll("\n", "<br>"));
 		System.out.println("		"+postVo);
 		//받아온 해시정보 체크
+		
 		postService.postInsert(postVo,post_hashtag_array);
 		
 		
@@ -317,6 +326,16 @@ public class PostController {
 	@PostMapping("/post/modify")
 	public String postModify(PostVo postVo,String[] post_hashtag_array,RedirectAttributes ra)  {
 		System.out.printf("	[PostController] postModify()\n");
+		//공백제거  
+		if (post_hashtag_array != null) {
+		        for (int i = 0; i < post_hashtag_array.length; i++) {
+		            if (post_hashtag_array[i] != null) {
+		                // 앞뒤 공백 제거 + 문자 사이 공백 제거
+		                post_hashtag_array[i] = post_hashtag_array[i].trim().replaceAll("\\s+", "");
+		            }
+		        }
+		    }
+		
 		System.out.printf("		postVo => %s\n",postVo);
 		int hashtagLength = (post_hashtag_array != null) ? post_hashtag_array.length : 0;
 	    System.out.printf(" 	post_hashtag_array 갯수 => %d (null 가능)\n", hashtagLength);

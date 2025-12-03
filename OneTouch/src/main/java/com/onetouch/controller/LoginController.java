@@ -380,13 +380,16 @@ public class LoginController {
     
     //회원탈퇴처리
     @RequestMapping("/user/delete")
-    public String userDelete(@RequestParam(name="idx") int mem_idx, String image) {
+    public String userDelete(@RequestParam(name="idx") int mem_idx, String image,int delete) {
     	System.out.println("	[LoginController] userDelete()  ");
     	System.out.printf("		삭제할 mem_idx => %d\n",mem_idx);
     	memDao.userDelete(mem_idx);
     	File f=new File(application.getRealPath("/images/mem/"),image);
     	f.delete();
     	session.removeAttribute("user");
+    	if(delete==1) {
+    		return "redirect:/admin/admin_members";
+    	}
     	System.out.println("	[LoginController] return :   ");
     	System.out.println();
     	return"redirect:/main";

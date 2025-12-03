@@ -467,6 +467,7 @@ function postModify(f) {
 			        </div>
 			   </div>
 			   
+			</div>
 			   <!-- 해시태그 영역 -->
    			    <div class="form-group">
 			        <label for="skin-category">해시태그</label>
@@ -480,7 +481,6 @@ function postModify(f) {
 			            <!-- 동적으로 추가된 해시 폼이 여기에 들어갑니다. -->
 			        </div>
 			    </div>
-			</div>
 			   
 			   <!-- ----------------- 상풍 추가 js------------------ -->
 				<script>
@@ -744,6 +744,7 @@ document.getElementById('post_images').addEventListener('change', function(event
             const reviewFields = document.getElementById('review-fields');
             const skinFields = document.getElementById('skin-fields');
             const productAddFields = document.getElementById('product-add');
+            const hashtagAddFields = document.getElementById('add-hashtag-btn');
             
             // 모든 필드 숨기기
             reviewFields.style.display = 'none';
@@ -760,6 +761,7 @@ document.getElementById('post_images').addEventListener('change', function(event
             } else if (boardType ==='free'){
             	productAddFields.style.display='none';
                 skinFields.style.display = 'block';
+                hashtagAddFields.style.display = 'block';
             }
         });
         

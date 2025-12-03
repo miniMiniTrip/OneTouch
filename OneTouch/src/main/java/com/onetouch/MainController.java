@@ -46,15 +46,17 @@ public class MainController {
 		List<HashtagVo> hashtagRank=hashtagService.updatePostProductHashtagTotalConut();
 		
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("orderByNew","product_time DESC");
+		map.put("orderBy","product_time DESC");
 		map.put("startRow", 0);
 		map.put("pageSize", 3);
 		List<ProductVo> newProductVoList = product_dao.selectList(map);
 		System.out.printf("		뉴상품 3개 => %s\n",newProductVoList);
-		map.put("orderByNew",null);
-		map.put("orderByBest","product_sell DESC");
-		List<ProductVo> bestProductVoList = product_dao.selectList(map);
+		map.put("orderBy",null);
+		map.put("bestOrderBy","product_sell DESC");
+		List<ProductVo> bestProductVoList = product_dao.selectListbest(map);
 		System.out.printf("		베스트상품 3개 => %s\n",bestProductVoList);
+		
+		
 		
 		model.addAttribute("bestProductVoList",bestProductVoList);
 		model.addAttribute("hashtagRank", hashtagRank);
