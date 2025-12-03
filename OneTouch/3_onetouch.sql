@@ -324,7 +324,7 @@ CREATE TABLE post (
     post_category VARCHAR(100) NOT NULL COMMENT '카테고리',
     post_title VARCHAR(200) NOT NULL COMMENT '제목',
     post_content TEXT NOT NULL COMMENT '내용',
-    post_image VARCHAR(200) COMMENT '이미지',
+    post_image VARCHAR(1000) COMMENT '이미지',
     post_like INT NOT NULL DEFAULT 0 COMMENT '좋아요수',
     post_comment_count INT NOT NULL DEFAULT 0 COMMENT '댓글수',
     order_item_id INT NULL DEFAULT NULL COMMENT '주문상세',

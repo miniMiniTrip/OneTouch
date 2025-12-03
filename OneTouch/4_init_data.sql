@@ -583,13 +583,7 @@ VALUES
 ,(2,23)
 ,(2,24);
 
--- post_idx = 2 번 해시태그 등록
-INSERT INTO post_hashtag (post_idx,hashtag_idx)
-VALUES
-(2,1)
-,(2,8)
-,(2,9)
-,(2,10);
+
 
 
 -- post_idx=3
