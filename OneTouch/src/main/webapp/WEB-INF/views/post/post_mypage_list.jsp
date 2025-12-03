@@ -1462,6 +1462,7 @@ body {
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     
     <script type="text/javascript">
+    const randomNum = Math.floor(Math.random() * 10) + 1;
  // =========================
  // 0. 프리로더 제거
  // =========================
@@ -1869,7 +1870,7 @@ document.addEventListener('click', function(e) {
 					html=html+`	                    	
                      <div class="product-card">
                      	<a href="/product/detail?id=\${productVo.product_idx}" class="product-link">
-			                            <img src="${pageContext.request.contextPath }/images/\${productVo.product_image_url}" alt="제품" class="product-img">
+			                            <img src="${pageContext.request.contextPath }/images/products_list/\${productVo.product_image_url}" alt="제품" class="product-img">
 			                            <p class="product-name">\${productVo.product_name }</p>
 			                            <p class="product-price">₩\${price_formatted}</p>
 	                        </a>    
