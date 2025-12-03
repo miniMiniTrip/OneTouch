@@ -1629,7 +1629,7 @@ function changePage(page) {
         // 모달 외부 클릭시 닫기
         window.onclick = function(event) {
             if (event.target == modal) {
-                closeModal();
+                //closeModal();
             }
         }
 
