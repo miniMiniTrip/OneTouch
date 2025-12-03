@@ -92,7 +92,7 @@ public class PostController {
 	@RequestMapping("/post/all_list")
 	@ResponseBody
 	public Map<String,Object> postFormAllList(Model model,@RequestParam(name="page",defaultValue="1")int nowPage
-			,String tabType,String mypage, String postsArray) {
+			,String tabType,String mypage,@RequestParam(defaultValue = "") String postsArray) {
 		System.out.println("	[PostController-@ResponseBody] postFormList() ");
 		System.out.printf("		카테고리:%s\n",tabType);
 		System.out.printf("		페이지:%s\n",nowPage);
