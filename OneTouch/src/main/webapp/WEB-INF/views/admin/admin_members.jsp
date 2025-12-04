@@ -285,7 +285,7 @@
 							        <th style="width: 150px;">이메일</th>
 							        <th style="width: 100px;">가입일</th>
 							        <th style="width: 100px;">권한</th>
-							        <!-- <th style="width: 80px;">관리</th> -->  <!-- 추가 -->
+							        <th style="width: 80px;">관리</th>  <!-- 추가 -->
 							    </tr>
 						  </thead>
                             <tbody>
@@ -307,7 +307,6 @@
 								            --%>
 								             <td>
 								                <button class="btn-small btn-delete" onclick="location.href='${pageContext.request.contextPath}/user/delete?idx=${member.mem_idx}&image=${member.mem_image_url}&delete=1'">삭제</button>
-								                ${member.mem_image_url }
 								            </td> 
 								        </tr>
 								    </c:forEach>
