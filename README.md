@@ -5,8 +5,8 @@
 <br>
 초기 기획
 <br>
-<img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/d61c92d5-37a8-4f45-8a33-76e5d480d73d" />
-<img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/c20d38c8-a4f7-451f-b3f7-37db1795a72d" />
+<img width="400" height="600" alt="image" src="https://github.com/user-attachments/assets/d61c92d5-37a8-4f45-8a33-76e5d480d73d" />
+<img width="400" height="600" alt="image" src="https://github.com/user-attachments/assets/c20d38c8-a4f7-451f-b3f7-37db1795a72d" />
 <br>
 
 <hr>
@@ -218,6 +218,7 @@
 
 
 <img width="1371" height="771" alt="image" src="https://github.com/user-attachments/assets/6fa3f790-f54c-43ee-b362-7dd1f7dac6cb" />
+
 
 
 
